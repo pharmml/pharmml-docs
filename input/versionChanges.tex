@@ -1,0 +1,294 @@
+\chapter{Changelog}
+\label{cht:changeLog}
+The first public release, version 0.2.1, was on 21$^{st}$ November 2013. The developers involved
+were Stuart Moodie, Maciej Swat, Niels Rode Kristensen and Nicolas Le Nov\`{e}re. 
+At the time of the first public release, PharmML structure allowed to implement continuous 
+data models using not only a flexible parameter model but also variability, covariate
+and observation models. Already then the user was able to specify estimation and simulation 
+tasks. The explicit encoded trial design was the only option to inform the model about the underlying 
+study structure, i.e. the available covariates, dosing and observations with inline dataset support
+for every required data component.  
+Mid October 2013 the team underwent a reconstruction and includes until today: 
+Maciej Swat, Niels Rode Kristensen, Sarala Wimalaratne and Florent Yvon.
+
+Apart from the public releases, PharmML went through a number of internal changes. 
+The following tables give a detailed overview of this evolution (see also the timeline, 
+Figure \ref{fig:DDMoReTimeline}, for an brief overview).
+
+\section{Changes in version 0.3 \& 0.3.1}
+\begin{center}
+\small
+\begin{longtable}{lll}
+  \hline
+  \hline
+\pml element 		&  version 0.2.1 				& \textbf{version 0.3} \\
+or modelling aspect 	&							& \\
+  \hline
+Experimental data 	& Inline data support only 		& Following options are available \\
+				& with up to 3 tables for			& 1. Inline data support \\ [-.25ex]
+				& -- Observations				& (see left column for details) \\ [-.25ex]
+				& -- Dosing 					& \\ [-.25ex]
+				& -- Covariates					& \\ [-.25ex]
+				&							& 2. External data files support \\ [-.25ex]
+				&							&  \\ 
+				&							& 3. NONMEM-format dataset  \\ [-.25ex]
+				&							& support with \xelem{NONMEMdataSet} \\ [-.25ex]
+				&							& \\
+				&							& 4. Lookup tables  \\ [1ex]
+\hline
+Column Mapping	& \multicolumn{2}{c}{\xelem{Population} table} \\  [.5ex]
+%\hline
+				& Multiple mapping elements:		& Only one type is available: \\ [-.25ex]
+				& -- \xelem{Demographic}		& -- \xelem{ColumnMapping} \\ [-.25ex]
+				& -- \xelem{IndividualTemplate}	& everything else defined using\\ [-.25ex]
+				& --- \xelem{IndividualMapping}	& new attribute \xatt{columnType}  \\ [-.25ex]
+				& --- \xelem{ArmMapping}		& \\ [-.25ex]
+				& --- \xelem{CovariateMapping}	& \\ [-.25ex]
+				& --- \xelem{DemographicMapping}	& \\ [-.25ex]
+				& --- \xelem{ReplicateMapping}	& \\ [-.25ex]
+				& --- \xelem{IVDependentMapping} with & \\ [-.25ex]
+				& \xelem{IndependentVariableMapping}, & \\ [-.25ex]
+				& \xelem{EpochMapping} and		& \\ [-.25ex]
+				& \xelem{CovariateMapping}		& \\  [1ex]
+%\hline 
+				& \multicolumn{2}{c}{\xelem{IndividualDosing} table}  \\  [.5ex]
+%\hline
+				& Multiple mapping elements:		& Activity reference is required  \\  [-.25ex]
+				& -- \xelem{ActivityRef}			& \xelem{ActivityRef} \\ 
+				& -- \xelem{IndividualRef}			& and \xelem{ColumnMapping}  \\ 
+				& ...							& \\  [1ex]
+%\hline
+				& \multicolumn{2}{c}{\xelem{ObjectiveDataSet} table}  \\ [.5ex]
+%\hline
+				& -- \xelem{IndividualMapping}		& \xelem{ColumnMapping}  \\ 
+				& -- \xelem{VariableMapping}		& \\  [1ex]
+\hline
+ODE's 			& \xelem{InitialCondition}	with no	& \xelem{InitialCondition} \\ [-.25ex]
+				& child elements				& with two new elements:  \\
+				&							& \xelem{InitialTime} \& \\
+				&							& \xelem{InitialValue}  \\ [1ex]
+\hline
+\textbf{Matrix} 			& \emph{not supported}			& \xelem{Matrix} element  \\ [-.25ex]
+				&							& with attributes: \\
+				&							& -- \xatt{VariabilityReference}  \\
+				&							& -- \xatt{matrixType} with values \\
+				&							& \xatt{CovMatrix}, \xatt{CorrMatrix}, \\
+				&							& \xatt{StDevCorrMatrix}, \xatt{Cholesky}	\\
+				&							& -- \xatt{RowNames} \\
+				&							& -- \xatt{ColumnNames} (optional) \\ [1ex]
+\hline
+External tools 		& \emph{not supported}			& \xelem{TargetTool} tag  \\ [-.25ex]
+				&							& with \emph{mandatory} element \\
+				& 							& \xelem{TargetToolName} and \\
+				&							& \emph{optional} \xelem{CodeInjection} \\ [1ex]
+\hline
+Trial Design 		& Explicitly coded in 				& Following options are available \\
+				& \xelem{TrialDesign}			& 1. Explicitly coded in \\
+				& 							& \xelem{TrialDesign} \\
+				&							& 2. Design \& data from \\
+				&							& NONMEM-format dataset  \\ [1ex]
+\hline
+Interpolation of covariates & \emph{not supported}		& \xelem{Interpolation} element  \\
+and variables		&							& with \\
+				&							& -- \xelem{Algorithm} taking a value \\
+				&							& from list: \xatt{constant}, \xatt{nearest}, \\
+				&							& \xatt{linear}, \dots, \xatt{cubic} or \\
+				&							& -- user-defined in element \\
+				&							& \xelem{FunctionDefinition} \\ [1ex]
+\hline
+Changes in attribute  & \multicolumn{2}{c}{in \xelem{DoseAmount} and \xelem{LookupTable}/\xelem{Target} elements} \\ [.25ex]
+names			& \xatt{inputType} 				& \xatt{inputTarget} \\
+				& with values					& with values \\
+				& -- \xatt{dose}					& -- \xatt{parameter} \\
+				& -- \xatt{target}				& -- \xatt{derivativeVariable} \\
+				& 							& -- \xatt{variable}  \\ [1ex]
+				& \multicolumn{2}{c}{in \xelem{VariabilityReference} element} \\ [-.25ex]
+				& \multicolumn{2}{c}{values of the \xatt{type} attribute} \\				
+				& \xatt{model}					& \xatt{parameterVariability} \\
+				& \xatt{error}					& \xatt{residualError} \\ [1ex]
+  \hline
+ Nested tables 		& supported in all datasets		& \emph{not supported} \\				
+				&							& \\ [1ex]
+  \hline
+Gaussian parameter & 							& \xatt{identity} transformation  \\
+model 			&							& in \xelem{Transformation} added \\ [1ex]
+  \hline
+Missing mathematical  & 							& new \xatt{BinOp}:  \xatt{min}, \xatt{max} \\ 
+functions			&							& \xatt{UniOp} with\\
+				&							& \xatt{ln}, \xatt{factln}, \xatt{gammaln}, \\
+				&							& \xatt{normcdf}, \xatt{sqrt}  \\ [1ex]
+  \hline
+  Metadata attribute	&	not defined for number of 	& added in the root \xelem{PharmML} \\
+  				&	elements					& and child elements of \\
+  				&							& \xelem{TrialDesign} \\ [1ex]
+  \hline
+  Random errors	& multiple \xelem{SymbRef} allowed	& only one \xelem {SymbRef} allowed \\
+  				& in \xelem{RandomEffects}		& per \xelem{RandomEffects} \\[1ex]
+  \hline
+  \hline
+				&							& \textbf{version 0.3.1} \\ 
+  \hline
+  \hline
+Mapping multiple  		& \emph{not supported}				& \xelem{MultipleDVMapping} element \\
+dependent variables 	& 								&   \\ 
+					&								& \\
+\hline
+Dosing mapping		& \emph{not supported}				& -- \xatt{cmt} attribute  \\ 
+from NONMEM datasets	&								& -- \xatt{compartmentNo} attribute \\
+\hline
+File referencing 		& using \xelem{filename} and \xelem{url} 	& -- \xelem{path} element instead \\
+ 					&								& -- \xatt{SEMICOLON} delimiter \\
+\hline
+Referencing NONMEM 	& using \xelem{TargetToolReference}	& \xelem{NONMEMdataSetReference} \\
+datasets 				&								&  \\
+\hline
+Simulation support 		& -- only explicitly via \xelem{TrialDesign} & -- \xelem{Observations} optional \\
+					& -- \xelem{Observations} element		& -- NONMEM datasets can  \\
+					& mandatory 						& be used \\
+\hline
+Referencing categorical	& possible using strings only			& extended to numerical \\
+covariates	 			&								& identifiers  \\
+  \hline
+\label{figTable:overviewTable}
+\end{longtable}
+\end{center}
+
+
+\section{Changes in version 0.4 \& 0.4.1}
+\begin{center}
+\small
+\begin{longtable}{lll}
+\hline
+\hline
+\pml element 			&  version $\le$ 0.3.1 			&  \textbf{version 0.4} \\
+or modelling aspect 		&							& \\
+\hline
+\textbf{Discrete data models} 	& \emph{not supported}			& \xelem{Discrete} with child elements such as  \\
+		 			&							& -- \xelem{CountData} with \xelem{CountVariable}, \\
+					&							& \xelem{PreviousCountVariable}, \xelem{Dependance},\\
+					&							& \xelem{IntensityParameter}, etc.  \\
+					&							& and \xelem{PMF} with \xatt{linkFunction} attribute \\
+					&							& -- \xelem{CategoricalData} with child elements \\
+					&							& such as \xelem{ListOfCategories}, \xelem{CategoryVariable}, \\
+					&							& \xelem{InitialStateVariable} (plus few other \\
+					&							& variable elements), \xelem{ProbabilityAssignment} and \\
+					&							& its child elements: \xelem{Probability},  \xelem{CurrentState}, \\
+					&							& \xelem{PreviousState} and \xelem{Condition} \\
+					&							& -- \xelem{TimeToEventData} with child elements \\
+					&							& \xelem{EventVariable}, \xelem{HazardFunction}, \\
+					&							& \xelem{SurvivalFunction}, \xelem{Censoring} and \\
+					&							& \xelem{MaximumNumberEvents} \\
+\hline
+Observation model 		& --							& new \xelem{DiscreteData} and \xelem{ContinuousData} tags \\ 
+\hline
+Delay differential equations & \emph{not supported}			& \xelem{Delay} and \xelem{History}  \\
+(DDE) 				&			 				& with child elements \\ 
+					&							& -- \xelem{HistoryValue} and \\
+					&							& -- \xelem{HistoryTime}  \\ 
+\hline
+Extended vector definition & basic support 		 		& \xelem{Vector} with a number of child elements such as\\
+					&							& \xelem{VectorElements}, \xelem{VectorCell}, \\
+					& 							& \xelem{VectorSegment} and attributes \xatt{default}, \xatt{length}  \\ 
+\hline
+Extended matrix definition & basic support 		 		& \xelem{Matrix} with a number of child elements such as\\
+					& 							& \xelem{MatrixRow}, \xelem{MatrixCell}, \\
+					& 							& \xelem{MatrixBlock} and attributes \xatt{matrixType}, \\
+					&							& \xatt{diagDefault}, \xatt{offDiagDefault} and others  \\
+  \hline
+  \hline
+					& version $\le$ 0.4	 			&  \textbf{version 0.4.1} \\
+  \hline
+  \hline
+Mapping between model 	& \emph{limited support}		& -- \xatt{compartmentNo} attribute has been removed \\ 
+elements and dataset or 	&						& --  \xelem{TargetMapping} and \xelem{Map} element with \\ 
+\xelem{TrialDesign}		&						& attributes \xatt{dataSymbol} and \xatt{modelSymbol}   \\
+\hline
+Covariate model		& \emph{not supported}		& \xelem{TransformedCovariate} element   \\
+					&						& \\
+\hline
+Parameter model		& element was mandatory	& -- \xelem{FixedEffect} element in optional \\
+					& \emph{feature not supported}	& -- \xelem{FixedEffect} takes numerical children \\
+\hline
+Vector/Matrix			& \emph{not supported}		& lower/upper indexes can be defined \\
+					& 			 			& using expressions   \\
+\hline
+Vector elements renamed & \xelem{VectorIndex}		& \xelem{CellIndex} \\
+					& \xelem{SegmentIndex} 		& \xelem{SegmentStartIndex} \\
+\hline
+\xelem{Sum} and \xelem{Product}					& \emph{features missing}& -- lower/upper indexes can be defined using \\
+elements				& 	 					& arbitrary expressions   \\
+\hline
+Dose scaling when working 						& \emph{not supported}	& \xelem{ColumnTransformation} element with \xatt{tranformId} \\
+with datasets			&						& attribute and new \xatt{tranformIdRef} attribute within \\
+					&						& \xelem{ColumnRef}   \\
+
+\hline
+Discrete data models 	& \emph{link functions missing}& link functions \xatt{loglog}, \xatt{comploglog}  \\
+					&						& \\
+\hline
+Simulations			& \emph{missing element}	&  \xelem{Discrete} element within \\
+					&						& \xelem{Observations} tag \\
+\hline
+\xelem{Operation} definition						& limited number of options	& arbitrary string allowed in the \\
+					&						& \xatt{opType} attribute \\ 
+\hline
+\label{figTable:overviewTable}
+\end{longtable}
+\end{center}
+
+\section{Changes in version 0.5 \& 0.5.1}
+\begin{center}
+\small
+\begin{longtable}{lll}
+\hline
+\hline
+\pml element 			&  version $\le$ 0.4.1 			& \textbf{version 0.5} \\
+or modelling aspect 		&							& \\
+\hline
+\textbf{PK macros}		& \emph{not supported}			& \xelem{PKmacros} element with child elements, such as  \xelem{Compartment}, \\
+					&							&  \dots, \xelem{Elimination} and their attributes \xatt{cmt}, \xatt{amount} etc. \\
+\hline
+Monolix datasets		& \emph{not supported}			& \xelem{MONOLIXdataSet} and \xelem{MONOLIXdataSetReference} elements \\
+\hline
+Annotation reference  	& \emph{not supported}			& new \xatt{metadataFile} attribute in the \xelem{PharmML} root element  \\
+  \hline
+  \hline
+					&  version $\le$ 0.5				&  \textbf{version 0.5.1} \\
+  \hline
+  \hline
+Mathematical functions	& 							&  new \xatt{UniOp}:  \xatt{Heaviside}, \xatt{sign} \\
+\hline
+Variability model 		& -- 							& new \xatt{ReferenceLevel} attribute in the \xelem{Level} element \\
+\hline
+
+%\caption{dsffsdf}
+\label{figTable:overviewTable}
+\end{longtable}
+\end{center}
+
+
+
+\section{Changes in version 0.6}
+\begin{center}
+\small
+\begin{longtable}{lll}
+\hline
+\hline
+\pml element 			&  version $\le$ 0.5.1			& \textbf{version 0.6} \\
+or modelling aspect 		&							& \\
+\hline
+Dataset specification	& \xelem{NONMEMdataSet} and	& replaced by \xelem{ExternalDataSet} with \xatt{toolName} \\
+					& \xelem{MONOLIXdataSet}		& attribute with values \xatt{BUGS}, \xatt{Monolix} and \xatt{NONMEM} \\
+\hline
+Dataset referencing		& \xelem{NONMEMdataSetReference}	& replaced by \xelem{ExternalDataSetReference} \\
+					& \xelem{MONOLIXdataSetReference} 	& \\
+\hline
+External file			& \xelem{ImportData} 			& renamed to \xelem{ExternalFile} \\
+\hline
+Namespace URI format	& $\dots$\url{/Year/Month/}$\dots$	& $\dots$\url{/pharmml/verNo/}$\dots$, e.g. $\dots$\url{/pharmml/0.6/Dataset} \\
+
+\label{figTable:overviewTable}
+\end{longtable}
+\end{center}
+
+

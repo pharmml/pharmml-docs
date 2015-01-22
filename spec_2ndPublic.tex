@@ -1,0 +1,353 @@
+\documentclass[a4paper,10pt]{report}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xspace}
+\pagestyle{headings}
+\usepackage[total={6.5in,10in}, top=1.2in, left=.8in, includefoot]{geometry}
+\usepackage{float}
+\restylefloat{table}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{red}{rgb}{1,0,0}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.58}
+\definecolor{attributeColor}{rgb}{0.96,0.517,0.29}
+\definecolor{darkgreen}{rgb}{0,.392,0}
+\definecolor{stringColor}{rgb}{0.6,0.2,0}
+\usepackage{array,multirow}
+\usepackage{longtable}
+\LTcapwidth=\textwidth
+\usepackage{cleveref}
+\usepackage{bbding}
+\crefname{section}{¤}{¤¤}
+\Crefname{section}{¤}{¤¤}
+\usepackage[utf8]{inputenc}
+\usepackage{tablefootnote}
+\usepackage{algorithmic}
+\usepackage[modulo, pagewise]{lineno}
+\nolinenumbers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[RO]{PharmML 0.6}
+\fancyhead[RE]{\itshape\nouppercase{\leftmark}}
+\usepackage{booktabs}
+\usepackage{fixltx2e}
+%\fancyfoot[CE,CO]{\leftmark}
+%\fancyfoot[LE,RO]{\thepage}
+%\pagestyle{fancy}
+%\fancyhf{}
+\usepackage{array,arydshln}
+\usepackage{wrapfig}
+
+\def\bmp{\begin{minipage}{0.48\linewidth}\small} 
+\def\emp{\end{minipage}\smallskip}
+
+\setlength\dashlinedash{0.4pt}
+\setlength\dashlinegap{1pt}
+\setlength\arrayrulewidth{0.5pt}
+
+\hypersetup{pageanchor=false}
+
+\newcommand{\myStartLine}{\par
+  \kern8pt % space above the rules
+  \hrule height 0.5pt
+  \kern3pt % space below the rules
+}
+\newcommand{\myEndLine}{\par
+  \kern3pt % space above the rules
+  \hrule height 1.5pt
+  \kern12pt % space below the rules
+}
+
+% Colours stolen from SBML pkg spec class
+\definecolor{lightblue}{rgb}{0.07, 0.50, 0.78}
+\definecolor{mediumgreen}{rgb}{0.1, 0.6, 0.3}
+
+\definecolor{hellgelb}{rgb}{1,1,0.9}
+\definecolor{colKeys}{rgb}{0,0,1}
+\definecolor{colIdentifier}{rgb}{0,0,0}
+\definecolor{colComments}{rgb}{1,0,0}
+\definecolor{colString}{rgb}{0,0.5,0}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+%  numbers=left,
+%  stepnumber=5
+}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\lstdefinelanguage{XML}
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<![CDATA[}{]]>},
+  moredelim=[s][\bfseries\color{darkgreen}]{<!--}{-->},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{red},
+  keywordstyle=\color{attributeColor},
+  morekeywords={oid,columnId,columnIdRef,symbId,symbolType,op,columnNum,columnType,
+  valueType,inputTarget,blkId,blkIdRef,symbIdRef,xmlns,version,type,VariableMapping,
+  IndividualMapping,schemaLocation,xs,xsi,NONMEMdataSet,matrixType,opType,order,
+  math,ct,ds,mdef,mstep,mml,un,name,definition,writtenVersion,id,inputType,oidRef,catId,
+  length,default,vectorIndex,diagDefault,offDiagDefault,row,column,numbRows,numbCols,
+  dataSymbol,modelSymbol,ordered,compartmentNo,compNo,ordered,linkFunction,varId,
+  censoringType,dataSymbol,modelSymbol,MarkovOrder,deviationMatrixType,implementedBy,
+  argument,admNumber,transformId,transformIdRef,metadataFile,fixed,referenceLevel,
+  symbID,src,tgt,idRef,x,y,w,h,ref,about,resource,design,rdf,rdfs,base,example5,ps
+  fixed,toolName} % list your attributes here
+}
+
+\lstdefinelanguage{MLXTRANcode} 
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={dads} % list your attributes here
+}
+
+\lstdefinelanguage{NONMEMdataSet}
+{
+  basicstyle=\sffamily\small,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[is][\bfseries\color{red}]{[*}{*]},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={kjkj} % list your attributes here
+}
+
+
+\lstdefinelanguage{Elements}
+{
+  basicstyle=\sffamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={kjkj} % list your attributes here
+}
+
+%\includeonly{input/Scope}											% SCOPE
+%\includeonly{input/introduction_specSection}								% INTRODUCTION
+%\includeonly{input/validation_rules}									% VALIDATION
+%\includeonly{input/mathDescription_specSection}							% MATHS
+%\includeonly{input/PKMacros_specSection}								% MACROS
+%%\includeonly{input/language_overview}								% LANGUAGE OVERVIEW
+%\includeonly{input/explanatory_examples}								% EXAMPLES 1
+%\includeonly{input/explanatory_examples,input/explanatory_examples_prt2}	 	% EXAMPLES 1 & 2
+%\includeonly{input/language_overview,input/explanatory_examples,input/explanatory_examples_prt2}	 % LANGUAGE & EXAMPLES 1 & 2
+%\includeonly{input/mathDescription_specSection,input/explanatory_examples,input/explanatory_examples_prt2}	 % MATHS & EXAMPLES 1 & 2
+%\includeonly{input/mathDescription_specSection,input/language_overview,input/explanatory_examples,input/explanatory_examples_prt2}	 % MATHS & LANGUAGE & EXAMPLES 1 & 2
+%\includeonly{input/explanatory_examples,input/explanatory_examples}			% LANGUAGE OVERVIEW & EXAMPLES 1
+%\includeonly{input/PKMacros_specSection,input/language_overview}
+%\includeonly{input/mathDescription_specSection,input/PKMacros_specSection,input/language_overview}
+%\includeonly{input/mathDescription_specSection,input/language_overview}
+%\includeonly{input/validation_rules,input/language_overview}
+%\includeonly{input/mathDescription_specSection,input/trialDesign_specSection}
+%\includeonly{input/mathDescription_specSection,input/trialDesign_specSection,input/PKMacros_specSection}
+%\includeonly{input/mathDescription_specSection,input/trialDesign_specSection,input/PKMacros_specSection, input/language_overview}
+
+%\newcommand{\mailto}[1]{\hyperlink{mailto:#1}{#1}}
+%\newcommand\HRule{\noindent\rule{\linewidth}{1.5pt}}
+%
+%\newcommand\arrays{Arrays and Sets\xspace}
+%\newcommand\arraysshort{arrays\xspace}
+%\newcommand\distribshort{distrib\xspace}
+%\newcommand\distrib{Distributions\xspace}
+%\newcommand\ddmore{{%
+%%\fontsize{9.5}{7}
+%\usefont{T1}{pag}{m}{n}ddmore}\xspace%
+%}
+\newcommand\cellml{CellML\xspace}
+\newcommand\sbml{SBML\xspace}
+\newcommand\sedml{SED-ML\xspace}
+\newcommand\uncertml{UncertML\xspace}
+\newcommand\nonmem{NONMEM\xspace}
+\newcommand\mlambda{\class{Lambda}\xspace}
+\newcommand\mmath{\class{Math}\xspace}
+\newcommand{\mathml}{MathML\xspace}
+\newcommand{\monolix}{Monolix\xspace}
+\newcommand{\pharmml}{PharmML\xspace}
+\newcommand{\pml}{PharmML\xspace}
+\newcommand{\currpml}{0.5.1\xspace}
+\newcommand{\moml}{\pharmml}
+\newcommand{\ddmore}{\text{DDMoRe}\xspace}
+\newcommand{\Cc}{\mathit{Cc}}
+\newcommand{\CL}{\ensuremath{\mathit{CL}}}
+\newcommand{\concentration}{\mathit{concentration}}
+\newcommand{\Categories}{\mathit{Categories}}
+\newcommand{\CategoriesNumber}{\mathit{CategoriesNumber}}
+\newcommand{\Concentration}{\mathit{Concentration}}
+\newcommand{\Covariate}{\mathit{Covariate}}
+\newcommand{\Covariates}{\mathit{Covariates}}
+\newcommand{\CovariatesType}{\mathit{CovariatesType}}
+\newcommand{\CovariatesFile}{\mathit{CovariatesFile}}
+\newcommand{\CovariatesPopDistribution}{\mathit{CovariatesPopDistribution}}
+\newcommand{\CovariatesTransf}{\mathit{CovariatesTransf}}
+\newcommand{\Combined}{\mathit{Combined}}
+\newcommand{\Continuous}{\mathit{Continuous}}
+\newcommand{\Categorical}{\mathit{Categorical}}
+\newcommand{\Constant}{\mathit{Constant}}
+\newcommand{\Css}{\mathit{Css}}
+\newcommand{\DoseInterval}{\mathit{DoseInterval}}
+\newcommand{\DoseSize}{\mathit{DoseSize}}
+\newcommand{\DosePerKg}{\mathit{DosePerKg}}
+\newcommand{\DoseUnit}{\mathit{DoseUnit}}
+\newcommand{\DoseTime}{\mathit{DoseTime}}
+\newcommand{\EstimationTask}{\mathit{EstimationTask}}
+\newcommand{\EstimationAlgorithm}{\mathit{EstimationAlgorithm}}
+\newcommand{\file}{\mathit{file}}
+\newcommand{\group}{\mathit{group}}
+\newcommand{\Hemorrhaging}{\mathit{Hemorrhaging}}
+\newcommand{\iijj}{\mathit{ij}}
+\newcommand{\IC}{\mathit{IC}}
+\newcommand{\Imax}{\mathit{Imax}}
+\newcommand{\ka}{\ensuremath{\mathit{ka}}}
+\newcommand{\kg}{\mathit{kg}}
+\newcommand{\kout}{\mathit{kout}}
+\newcommand{\llambda}{\mathit{lambda}}
+\newcommand{\lognormal}{\mathit{logNormal}}
+\newcommand{\logit}{\mathit{logit}}
+\newcommand{\mg}{\mathit{mg}}
+\newcommand{\no}{\mathit{no}}
+\newcommand{\NumberReplicate}{\mathit{NumberReplicate}}
+\newcommand{\ObservationName}{\mathit{ObservationName}}
+\newcommand{\ObservationUnit}{\mathit{ObservationUnit}}
+\newcommand{\ObservationTime}{\mathit{ObservationTime}}
+\newcommand{\ObservationType}{\mathit{ObservationType}}
+\newcommand{\Occasion}{\mathit{Occasion}}
+\newcommand{\pop}{\mathit{pop}}
+\newcommand{\Rin}{\mathit{Rin}}
+\newcommand{\ResidualErrorModel}{\mathit{ResidualErrorModel}}
+\newcommand{\Parameters}{\mathit{Parameters}}
+\newcommand{\Percentage}{\mathit{Percentage}}
+\newcommand{\Population}{\mathit{Population}}
+\newcommand{\Prediction}{\mathit{Prediction}}
+\newcommand{\PredictionList}{\mathit{PredictionList}}
+\newcommand{\CategoriesProbability}{\mathit{CategoriesProbability}}
+\newcommand{\Proportional}{\mathit{Proportional}}
+\newcommand{\residual}{\mathit{residual}}
+\newcommand{\ResultsFileName}{\mathit{ResultsFileName}}
+\newcommand{\RefCategory}{\mathit{RefCategory}}
+\newcommand{\RefCategProbability}{\mathit{RefCategProbability}}
+\newcommand{\SAEM}{\mathit{SAEM}}
+\newcommand{\Sex}{\mathit{Sex}}
+\newcommand{\SizeArm}{\mathit{SizeArm}}
+\newcommand{\State}{\mathit{State}}
+\newcommand{\TimeUnit}{\mathit{TimeUnit}}
+\newcommand{\Tlag}{\ensuremath{\mathit{T_{lag}}}}
+\newcommand{\Transformation}{\mathit{Transformation}}
+\newcommand{\Treat}{\mathit{Treat}}
+\newcommand{\TreatSeq}{\mathit{TreatSeq}}
+\newcommand{\Var}{\mathit{Var}}
+\newcommand{\warfarindatatxt}{\mathit{warfarin\_data.txt}}
+\newcommand{\Weight}{W}
+\newcommand{\yes}{\mathit{yes}}
+\newcommand{\xelem}[1]{\texttt{<#1>}\index{XML Element!\texttt{<#1>}}}
+\newcommand{\xatt}[1]{\texttt{#1}\index{XML Attribute!\texttt{#1}}}
+\newcommand{\var}[1]{\ensuremath{\mathit{#1}}\index{Symbol!\ensuremath{\mathit{#1}}}}
+\newcommand{\dscol}[1]{\texttt{#1}}
+\newcommand{\attval}[1]{``\texttt{#1}''}
+
+
+%Counter for examples chap
+\newcounter{examples}
+\newcommand{\eglabel}[1]{\refstepcounter{examples}\label{egsec:#1}}
+\newcommand{\egref}[1]{\ref{egsec:#1}}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\begin{document}
+
+\input{title_2ndPublic.tex} 
+
+
+\cleardoublepage
+\vspace*{\stretch{1}}
+   \begin{minipage}{16cm}%
+Copyright \copyright\xspace 2013-2015 The European Molecular Biology
+Laboratory, Heidelberg, Germany\\* and Novo Nordisk A/S, Bagsv\ae rd, Denmark.
+\end{minipage}
+
+
+\cleardoublepage
+
+
+\linenumbers
+\tableofcontents
+
+
+\include{input/introduction_specSection}
+
+%\include{input/Scope}
+%
+%\include{input/mathDescription_specSection}
+%
+%\include{input/trialDesign_specSection}
+%
+%\include{input/PKMacros_specSection}
+
+%\include{input/language_overview}
+
+%\include{input/design_guidelines}
+
+%\include{input/validation_rules}
+
+\include{input/explanatory_examples}
+
+%\include{input/versionChanges}
+
+%\include{input/acknowledgements}
+%
+%\appendix
+%\include{input/modelListAndTemplates}
+
+
+\bibliographystyle{plain}
+\bibliography{pharmml-specification}
+\end{document}
+

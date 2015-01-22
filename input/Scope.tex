@@ -1,0 +1,128 @@
+
+\chapter{Scope of \pharmml}
+\label{chap:scope}
+
+
+\section{Introduction}
+
+The scope of pharmacometric models is very wide, as such models can be empirical as well as
+mechanistic; describe continuous as well as discrete data types; and be deterministic, stochastic
+or a mixture of both. It is a challenging endeavour to accommodate this variety of possibilities
+under one computational standard, therefore it is indispensable to split the task into multiple
+steps of subsequent specifications and to define precisely the scope of every release.
+
+In this chapter we define the scope of the functionality in
+\pharmml, i.e. what information a \pharmml document can
+represent. As is common practise in software engineering we have 
+described the functionality as a set of ``features''.  It is important to remember 
+that this specification is the second public release of \pharmml and over remaining 
+time we expect additional features to be provided by future releases of the language.
+
+The language is organised into three sections, which we believe naturally
+describe the logical organisation of a pharmacometric model and its
+associated tasks. Consequently we have grouped the features to match this
+organisation. The sections are:
+\begin{description}
+\item[Model Definition] A description of the model, incl.\ the structural model, the model
+  parameters, relevant covariates, the variability components, and the observations.
+\item[Trial Design] A description of the design of a clinical trial associated with the model
+  (for example a trial from which data is available to estimate the parameters of the model or
+  a trial to be simulated with the model).
+\item[Modelling Steps] A description of steps or tasks performed with
+  the model. Typically this describes how the model has been used, for
+  example to estimate its parameters or to perform a simulation.
+\end{description}
+
+\section{Model Definition}
+\subsection{Structural Model}
+
+\pharmml can encode:
+\begin{itemize}
+\item{A structural model defined by a set of algebraic equations.} Typically the explicit solution to a simple PK model, or a dose-response model.
+\item{A structural model defined by a system of ODEs with initial conditions.} 
+%\item{A structural model defined in \sbml format.}
+\item{Delay Differential Equations (DDEs).}
+\item{Compartmental PK models implemented using PK macros.}
+\end{itemize}
+
+\subsection{Covariate Model}
+
+\pharmml can encode:
+\begin{itemize}
+\item{Continuous covariates.} These can be sampled from a probability distribution, 
+used with an applied transformation and interpolated.
+\item{Categorical covariates.} These can also be sampled from a probability distribution.
+\end{itemize}
+
+\subsection{Parameter Model}
+
+\pharmml can encode:
+\begin{itemize}
+\item{Gaussian models with linear or non-linear covariate model.}
+\item{General, equation based model such as those described in \cite{Keizer:2011aa}.}
+\item{Random effects at arbitrary levels of variability.}
+\item{Correlation of the random effects, described by a correlation or covariance matrix.}
+\end{itemize}
+
+\subsection{Variability Model}
+
+\pharmml supports the following levels of variability:
+\begin{itemize}
+\item{Between-Subject Variability (BSV).} Aka inter-individual variability (IIV).
+\item{Inter-Occasion Variability (IOV).} Such as within-subject variability.
+\item{Higher levels of variability above BSV.} Such as variability between countries or centres.
+\item{Lower levels of variability below IOV.} Such as variability between sub-occasions within occasions.
+\end{itemize}
+
+\subsection{Observations Model}
+
+\pharmml supports the following observation model:
+\begin{itemize}
+\item{Continuous data models.} A residual error model applied to one or more observation variables..
+%\item{Autocorrelation of the residual errors in a continuous observation model.}
+\item{Discrete data models such as}
+\begin{itemize}
+\item{Count data models.} Such as Poisson, negative binomial, zero-inflated Poisson models etc.
+\item{Nominal and ordered categorical models.} Logistic regression, proportional odds models etc.
+\item{Time-to-event models.}
+\end{itemize}
+\end{itemize}
+
+\section{Trial Design}
+
+\subsection{Dataset based}
+
+\pharmml supports external NONMEM/Monolix datasets which can be sourced 
+to provide the full study design and the according experimental records. 
+ 
+\subsection{\xelem{TrialDesign} based}
+
+\pharmml can encode the following features of a trial design \emph{explicitly}:
+\begin{itemize}
+\item{Bolus and infusion dosing.}
+\item{Multiple dosing regimens including mixed bolus and infusion.}
+\item{Single, Repeated and Steady state dosing.}
+\item{Dosing to more than one compartment.}
+\item{Simple, parallel and cross-over designs.}
+\item{Washout periods.}
+\item{Occasions -- defined by time interval within a treatment epoch.}
+\item{Trials with different centres or other levels of organisation above study arms}
+\end{itemize}
+
+\section{Modelling Steps}
+
+\pharmml can encode the following features related to the task(s) associated with a model:
+\begin{itemize}
+\item{Estimation utilising the maximum likelihood principle.}
+\item{Simulation of the model.}
+\end{itemize}
+
+\section{General}
+
+\begin{description}
+\item{Metadata annotation} Provides support to enable metadata
+descriptions of the \pharmml document.
+\item{Extension mechanism} Provides support to enable the extension of
+the \pharmml document.
+\end{description}
+
