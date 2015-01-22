@@ -1,2 +1,20 @@
 
 spec_2ndPublic copy.pdf
+
+input/acknowledgements.aux
+
+input/design_guidelines.aux
+
+input/explanatory_examples.aux
+
+*.aux
+
+spec_2ndPublic.log
+
+spec_2ndPublic.out
+
+spec_2ndPublic.synctex.gz
+
+spec_2ndPublic.toc
+
+spec_2ndPublic.pdf
