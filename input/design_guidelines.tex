@@ -190,50 +190,79 @@ will do the following:
 \section{XML Schema Organisation}
 
 \pharmml is a large language and the XML Schema definition is
-correspondingly large too. Fortunately, the language is naturally
-organised into three sections (see chapter
-\ref{chap:lang-overview}): Model Definition, Trial Design, and
-Modelling Steps, which provides us with a convenient way to modularise
+correspondingly large too. The language is naturally organised into three 
+sections (see chapter \ref{chap:lang-overview}): Model Definition, Trial Design, 
+and Modelling Steps, which provides a convenient way to modularise
 the XML Schema definition. In addition, we have two components, which
 are also naturally independent of the core \pharmml specification: the
 definition of both mathematical expressions and probability
 distributions. Using these natural divisions, we split the \pharmml XML Schema
-definition into the following xsd files.
-
-\begin{center}
-\footnotesize
-\begin{tabular}[t]{l@{\hspace{1mm}} l@{\hspace{1mm}} p{5.9cm}}\toprule
-File Name & Namespace URI & Description\\\midrule
-pharmml.xsd & \url{http://www.pharmml.org/0.6/PharmML} & The overall
-\pharmml definition that includes all the other components.\\
-modelDefinition.xsd & \url{http://www.pharmml.org/0.6/ModelDefinition} &
-Defines the model definition section.\\
-trialDesign.xsd & \url{http://www.pharmml.org/0.6/TrialDesign} & Defines
-the trial design section.\\
-modellingSteps.xsd & \url{http://www.pharmml.org/0.6/ModellingSteps} &
-Defines the modelling steps section.\\
-commonTypes.xsd & \url{http://www.pharmml.org/0.6/CommonTypes} & Defines
-the type definitions and structures common to the above
-schema definitions.\\
-dataset.xsd & \url{http://www.pharmml.org/0.6/Dataset} & Defined the
-dataset and related structures that is used in the trial design and
-modelling steps to represent tabular data.\\
-maths.xsd & \url{http://www.pharmml.org/0.6/Maths} & Defines the
-representation of mathematical expressions.\\
-UncertML30.xsd & \url{http://www.uncertml.org/3.0} & Defines
-the probability distributions provided by \pharmml.\\\bottomrule\\
-\end{tabular}
-\end{center}
+definition into the a number of xsd files, see Table \ref{tab:NamespaceURI}.
 
 Note that a \pharmml document must be compliant with the pharmml.xsd
 definition, which includes all the other components. The other schema
 definitions should not be used independently to validate a \pharmml
 document.
 
-Note also that the namespace URIs changed compared to the first public specification.
+Note also that the namespace URIs have changed compared to the first public specification.
 Instead of \url{.../Year/Month/...} we now use the more informative pattern 
-\url{.../majorVersion.minorVersion/...}, e.g. \url{.../0.6/...}. Patch versions will have 
+\url{.../pharmml/majorVersion.minorVersion/...}, e.g. \url{.../0.6/...}. Patch versions will have 
 not be assigned a new namespace URI.
+
+%\begin{center}
+%\footnotesize
+%\begin{tabular}[t]{l@{\hspace{1mm}} l@{\hspace{1mm}} p{5.9cm}}\toprule
+%File Name & Namespace URI & Description\\\midrule
+%pharmml.xsd & \url{http://www.pharmml.org/pharmml/0.6/PharmML} & The overall
+%\pharmml definition that includes all the other components.\\
+%modelDefinition.xsd & \url{http://www.pharmml.org/pharmml/0.6/ModelDefinition} &
+%Defines the model definition section.\\
+%trialDesign.xsd & \url{http://www.pharmml.org/pharmml/0.6/TrialDesign} & Defines
+%the trial design section.\\
+%modellingSteps.xsd & \url{http://www.pharmml.org/pharmml/0.6/ModellingSteps} &
+%Defines the modelling steps section.\\
+%commonTypes.xsd & \url{http://www.pharmml.org/pharmml/0.6/CommonTypes} & Defines
+%the type definitions and structures common to the above
+%schema definitions.\\
+%dataset.xsd & \url{http://www.pharmml.org/pharmml/0.6/Dataset} & Defined the
+%dataset and related structures that is used in the trial design and
+%modelling steps to represent tabular data.\\
+%maths.xsd & \url{http://www.pharmml.org/pharmml/0.6/Maths} & Defines the
+%representation of mathematical expressions.\\
+%UncertML30.xsd & \url{http://www.uncertml.org/3.0} & Defines
+%the probability distributions provided by \pharmml.\\\bottomrule\\
+%%\caption{Namespace URI overview.}
+%\end{tabular}
+%\end{center}
+
+\begin{table}[t!]
+\begin{center}
+\footnotesize
+\begin{tabular}{lll}\toprule
+File Name & Namespace URI & Description\\\midrule
+pharmml.xsd & \url{http://www.pharmml.org/pharmml/0.6/PharmML} & The overall \pharmml definition that \\
+		&			& includes all the other components.\\
+modelDefinition.xsd & \url{http://www.pharmml.org/pharmml/0.6/ModelDefinition} &
+Defines the model definition section.\\
+trialDesign.xsd & \url{http://www.pharmml.org/pharmml/0.6/TrialDesign} & Defines
+the trial design section.\\
+modellingSteps.xsd & \url{http://www.pharmml.org/pharmml/0.6/ModellingSteps} &
+Defines the modelling steps section.\\
+commonTypes.xsd & \url{http://www.pharmml.org/pharmml/0.6/CommonTypes} & Defines the type definitions and structures \\
+		&			& common to the above schema definitions.\\
+dataset.xsd & \url{http://www.pharmml.org/pharmml/0.6/Dataset} & Defined the dataset and related structures \\
+		&			& that is used in the trial design and modelling \\
+		&			& steps to represent tabular data.\\
+maths.xsd & \url{http://www.pharmml.org/pharmml/0.6/Maths} & Defines the representation of mathematical \\
+		&			& expressions.\\
+UncertML30.xsd & \url{http://www.uncertml.org/3.0} & Defines the probability distributions provided \\
+		& 			& by \pharmml.\\\bottomrule\\
+\end{tabular}
+\end{center}
+\caption{Namespace URI overview.}
+\label{tab:NamespaceURI}
+\end{table}%
+
 
 %\clearpage
 %\chapter{Schema Description}

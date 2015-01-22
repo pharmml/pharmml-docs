@@ -90,8 +90,9 @@ Model}s. These describe the system or systems that a modeller is
 interested in and they represent a particular abstraction of that
 system. For example a structural model may be used to describe the
 pharmacokinetics of a drug. We can represent PK, PD or PK-PD models as
-combinations of ODEs and algebraic equations.
-
+combinations of ODEs and algebraic equations. For compartmental
+PK models an alternative coding options are the PK macros, as described
+in the chapter \ref{sec:PKMacros}.
 \subsubsection{Observation Model}
 
 In clinical trials experimental observations are made, and these
@@ -1553,13 +1554,13 @@ configurable at the beginning of the document as shown below:
 
 \lstset{language=XML}
 \begin{lstlisting}
-<PharmML xmlns="http://www.pharmml.org/0.6/PharmML"
+<PharmML xmlns="http://www.pharmml.org/pharmml/0.6/PharmML"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.pharmml.org/0.6/PharmML ..."
-    xmlns:math="http://www.pharmml.org/0.6/Maths"
-    xmlns:ct="http://www.pharmml.org/0.6/CommonTypes"
-    xmlns:ds="http://www.pharmml.org/0.6/Dataset"
-    xmlns:design="http://www.pharmml.org/0.6/TrialDesign"
+    xsi:schemaLocation="http://www.pharmml.org/pharmml/0.6/PharmML ..."
+    xmlns:math="http://www.pharmml.org/pharmml/0.6/Maths"
+    xmlns:ct="http://www.pharmml.org/pharmml/0.6/CommonTypes"
+    xmlns:ds="http://www.pharmml.org/pharmml/0.6/Dataset"
+    xmlns:design="http://www.pharmml.org/pharmml/0.6/TrialDesign"
     writtenVersion="0.6">
     <ct:Name>IOV1 with covariates</ct:Name>
     <IndependentVariable symbId="t"/>
@@ -1680,8 +1681,30 @@ publication describing the model is not included in the \pharmml
 document. Typically called metadata, this information is still very 
 important and \pharmml provides support for external annotation.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\linewidth]{pics/PharmML_RDF.pdf}
+\caption{pharmml - rdf}
+\label{fig:pharmmlRdf}
+\end{figure}
+\marginpar{CORRECT SECTION}
 
-\marginpar{CORRECT URL's}
+We expect such metadata comes in the form of ontological annotation and
+while the detail of what will be annotated is out of scope of this
+document it is important to stress that every \pml element can be annotated. 
+This is done by adding an attribute, e.g. \xatt{id="i7"}, to the \xelem{TrialDesign}
+element in Figure \ref{fig:pharmmlRdf}.\footnote{More information on 
+annotating \pharmml models are described in the \pharmml Metadata Specification.} 
+The following example gives you a flavour of what an RDF annotation of 
+a \pharmml document would look like if we were referring to the code snippet in
+section~\ref{sec:element-id}. 
+The metadata above is encoded in RDF-XML\footnote{See \url{rdf-xml}}
+and annotates 3 external terms; CHEBI:71417, DB01206, and CHEBI:28445.
+This is a trivial example, but it
+illustrates how the \pharmml document can be annotated using metadata
+described in a separate RDF document.
+
+\marginpar{CORRECT FIGURE?}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.95\linewidth]{pics/metadatadiagram.pdf}
@@ -1695,22 +1718,6 @@ element assigned the attribute \xatt{i7} is \emph{model-related-to-drug} at \emp
 \end{figure}
 \marginpar{CORRECT URL's}
 
-
-We expect such metadata comes in the form of ontological annotation and
-while the detail of what will be annotated is out of scope of this
-document it is important to stress that every \pml element can be annotated. 
-This is done by adding an attribute, e.g. \xatt{id="i7"} to every such element.
-\footnote{More information on annotating \pharmml models are described
-in the \pharmml Metadata Specification.} 
-The following example gives you a
-flavour of what an RDF annotation of a \pharmml document would look
-like if we were referring to the code snippet in
-section~\ref{sec:element-id}. 
-The metadata above is encoded in RDF-XML\footnote{See \url{rdf-xml}}
-and annotates 3 external terms; CHEBI:71417, DB01206, and CHEBI:28445.
-This is a trivial example, but it
-illustrates how the \pharmml document can be annotated using metadata
-described in a separate RDF document.
 
 %
 \lstset{language=XML}
