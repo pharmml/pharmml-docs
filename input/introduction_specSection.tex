@@ -3,32 +3,18 @@
 \label{chap:pharmml-what}
 
 \section{The Problem}
-%\begin{figure}[h]
-%{
-%\centring
-\begin{wrapfigure}{r}{0.45\linewidth}
-  \includegraphics[angle=270,width=\linewidth,trim=90mm 80mm 80mm 50mm]{figures/MMLdudesFinal2}
-\end{wrapfigure}
-% }
-%\end{figure}
 
-%We could add to this cartoon, the caption: ``Someone, somewhere must be trying to solve this problem!''
-%And if you read the \ddmore newsletter\footnote{Available from \url{www.ddmore.eu}.}, where this cartoon first featured, you will recall that our reply was, ``Well fortunately they are!'' We think this
-The cartoon on the right summarises the principal problem that \pharmml addresses: namely,
-the reliable exchange of pharmacometric models between software tools. What we are aiming
-for is illustrated in Figure \ref{fig:platformDDMoRe}, where \pharmml is the exchange medium
+The principal problem that \pharmml addresses is the reliable exchange of pharmacometric 
+models between software tools. This is illustrated in Figure \ref{fig:platformDDMoRe}, where 
+\pharmml is the exchange medium
 for pharmacometric models for the main modelling and simulation tools in the field. This is
 not an unreasonable goal and has been successfully realised in the field of Systems Biology.
 
-
- {\color{red} \scshape{SHOULD WE REWITE and REMOVE FIGURE?}}
- 
-
-In Systems Biology the problems our Frustrated Pharmacometricans complain of do not exist. Software
+In Systems Biology such problem does not exist. Software
 tools exchange models using the Systems Biology Markup Language (SBML; \url{www.sbml.org})
 \cite{SBML} and many published models can be found in the BioModels Database
 (\url{http://www.ebi.ac.uk/biomodels-main/}) \cite{BioModels2010}. Modellers don't worry about the
-content of an SBML file; they rely on the fact that when they exchange it between their favourite
+content of an SBML file; they rely on the fact that when they exchange it between the
 modelling tools, it just works. Crucial to its success has been an active community of tool
 developers and modellers who have supported and used it during
 that time. Equally important has been the provision of sophisticated software libraries (libSBML
@@ -67,8 +53,9 @@ language''\footnote{Quoted from \url{http://software.incf.org/software/nineml} o
 experiments''\footnote{Quoted from \url{http://sed-ml.org} on 15 Mar 2013.} \cite{sedmll1v1}.
 \end{description}
 
-So what is the solution to the problem? \pharmml. An XML based language that 
-will be able to encode models from NONMEM, MONOLIX, BUGS and related tools. 
+\pharmml is supposed to be the solution in pharmacometrics to the problem. 
+An XML based language that will be able to encode models from NONMEM, 
+MONOLIX, BUGS and related tools. 
 We intend this to be a community standard nucleated around the members of the 
 \ddmore consortium. In addition we are developing a software library 
 (libPharmML\footnote{\url{https://sourceforge.net/projects/libpharmml.ddmore.p}}) 
@@ -125,6 +112,7 @@ posted for our work-package is to provide additionally a structure to store any 
 of the numerical results coming from a target tool. This is now an ongoing 
 effort and first draft specification of the so called Standardised Output (SO)
 is already in use within the framework. 
+
 \begin{figure}[ht!]
 \centering
   \includegraphics[width=0.95\linewidth]{pics/workflowPharmMLSO}
@@ -160,6 +148,13 @@ Development of new tools and methods
 \item
 Expanding the community developing/applying pharmacometric models.
 \end{itemize}
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=0.6\linewidth]{pics/PharmML_SO}
+ \caption{PharmML and Standardised Output (SO) relationship.}
+ \label{fig:PharmML_SO}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -207,7 +202,7 @@ face-to-face meetings since the development of \pharmml commenced in August 2011
 \begin{itemize}
 \item A number of \ddmore consortium meetings in Leiden and Hoofddrop, in the years 2012--2014.
 \item The \ddmore technical workshop hosted by Novo Nordisk in Copenhagen, 28--30 Jan 2013.
-\item Two \pml technical workshops hosted by University of Pavia, November 2013 \& 2014 .
+\item Two \pml technical workshops hosted by University of Pavia, November 2013 \& 2014.
 \end{itemize}
 
 \section{How \pharmml was developed}
@@ -216,12 +211,6 @@ face-to-face meetings since the development of \pharmml commenced in August 2011
 but its development has very much been a collaborative process. At the beginning of 
 this project we had a number of development guidelines that we adhered to. We aimed to:
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=0.9\linewidth]{pics/pharmmlDevelopment}
-% \caption{PharmML development process}
-% \label{fig:PharmMLdevelopment}
-%\end{figure}
 
 \begin{itemize}
 \item start with a limited scope and expand the functionality we encode over time.

@@ -55,8 +55,7 @@ follows:
 \item[Function Definition] A function that can be reused throughout
   the \pharmml document.
 \item[Function Argument] The parameters of the function. Their scope
-  extends into the body of the function as you would expect. For
-  example: $f(x) = x + 1$.
+  extends into the body of the function. For example: $f(x) = x + 1$.
 \item[Object] An identifier used to uniquely identify conceptual
   objects within the \pharmml document.
 \item[Block] An identifier that defines a model within the Model
@@ -99,9 +98,9 @@ or XML elements of type OidRefType. Resolution rules are:
 \valrule{S2}{References to symbols and objects must resolved.}
 Dangling references are not permitted.
 \valrule{S3}{The resolved symbol must be compatible with the \pharmml
-  component referencing it.} By this we mean that an \xelem{ArmRef}
+  component referencing it.} This means that an \xelem{ArmRef}
 which should match an arm definition should not point to an Epoch
-definition. Compatibility is defined in the table below.
+definition. Compatibility is defined in the table \ref{tab:symbref-targets}.
 \valrule{S4}{A \xelem{SymbRef} element must only reference symbols
   that are compatible with its parent element.} Compatibility is
 defined by table~\ref{tab:symbref-targets}.  
@@ -200,7 +199,7 @@ Dependents & SimulationStep, EstimationStep \\\bottomrule
 \caption{This table describes the compatibility of object
   references defined using \xelem{OidRef} or from elements of type
   \texttt{OidRefType}. The comparability is with the parent elements
-  that use the above to refer to objects within the \pharmml
+  that use the above elements to refer to objects within the \pharmml
   document. In the table the Reference Parent column describes the
   element which is the immediate parent of the reference element. The
   target column specifies the set of elements that can be the target
@@ -215,16 +214,15 @@ Dependents & SimulationStep, EstimationStep \\\bottomrule
 
 \subsection{Types}
 
-\pharmml has the types in the following table. Some types can be
+\pharmml has the types in the table \ref{tab:type-specification}. Some types can be
 automatically converted (promoted) to another type. The rules are
-described below, with detailed information provides in the following
-tables.
+described below, with detailed information provided in the specified tables.
 
 \begin{valrules}
 \valrule{S6}{\pharmml has a type system and all symbols and elements,
   if they have a type must conform to it.} The types are specified in table~\ref{tab:type-specification}.
 \valrule{S7}{Symbol classes have a type.} The types are specified in table~\ref{tab:symbol-class-types}.
-\valrule{S8}{Elements, which are explicitly typed must be associated with quantities of same type} Quantities
+\valrule{S8}{Elements, that are explicitly typed must be associated with quantities of same type} Quantities
 associated elements in a \pharmml document, must be of the same
 type. The type of the relevant elements are described in
 table~\ref{tab:element-types}.
@@ -377,7 +375,7 @@ or covariate, or with an element in the XML document. An assignment is
 indicated by the \xelem{Assign} element. The following rules apply:
 
 \begin{valrules}
-  \valrule{S10} {No circular assignment for non-derivative symbols} A
+  \valrule{S10} {No circular assignment for non-derivative symbols.} A
   circular assignment occurs if a symbol is initialised with an
   expression that when traced through the definition of each symbol in
   the expression ends back where it started. This generally
@@ -453,7 +451,7 @@ element.}
 \end{table}%
 
 
-\subsection{Array Literal Types  {\color{red} \scshape{changes}}}
+\subsection{Array Literal Types}
 Symbols of array type cannot be defined in PharmML, but there are cases where 
 it is useful to define an array of values, for example when defining a set of dosing times, 
 or a matrix of values. PharmML provides ways to do this. The \xelem{Sequence} 
@@ -495,16 +493,18 @@ case all values in the vector will be of the promoted type.
 \item No overlapping elements or indexes are allowed.
 \item The \xatt{default} and \xatt{length} attributes must be defined if not all matrix elements are specified.
 \end{enumerate}
-
 \end{valrules}
 
 \section{Dataset}
+{\color{red} \scshape{check DS1 \& 2}}
 
 The dataset defines a table of data. It is described in some detail in
 section~\ref{sec:datasets}.
 
 \begin{valrules}
-\valrule{DS1}{All columns must be present in the file.}
+\valrule{DS1}{Only one column with \xatt{columnType="id"} attribute is allowed.}
+\valrule{DS1}{Columns in a dataset file.} All columns must be present in the file and 
+must have a unique \xatt{columnNum} attribute value.
 \valrule{DS2}{Each cell must contain a value that is type compatible
 with the column definition.}
 \valrule{DS3}{Each row must define a cell for each column.}
@@ -516,14 +516,14 @@ Additionally when trial design in defined explicitly in \pml with external datas
 referenced in the \xelem{Population}, \xelem{IndividualDosing} and 
 \xelem{ObjectiveDataSet} elements following rules apply
 \begin{valrules}
-\valrule{DS5}{Only CSV files are allowed} The dataset must be in character-separated value 
+\valrule{DS5}{Only CSV files are allowed.} The dataset must be in character-separated value 
 (CSV) format.
-\valrule{DS6}{Alowed set of delimiters} Delimiters allowed are COMMA, SEMICOLON, SPACE 
+\valrule{DS6}{Allowed set of delimiters.} Delimiters allowed are COMMA, SEMICOLON, SPACE 
 and TAB and cannot be escaped with in the dataset.
-\valrule{DS7}{Character set encoding} The character set needs to be encoded in UTF-8.
-\valrule{DS8}{Use of strings} String values must be encoded within quotes.
-\valrule{DS9}{File headings} Headings are not allowed in the data file.
-\valrule{DS10}{Commenting unused lines} Lines can be commented using \#.
+\valrule{DS7}{Character set encoding.} The character set needs to be encoded in UTF-8.
+\valrule{DS8}{Use of strings.} String values must be encoded within quotes.
+\valrule{DS9}{File headings.} Headings are not allowed in the data file.
+\valrule{DS10}{Commenting unused lines.} Lines can be commented using \#.
 \end{valrules}
 
 
@@ -714,24 +714,24 @@ infinity & Infinity: $\infty$\\\bottomrule
 
 
 \section{ModelDefinition}
-{\color{red} \scshape{changes}}
+{\color{red} \scshape{check M8}}
 
 The following rules relate to the \xelem{ModelDefinition} element and
 its children.
 
 \begin{valrules}
 \valrule{M1}{Only one uninitialised category permitted in a
-  categorical covariates}
+  categorical covariates.}
 If one category is assigned a value in the ModelDefinition then all
-but ast most one category must be assigned a
+but at most one category must be assigned a
 value.
-\valrule{M2}{The sum of the discrete probabilities of categorical covariates must equal 1}
+\valrule{M2}{The sum of the discrete probabilities of categorical covariates must equal 1.}
 If all categories are assigned a probability then they must sum to 1. If a category is 
 unassigned then it has a probability of 1-sum of all the remaining probabilities. 
-\valrule{M4} {All Variability Levels must be used} All variability
+\valrule{M4} {All Variability Levels must be used.} All variability
 levels in the model definition must be used by at least one random
 effect in the model.
-\valrule{M5} {Random effect correlations must be unique} A
+\valrule{M5} {Random effect correlations must be unique.} A
 correlation between identical random effects at the same variability
 level of the model is forbidden.
 \valrule{M6}{The variability levels within a particular type must be
@@ -739,17 +739,18 @@ level of the model is forbidden.
 level and one parent level. Variability levels that belong to models
 with different types (specified by the \xatt{type} attribute) cannot
 be linked.
-\valrule{M6} {Distribution of random effects} When using \xelem{GaussianModel}, 
+\valrule{M6} {Distribution of random effects.} When using \xelem{GaussianModel}, 
 the according random effect must be normally distributed.
-\valrule{M7} {Specification of variances of random effects must the unique} 
+\valrule{M7} {Specification of variances of random effects must the unique.} 
 The correlation structure of random effects can be defined by a variance-covariance 
 matrix within the \xelem{Correlation} element along with the definition of individual
 parameters and their according random effects.
-The variances must then be identical of the corresponding random effects 
+The variances must then be identical of the corresponding random effects.
+\valrule{M8} {Referencing variability model.} References within the 
+\xelem{VariabilityReference} must point to an existing \xelem{VariabilityModel}.
 \end{valrules}
 
 \section{Trial Design}
-{\color{red} \scshape{changes}}
 
 \begin{valrules}
 \valrule{D1}{Demographic values of same type.} The values of a demographic,
@@ -808,7 +809,7 @@ the subject if more then the reference level are defined in a variability model.
 \section{Modelling Step}
 
 \begin{valrules}
-\valrule{L1}{No uninitialised symbols} All symbols such as variables,
+\valrule{L1}{No uninitialised symbols.} All symbols such as variables,
 parameters, and covariates must be initialised. By initialised we mean
 that they must have an initial assignment (including an initial
 condition) or an initial estimate defined.
