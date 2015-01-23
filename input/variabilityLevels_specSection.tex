@@ -1,4 +1,4 @@
-\section{Nested hierarchy as the random variability structure}
+\section{Nested hierarchy as the random variability structure}\index{variability model}\index{variability model!nested hierarchy}
 \label{sec:variabilityModel}
 \label{math:variability}
 
@@ -18,7 +18,7 @@ The former is described in the section \ref{sec:residualErrorModel}, while the l
  \label{fig:subjectLevelVariability}
 \end{figure}
 
-\begin{figure}[htb!]
+\begin{figure}[htb!]\index{variability model!inter-individual variability (IIV)}
 \centering
   \includegraphics[width=120mm]{pics/Subject-occasion-level.pdf}
  \caption{Subject variability level, $(0)$, and within-subject (or occasion) variability level, $(1)$, typically occurring in an experiment, with index $i$ for subjects and $k$ for occasion. Here two subjects only are visualised, each of them having four or three occasions, respectively.}
@@ -44,7 +44,7 @@ Similarly, one can add e.g. 'country' or 'study centre' as new variability level
 If a clinical trial has been conducted in various countries or centres, it is reasonable 
 to ask if the geographic location influences the outcome of the study. 
 
-\subsection{General case}
+\subsection{General case}\index{variability model!inter-individual variability (IIV)}\index{variability model!inter-occasion variability (IOV)}
 As a generalisation of the examples described above, one can derive the 
 \textit{nested hierarchy} (also known as \textit{inclusion hierarchy}) of the variability 
 structure of random effects. It can be visualised as a tree or alternatively using 
@@ -56,9 +56,10 @@ immediate insights needed to understand or to verify the setup of a trial design
 However, in case of a very complex structure, with high number of levels and/or 
 subjects, it can become very large, making the tree difficult to represent in a typical 
 document. It this case showing only partial branches will be more helpful, 
-e.g. Figure \ref{IOVgeneral_tree}. On the contrary, the Venn diagram visualises 
-the levels only, and it might be more suited for the complex cases. Usually, the 
-variability structure consists of only one or two levels, e.g. \textit{individual} or 
+e.g. Figure \ref{IOVgeneral_tree}.\index{variability model!tree structure} 
+On the contrary, the Venn diagram visualises 
+the levels only, and it might be more suited for the complex cases.\index{variability model!Venn diagram} 
+Usually, the variability structure consists of only one or two levels, e.g. \textit{individual} or 
 \{\textit{individual}, \textit{occasion}\}, see examples below. 
 
 
@@ -104,7 +105,7 @@ define meaningful identifiers.
 \end{figure}
 
 
-\paragraph{Example 1}
+\paragraph{Example 1}\index{variability model!examples}
 This example handles the simplest scenario, with only one level of variability: \textit{subject}--level, see Figure \ref{tree_IOV0}. The following symbols are used
 \begin{itemize}
 \item
@@ -129,7 +130,7 @@ with $\eta_i^{(0)} \sim \mathcal{N}\big(0,\Omega^{(0)}\big)$.
  \label{tree_IOV0}
 \end{figure}
 
-\paragraph{Example 2}
+\paragraph{Example 2}\index{variability model!examples}
 In this example there are three levels of variability: \{\textit{centre, subject, occasion}\}, see Figure \ref{tree_IOV1}. Following symbols are used:
 \begin{itemize}
 \item
@@ -171,7 +172,7 @@ with
 \end{figure}
 
 
-\paragraph{Example 3}
+\paragraph{Example 3}\index{variability model!examples}
 In this example there are four levels of variability: \{\textit{country, centre, subject, occasion}\}, see Figure \ref{tree_IOV2}. The symbol list is extended by one for 'country' as follows:
 \begin{itemize}
 \item

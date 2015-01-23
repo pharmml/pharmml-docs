@@ -35,12 +35,9 @@
 \fancyhead[RE]{\itshape\nouppercase{\leftmark}}
 \usepackage{booktabs}
 \usepackage{fixltx2e}
-%\fancyfoot[CE,CO]{\leftmark}
-%\fancyfoot[LE,RO]{\thepage}
-%\pagestyle{fancy}
-%\fancyhf{}
 \usepackage{array,arydshln}
 \usepackage{wrapfig}
+\usepackage{makeidx}
 
 \def\bmp{\begin{minipage}{0.48\linewidth}\small} 
 \def\emp{\end{minipage}\smallskip}
@@ -301,6 +298,8 @@
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 
+\makeindex
+
 \begin{document}
 
 \input{title_2ndPublic.tex} 
@@ -323,31 +322,33 @@ Laboratory, Heidelberg, Germany\\* and Novo Nordisk A/S, Bagsv\ae rd, Denmark.
 
 \include{input/introduction_specSection}
 
-%\include{input/Scope}
-%
-%\include{input/mathDescription_specSection}
-%
-%\include{input/trialDesign_specSection}
-%
-%\include{input/PKMacros_specSection}
-%
-%\include{input/language_overview}
-%
-%\include{input/design_guidelines}
-%
-%\include{input/validation_rules}
-%
-%\include{input/explanatory_examples}
-%
-%\include{input/versionChanges}
-%
-%\include{input/acknowledgements}
-%
-%\appendix
-%\include{input/modelListAndTemplates}
-%
+\include{input/Scope}
+
+\include{input/mathDescription_specSection}
+
+\include{input/trialDesign_specSection}
+
+\include{input/PKMacros_specSection}
+
+\include{input/language_overview}
+
+\include{input/design_guidelines}
+
+\include{input/validation_rules}
+
+\include{input/explanatory_examples}
+
+\include{input/versionChanges}
+
+\include{input/acknowledgements}
+
+\appendix
+\include{input/modelListAndTemplates}
 
 \bibliographystyle{plain}
 \bibliography{pharmml-specification}
+
+\printindex
+
 \end{document}
 

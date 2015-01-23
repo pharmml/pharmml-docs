@@ -2,18 +2,18 @@
 \chapter{What is \pharmml?}
 \label{chap:pharmml-what}
 
-\section{The Problem}
+\section{The Problem}\index{PharmML} 
 
 The principal problem that \pharmml addresses is the reliable exchange of pharmacometric 
 models between software tools. This is illustrated in Figure \ref{fig:platformDDMoRe}, where 
 \pharmml is the exchange medium
-for pharmacometric models for the main modelling and simulation tools in the field. This is
-not an unreasonable goal and has been successfully realised in the field of Systems Biology.
+for pharmacometric models for the main modelling and simulation tools in the field. This goal
+has been successfully realised in the field of systems biology, neurobiology or data mining.
 
-In Systems Biology such problem does not exist. Software
-tools exchange models using the Systems Biology Markup Language (SBML; \url{www.sbml.org})
-\cite{SBML} and many published models can be found in the BioModels Database
-(\url{http://www.ebi.ac.uk/biomodels-main/}) \cite{BioModels2010}. Modellers don't worry about the
+In systems biology for example software tools exchange models using the Systems Biology Markup 
+Language \index{SBML}(SBML; \url{http://www.sbml.org}) \cite{SBML} and many published models can 
+be found in the BioModels Database (\url{http://www.ebi.ac.uk/biomodels-main/}) 
+\cite{BioModels2010}\index{BioModels}. Modellers don't worry about the
 content of an SBML file; they rely on the fact that when they exchange it between the
 modelling tools, it just works. Crucial to its success has been an active community of tool
 developers and modellers who have supported and used it during
@@ -41,7 +41,7 @@ have drawn on in the development of our work to varying degrees, including:
 
 \begin{description}
 \item[CellML] Supports the exchange and storage of computer based mathematical models of 
-biological systems \cite{CELLML}.
+biological systems \cite{CELLML}.\index{CellML} 
 \item[NeuroML] Supports the exchange and description of models ``to describe the biophysics, 
 anatomy and network architecture of neuronal systems at multiple scales''\footnote{Quoted 
 from \url{http://www.neuroml.org} on 15 Mar 2013.} \cite{NeuroML}.
@@ -104,14 +104,14 @@ the \pharmml document, we should adopt it.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{PharmML \& SO -- workflow support and more}
+\section{PharmML \& SO -- workflow support and more}\index{workflow}\index{SO}
 \label{intro:workflows}
 PharmML covers the input for a pharmacometric task, i.e. the model, trail design, 
 according task description and experimental data. Another requirements 
 posted for our work-package is to provide additionally a structure to store any type
 of the numerical results coming from a target tool. This is now an ongoing 
 effort and first draft specification of the so called Standardised Output (SO)
-is already in use within the framework. 
+is already in use within the framework.
 
 \begin{figure}[ht!]
 \centering
@@ -158,7 +158,7 @@ Expanding the community developing/applying pharmacometric models.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Creating PharmML coded models}
+\section{Creating PharmML coded models}\index{PharmML!editors} 
 \label{intro:creatingPharmML}
 
 As indicated in Figure \ref{fig:platformDDMoRe} once a model is encoded 
@@ -177,7 +177,7 @@ to edit complete PharmML models.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{The \ddmore Consortium}
+\section{The \ddmore Consortium}\index{DDMoRe} 
 
 %Taken from the DDMoRe website need more work.
 
@@ -283,7 +283,7 @@ ways to do the same thing. A successful standard is no different and with succes
 expect \pharmml to evolve and change further as it is subject to the same influences. To manage this 
 process we have adopted the following strategy to record versions of the \pharmml specification.
 
-\paragraph{Version number}
+\paragraph{Version number}\index{PharmML!release version} 
 \label{intro:versioning}
 
 To record changes in the specification we will use the following three level numbering system, of the form
@@ -297,7 +297,7 @@ $x.y.z$. The levels correspond to the following types of revision:
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Feedback}
+\section{Feedback}\index{PharmML!related websites} 
 
 User and developer feedback is important. Typically,
 this feedback will be in the form of a specific issue: either to report defects identified in

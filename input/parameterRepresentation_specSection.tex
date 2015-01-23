@@ -6,20 +6,20 @@
 The following section outlines the parameter model. We consider three types of parameter model:
 \begin{itemize}
 \item
-Type 1. Equation type
+Type 1. Implicit model \index{parameter model!implicit model}
 \begin{align*}
 \psi_i = H(\beta, C_i, \eta_i)
 \end{align*}
 This is the most general form of a parameter model with no constraints on the function $H$.
 It is an implicit equation as it doesn't allow an easy interpretation of its elements in contrast to the two following forms.
 \item
-Type 2. Gaussian model with general covariate model
+Type 2. Gaussian model with general covariate model \index{parameter model!Gaussian model!non-linear covariate model}
 \begin{align*}
 h(\psi_i) = H(\beta, C_i) + \eta_i
 \end{align*}
 Here the parameter is normally distributed up to a transformation $h$ with a general covariate model and additive random effects.
 \item
-Type 3. Gaussian model with linear covariate model
+Type 3. Gaussian model with linear covariate model \index{parameter model!Gaussian model!linear covariate model}
 \begin{align*}
 h(\psi_i) = h(\psi_{pop}) + \beta \, C_i + \eta_i
 \end{align*}
@@ -43,7 +43,7 @@ H -- arbitrary function
 h -- function which transforms the model on both sides, e.g. log, logit, probit.
 \end{itemize}
 
-\subsection{Discussion and examples of Type 1 models}
+\subsection{Discussion and examples of Type 1 models}\index{parameter model!implicit model}
 \label{subsec:paramModelType1}
 This model type is the most flexible one, able to accommodate
 \begin{itemize}
@@ -132,7 +132,7 @@ This model, although fully flexible, is difficult to break into meaningful sub-c
 %& CL_i = CL_{met} + CL_{ren}\; \eta_{3i,ren}.
 %\end{align*}
 
-\subsection{Discussion and examples of Type 2 models}
+\subsection{Discussion and examples of Type 2 models}\index{parameter model!Gaussian model!non-linear covariate model}
 \label{subsec:paramModelType2}
 Here, we consider normally distributed parameters, up to a transformation $h$, i.e. normal, log-normal or logit-normally distributed with identity, the natural logarithm or the logit as transformation, respectively.
 
@@ -169,7 +169,7 @@ After taking the logarithm of both sides we get
 \log(V_i) = \log\Big(\theta_3 + \frac{\theta_1 \times WT_i}{\theta_2 + WT_i}\Big) + \eta_{V,i}.
 \end{align*}
 
-\subsection{Discussion and examples of Type 3 models}
+\subsection{Discussion and examples of Type 3 models}\index{parameter model!Gaussian model!linear covariate model}
 \label{subsec:paramModelType3}
 Here, we again consider normally distributed parameters, up to a transformation $h$, i.e. normal, log-normal or logit-normally distributed with identity, the natural logarithm or the logit as transformation, respectively.
 
@@ -260,7 +260,7 @@ a random effect below the subject level for \textit{inter-occasion within indivi
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Correlation of random effects}
+\subsection{Correlation of random effects}\index{random effects!correlation structure}
 \label{subsec:correlationModel}\label{maths:param correlation}
 Correlation of random effects means that the transformed parameters. e.g. $\log(V_i)$ and $\log(CL_i)$ are correlated as well (although the relationship is not straightforward; see also the discussion below on correlation and covariates). There are two alternative ways to define the correlation, using either
 \begin{itemize}
@@ -271,7 +271,7 @@ a variance-covariance matrix, $\Omega$.
 \end{itemize}
 
 
-\paragraph{Correlation matrix}
+\paragraph{Correlation matrix}\index{random effects!correlation matrix}
 In this case it is sufficient to define the non-zero correlation coefficients, e.g. $\rho_{V,CL}$. All other off-diagonal correlation coefficients will be assumed to be equal to 0. For a simple one-compartment oral PK model with parameters $ka$, $V$, $CL$, and a correlation between $CL$ and $V$ the full correlation matrix reads as follows
 \[
 R =
@@ -282,7 +282,7 @@ R =
  \end{pmatrix}
 \]
 
-\paragraph{Variance-covariance matrix}
+\paragraph{Variance-covariance matrix}\index{random effects!variance-covariance matrix}
 \label{maths:covariance-mat-derivation}
 Alternatively, the variance-covariance matrix for the model
 \[
@@ -306,7 +306,7 @@ is providing the necessary information due to the reletionship
 in which case it is enough to define $\Omega$ to cover the full correlation structure.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Covariate model}
+\subsection{Covariate model}\index{covariate model}
 \label{maths:covariate_model}
 
 The covariate model accounts for systematic or known subject
@@ -333,7 +333,7 @@ each individual. In the case of a simulation (see example
 \ref{subsec:exp2_TaskDescription}) its probability distribution has to
 be estimated. The information we have to provide is summarised in the
 following
-\paragraph{Continuous covariate model}
+\paragraph{Continuous covariate model}\index{covariate model!continuous covariates}
 \begin{align*}
 Covariates & =  Weight  \\
 CovariatesType & = Continuous  \\
@@ -345,7 +345,7 @@ CovariatesTransf & =\log(Weight/70)
 Analog information has to be provided in the case of a categorical covariate, 
 such as \textit{Sex} and is summarised for a simple example in the following
 
-\paragraph{Categorial covariate model}
+\paragraph{Categorial covariate model}\index{covariate model!categorical covariates}
 \begin{align*}
 Covariates &= Sex   \\
 CovariatesType &= Categorical  \\

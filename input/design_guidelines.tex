@@ -82,15 +82,20 @@ associated with \pharmml.
 
 There are a number of possible strategies for defining
 namespaces\footnote{\url{http://www.ibm.com/developerworks/library/x-namcar/index.html}}
-and no definitive best practise. However, we have followed the W3C
-conventions\footnote{\url{http://www.w3.org/Provider/Style/URI}} and
-used the following form:
-\begin{verbatim}
-http://pharmml.org/Year/Month/Resource
-\end{verbatim}
-Here the year and month define when the URL was created and the
+and no definitive best practise. Following the practice used in SBML or PMML, 
+and taking into account that we need three meaningful namespaces for 
+PharmML, SO and metadata, we use the following form:
+\begin{itemize}
+\item
+for PharmML -- \url{http://pharmml.org/pharmml/x.y/Resource}
+\item
+for SO -- \url{http://pharmml.org/so/x.y/Resource}
+\item
+for metadata -- \url{http://pharmml.org/meta/x.y/Resource}
+\end{itemize}
+with \emph{x} for major version and \emph{y} for minor version.
 \emph{Resource} provides a short, but descriptive name of the purpose
-of the schema.
+of the schema. See also Table \ref{tab:NamespaceURI}.
 
 \subsection{Elements}
 
@@ -101,9 +106,8 @@ to the XML Schema declaration: \verb|elementFormDefault="qualified"|.
 
 Default attributes effectively change the structure of the DOM from
 that described by the XML itself. This can cause problems with
-validation and result in difficult to track
-errors\footnote{ref}. For these reasons the use of default attribute
-values is forbidden.
+validation and result in difficult to track errors. 
+For these reasons the use of default attribute values is forbidden.
 
 Attributes should never be qualified by a
 namespace\footnote{\url{http://www.xml.com/pub/a/2002/11/20/schemas.html?page=3}}. This
@@ -170,6 +174,43 @@ makes clear how we anticipate the specification document to change,
 what we also need to accommodate are changes to the XML Schema
 definition that such change implies.
 
+\begin{table}[t!]
+\begin{center}
+\footnotesize
+\begin{tabular}{lll}\toprule
+File Name & Namespace URI & Description\\\midrule
+\multicolumn{3}{c}{\pml}  \\[.1ex]
+\hline
+pharmml.xsd & \url{http://www.pharmml.org/pharmml/0.6/PharmML} & The overall \pharmml definition that \\
+		&			& includes all the other components.\\
+modelDefinition.xsd & \url{http://www.pharmml.org/pharmml/0.6/ModelDefinition} &
+Defines the model definition section.\\
+trialDesign.xsd & \url{http://www.pharmml.org/pharmml/0.6/TrialDesign} & Defines
+the trial design section.\\
+modellingSteps.xsd & \url{http://www.pharmml.org/pharmml/0.6/ModellingSteps} &
+Defines the modelling steps section.\\
+commonTypes.xsd & \url{http://www.pharmml.org/pharmml/0.6/CommonTypes} & Defines the type definitions and structures \\
+		&			& common to the above schema definitions.\\
+dataset.xsd & \url{http://www.pharmml.org/pharmml/0.6/Dataset} & Defined the dataset and related structures \\
+		&			& that is used in the trial design and  \\
+		&			& modelling steps to represent tabular data.\\
+maths.xsd & \url{http://www.pharmml.org/pharmml/0.6/Maths} & Defines the representation of mathematical \\
+		&			& expressions.\\
+UncertML30.xsd & \url{http://www.uncertml.org/3.0} & Defines the probability distributions. \\
+\midrule
+\multicolumn{3}{c}{SO}  \\[.1ex]
+\midrule
+standardisedOutput.xsd	& \url{http://www.pharmml.org/so/0.1/StandardisedOutput} 	& The definition of the Standardised Output \\
+		&												& format. \\
+%\midrule
+%\multicolumn{3}{c}{Metadata}  \\[.1ex]
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Namespace URI overview for PharmML and SO.}
+\label{tab:NamespaceURI}
+\end{table}%
+
 Unfortunately there is no definitive solution for versioning XML
 Schema definitions, but we are following the conventions described
 elsewhere\footnote{\url{http://www.xfront.com/Versioning.pdf}}. In particular we
@@ -204,10 +245,10 @@ definition, which includes all the other components. The other schema
 definitions should not be used independently to validate a \pharmml
 document.
 
-Note also that the namespace URIs have changed compared to the first public specification.
-Instead of \url{.../Year/Month/...} we now use the more informative pattern 
-\url{.../pharmml/majorVersion.minorVersion/...}, e.g. \url{.../0.6/...}. Patch versions will have 
-not be assigned a new namespace URI.
+%Note also that the namespace URIs have changed compared to the first public specification.
+%Instead of \url{.../Year/Month/...} we now use the more informative pattern 
+%\url{.../pharmml/majorVersion.minorVersion/...}, e.g. \url{.../0.6/...}. Patch versions will have 
+%not be assigned a new namespace URI.
 
 %\begin{center}
 %\footnotesize
@@ -234,34 +275,6 @@ not be assigned a new namespace URI.
 %%\caption{Namespace URI overview.}
 %\end{tabular}
 %\end{center}
-
-\begin{table}[t!]
-\begin{center}
-\footnotesize
-\begin{tabular}{lll}\toprule
-File Name & Namespace URI & Description\\\midrule
-pharmml.xsd & \url{http://www.pharmml.org/pharmml/0.6/PharmML} & The overall \pharmml definition that \\
-		&			& includes all the other components.\\
-modelDefinition.xsd & \url{http://www.pharmml.org/pharmml/0.6/ModelDefinition} &
-Defines the model definition section.\\
-trialDesign.xsd & \url{http://www.pharmml.org/pharmml/0.6/TrialDesign} & Defines
-the trial design section.\\
-modellingSteps.xsd & \url{http://www.pharmml.org/pharmml/0.6/ModellingSteps} &
-Defines the modelling steps section.\\
-commonTypes.xsd & \url{http://www.pharmml.org/pharmml/0.6/CommonTypes} & Defines the type definitions and structures \\
-		&			& common to the above schema definitions.\\
-dataset.xsd & \url{http://www.pharmml.org/pharmml/0.6/Dataset} & Defined the dataset and related structures \\
-		&			& that is used in the trial design and modelling \\
-		&			& steps to represent tabular data.\\
-maths.xsd & \url{http://www.pharmml.org/pharmml/0.6/Maths} & Defines the representation of mathematical \\
-		&			& expressions.\\
-UncertML30.xsd & \url{http://www.uncertml.org/3.0} & Defines the probability distributions provided \\
-		& 			& by \pharmml.\\\bottomrule\\
-\end{tabular}
-\end{center}
-\caption{Namespace URI overview.}
-\label{tab:NamespaceURI}
-\end{table}%
 
 
 %\clearpage

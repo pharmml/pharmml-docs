@@ -398,13 +398,13 @@ Elements map the symbol or model to a column in the \xelem{DataSet}
 using the \xelem{ColumnRef} element. This gives us the following rules:
 
 \begin{valrules}
-  \valrule{S13}{A column reference must always to resolve to a
+  \valrule{S13}{A column reference must always resolve to a
     column in its associated dataset.} The associated dataset is clear
   from the content of reference in the XML Schema structure. To
   resolve correctly the value \xatt{columnIdRef} attribute must be identical
   to that of the \xatt{columnId} attribute in Column definition of
   dataset.
-\valrule{S14}{A mapping between a symbol or object to a column in a
+\valrule{S14}{A mapping between a symbol or object and a column in a
   dataset must be type consistent.} By this we mean that the type of
 the object or element (defined in the table~\ref{tab:data-set-mapping}) must be the same as
 the type specified in the column definition of the dataset.
@@ -753,7 +753,7 @@ The variances must then be identical of the corresponding random effects.
 \section{Trial Design}
 
 \begin{valrules}
-\valrule{D1}{Demographic values of same type.} The values of a demographic,
+\valrule{D1}{Demographic values of must all have the same type.} The values of a demographic,
 specified by the \xelem{Demogra\-phic} element, must all have the same
 type.
 \valrule{D2}{Dosing cannot start before the model is initialised.} This

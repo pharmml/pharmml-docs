@@ -1,4 +1,4 @@
-\section{Structural model}
+\section{Structural model}\index{structural model}
 \label{sec:structuralModel}
 This section deals with the first term of the right hand side in eq.\ref{eq:nlmeModel}
 \begin{align*}
@@ -6,7 +6,7 @@ This section deals with the first term of the right hand side in eq.\ref{eq:nlme
 \end{align*}
 i.e. the model prediction.
 
-It can be formulated as a simple algebraic equation (e.g. Hill equation) or complex physiology-based PK model implemented as system of ODEs. When defined in such framework, this deterministic model for an individual will later be embedded in a statistical model. Other approaches, such as SDE-based structural models are not supported in this specification.
+It can be formulated as a simple algebraic equation (e.g. Hill equation) or complex physiology-based PK model implemented as system of ODEs. When defined in such framework, this deterministic model for an individual will later be embedded in a statistical model. Other approaches, such as SDE-based structural models are not supported in this specification.\index{structural model!ordinary differential equations (ODE)}
 
 %\begin{figure}[htbp]
 %\begin{center}
@@ -40,13 +40,17 @@ k&=CL/V  \\
 Cc &= Ac/V  
 \end{align*}
 
-\paragraph{Alternative formulation}
+\paragraph{Alternative formulation 1}\index{structural model!analytic solution}
 The PK model can, in this case, be formulated as an algebraic equation because an analytic solution exists, i.e.
 \begin{align*}
 C(t) = \frac{D}{V}  \frac{ka}{ka - k} \Big(e^{-k(t-t_D)} - e^{-ka(t-t_D)} \Big) 
 \end{align*}
 
-\subsection{Delayed Differential Equations (DDE)} % {\color{red} \scshape{***** NEW *****}}
+\paragraph{Alternative formulation 2}\index{structural model!PK macros}
+PK macros offer an equation-free option to implement PK compartmental models.
+For details see chapter\ref{sec:PKMacros}.
+
+\subsection{Delayed Differential Equations (DDE)}\index{structural model!delayed differential equations (DDE)}
 Additionally to the ODEs and algebraic equations, version \currpml of PharmML offers
 the possibility to use Delayed Differential Equations. Similarly to initial conditions required
 for an ODE, the so-called \emph{history} has to be defined. If a model is defined for times

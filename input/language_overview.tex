@@ -362,7 +362,7 @@ because the other is yet to be defined. Such cycles are forbidden in
 (See section \ref{subsec:AssinmentRules} with the description of related
 validation rules, which are already or are supposed to be implemented 
 and handled by 
-liPharmML\footnote{\url{https://sourceforge.net/projects/libpharmml.ddmore.p}}, 
+libPharmML\footnote{\url{https://sourceforge.net/projects/libpharmml.ddmore.p}}, 
 an API under development as part of the DDMoRe project.)
 \lstset{language=XML}
 \begin{lstlisting}
@@ -633,7 +633,8 @@ estimation task, \xelem{NONMEMdataSetReference}, see Table \ref{tab:withAndWitho
 \label{sec:datasets}
 
 The dataset is a key concept in PharmML and is used to describe the data 
-that describes the trial design and the observations used for estimation. 
+of the relevant trial design, i.e. the observations, covariates and dosing
+records. 
 The data is tabular and the dataset has therefore been designed to 
 represent this type of information and all data is explicitly typed.
 
@@ -689,12 +690,8 @@ column must be numbered in consecutive order (i.e.\xspace 1,2,3,4\ldots etc.).
 \end{itemize}
 Next the content of the dataset is held within the \xelem{Table} element and 
 this consists of one or more \xelem{Row} elements. Each row must contain 
-an entry for each column defined. NULL values are indicated by the \xelem{Null/}
-element.
-
-This looks like a table in a relational database and indeed this
-approach is based on the concept of a relation in relational
-theory. Therefore the ordering of rows is not significant. 
+an entry for each column defined. This approach is based on the concept of 
+a relation in relational theory. Therefore the ordering of rows is not significant. 
 
 \begin{table}[ht!]
 \begin{center}
@@ -751,18 +748,16 @@ As shown in the following listing, the external data set can be specified using 
 new \xelem{ImportData} element, instead of \xelem{Table}, by providing the file 
 path relative to the \pml file. Optional parameters such as file format and 
 delimiter can also be provided. The external file must be a valid input file for the target tool.
-
 %\emph{CSV}, with four delimiters: \xatt{COMMA}, \xatt{SEMICOLON}, \xatt{SPACE} 
 %and \xatt{TAB}. 
-
 The template for this reads: 
 \lstset{language=XML}
 \begin{lstlisting}
-    <ds:ImportData oid="id1">
+    <ds:ExternalFile oid="id1">
         <ds:path>FILE_PATH</ds:path>
         <ds:format>FORMAT</ds:format>
         <ds:delimiter>DELIMITER_TYPE</ds:delimiter>
-    </ds:ImportData>
+    </ds:ExternalFile>
     \end{lstlisting}
 And listing below shows a simple example how this works. As before the \xelem{Definition}
 defines the table content and a reference to the according file and its type is provided.
@@ -1191,7 +1186,7 @@ The latter option, allowing to avoid unnecessary repetitions, requires the
 \xatt{default} attribute to define all remaining entires and \xatt{length} attribute 
 to infer the vector length.
 
-\begin{table}[ht!]
+\begin{table}[hb!]
 \setlength{\tabcolsep}{5pt}
 \begin{center}
 \begin{tabular}{ll}
@@ -1249,7 +1244,8 @@ to infer the vector length.
 The vector is either encoded explicitly with \xelem{VectorElements} using a mixture 
 of numbers and symbol references (left) or using the \xelem{VectorCell} elements (right).
 In the latter case the use of attributes  \xatt{default} and \xatt{length} is required,
-otherwise the dimension of the vector could not be estimated.}
+otherwise the dimension of the vector could not be estimated. The index for vector
+or matrix elements start with 1.}
 \label{tab:withAndWithoutNM}
 \end{center}
 \end{table}

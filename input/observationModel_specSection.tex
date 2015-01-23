@@ -1,4 +1,4 @@
-\section{Observation model}
+\section{Observation model}\index{observation model}
 \label{sec:observationModel}
 Figure \ref{fig:observModel} shows the classification of continuous and discrete data models in \pml \currpml. 
 The defining characteristic of data is their distribution which will be described first
@@ -35,13 +35,13 @@ is described by a discrete distribution (e.g. binomial for binary data).}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Contiuous data}
+\subsection{Contiuous data}\index{observation model!continuous data}
 \label{subsec:ContinuesData}
 
 An essential component of the continuous observation model is the residual error model.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Residual error model}
+\subsubsection{Residual error model}\index{observation model!continuous data!residual error}\index{residual error model}
 \label{sec:residualErrorModel}
 \label{maths:error_model}
 \label{maths:combined-err-model}
@@ -87,8 +87,8 @@ when variability, as discussed in section \ref{sec:variabilityModel}, is applied
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Incorporating variability on the residual error model parameters}
-\label{subsec:varModelResidualError}
+\subsubsection{Incorporating variability on the residual error model parameters}\index{residual error model!IIV on model parameters (ETA-on-EPS)}
+\label{subsec:varModelResidualError}\index{variability model!examples}
 In analogy to the nested hierarchical structure for the variability on the individual parameters,
 variability on residual error model parameters can be defined using the same structure.
 By doing so, no new structure is necessary to account for any inter-individual and/or inter-occasion variability of the residual error model parameters.
@@ -185,7 +185,7 @@ structure allows for implementation of virtually any user-defined model. See
 section ref:XYZ for more examples and PharmML implementation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Discrete data }
+\subsection{Discrete data }\index{observation model!discrete data}
 \label{subsec:DiscreteData}
 
 The central piece of information to be provided when modeling discrete data is 
@@ -199,7 +199,7 @@ that we tried to stay generic rather then to provide the support for
 encoding of models in a particular tool. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Count data}
+\subsubsection{Count data}\index{observation model!discrete data!count data}
 \label{subsec:mmCountData}
 An example for count data is the number of events of certain types, such as seizures, heart attacks and 
 is typically modelled by the Poisson distribution. In the case of so called \textit{over-dispersed} 
@@ -361,7 +361,7 @@ is featured in UncertML as well but is using a different parametrisation and the
 for our purposes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Categorical data}
+\subsubsection{Categorical data}\index{observation model!discrete data!categorical data}
 \label{subsec:mmCategoricalData}
 The standard count data models, as presented in the previous section, are simpler to categorise 
 and implement then the categorical ones. This is because for the former the definition of a probability 
@@ -497,7 +497,7 @@ Complex logit functions (based on \cite{Girard:1998fk})
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Time-to-event data}
+\subsubsection{Time-to-event data}\index{observation model!discrete data!time-to-event data}
 In this case the observation is time until an event occurs, which can be unique or repeated.
 The model is fully described by defining the the survival or hazard function. Following minimal information 
 needs to provided to ensure lossless encoding of this model type.
@@ -526,7 +526,7 @@ Maximum number of possible events.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Markovian dependence}
+\subsubsection{Markovian dependence}\index{observation model!discrete data!Markovian dependence}
 \label{subsec:markovian}
 
 %\begin{figure}[htb!]
