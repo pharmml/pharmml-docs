@@ -8,28 +8,29 @@
 \section{Example \theexamples: Joint PKPD model with count data}
 \label{sec:eg6}
 The following example features a new aspect of the \pml, the support of discrete 
-data model, here one using the Poisson distribution to describe count data\footnote{The 
-example is encoded in \xatt{example6\_NONMEM.xml} with design sourced 
-from a NONMEM datafile.}, based on the MLXTRAN tutorial, 
-\cite{Monolix4.3Tutorial:2014}.
+data model\footnote{The discrete data models are coming in a large variety, which 
+would be worth a detailed discussion. This and the next examples can cover, for 
+the sake of space, only the very basic cases. More examples, encoded completely 
+in \pml, can be found on our webpage \url{http://pharmml.org}.}, here one using 
+the Poisson distribution to describe count data\footnote{The example is encoded 
+in \xatt{example6\_NONMEM.xml} with design sourced from a NONMEM datafile.}, 
+based on the MLXTRAN tutorial, \cite{Monolix4.3Tutorial:2014}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Description}
 \label{subsec:exp6_intro} 
-The essential bit of information for this task is the probability distribution of count 
-data Y, which can be defined in either un-transformed, P(Y=k), or transformed, 
-log(P(Y=k)), form. 
-We assume the basic Poisson model defined in eq. (\ref{eq:poissonModel}). 
-As in example \ref{sec:eg1}, the underlying PK model is 1-compartmental oral model. 
-Then we estimate the log-likelihood that the outcome is k using the non-homogeneous 
-Poisson model 
+The essential bit of information for this task is the probability distribution, the probability 
+mass function (PMF), of count data Y, which can be defined in either un-transformed, 
+P(Y=k), or transformed, log(P(Y=k)), form. As in example \ref{sec:eg1}, the underlying 
+PK model is 1-compartmental oral model and will be omitted here. We assume the basic 
+Poisson model which reads
 \begin{eqnarray}
 && P\big(Y_{\iijj}=k | \Cc_{\iijj}, \psi_i\big) =  \frac{e^{-\lambda_{\iijj}} \lambda^k_{\iijj}}{k!} \label{eq:poissonModel}
 \end{eqnarray}
-with concentration dependent mean $\lambda$, defined in eq.\ref{eq:lambdasurface},
+with concentration dependent mean $\lambda$, defined as
 \begin{eqnarray}
 && \lambda_{\iijj} = \lambda_0 \Big(1 - \frac{\Cc_{\iijj}}{IC_{50} + \Cc_{\iijj}}\Big)  \label{eq:lambdasurface}
 \end{eqnarray}
-also called Poisson intensity. Here, $\lambda$, depends on the parameters 
+also called \emph{Poisson intensity}. Here, $\lambda$, depends on the parameters 
 $\lambda_0$ and $IC_{50}$ which are sampled from log-normal distribution. 
 $\lambda_0$, stands here for the baseline seizure count prior to any drug. 
 The value of $\lambda$ is reduced by the concentration in the central 
@@ -70,7 +71,7 @@ IC_{50} &\sim& \mbox{logNormal}(\pop_{IC_{50}}, \omega_{IC_{50}}); \quad  \pop_{
 
 
 \subsubsection{Observation model}
-We apply a residual error model to the output variables \var{Cc} and \var{E}
+We apply a residual error model to the output variables \var{Cc} and \var{Y}
 from the PK and PD models respectively.
 
 %\begin{table*}[h!]
@@ -97,16 +98,18 @@ Link function -- $\log$
 
 \subsection{Observation model}
 While the continuous observation model and its features as applied for example 
-for the concentration has been described in very detail in the previous examples,
+for the concentration have been described in very detail in the previous examples,
 the error distribution of the discrete effect given by eqs.(\ref{eq:poissonModel}) 
 and (\ref{eq:lambdasurface}) will be described in the following for the first time.
 
 First we have to indicate the type of the observation model using the elements 
-\xelem{Discrete} and specifically for this example \xelem{CountData}. The next 
-mandatory element is \xelem{CountVariable} required for the mapping between 
-the model and the related date set, see Table \ref{tab:example6_dataSet}. 
-Then the characteristic parameter for the Poisson distribution is implemented, the 
-\emph{Poisson intensity}, $\lambda$, as function of the drug concentration, $Cc$.
+\xelem{Discrete} and specifically for this example the \xelem{CountData}. The next 
+mandatory elements are the count index, \emph{k}, (required only when the PMF is 
+explicitly specified, see below) and the \xelem{CountVariable} which will be used later
+to establish the link between the model and the related date set, see Table 
+\ref{tab:example6_dataSet}.
+Then the characteristic parameter for the Poisson distribution is implemented, 
+the \emph{Poisson intensity}, $\lambda$, as function of the drug concentration, $Cc$.
 
 \lstset{language=XML}
 \begin{lstlisting}
@@ -138,14 +141,17 @@ Then the characteristic parameter for the Poisson distribution is implemented, t
                     </IntensityParameter>
                     <!-- see next listing for the continuation of the observation model -->
 \end{lstlisting}
-Now the Poisson probability mass function (PMF) needs to be defined, which can be done
-in various ways, either
+Now the Poisson probability mass function (PMF) can be defined, but here 
+in the transformed format 
+\begin{align}
+\log(P\big(Y_{\iijj} & =k | \Cc_{\iijj}, \psi_i\big)) =  -\lambda_{\iijj} +k\times \lambda_{\iijj} - \log(k!) \nonumber
+\end{align}
+which can be done in various ways, either
 \begin{itemize}
 \item
 using the UncertML standard as in the following snippet
 \lstset{language=XML}
 \begin{lstlisting}
-                    <!-- P(Y=k) = exp(-lambda) * lambda^k / k! using UncertML -->
                     <PMF linkFunction="log">
                         <PoissonDistribution xmlns="http://www.uncertml.org/3.0" 
                             definition="http://www.uncertml.org/3.0">
@@ -159,16 +165,10 @@ using the UncertML standard as in the following snippet
         </ObservationModel>
 \end{lstlisting}
 \item
-by encoding explicitly the PMF in the transformed format 
-\begin{align}
-\log(P\big(Y_{\iijj} & =k | \Cc_{\iijj}, \psi_i\big)) =  -\lambda_{\iijj} +k\times \lambda_{\iijj} - \log(k!) \nonumber
-\end{align}
-
-and specifying the
+by encoding explicitly the PMF in the transformed format and specifying the
 the applied link function, here the logarithm, as the following snippet shows
 \lstset{language=XML}
 \begin{lstlisting}
-                    <!-- log(P(Y=k)) = -Lambda + k*log(Lambda) - log(k!) -->
                     <PMF linkFunction="log">
                         <math:LogicBinop op="eq">
                             <ct:SymbRef symbIdRef="Y"/>
@@ -202,9 +202,8 @@ the applied link function, here the logarithm, as the following snippet shows
 \end{itemize}
 
 Note, that although the UncertML driven solution is very simple and straightforward
-to implement, it is also limited due the reasons explained in Section 
-\ref{subsec:DiscreteData}. In short, for count data models, only Poisson model is 
-available for now in the  UncertML standard.
+to implement, it is also limited to only this case, see also Section \ref{subsec:DiscreteData}. 
+In short, for count data models, only the basic Poisson model is available in the UncertML standard.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -239,10 +238,6 @@ DVID =1 is used for a continuous response and DVID =2 for count data.}
 \label{tab:example6_dataSet}
 \end{table}%
 
-\marginpar{CORRECT MAPPING DESCRIPTION}
-
-
-
 \lstset{language=XML}
 \begin{lstlisting}
         <mstep:ExternalDataSet toolName="NONMEM" oid="NMoid">
@@ -261,7 +256,7 @@ DVID =1 is used for a continuous response and DVID =2 for count data.}
                         <ct:SymbRef blkIdRef="om1" symbIdRef="Y"/>
                         <math:Condition>
                             <math:LogicBinop op="eq">
-                                <ds:ColumnRef columnIdRef="EVID"/>
+                                <ds:ColumnRef columnIdRef="DVID"/>
                                 <ct:Real>1</ct:Real>
                             </math:LogicBinop>
                         </math:Condition>
@@ -270,7 +265,7 @@ DVID =1 is used for a continuous response and DVID =2 for count data.}
                         <ct:SymbRef blkIdRef="om2" symbIdRef="C_obs"/>
                         <math:Condition>
                             <math:LogicBinop op="eq">
-                                <ds:ColumnRef columnIdRef="EVID"/>
+                                <ds:ColumnRef columnIdRef="DVID"/>
                                 <ct:Real>2</ct:Real>
                             </math:LogicBinop>
                         </math:Condition>
@@ -292,7 +287,18 @@ DVID =1 is used for a continuous response and DVID =2 for count data.}
         </mstep:ExternalDataSet>
 \end{lstlisting}
 
-
+Mapping of dosing related data has been described previously on
+multiple occasions and will not be discussed here. The conditional mapping required 
+in the case when multiple observations have to be mapped using the \xelem{mstep:MultipleDVMapping}
+has been described in example 1, see section \ref{sec:eg1-NONMEMdataset}. 
+What is new however is the mapping target when dealing with count data.
+The count variable, \emph{Y}, as defined in the very beginning of the \xelem{CountData} 
+in the observation model \xatt{om1} as the snippet shows
+\lstset{language=XML}
+\begin{lstlisting}
+		<CountVariable symbId="Y"/>
+\end{lstlisting}
+is the target for this mapping and is conditional on the value of the column \emph{DVID}.
 
 
 
