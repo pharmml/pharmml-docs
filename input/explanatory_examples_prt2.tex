@@ -861,6 +861,14 @@ we would like briefly to discuss this example due to its role as a use case. It 
 illustrates a new feature of the language, the fact that we can encode explicitly 
 using patient specific administration scenarios within the \xelem{TrialDesign} section.
 
+\begin{figure}[htbp]
+\centering
+\begin{tabular}{cc}
+\includegraphics[width=.5\textwidth]{pics/example5_timeCourse} 
+\end{tabular}
+\caption{Plots of the PK (top) and tumour growth (bottom) of one subject.}
+\label{fig:oneSubjectPKandTumourGrowth}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Trial design}
@@ -874,8 +882,9 @@ consisting of one arm and one epoch, meaning there is one treatment type 'IV' fo
 As explained in section \ref{sec:CTS} the design element \xelem{Cell} comprises the 
 essential elements specifying the information about the arm, epoch and segment/activities. 
 \xelem{Segment} contains treatment definition, here an IV bolus administration, 
-defined in the \xelem{Activity} element. Figure \ref{fig:cellHierarchy_Ribba} shows 
-the general relationship of these elements (left) and how it applies to the current example (right).
+defined in the \xelem{Activity} element. 
+%Figure \ref{fig:cellHierarchy_Ribba} shows 
+%the general relationship of these elements (left) and how it applies to the current example (right).
 See the following listing 
 %\inputxml{Ribba_structure.xml}
 \lstset{language=XML}
@@ -913,13 +922,13 @@ for the PharmML implementation.
 \label{fig:1Arm1Epoch_RibbaDesign}
 \end{figure}
 
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=0.7\linewidth]{pics/cellHierarchy_Ribba.pdf}
-\caption{General cell hierarchy (left); The root of the trial design structure hierarchy is the 'Cell' which can contain one 'Segment',
-one 'Epoch' and multiple 'Arms'. The 'Segment' element can have multiple child elements, the 'Activities', e.g. treatments or a washout. (right) An example of how it is applied in \cite{Ribba:2012uq}.}
-\label{fig:cellHierarchy_Ribba}
-\end{figure}
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=0.7\linewidth]{pics/cellHierarchy_Ribba.pdf}
+%\caption{General cell hierarchy (left); The root of the trial design structure hierarchy is the 'Cell' which can contain one 'Segment',
+%one 'Epoch' and multiple 'Arms'. The 'Segment' element can have multiple child elements, the 'Activities', e.g. treatments or a washout. (right) An example of how it is applied in \cite{Ribba:2012uq}.}
+%\label{fig:cellHierarchy_Ribba}
+%\end{figure}
 
 \begin{table}[htdp!]
 \begin{center}
