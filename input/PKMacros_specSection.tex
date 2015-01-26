@@ -60,19 +60,19 @@ PK model can be formulated.
  \label{fig:flowDiagram}
 \end{figure}
 In this case four macros, with one or more arguments, are used to encode a basic \emph{oral 1-compartment 
-model with linear elimination} consisting of rolling items
+model with linear elimination} consisting of the following items
 \begin{enumerate}
 \item
 depot compartment, with amount \emph{Ad},
 \item
 central compartment, with amount \emph{Ac} and volume \emph{V},
 \item
-oral administration, 1$^{st}$ order absorption, \emph{ka}, and 
+oral administration, 1$^{st}$ order absorption with rate constant \emph{ka}, and 
 \item
-linear elimination, with constant rate \emph{k}.
+linear elimination, with rate constant \emph{k}.
 \end{enumerate}
 %For other examples see Tab.\ref{tab:MappingTable}. 
-This is the \emph{only} information needed to be encoded in PharmML for this particular PK model. It 
+This is the \emph{only} information that needs to be encoded in PharmML for this particular PK model. It 
 corresponds to the following macro
 \lstset{language=NONMEMdataSet}
 \begin{lstlisting}
@@ -133,18 +133,19 @@ MM elimination 		& \textit{elimination}			& cmt, \textbf{Km}, \textbf{Vm} \\
 Transfer 				& \textit{transfer}			& from, to, \textbf{kt} \\
   \hline
 \end{tabular}
-\caption{PK macros and their arguments as used in MLXPLORE, based on 
+\caption{PK macros and their arguments as used in MLXTRAN, based on 
 \cite{MLXTRANforMonolix:2014}. Please, note that there are more components listed, 
-10, then macros, 9, which are actually defined in MLXTRAN system. The presumed 
-redundant definitions are meant to support the user in the use of the macros by 
-providing the relevant set of arguments for a given administration type.}
+10, than macros, 9, actually defined in the MLXTRAN system. Different absorption 
+and elimination types are listed separately for better readability. The arguments can be 
+devided in two groups. Those who can act alone in the macro are marked with bold font,
+all others need to be assigned a numerical value or a symbol reference, see explanation in text.}
 \label{tab:MLXPLORElibrary}
 \end{center}
 \end{table}
 One can distinguish two types of arguments, see Table \ref{tab:MLXPLORElibrary}. 
 The arguments marked with \textbf{bold} font, can be simply references to identifiers 
 defined somewhere else in the model file such as \emph{ka} or \emph{Tlag}. The remaining 
-arguments (cannot be left unassigned) have to be explicitly specified as attributes 
+arguments cannot be left unassigned and have to be explicitly specified as attributes 
 of the \xelem{Value} element and subsequently assigned a numerical value or 
 symbol reference, e.g. \emph{cmt} or \emph{amount}. See Section 
 \ref{subsec:encodingRules} for the detailed explanation.
@@ -172,7 +173,7 @@ As mentioned above, there are two types of arguments, and the following rules
 are defined to achieve a consistent macro definition and its interpretation:
 \begin{itemize}
 \item
-\textbf{bold} arguments (can act alone) can be references to symbol identifiers defined in other 
+\textbf{bold} arguments (\emph{can act alone}) can be references to symbol identifiers defined in other 
 places in the model, such as \xatt{k}, \xatt{ka} etc.
 \begin{itemize}
 \item
@@ -214,14 +215,14 @@ if a symbol identifier, here 'k1', is assigned to the key-word argument \xatt{k}
 \end{lstlisting}
 \end{itemize}
 \item
-all \textit{other} arguments (which cannot be act alone), e.g. 'cmt' or 'amount' as in the following macro
+all \textit{other} arguments (which \emph{cannot act alone}), e.g. 'cmt' or 'amount' as in the following macro
 \lstset{language=NONMEMdataSet}
 \begin{lstlisting}
 		compartment(cmt=1, amount=Ac)
 \end{lstlisting}
  \lstset{language=XML}
-have to be specified as attributes and subsequently assigned a numerical value 
-or a \xatt{SymbIdRef}, i.e.
+have to be specified as attributes first and subsequently assigned a numerical value 
+or a symbol reference using element \xatt{SymbRef} as in the following code snippet
 \begin{lstlisting}
                 <Compartment>
                     <Value argument="cmt">
@@ -283,9 +284,10 @@ arguments \xatt{\{amount, volume, concentration\}} and a variable one, \xatt{k\_
 \xatt{j} stand for input and output compartment, respectively. These compartments numbers are set 
 according to the model configuration. 
 
-For example, in the case of models ADVAN11 or 12, see sections \ref{subsubsec:ADVAN11} and 
-\ref{subsubsec:ADVAN12} for complete description, we need to set the \xatt{kij} arguments names accordingly to the model
-specification, meaning that macro 
+For example, in the case of models ADVAN11 or 12, see section \ref{subsubsec:ADVAN12} 
+for a complete description of the latter, 
+we need to set the \xatt{kij} argument names accordingly to the model specification, 
+meaning the macro 
 \lstset{language=NONMEMdataSet}
 \begin{lstlisting}
 		peripheral(k12, k21, amount=Ap1)
@@ -304,7 +306,7 @@ will be implemented as shown in the following snippet
                 </Peripheral>
 \end{lstlisting}
 
-In the special case of \xatt{k\_ij or k\_i\_j} attributes, an assignment in the macro 
+The \xatt{k\_ij or k\_i\_j} attributes are a special case in that an assignment in the macro 
 formulated as
 \lstset{language=NONMEMdataSet}
 \begin{lstlisting}
@@ -344,7 +346,7 @@ Monolix and its data format, see Appendix B in \cite{Monolix4.3.2UserGuide:2014}
 
 Of course, from the perspective of the interoperability platform \marginpar{\HandCuffLeft}
 it is crucial that the models stored in PharmML using macros can be unambiguously translated 
-to NONMEM and other target tools. Especially the compatibility with few predefined PREDPP 
+to NONMEM and other target tools. Especially the compatibility with the predefined PREDPP 
 routines (i.e. ADVAN 1-4 and 10-12) is essential because of their popularity among the 
 NONMEM modellers community. 
 
@@ -354,7 +356,7 @@ For convenience, the most essential differences between these tools/formats from
 perspective of the macros and their usage are listed here
 \begin{itemize}
 \item
-In PREDPP library (but only when using ADVAN 1-4, 10-12 routines) the \emph{DEPOT} 
+In PREDPP (but only when using ADVAN 1-4, 10-12 routines) the \emph{DEPOT} 
 compartment is always considered as the $1^{st}$ compartment, the central compartment 
 as $2^{nd}$ and the peripheral compartments as $3^{rd}$, $4^{th}$ etc. 
 \item

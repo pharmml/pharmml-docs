@@ -32,7 +32,7 @@ organisation of each section.
   \includegraphics[height=0.85\textheight]{pics/PharmMLschemaOverview} % OverviewOfPharmML
   \caption{An overview of the organisation of \pharmml. The green highlighted cells illustrate the 
   	new elements introduced in this specification compared to the first public version 0.2.1. 
-	Grey elements indicate minor changes or extensions.}
+	Orange elements indicate minor changes or extensions.}
   \label{fig:momloverview}
 \end{figure}
 
@@ -330,7 +330,7 @@ shows how this works using real \pharmml.
 \begin{lstlisting}
 <ct:Variable symbId="c" symbolType="real">
     <ct:Assign>
-        <Equation xmlns="http://www.pharmml.org/2013/03/Maths">
+        <Equation xmlns="http://www.pharmml.org/pharmml/0.6/Maths">
             <Binop op="divide">
                 <ct:SymbRef symbIdRef="b"/>
                 <ct:Real>10</ct:Real>
@@ -340,7 +340,7 @@ shows how this works using real \pharmml.
 </ct:Variable>
 <ct:Variable symbId="a" symbolType="real">
     <ct:Assign>
-        <Equation xmlns="http://www.pharmml.org/2013/03/Maths">
+        <Equation xmlns="http://www.pharmml.org/pharmml/0.6/Maths">
             <Binop op="plus">
                 <ct:SymbRef symbIdRef="b"/>
                 <ct:SymbRef symbIdRef="c"/>
@@ -623,8 +623,8 @@ Using NONMEM/Monolix datasets -- these files contain the complete information
 about the underlying trial design, both for estimation or simulation tasks. 
 Using datasets has consequences for the content of the \pml document 
 in that the \xelem{TrialDesign} part is in such case redundant. Instead the dataset
-is referenced in the \xelem{NONMEMdataSet} element and referenced later in e.g.
-estimation task, \xelem{NONMEMdataSetReference}, see Table \ref{tab:withAndWithoutNM}
+is referenced in the \xelem{ExternalDataSet} element and referenced later in e.g.
+estimation task, \xelem{ExternalDataSetReference}, see Table \ref{tab:withAndWithoutNM}
 (right).
 \end{itemize}
 
@@ -771,11 +771,11 @@ defines the table content and a reference to the according file and its type is 
             <ds:Column columnId="SEX" columnType="covariate" valueType="id" columnNum="3"/>
             <ds:Column columnId="EPOCH" columnType="epoch" valueType="id" columnNum="4"/>
         </ds:Definition>
-    	<ds:ImportData oid="id1">
+    	<ds:ExternalFile oid="id1">
 	    <ds:path>warfarin_conc_pca.csv</ds:path>
             <ds:format>CSV</ds:format>
             <ds:delimiter>COMMA</ds:delimiter>
-        </ds:ImportData>
+        </ds:ExternalFile>
     </ds:DataSet>
 \end{lstlisting}
 
@@ -792,11 +792,11 @@ file format (only CSV files allowed) and one of the allowed delimiters (\xatt{CO
 
 \lstset{language=XML}
 \begin{lstlisting}
-            <ds:ImportData oid="id1">
+            <ds:ExternalFile oid="id1">
                 <ds:path>/datasets/myData.csv</ds:path>
                 <ds:format>CSV</ds:format>
                 <ds:delimiter>COMMA</ds:delimiter>
-            </ds:ImportData>
+            </ds:ExternalFile>
 \end{lstlisting}
 
 
@@ -859,7 +859,7 @@ The corresponding \pharmml to the above equation is listed below:
 \begin{lstlisting}
             <ct:DerivativeVariable symbId="Ad" symbolType="real">
                 <ct:Assign>
-                    <Equation xmlns="http://www.pharmml.org/2013/03/Maths">
+                    <Equation xmlns="http://www.pharmml.org/pharmml/0.6/Maths">
                         <Binop op="times">
                             <Uniop op="minus">
                                 <ct:SymbRef blkIdRef="p1" symbIdRef="ka"/>
@@ -1044,7 +1044,7 @@ us to express the above expression concisely\footnote{In fact the XML
 \lstset{language=XML}
 \begin{lstlisting}
 <!-- (9 - 5) * 2 -->
-<Equation xmlns="http://www.pharmml.org/2013/03/Maths"/>
+<Equation xmlns="http://www.pharmml.org/pharmml/0.6/Maths"/>
     <Binop op="times">
         <Binop op="minus">
             <ct:Real>9</ct:Real>
@@ -1064,7 +1064,7 @@ operators:
 %
 \lstset{language=XML}
 \begin{lstlisting}
-<Equation xmlns="http://www.ddmore.eu/Resources/Maths/1.0"/>
+<Equation xmlns="http://www.ddmore.eu/pharmml/0.6/Maths"/>
     <!-- Omitted namespace declarations -->
     <Uniop op="exp">
         <Binop op="plus">
@@ -1112,7 +1112,7 @@ possible to define such expressions using non-numerical criteria:
 %
 \lstset{language=XML}
 \begin{lstlisting}
-<Equation xmlns="http://www.ddmore.eu/Resources/Maths/1.0"/>
+<Equation xmlns="http://www.ddmore.eu/pharmml/0.6/Maths/"/>
     <!-- Omitted namespace declarations -->
     <Piecewise>
         <Piece>
@@ -1157,8 +1157,8 @@ a wide range of features enabling flexible handling of vectors and matrices via 
 indexing schema.
 
 The following section provide a brief overview of their structures, a more detailed 
-description can be found in a dedicated report on PharmML related websites \url{ddmore.eu/pharmml} or 
-\url{pharmml.org}.
+description can be found in a dedicated report on PharmML related websites 
+\url{http://pharmml.org} or \url{http://ddmore.eu/pharmml}.
 
 \begin{figure}[htbp]
 \centering
@@ -1172,15 +1172,16 @@ description can be found in a dedicated report on PharmML related websites \url{
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Vector structure with examples}
 \label{subsec:vectorType}
-Vectors are assumed to be column vectors. We provide both support for populating and reading 
+The index for vector or matrix elements start with 1. Vectors are assumed to 
+be column vectors. We provide both support for populating and reading 
 vectors. 
 
 \subsubsection{Populating vectors}
 The elements and attributes that are available to handle most common situation,
 schematically visualised in Figure \ref{fig:vectorMatrix} (left).
 
-Below  are two examples of how a sparse vector [0,2,0,0,5,0,0,0,0,0] can be coded in \pharmml. 
-A vector is either 
+Table \ref{tab:twoOptionsForVector} shows two examples of how a sparse vector 
+[0,2,0,0,5,0,0,0,0,0] can be coded in \pharmml. A vector is either 
 encoded explicitly with \xelem{VectorElements} using a mixture of numbers 
 and symbol references or using the \xelem{VectorCell} elements (bottom right). 
 The latter option, allowing to avoid unnecessary repetitions, requires the 
@@ -1245,9 +1246,8 @@ to infer the vector length.
 The vector is either encoded explicitly with \xelem{VectorElements} using a mixture 
 of numbers and symbol references (left) or using the \xelem{VectorCell} elements (right).
 In the latter case the use of attributes  \xatt{default} and \xatt{length} is required,
-otherwise the dimension of the vector could not be estimated. The index for vector
-or matrix elements start with 1.}
-\label{tab:withAndWithoutNM}
+otherwise the dimension of the vector could not be estimated.}
+\label{tab:twoOptionsForVector}
 \end{center}
 \end{table}
 
@@ -1256,7 +1256,6 @@ or matrix elements start with 1.}
 Selecting elements out of a vector is very flexible and efficient. 
 Once a vector is assigned, we need a mechanism for the readout of vector
 elements. This is done with the \xelem{VectorSelector} element. 
-
 Let's consider following basic assignment operation
 \begin{align}
 	& m = a + V2[5] \nonumber
@@ -1318,9 +1317,10 @@ following indexes $i=\{1:3,\;6:8,\;10,\;12:13\}.$
 \subsection{Matrix structure with examples}
 \label{subsec:matrixStructure}
 Similarly to the vector structure there are a few alternative options to encode a matrix.
-Note, that for now matrices can be used for encoding of the correlation structure between
+Note, that for now matrices can be used for encoding of the correlation structure between\marginpar{COMPLETE DESCRIPTION AND SECTION} 
 random effect, i.e. within the \xelem{Correlation} element only. Their use will be extended to 
-handle covariance matrices of multivariate distributions and other model elements in a future release.
+handle covariance matrices of multivariate distributions and other model elements in 
+a future release. The index for matrix elements start with 1.
 
 \subsubsection{Populating matrices}
 \pharmml provides multiple ways to populate matrices. 
@@ -1675,33 +1675,30 @@ description of a pharmacometric model, sufficient for it to be
 executed. Additional information, such as a description of the disease
 process being modelled, the exact estimation algorithm or a
 publication describing the model is not included in the \pharmml
-document. Typically called metadata, this information is still very 
+document. Typically called metadata, this information is very 
 important and \pharmml provides support for external annotation.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.8\linewidth]{pics/PharmML_RDF.pdf}
-\caption{pharmml - simplified RDF's, see below for the correct format.........}
+\caption{On schematic overview of the \pml, \emph{example5.xml} and RDF, 
+\emph{example5.rdf}, files relationships. Note, that we use here, for the sake of clarity, 
+a simplified RFD statements. See the code snippet at the end of this section 
+for the correctly formatted RDF file.}
 \label{fig:pharmmlRdf}
 \end{figure}
-\marginpar{CORRECT SECTION}
 
 We expect such metadata comes in the form of ontological annotation and
 while the detail of what will be annotated is out of scope of this
 document it is important to stress that every \pml element can be annotated. 
 This is done by adding an attribute, e.g. \xatt{id="i7"}, to the \xelem{TrialDesign}
-element in Figure \ref{fig:pharmmlRdf}.\footnote{More information on 
+element, see Figure \ref{fig:pharmmlRdf}.\footnote{More information on 
 annotating \pharmml models are described in the \pharmml Metadata Specification.} 
 The following example gives you a flavour of what an RDF annotation of 
-a \pharmml document would look like if we were referring to the code snippet in
-section~\ref{sec:element-id}. 
+a \pharmml document would look like. 
 The metadata above is encoded in RDF-XML\footnote{See \url{rdf-xml}}
 and annotates 3 external terms; CHEBI:71417, DB01206, and CHEBI:28445.
-This is a trivial example, but it
-illustrates how the \pharmml document can be annotated using metadata
-described in a separate RDF document.
 
-\marginpar{CORRECT FIGURE?}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.95\linewidth]{pics/metadatadiagram.pdf}
@@ -1713,8 +1710,8 @@ arrow. So reading the top subject from left to right we understand that
 element assigned the attribute \xatt{i7} is \emph{model-related-to-drug} at \emph{CHEBI:71417}.}
 \label{fig:rdf-graph}
 \end{figure}
-\marginpar{CORRECT URL's}
-
+This is a basic example, but it illustrates how the \pharmml document can be annotated 
+using metadata described in a separate RDF document
 
 %
 \lstset{language=XML}
@@ -1724,7 +1721,7 @@ element assigned the attribute \xatt{i7} is \emph{model-related-to-drug} at \emp
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:base="http://www.pharmml.org/database/metadata/example5#"
     xmlns:example5="http://www.pharmml.org/database/metadata/example5#"
-    xmlns:ps="http://www.pharmml.org/2013/10/PharmMLMetadata#"> 
+    xmlns:ps="http://www.pharmml.org/meta/0.1/PharmMLMetadata#"> 
     
     <rdf:Description rdf:about="#i7">
         <ps:model-related-to-drug rdf:resource="http://identifiers.org/chebi/CHEBI:71417"/>
@@ -1816,7 +1813,7 @@ the diagram to the relevant part of the model.
 
 Note that while this is a hypothetical example for \pharmml, this type
 of solution has been implemented by a graphical Systems Biology editor
-called CellDesigner\footnote{\url{www.celldesigner.org}}. It uses SBML
+called CellDesigner\footnote{\url{http://www.celldesigner.org}}. It uses SBML
 as its native application format: encoding the model in SBML and using
 SBML's extension facilities to store graphical information and other
 application specific properties.
@@ -1869,9 +1866,10 @@ you to identify the modelling resources in the file. The exact details
 of how it works is outside the scope of this document, but the
 components of the archive and how it can be used to hold \pharmml
 related resources is illustrated in
-figure~\ref{fig:moml-archive-overview}\footnote{An example of a
-  CombineArchive file that contains a metadata file annotating a
-  \pharmml document can be found in \texttt{examples/CombineArchive/archive.zip}.}.
+figure~\ref{fig:moml-archive-overview}
+%\footnote{An example of a
+%  CombineArchive file that contains a metadata file annotating a
+%  \pharmml document can be found in \texttt{examples/CombineArchive/archive.zip}.}.
 
 \subsection{Software support for \pharmml}
 \label{sec:libpharmml}
@@ -1894,7 +1892,7 @@ Therefore in parallel to the development of this specification a
 software library called libPharmML\footnote{For more information see
   the libPharmML specification in the DDMoRe Interface Europe
   document repository: WP2 deliverables: \emph{D2.2
-    libPharmMLTechSpec}.} is being developed to support it.  This will
+    libPharmMLTechSpec}.}\marginpar{CORRECT URL} is being developed to support it.  This will
 allow you do the following:
 %
 \begin{enumerate}

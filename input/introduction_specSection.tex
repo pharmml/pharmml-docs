@@ -7,7 +7,7 @@
 The principal problem that \pharmml addresses is the reliable exchange of pharmacometric 
 models between software tools. This is illustrated in Figure \ref{fig:platformDDMoRe}, where 
 \pharmml is the exchange medium
-for pharmacometric models for the main modelling and simulation tools in the field. This goal
+for pharmacometric models for the main modelling and simulation (M\&S) tools in the field. This goal
 has been successfully realised in the field of systems biology, neurobiology or data mining.
 
 In systems biology for example software tools exchange models using the Systems Biology Markup 
@@ -58,7 +58,7 @@ An XML based language that will be able to encode models from NONMEM,
 MONOLIX, BUGS and related tools. 
 We intend this to be a community standard nucleated around the members of the 
 \ddmore consortium. In addition we are developing a software library 
-(libPharmML\footnote{\url{https://sourceforge.net/projects/libpharmml.ddmore.p}}) 
+(libPharmML\footnote{\url{https://sourceforge.net/projects/libpharmml.ddmore.p}})\marginpar{CORRECT URL?} 
 to help tool providers incorporate support of \pharmml and to facilitate its
 general adoption in the field.
 
@@ -106,11 +106,11 @@ the \pharmml document, we should adopt it.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{PharmML \& SO -- workflow support and more}\index{workflow}\index{SO}
 \label{intro:workflows}
-PharmML covers the input for a pharmacometric task, i.e. the model, trail design, 
-according task description and experimental data. Another requirements 
-posted for our work-package is to provide additionally a structure to store any type
-of the numerical results coming from a target tool. This is now an ongoing 
-effort and first draft specification of the so called Standardised Output (SO)
+PharmML covers the input for a pharmacometric task, i.e. the model, trial design, 
+an according task description and experimental data. Another requirements 
+at the start of the project was to provide additionally a structure to store any type
+of numerical results coming from a target tool. This is now an ongoing 
+effort and the first draft specification of the so called Standardised Output (SO)
 is already in use within the framework.
 
 \begin{figure}[ht!]
@@ -119,7 +119,7 @@ is already in use within the framework.
  \caption{PharmML and Standardised Output (SO) supporting a typical 
  workflow in Pharmacometrics featuring major target tools of the DDMoRe 
  platform. Here, it starts with data processing in R, which can consist of data 
- formatting, merging and/or missing-data imputation. After that an explanatory 
+ formatting, merging and/or missing-data imputation. After that an exploratory  
  analysis is carried out in Simulx, followed by estimation using either Monolix 
  or NONMEM. Subsequent steps are bootstrapping using PsN, clinical trial 
  simulation in Matlab and finally Optimal Design in either PFIM or PopED. 
@@ -129,14 +129,14 @@ is already in use within the framework.
  reporting and ensures reproducibility.}
  \label{fig:workflowPharmMLSO}
 \end{figure}
-A first public release of SO is planned in few months. Together, PharmML and SO 
+A first public release of the SO is planned in a few months. Together, PharmML and SO 
 are expected to facilitate:
 \begin{itemize}
 \item
 Smooth and error-free transmission of models between tools
 \item
 Use of complex workflows via standardised model and output definitions, 
-see for an example Figure \ref{fig:workflowPharmMLSO}
+see for example Figure \ref{fig:workflowPharmMLSO}
 \item
 Easier reporting and bug tracking
 \item
@@ -163,7 +163,7 @@ Expanding the community developing/applying pharmacometric models.
 
 As indicated in Figure \ref{fig:platformDDMoRe} once a model is encoded 
 in PharmML it can be shared with any compatible target tool to perform simulation, 
-estimation or optimal design. Modellers will be able in near future to write models 
+estimation or optimal design. Modellers will be able to write models 
 using a human readable language also developed within DDMoRe, the 
 Modelling Description Language, MDL (\url{http://ddmore.eu/mdl}). To facilitate its use, 
 an Integrated Development Environment tool, MDL-IDE, is available, within which 
@@ -193,11 +193,13 @@ In particular:
 \item The \ddmore library of reference models and data-sets, which will provide models in several therapeutic areas. These models will be encoded using \pharmml.
 \end{itemize}
 
-The contribution of the \ddmore consortium members in guiding and reviewing the standard has been enormous.
-As the standard evolves their role in using and then promoting the standard to the wider community will be invaluable.
+The contribution of the \ddmore consortium members in guiding and reviewing the standard 
+has been invaluable. As the standard evolves their role in using and then promoting the 
+standard to the wider community will be indispensable.
 
-Peer review is important in the development of \pharmml and to date we have hosted number of
-face-to-face meetings since the development of \pharmml commenced in August 2011. These meetings were:
+Peer review is therefore important in the development of \pharmml and to date we have 
+hosted a number of face-to-face meetings since the development of \pharmml 
+commenced in August 2011. These meetings were:
 
 \begin{itemize}
 \item A number of \ddmore consortium meetings in Leiden and Hoofddrop, in the years 2012--2014.
@@ -207,7 +209,7 @@ face-to-face meetings since the development of \pharmml commenced in August 2011
 
 \section{How \pharmml was developed}
 
-\pharmml was designed and implemented by a relative small group of individuals, 
+\pharmml was designed and implemented by a relatively small group of individuals, 
 but its development has very much been a collaborative process. At the beginning of 
 this project we had a number of development guidelines that we adhered to. We aimed to:
 
@@ -222,7 +224,7 @@ this project we had a number of development guidelines that we adhered to. We ai
 \item make sure the standard is in a form and uses names and terms that make sense to the expert community.
 \end{itemize}
 
-In the first half of 2014 an Interoperability Group within the DDMoRe consortium 
+In the second half of 2014 an Interoperability Group within the DDMoRe consortium 
 was appointed to facilitate the testing of \pml and the interoperability platform driven 
 by it. This typically includes 
 \begin{itemize}
@@ -231,12 +233,12 @@ Creating a MDL coded model in the MDL-IDE (see Figures \ref{fig:platformDDMoRe}
 and \ref{fig:workflowPharmMLSO} for an schematic representation of this and 
 the following steps).
 \item
-Translation from MDL to PharmML.
+Translating from MDL to PharmML.
 \item
-Translation from PharmML to a target tool language, e.g. MLXTRAN coded model 
-for use in Monolix/Simulx or NMTRAN for NONMEM.
+Translating from PharmML to a target tool language, e.g. MLXTRAN for use in 
+Monolix/Simulx or NMTRAN for NONMEM.
 \item
-Performing a task in a target tool and the export of results into SO.
+Performing a task in a target tool and the exporting the results into SO.
 \end{itemize}
 Initial results are very promising, with a number of models being successfully processed 
 though this pipeline providing a proof-of-concept for the interoperability concept. 
