@@ -113,7 +113,7 @@ model within well-defined constraints. See \cite{MLXTRANforMonolix:2014} for a d
 description. The following table lists the available PK macros with their arguments. 
 
 \begin{table}[ht!]
-\begin{center}
+\centering
 \begin{tabular}{lll}
   \hline
   \hline
@@ -140,7 +140,6 @@ and elimination types are listed separately for better readability. The argument
 devided in two groups. Those who can act alone in the macro are marked with bold font,
 all others need to be assigned a numerical value or a symbol reference, see explanation in text.}
 \label{tab:MLXPLORElibrary}
-\end{center}
 \end{table}
 One can distinguish two types of arguments, see Table \ref{tab:MLXPLORElibrary}. 
 The arguments marked with \textbf{bold} font, can be simply references to identifiers 
@@ -190,7 +189,7 @@ then a simple \xatt{SymbIdRef} is sufficient
  \lstset{language=XML}
 \begin{lstlisting}
                 <Elimination>
-                    <!-- cmt argument omitted -->>
+                    <!-- cmt argument omitted -->
                     <Value>
                         <ct:SymbRef blkIdRef="pm1" symbIdRef="k"/>
                     </Value>
@@ -207,7 +206,7 @@ if a symbol identifier, here 'k1', is assigned to the key-word argument \xatt{k}
  \lstset{language=XML}
 \begin{lstlisting}
                 <Elimination>
-                    <!-- cmt argument omitted -->>
+                    <!-- cmt argument omitted -->
                     <Value argument="k">
                         <ct:SymbRef blkIdRef="pm1" symbIdRef="k1"/>
                     </Value>
@@ -233,7 +232,6 @@ or a symbol reference using element \xatt{SymbRef} as in the following code snip
                     </Value>
                 </Compartment>
 \end{lstlisting}
-
 \end{itemize}
 
 
@@ -507,8 +505,8 @@ interoperability platform but are limited to the models encoded with macros.
 A more careful analysis is required to cover the structural model exchange between 
 the key target tools and associated datasets.
 
-The flow of the data within the framework \marginpar{\HandCuffLeft}  has been so far 
-successfully avoided/neglected and needs to return to the agenda again. 
+%The flow of the data within the framework \marginpar{\HandCuffLeft}  has been so far 
+%successfully avoided/neglected and needs to return to the agenda again. 
 
 \subparagraph{A -- Models corresponding to ADVAN 1-4 and 10-12}
 Fortunately, the translation of models encoded with macros and having their equivalents 
@@ -639,7 +637,7 @@ The use of these new elements is explained in the Table \ref{tab:mappingNONMEMAn
 %(Left) the mapping if MONOLIX dataset is used, {right} for the NONMEM dat set.
 \begin{table}[ht!]
 \setlength{\tabcolsep}{5pt}
-\begin{center}
+\centering
 \begin{tabular}{l}
   \hline
   \hline
@@ -649,7 +647,6 @@ MONOLIX datasets mapping \\ %  	& NONMEM datasets mapping \\
 \begin{lstlisting}
 <ExternalDataSet toolName="Monolix" oid="MLXoid">
     <!-- omitted details -->
-    
     <ColumnMapping>
         <ds:ColumnRef columnIdRef="ADM"/>
         <ds:TargetMapping blkIdRef="sm3">
@@ -658,9 +655,7 @@ MONOLIX datasets mapping \\ %  	& NONMEM datasets mapping \\
             <ds:Map dataSymbol="3" admNumber="3"/>
         </ds:TargetMapping>
     </ColumnMapping>
-    
-    <!-- omitted ColumnMappings and Definition of dataset  
-    		columns such as ID,TIME,AMT,ADM  -->
+    <!-- omitted ColumnMappings and Definition of dataset with ID,TIME,AMT,ADM  -->
 \end{lstlisting}
 %&
 %\lstset{language=XML}
@@ -705,7 +700,6 @@ MONOLIX datasets mapping \\ %  	& NONMEM datasets mapping \\
 \end{tabular}
 \caption{Mappings of MONOLIX type datasets and PK macros.}
 \label{tab:mappingNONMEMAndMacros}
-\end{center}
 \end{table}
 
 
@@ -733,7 +727,7 @@ Otherwise, elements defined in the last section will be reused. The Table
 algebraic equation with dose parameter, D, and (right) when using PK macros.
 \begin{table}[ht!]
 \setlength{\tabcolsep}{5pt}
-\begin{center}
+\centering
 \begin{tabular}{ll}
   \hline
   \hline
@@ -777,11 +771,10 @@ equation for PK model, e.g. $C(t)=f(D,V,k,...)$ 	& and \xelem{TargetMapping}/\xe
 \\
     \hline
 \end{tabular}
-\caption{Comparison of the link between administration definitions and structural model, 
-dependent on the formulation of the latter. (left) PK model expressed using algebraic equations
+\caption{Comparison of the link between administration definitions and structural model. 
+(left) PK model expressed using algebraic equations
  with dose parameter, $D$, and when using the PK macros (right).}
 \label{tab:mappingTrialDesignAndMacros}
-\end{center}
 \end{table}
 
 
@@ -811,11 +804,7 @@ the alternative form of this macro is used
 		compartment(cmt=1,amount=Ac, volume=V)
 \end{lstlisting}
 and because eventually the concentration is required, a subsequent assignment for $C$ must be provided in MLXTRAN
-in the \emph{EQUATION} block, i.e.
-\lstset{language=NONMEMdataSet}
-\begin{lstlisting}
-		C = Ac/V
-\end{lstlisting}
+in the \emph{EQUATION} block, i.e. $C = Ac/V$
 \end{itemize}
 In PharmML, these two cases have to be treated accordingly. 
 \begin{itemize}
@@ -825,10 +814,8 @@ In the first case only the concentration variable, $C$, needs to be defined
 \begin{lstlisting}
         <StructuralModel blkId="sm1">
             <ct:Variable symbolType="real" symbId="C"/>
-            
             <PKmacros>
-                    <!-- omitted details of the macro 
-                    compartment(cmt=1,concentration=C, volume=V) -->
+                    <!-- omitted details of the macro compartment(cmt=1,concentration=C, volume=V) -->
 \end{lstlisting}
 \item
 in the second case, both the amount variable, $Ac$, and concentration variable, $C$, 
@@ -850,8 +837,7 @@ with the $C=Ac/V$ assignment needs to be defined
             
             <PKmacros>
                 <Compartment>
-                    <!-- omitted details of the macro 
-                    compartment(cmt=1,amount=Ac, volume=V) -->
+                    <!-- omitted details of the macro compartment(cmt=1,amount=Ac, volume=V) -->
 \end{lstlisting}
 \end{itemize}
 If a model using the PK macros is defined properly, following the principles described above, 
@@ -865,7 +851,6 @@ can be established.
 \label{subsec:PREDPPinMACROS}
 This section describes PREDPP library models as encoded in routines ADVAN1-4 and 10-12 
 and their PK macros implementation. 
-
 As explained in Section \ref{subsec:LinkingMacrosDatasets} there are differences between 
 NONMEM and MONOLIX and their datasets one has to consider when dealing with PK macros.
 They manifest themselves also in that way how the transfer rate constants are numbered/named. 
@@ -874,24 +859,25 @@ compartment) will have different transfer rate symbols, e.g.:
 \begin{itemize}
 \item
 ADVAN 4
-
-\begin{table}
-\begin{center}
+\begin{table}[ht]
+\centering
+\small
+\renewcommand{\arraystretch}{1.1}% 
 \begin{tabular}{lcc}
   \hline
   \hline
 				 	& PREDPP routines 	& PK macros \\
   \hline
-transfer rate constants 	& k23, k32 		& k12, k21  \\
-   \hline
+transfer rate constants 	& k23, k32 		& k12, k21 \\
+\hline
 \end{tabular}
-\end{center}
 \end{table}
 \item
-ADVAN 12 
-
-\begin{table}
-\begin{center}
+ADVAN 12
+\begin{table}[h!]
+\centering
+\small
+\renewcommand{\arraystretch}{1.1}% 
 \begin{tabular}{lcc}
   \hline
   \hline
@@ -899,9 +885,8 @@ ADVAN 12
   \hline
 transfer rate constants 	& k23, k32 		& k12, k21  \\
 					& k24, k42 		& k13, k31  \\
-   \hline
+\hline
 \end{tabular}
-\end{center}
 \end{table}
 \end{itemize}
 Models described in this section use the MLXTRAN numbering convention in order to comply
