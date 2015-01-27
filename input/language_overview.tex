@@ -30,9 +30,9 @@ organisation of each section.
 \begin{figure}[htb!]
  \centering
   \includegraphics[height=0.85\textheight]{pics/PharmMLschemaOverview} % OverviewOfPharmML
-  \caption{An overview of the organisation of \pharmml. The green highlighted cells illustrate the 
+  \caption{An overview of the organisation of \pharmml. The orange highlighted cells illustrate the 
   	new elements introduced in this specification compared to the first public version 0.2.1. 
-	Orange elements indicate minor changes or extensions.}
+	Grey indicate minor changes or extensions.}
   \label{fig:momloverview}
 \end{figure}
 
@@ -1684,7 +1684,7 @@ important and \pharmml provides support for external annotation.
 \caption{On schematic overview of the \pml, \emph{example5.xml} and RDF, 
 \emph{example5.rdf}, files relationships. Note, that we use here, for the sake of clarity, 
 a simplified RFD statements. See the code snippet at the end of this section 
-for the correctly formatted RDF file.}
+for the correctly formatted RDF file \cite{RDF_1.1}.}
 \label{fig:pharmmlRdf}
 \end{figure}
 
@@ -1696,7 +1696,7 @@ element, see Figure \ref{fig:pharmmlRdf}.\footnote{More information on
 annotating \pharmml models are described in the \pharmml Metadata Specification.} 
 The following example gives you a flavour of what an RDF annotation of 
 a \pharmml document would look like. 
-The metadata above is encoded in RDF-XML\footnote{See \url{rdf-xml}}
+The metadata above is encoded in RDF-XML, \cite{RDF_1.1},
 and annotates 3 external terms; CHEBI:71417, DB01206, and CHEBI:28445.
 
 \begin{figure}[htbp]
@@ -1730,7 +1730,6 @@ using metadata described in a separate RDF document
     </rdf:Description>
 </rdf:RDF>
 \end{lstlisting}
-\marginpar{CORRECT URL's}
 
 \subsection{Extending PharmML}
 \label{sec:extension}
@@ -1888,12 +1887,8 @@ it is unlikely that such validation would be complete and implemented
 consistently, which makes our goal of exchange between modelling
 tools less likely to succeed.
 
-Therefore in parallel to the development of this specification a
-software library called libPharmML\footnote{For more information see
-  the libPharmML specification in the DDMoRe Interface Europe
-  document repository: WP2 deliverables: \emph{D2.2
-    libPharmMLTechSpec}.}\marginpar{CORRECT URL} is being developed to support it.  This will
-allow you do the following:
+Therefore in parallel to the development of this specification a software library 
+called libPharmML is being developed to support it.  This will allow you do the following:
 %
 \begin{enumerate}
 \item Create a new \pharmml document.

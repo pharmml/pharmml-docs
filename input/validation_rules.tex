@@ -408,6 +408,21 @@ using the \xelem{ColumnRef} element. This gives us the following rules:
   dataset must be type consistent.} By this we mean that the type of
 the object or element (defined in the table~\ref{tab:data-set-mapping}) must be the same as
 the type specified in the column definition of the dataset.
+\valrule{S15}{Mapping of derivative variables} If dosing target is 
+\texttt{derivativeVariable} then the dosing variable must be a
+derivative variable.
+\valrule{S16}{Mapping of non-derivative variables} If dosing target is 
+\texttt{variable} or \texttt{parameter} then the dosing variable must be a
+non-derivative variable.
+\valrule{S17}{Mapping of PK macros} If dosing target is \texttt{admType} 
+then the dosing is aimed at a PK macro \emph{depot}, \emph{absorption}, 
+\emph{oral} or \emph{iv}.
+\valrule{S18}{Mapping of column with \xatt{columnType="id"}} Dataset column 
+with \xatt{columnType="id"} must be mapped to the variability level representing
+the subject if more then the reference level are defined in a variability model.
+\valrule{S19}{Multiple DV mapping.} The use of \xelem{CategoryMapping} element
+is allowed within \xelem{Piecewise} only in the context of multiple DV mapping
+as implemented using \xelem{MultipleDVMapping}.
 \end{valrules}
 
 %\begin{table}[ht!]
@@ -784,18 +799,6 @@ a duration greater than zero. It must also have both a start and end
 time.
 \valrule{D10}{Dosing times relative to epoch.} Dosing times are
 relative to the start time of the epoch to which they are assigned.
-\valrule{D11}{Mapping of derivative variables} If dosing target is 
-\texttt{derivativeVariable} then the dosing variable must be a
-derivative variable.
-\valrule{D12}{Mapping of non-derivative variables} If dosing target is 
-\texttt{variable} or \texttt{parameter} then the dosing variable must be a
-non-derivative variable.
-\valrule{D13}{Mapping of PK macros} If dosing target is \texttt{admType} 
-then the dosing is aimed at a PK macro \emph{depot}, \emph{absorption}, 
-\emph{oral} or \emph{iv}.
-\valrule{D14}{Mapping of column with \xatt{columnType="id"}} Dataset column 
-with \xatt{columnType="id"} must be mapped to the variability level representing
-the subject if more then the reference level are defined in a variability model.
 %
 \end{valrules}
 

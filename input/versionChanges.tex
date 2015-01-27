@@ -18,6 +18,7 @@ Figure \ref{fig:DDMoReTimeline}, for an brief overview).
 \section{Changes in version 0.3 \& 0.3.1}
 \begin{center}
 \small
+\renewcommand{\arraystretch}{1.1}% 
 \begin{longtable}{lll}
   \hline
   \hline
@@ -65,11 +66,9 @@ Column Mapping	& \multicolumn{2}{c}{\xelem{Population} table} \\  [.5ex]
 \hline
 ODE's 			& \xelem{InitialCondition}	with no	& \xelem{InitialCondition} \\ [-.25ex]
 				& child elements				& with two new elements:  \\
-				&							& \xelem{InitialTime} \& \\
-				&							& \xelem{InitialValue}  \\ [1ex]
+				&							& \xelem{InitialTime} \& \xelem{InitialValue}  \\ [1ex]
 \hline
-\textbf{Matrix} 			& \emph{not supported}			& \xelem{Matrix} element  \\ [-.25ex]
-				&							& with attributes: \\
+\textbf{Matrix} 			& \emph{not supported}			& \xelem{Matrix} element with attributes: \\
 				&							& -- \xatt{VariabilityReference}  \\
 				&							& -- \xatt{matrixType} with values \\
 				&							& \xatt{CovMatrix}, \xatt{CorrMatrix}, \\
@@ -107,20 +106,17 @@ names			& \xatt{inputType} 				& \xatt{inputTarget} \\
 				& \xatt{model}					& \xatt{parameterVariability} \\
 				& \xatt{error}					& \xatt{residualError} \\ [1ex]
   \hline
- Nested tables 		& supported in all datasets		& \emph{not supported} \\				
-				&							& \\ [1ex]
+ Nested tables 		& supported in all datasets		& \emph{not supported} \\	 [1ex]
   \hline
 Gaussian parameter & 							& \xatt{identity} transformation  \\
 model 			&							& in \xelem{Transformation} added \\ [1ex]
   \hline
 Missing mathematical  & 							& new \xatt{BinOp}:  \xatt{min}, \xatt{max} \\ 
-functions			&							& \xatt{UniOp} with\\
-				&							& \xatt{ln}, \xatt{factln}, \xatt{gammaln}, \\
-				&							& \xatt{normcdf}, \xatt{sqrt}  \\ [1ex]
+functions			&							& \xatt{UniOp} with \xatt{normcdf}, \xatt{sqrt}, \\
+				&							& \xatt{ln}, \xatt{factln}, \xatt{gammaln} \\ [1ex] 
   \hline
   Metadata attribute	&	not defined for number of 	& added in the root \xelem{PharmML} \\
-  				&	elements					& and child elements of \\
-  				&							& \xelem{TrialDesign} \\ [1ex]
+  				&	elements					& and child elements of \xelem{TrialDesign} \\ [1ex]
   \hline
   Random errors	& multiple \xelem{SymbRef} allowed	& only one \xelem {SymbRef} allowed \\
   				& in \xelem{RandomEffects}		& per \xelem{RandomEffects} \\[1ex]
@@ -143,11 +139,10 @@ Referencing NONMEM 	& using \xelem{TargetToolReference}	& \xelem{NONMEMdataSetRe
 datasets 				&								&  \\
 \hline
 Simulation support 		& -- only explicitly via \xelem{TrialDesign} & -- \xelem{Observations} optional \\
-					& -- \xelem{Observations} element		& -- NONMEM datasets can  \\
-					& mandatory 						& be used \\
+					& -- \xelem{Observations} element mandatory		& -- NONMEM datasets can be used \\
 \hline
-Referencing categorical	& possible using strings only			& extended to numerical \\
-covariates	 			&								& identifiers  \\
+Referencing categorical	& possible using strings only			& extended to numerical identifiers \\
+covariates	 			&								&   \\
   \hline
 \label{figTable:overviewTable}
 \end{longtable}
@@ -157,6 +152,7 @@ covariates	 			&								& identifiers  \\
 \section{Changes in version 0.4 \& 0.4.1}
 \begin{center}
 \small
+\renewcommand{\arraystretch}{1.1}% 
 \begin{longtable}{lll}
 \hline
 \hline
@@ -187,13 +183,13 @@ Delay differential equations & \emph{not supported}			& \xelem{Delay} and \xelem
 					&							& -- \xelem{HistoryTime}  \\ 
 \hline
 Extended vector definition & basic support 		 		& \xelem{Vector} with a number of child elements such as\\
-					&							& \xelem{VectorElements}, \xelem{VectorCell}, \\
-					& 							& \xelem{VectorSegment} and attributes \xatt{default}, \xatt{length}  \\ 
+					&							& \xelem{VectorElements}, \xelem{VectorCell}, \xelem{VectorSegment} \\
+					& 							& and attributes \xatt{default}, \xatt{length}  \\ 
 \hline
 Extended matrix definition & basic support 		 		& \xelem{Matrix} with a number of child elements such as\\
-					& 							& \xelem{MatrixRow}, \xelem{MatrixCell}, \\
-					& 							& \xelem{MatrixBlock} and attributes \xatt{matrixType}, \\
-					&							& \xatt{diagDefault}, \xatt{offDiagDefault} and others  \\
+					& 							& \xelem{MatrixRow}, \xelem{MatrixCell}, \xelem{MatrixBlock} \\
+					& 							& and attributes \xatt{matrixType}, \xatt{diagDefault}, \\
+					&							& \xatt{offDiagDefault} and others  \\
   \hline
   \hline
 					& version $\le$ 0.4	 			&  \textbf{version 0.4.1} \\
@@ -209,8 +205,7 @@ Covariate model		& \emph{not supported}		& \xelem{TransformedCovariate} element 
 Parameter model		& element was mandatory	& -- \xelem{FixedEffect} element in optional \\
 					& \emph{feature not supported}	& -- \xelem{FixedEffect} takes numerical children \\
 \hline
-Vector/Matrix			& \emph{not supported}		& lower/upper indexes can be defined \\
-					& 			 			& using expressions   \\
+Vector/Matrix			& \emph{not supported}		& lower/upper indexes can be defined using expressions   \\
 \hline
 Vector elements renamed & \xelem{VectorIndex}		& \xelem{CellIndex} \\
 					& \xelem{SegmentIndex} 		& \xelem{SegmentStartIndex} \\
@@ -226,11 +221,9 @@ with datasets			&						& attribute and new \xatt{tranformIdRef} attribute within
 Discrete data models 	& \emph{link functions missing}& link functions \xatt{loglog}, \xatt{comploglog}  \\
 					&						& \\
 \hline
-Simulations			& \emph{missing element}	&  \xelem{Discrete} element within \\
-					&						& \xelem{Observations} tag \\
+Simulations			& \emph{missing element}	&  \xelem{Discrete} element within \xelem{Observations} tag \\
 \hline
-\xelem{Operation} definition						& limited number of options	& arbitrary string allowed in the \\
-					&						& \xatt{opType} attribute \\ 
+\xelem{Operation} definition						& limited number of options	& arbitrary string allowed in the \xatt{opType} attribute \\ 
 \hline
 \label{figTable:overviewTable}
 \end{longtable}
@@ -239,16 +232,17 @@ Simulations			& \emph{missing element}	&  \xelem{Discrete} element within \\
 \section{Changes in version 0.5 \& 0.5.1}
 \begin{center}
 \small
+\renewcommand{\arraystretch}{1.1}% 
 \begin{longtable}{lll}
 \hline
 \hline
 \pml element 			&  version $\le$ 0.4.1 			& \textbf{version 0.5} \\
 or modelling aspect 		&							& \\
 \hline
-\textbf{PK macros}		& \emph{not supported}			& \xelem{PKmacros} element with child elements, such as  \xelem{Compartment}, \\
-					&							&  \dots, \xelem{Elimination} and their attributes \xatt{cmt}, \xatt{amount} etc. \\
+\textbf{PK macros}		& \emph{not supported}			& \xelem{PKmacros} element with child elements, such as  \xelem{Compartment}, \dots,\\
+					&							& \xelem{Elimination} and their attributes \xatt{cmt}, \xatt{amount} etc. \\
 \hline
-Monolix datasets		& \emph{not supported}			& \xelem{MONOLIXdataSet} and \xelem{MONOLIXdataSetReference} elements \\
+Monolix datasets		&			& \xelem{MONOLIXdataSet} and \xelem{MONOLIXdataSetReference} elements \\
 \hline
 Annotation reference  	& \emph{not supported}			& new \xatt{metadataFile} attribute in the \xelem{PharmML} root element  \\
   \hline
@@ -271,6 +265,7 @@ Variability model 		& -- 							& new \xatt{ReferenceLevel} attribute in the \xe
 \section{Changes in version 0.6}
 \begin{center}
 \small
+\renewcommand{\arraystretch}{1.1}% 
 \begin{longtable}{lll}
 \hline
 \hline
@@ -286,6 +281,8 @@ Dataset referencing		& \xelem{NONMEMdataSetReference}	& replaced by \xelem{Exter
 External file			& \xelem{ImportData} 			& renamed to \xelem{ExternalFile} \\
 \hline
 Namespace URI format	& $\dots$\url{/Year/Month/}$\dots$	& $\dots$\url{/pharmml/verNo/}$\dots$, e.g. $\dots$\url{/pharmml/0.6/Dataset} \\
+\hline
+Multiple DV mapping	&  \emph{not supported} 			& added \xelem{CategoryMapping} in the piece-wise statement \\
 \hline
 \label{figTable:overviewTable}
 \end{longtable}

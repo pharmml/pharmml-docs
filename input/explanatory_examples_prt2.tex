@@ -36,6 +36,7 @@ and occasions in this example.}
 %\noindent
 \begin{table}[h]
 \begin{center}
+\renewcommand{\arraystretch}{1.1}% 
 \begin{tabular}{lrr}\toprule
 Arm & \textbf{1} & \textbf{2} \\\midrule
 Number of subjects & 33 & 33\\
@@ -89,6 +90,7 @@ the unexplained expressed as the $\eta^{(+1)}$ random effects associated with CL
 
 \begin{table}[h]
 \begin{center}
+\renewcommand{\arraystretch}{1.1}% 
 \begin{tabular}{lrrrr}\toprule
  & \textbf{Sex} &{\color{red}\textbf{Treat}}&{\color{mediumgreen}\textbf{TreatSeq}}&{\color{magenta}\textbf{Occasion}}\\\midrule
 Type & Categorical & Categorical & Categorical & Categorical  \\
@@ -163,6 +165,8 @@ We apply a residual error models to the output variable \var{C}.
 
 %\noindent
 \begin{center}
+\small
+\renewcommand{\arraystretch}{1.1}% 
 \begin{tabular*}{0.6\textwidth}{@{\extracolsep{\fill}} >{\bfseries}l l}\toprule
 Output Variable  & \textbf{\itshape C} \\\midrule
 Observations Name & Concentration\\
@@ -191,6 +195,7 @@ design below, see also Figure \ref{fig:TwoArmsThreeEpochs_withWashout}.
 
 \begin{table}[htdp!]
 \begin{center}
+\renewcommand{\arraystretch}{1.1}% 
 \begin{tabular}{ccccccc}
 \hline
 Segment&Activity & Treatment & DoseTime & DoseSize & Target Variable \\
@@ -206,6 +211,7 @@ TA& OR2 &  OR bolus & $0:24:72$ & 100 & D \\
 
 \begin{table}[htdp!]
 \begin{center}
+\renewcommand{\arraystretch}{1.1}% 
 \begin{tabular}{cccc}
 \hline
 Epoch & Occasion & Start time & End time \\
@@ -694,6 +700,7 @@ an estimation task.
 \begin{table}[htdp]
 \begin{center}
 \small
+\renewcommand{\arraystretch}{1.1}% 
 \begin{tabular}{lllccccccc}\toprule
 ID	& TIME	& DV			& AMT	& OCC	& TREAT	& TREATSEQ	& SEX 	& MDV 	& EVID \\ \midrule
 1	& 0		& .			& 100	& 1		& 1		& 12			& 0 		& 1		& 1 \\ 
@@ -1099,6 +1106,7 @@ an estimation task.
 \begin{table}[htdp]
 \begin{center}
 \small
+\renewcommand{\arraystretch}{1.1}% 
 \begin{tabular}{rrrrrrrr}\toprule
 ID	& TIME	& DV		& MDV	& AMT	& EVID \\ \midrule
 1	& 0		& .		&  1		& .		& 0 \\

@@ -134,7 +134,7 @@ Transfer 				& \textit{transfer}			& from, to, \textbf{kt} \\
   \hline
 \end{tabular}
 \caption{PK macros and their arguments as used in MLXTRAN, based on 
-\cite{MLXTRANforMonolix:2014}. Please, note that there are more components listed, 
+\cite{MLXTRANforMonolix:2014}. Note that there are more components listed, 
 10, than macros, 9, actually defined in the MLXTRAN system. Different absorption 
 and elimination types are listed separately for better readability. The arguments can be 
 devided in two groups. Those who can act alone in the macro are marked with bold font,
@@ -444,7 +444,6 @@ administrations, used by Monolix into an PREDPP/ADVAN based NONMEM encoding
 system with data set using the CMT column, see Figure \ref{fig:ComplexModel_Rules} and
 Table \ref{tab:C3ModelData}.
 
-
 \begin{figure}[h!]
 \centering
  \includegraphics[width=140mm]{pics/ComplexModel_Rules.pdf}
@@ -454,8 +453,6 @@ NONMEM (right) does. The translation of macro coded models to target tools
 requires in this case changes in the dataset as well, see Table \ref{tab:C3ModelData}.}
 \label{fig:ComplexModel_Rules}
 \end{figure}
-
-
 
 \begin{table}[h!]
 \footnotesize
@@ -866,10 +863,8 @@ can be established.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{PREDPP models and PK macros}
 \label{subsec:PREDPPinMACROS}
-
 This section describes PREDPP library models as encoded in routines ADVAN1-4 and 10-12 
 and their PK macros implementation. 
-
 
 As explained in Section \ref{subsec:LinkingMacrosDatasets} there are differences between 
 NONMEM and MONOLIX and their datasets one has to consider when dealing with PK macros.
@@ -879,7 +874,8 @@ compartment) will have different transfer rate symbols, e.g.:
 \begin{itemize}
 \item
 ADVAN 4
-\begin{table}[ht]
+
+\begin{table}
 \begin{center}
 \begin{tabular}{lcc}
   \hline
@@ -891,10 +887,10 @@ transfer rate constants 	& k23, k32 		& k12, k21  \\
 \end{tabular}
 \end{center}
 \end{table}
-
 \item
 ADVAN 12 
-\begin{table}[ht]
+
+\begin{table}
 \begin{center}
 \begin{tabular}{lcc}
   \hline
