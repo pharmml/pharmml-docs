@@ -822,7 +822,7 @@ format.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Dataset mapping and scaling}
-\label{subsec:lookupTable}
+\label{subsec:datasetMapping}
 
 The provision of a dataset, implemented as inline data, as external files or 
 as lookup tables is not sufficient to make it work. What is additionally required 
@@ -1147,9 +1147,9 @@ of its operands.
 \section{Vectors and Matrices}
 \label{sec:vectorsAndMatrices}
 Current version of \pharmml provides support for vectors and matrices, which for 
-now can be mainly used for encoding of correlation/covariance matrices and the storing of
+can be mainly used for encoding of correlation/covariance matrices and the storing of
 matrices in the Standardised Output (SO), such as Fisher Information Matrix (FIM)
-or correlation matrix os the estimated parameters.
+of the estimated parameters \ref{intro:workflows}.
 The schema for these new elements is based on two standards, one dealing with 
 mathematical notation, MathML \cite{mathml3:2010}, 
 and another one with data mining models, PMML \cite{pmml:2014}, and comes with 
@@ -1157,8 +1157,7 @@ a wide range of features enabling flexible handling of vectors and matrices via 
 indexing schema.
 
 The following section provide a brief overview of their structures, a more detailed 
-description can be found in a dedicated report on PharmML related websites 
-\url{http://pharmml.org} or \url{http://ddmore.eu/pharmml}.
+description can be found in a dedicated report on PharmML website \url{http://pharmml.org}.
 
 \begin{figure}[htbp]
 \centering
@@ -1317,8 +1316,9 @@ following indexes $i=\{1:3,\;6:8,\;10,\;12:13\}.$
 \subsection{Matrix structure with examples}
 \label{subsec:matrixStructure}
 Similarly to the vector structure there are a few alternative options to encode a matrix.
-Note, that for now matrices can be used for encoding of the correlation structure between\marginpar{COMPLETE DESCRIPTION AND SECTION} 
-random effect, i.e. within the \xelem{Correlation} element only. Their use will be extended to 
+Note, that for now matrices will be mainly be used for encoding of the correlation structure 
+between random effect, i.e. within the \xelem{Correlation} element. So mentioned above,
+the associated SO requires matrix support as well. The use of matrices will be extended to 
 handle covariance matrices of multivariate distributions and other model elements in 
 a future release. The index for matrix elements start with 1.
 
@@ -1684,7 +1684,7 @@ important and \pharmml provides support for external annotation.
 \caption{On schematic overview of the \pml, \emph{example5.xml} and RDF, 
 \emph{example5.rdf}, files relationships. Note, that we use here, for the sake of clarity, 
 a simplified RFD statements. See the code snippet at the end of this section 
-for the correctly formatted RDF file \cite{RDF_1.1}.}
+for the correctly formatted RDF file \cite{RDF_2014}.}
 \label{fig:pharmmlRdf}
 \end{figure}
 
@@ -1696,7 +1696,7 @@ element, see Figure \ref{fig:pharmmlRdf}.\footnote{More information on
 annotating \pharmml models are described in the \pharmml Metadata Specification.} 
 The following example gives you a flavour of what an RDF annotation of 
 a \pharmml document would look like. 
-The metadata above is encoded in RDF-XML, \cite{RDF_1.1},
+The metadata above is encoded in RDF-XML \cite{Bono:2011fk}\cite{RDF_2014},
 and annotates 3 external terms; CHEBI:71417, DB01206, and CHEBI:28445.
 
 \begin{figure}[htbp]

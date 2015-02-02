@@ -10,7 +10,7 @@ commented. Each example is designed to illustrate different aspects of
 do. For clarity and to save space we will only show key excerpts from the
 examples, but the complete examples are available and will be
 distributed with this document and can be downloaded from PharmML related 
-websites\footnote{\url{http://ddmore.eu/pharmml} and \url{http://pharmml.org}} . 
+websites, \url{http://ddmore.eu/pharmml} and \url{http://pharmml.org} . 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Model structure is task and approach dependent}
@@ -721,7 +721,8 @@ in the PREDPP library, see Table \ref{tab:ADVAN_translation}.
 Following table shows the two allowed parameterizations for ADVAN2 
 and the re-parameterization formula. 
 \begin{table}[ht]
-\begin{center}
+\centering
+\renewcommand{\arraystretch}{1.1}% 
 \begin{tabular*}{.8\textwidth}{@{\extracolsep{\fill} } lll}
   \hline
   \hline
@@ -731,7 +732,6 @@ K Rate constant of elimination				& CL Clearance 					& K=CL/V \\
 									& V Volume of distribution				& \\
 \end{tabular*}
 \caption{ADVAN2 with two available parameterization routines, TRANS1 and TRANS2.}
-\end{center}
 \end{table}
 \begin{figure}[htbp]
 \centering
@@ -739,12 +739,12 @@ K Rate constant of elimination				& CL Clearance 					& K=CL/V \\
 \caption{Relationship between PK macros and the predefined PREDPP models and 
 alternative parameterizations for the structural model, corresponding 
 to ADVAN2/TRANS1 and ADVAN2/TRANS2.}
-\label{fig:lambdasurface}
 \end{figure}
 
 Table \ref{tab:ADVAN2TRANS1reparameterisation} shows the PK macros for the two options
 \begin{table}[ht]
-\begin{center}
+\centering
+\renewcommand{\arraystretch}{1.1}% 
 \begin{tabular*}{.9\textwidth}{@{\extracolsep{\fill} } ll}
   \hline
   \hline
@@ -765,14 +765,12 @@ oral(cmt=1,ka)
 elimination(cmt=1, CL)
 Cc = Ac/V
 \end{lstlisting}
-
 \end{tabular*}
 \caption{The set of macros for the PK model with additional equation for the 
 concentration, $Cc$. It corresponds to a ADVAN2/TRANS2 model, see 
 Section \ref{subsec:PREDPPinMACROS} and Table \ref{tab:ADVAN_translation} 
 for detailed description. Here the two allowed parameterizations are used.}
 \label{tab:ADVAN2TRANS1reparameterisation}
-\end{center}
 \end{table}
 and the following code snippet shows how this can be encoded in \pml
 \lstset{language=XML}
@@ -1727,7 +1725,7 @@ TA& bolusOR &  OR bolus & 0 & 100 & D \\
 \end{tabular}
 \end{center}
 \caption{Segment/activity overview.}
-\label{tab:segementActivity_Ribba}
+%\label{tab:segementActivity_Ribba}
 \end{table}
 
 \begin{table}[htdp!]
