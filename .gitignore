@@ -26,3 +26,7 @@ spec_2ndPublic.ilg
 spec_2ndPublic.idx
 
 pharmml-specification_0.6.pdf
+
+PKmacros_report/.latexmkrc
+
+spec_2ndPublic copyForReview.pdf
