@@ -30,3 +30,23 @@ pharmml-specification_0.6.pdf
 PKmacros_report/.latexmkrc
 
 spec_2ndPublic copyForReview.pdf
+
+PKmacros_report/PKmacros_Report.bbl
+
+PKmacros_report/PKmacros_Report.log
+
+PKmacros_report/PKmacros_Report.out
+
+PKmacros_report/PKmacros_Report.synctex.gz
+
+PKmacros_report/PKmacros_Report.toc
+
+internalReleases/PharmML_0_7/version_0_7_changes.log
+
+internalReleases/PharmML_0_7/version_0_7_changes.out
+
+internalReleases/PharmML_0_7/version_0_7_changes.pdf
+
+internalReleases/PharmML_0_7/version_0_7_changes.synctex.gz
+
+internalReleases/PharmML_0_7/version_0_7_changes.toc
