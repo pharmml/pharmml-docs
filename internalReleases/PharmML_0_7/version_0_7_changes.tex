@@ -35,6 +35,7 @@
 \usepackage{makecell}
 \usepackage{multicol}
 \usepackage{url}
+\usepackage{verbatimbox}
 
 \usepackage{cancel}
 
@@ -3883,10 +3884,9 @@ in the SO, which inherits the dataset definition from PharmML. For this to work 
 has to upgraded so that it can make advantage of these features. 
 
 \subsection{External datasets}
-FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH 
-FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH 
-FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH
-
+Similar strategy is followed if an external dataset contains \emph{missing data}
+records and this information needs to be passed to the target tool. Following 
+new elements are available 
 \begin{itemize}
 \item 
 \xelem{MissingData} element with two attributes 
@@ -3899,8 +3899,9 @@ FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH
 \end{itemize}
 \end{itemize}                
 The dataset example used previously, table \ref{tab:uslessDataSet}, is stored now
-externally as \emph{myFile.csv}, see \xelem{path} element below, can be
-defined with its missing data as shown in the following code
+externally as \emph{myFile.csv}, see \xelem{path} element below.
+The missing data codes used in such the dataset are mapped to the allowed types
+as shown in the following code
 \lstset{language=XML}
 \begin{lstlisting}
         <ExternalDataSet toolName="NONMEM" oid="NMoid">
@@ -3919,13 +3920,9 @@ defined with its missing data as shown in the following code
             </ds:DataSet>
         </ExternalDataSet>
 \end{lstlisting}
-
- Mapping -- user defined -- must supplied by the user along with datasets.
-
-FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH 
-FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH 
-FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH
-
+It is important to note that mappings within \xelem{MissingData} will vary between datasets
+coming from different tools and must be supplied each time by the user/tool writing the 
+PharmML along with the particular dataset.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Dataset headers}
@@ -4053,7 +4050,7 @@ statistical precision, such as \emph{SE}, \emph{RSE} or \emph{ETA\_SHRINKAGE\_CL
 \begin{itemize}
 \item 
 The majority of the PK macro examples, released with the 0.6 spec and schema 
-contained wrong references to structural model in the \xelem{TargetMapping}, e.g.
+contained wrong references to structural model within the \xelem{TargetMapping}, e.g.
 \lstset{language=XML}
 \begin{lstlisting}
             <ColumnMapping>
@@ -4066,14 +4063,18 @@ contained wrong references to structural model in the \xelem{TargetMapping}, e.g
 Instead of \xatt{sm1}, it should be the value assigned to \emph{blkIdRef} of the 
 according structural model, e.g. \xatt{sm12} in the \emph{PKmacros\_advan12.xml} 
 example. Thanks to Henrik for spotting that.
-\item
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Debugging with libPharmML}
+
 Florent helped to find a large number of typos, missing block references and 
 unassigned parameters using the updated libPharmML in the examples released
-with 0.6 version. All 
+with 0.6 version. All \\
 FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH 
 FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH 
 FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH
-\end{itemize}
+
 
 
 
@@ -4126,1159 +4127,1159 @@ listed in the subsequent sections are collected here with references
 \url{http://mathworld.wolfram.com/HypergeometricFunction.html}\\
 \url{http://en.wikipedia.org/wiki/Hypergeometric_function}
 \end{itemize}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Discrete univariate distributions}
 %
-%\section*{Bernoulli} 
 %
-%  \bigskip 
-%
-%\begin{tabular}{p{2cm}cl}
-%\textbf{name} & & Bernoulli (ID: 0000000)\\ 
-% 
-%\textbf{type} & & discrete \\\textbf{support} & & $k \in \{0,1\}$
-%\end{tabular}
-%\subsubsection*{Parameter1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\section{Discrete univariate distributions}
+%%
+%%\section*{Bernoulli} 
+%%
+%%  \bigskip 
+%%
+%%\begin{tabular}{p{2cm}cl}
+%%\textbf{name} & & Bernoulli (ID: 0000000)\\ 
+%% 
+%%\textbf{type} & & discrete \\\textbf{support} & & $k \in \{0,1\}$
+%%\end{tabular}
+%%\subsubsection*{Parameter1}
+%%
+%%\noindent\begin{tabular}{p{2cm}cl}
+%%\textbf{name} & & probability \\\textbf{symbol} & & $p$  \\
+%%\textbf{definition} & & $0<p<1, p \in  R$
+%%\end{tabular}
+%%\subsubsection*{Functions}
+%%
+%%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%%\begin{equation*}\begin{cases}
+%%    q=(1-p) & \text{for }k=0 \\ p & \text{for }k=1
+%%    \end{cases}\end{equation*}
+%%
+%%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%%\begin{equation*}\begin{cases}
+%%    0 & \text{for }k<0 \\ q & \text{for }0\leq k<1 \\ 1 & \text{for }k\geq 1
+%%    \end{cases}\end{equation*}
+%%    
+%%
+%%  \section*{Binomial} 
+%%
+%%\begin{figure}[htb!]
+%%\centering
+%%  \includegraphics[width=140mm]{pics/Binomial_pmf_cdf.pdf}
+%% \caption{PMF and CDF of the Binomial distribution plotted using the provided R-code.}
+%% \label{fig:Bionomial_pmf_cdf}
+%%\end{figure}
+%%
+%%  \bigskip 
+%%
+%%\begin{tabular}{p{2cm}cl}
+%%\textbf{name} & & Binomial (ID: 0000018)\\ 
+%% 
+%%\textbf{type} & & discrete \\\textbf{support} & & $k \in \{0,\dots,n\}$
+%%\end{tabular}
+%%\subsubsection*{Parameter1}
+%%
+%%\noindent\begin{tabular}{p{2cm}cl}
+%%\textbf{name} & & number of trials \\\textbf{symbol} & & $n$  \\
+%%\textbf{definition} & & $n \in N, n \ge 0$
+%%\end{tabular}
+%%\subsubsection*{Parameter2}
+%%
+%%\noindent\begin{tabular}{p{2cm}cl}
+%%\textbf{name} & & success probability in each trial \\\textbf{symbol} & & $p$  \\
+%%\textbf{definition} & & $p \in [0,1]$
+%%\end{tabular}
+%%\subsubsection*{Functions}
+%%
+%%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%%\begin{equation*}{n \choose k}\, p^k (1-p)^{n-k}\end{equation*}
+%%
+%%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%%\begin{equation*}I_{1-p}(n - k, 1 + k)\end{equation*}
+%%
+%%
+%% \section*{CategoricalNonordered} 
+%%
+%%  \bigskip 
+%%
+%%\begin{tabular}{p{2cm}cl}
+%%\textbf{name} & & Categorical Nonordered (ID: 0000038)\\ 
+%% 
+%%\textbf{type} & & discrete \\\textbf{support} & & $x \in \{1,\dots,k\}$
+%%\end{tabular}
+%%\subsubsection*{Parameter1}
+%%
+%%\noindent\begin{tabular}{p{2cm}cl}
+%%\textbf{name} & & number of categories \\\textbf{symbol} & & $k$  \\
+%%\textbf{definition} & & $k > 0, k \in Z$
+%%\end{tabular}
+%%\subsubsection*{Parameter1}
+%%
+%%\noindent\begin{tabular}{p{2cm}cl}
+%%\textbf{name} & & event probabilities \\\textbf{symbol} & & $p_1, \ldots, p_k$  \\
+%%\textbf{definition} & & $p_1, \ldots, p_k, \Sigma p_i = 1$
+%%\end{tabular}
+%%\subsubsection*{Functions}
+%%
+%%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%%\begin{equation*}p(x=i)=p_i\end{equation*}
+%%
+%%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%%\begin{equation*}undefined\end{equation*}
+%%\section*{CategoricalOrdered} 
+%%
+%%  \bigskip 
+%%
+%%\begin{tabular}{p{2cm}cl}
+%%\textbf{name} & & Categorical Ordered (ID: 0000028)\\ 
+%% 
+%%\textbf{type} & & discrete \\\textbf{support} & & $x \in \{1,\dots,k\}$
+%%\end{tabular}
+%%\subsubsection*{Parameter1}
+%%
+%%\noindent\begin{tabular}{p{2cm}cl}
+%%\textbf{name} & & number of categories \\\textbf{symbol} & & $k$  \\
+%%\textbf{definition} & & $k > 0, k \in Z$
+%%\end{tabular}
+%%\subsubsection*{Parameter1}
+%%
+%%\noindent\begin{tabular}{p{2cm}cl}
+%%\textbf{name} & & event probabilities \\\textbf{symbol} & & $p_1, \ldots, p_k$  \\
+%%\textbf{definition} & & $p_1, \ldots, p_k, \Sigma p_i = 1$
+%%\end{tabular}
+%%\subsubsection*{Functions}
+%%
+%%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%%\begin{equation*}p(x=i)=p_i\end{equation*}
+%%
+%%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%%\begin{equation*}\begin{cases}
+%%    0 & \text{for }x<1 \\
+%%    \sum_{j=1}^i p_j & \text{for }x \in [i,i+1) \\
+%%    1 & \text{for }x \geq k
+%%    \end{cases}\end{equation*}
+%%
+%%
+%%\section*{GeneralizedPoisson} 
+%%
+%%  \bigskip 
+%%
+%%\begin{tabular}{p{2cm}cl}
+%%\textbf{name} & & Generalized Poisson (ID: 0000177)\\ 
+%% 
+%%\textbf{type} & & discrete \\\textbf{support} & & $k \in \{0,1,2,3,\dots\}$
+%%\end{tabular}
+%%\subsubsection*{Parameter1}
 %
 %\noindent\begin{tabular}{p{2cm}cl}
-%\textbf{name} & & probability \\\textbf{symbol} & & $p$  \\
-%\textbf{definition} & & $0<p<1, p \in  R$
-%\end{tabular}
-%\subsubsection*{Functions}
-%
-%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-%\begin{equation*}\begin{cases}
-%    q=(1-p) & \text{for }k=0 \\ p & \text{for }k=1
-%    \end{cases}\end{equation*}
-%
-%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-%\begin{equation*}\begin{cases}
-%    0 & \text{for }k<0 \\ q & \text{for }0\leq k<1 \\ 1 & \text{for }k\geq 1
-%    \end{cases}\end{equation*}
-%    
-%
-%  \section*{Binomial} 
-%
-%\begin{figure}[htb!]
-%\centering
-%  \includegraphics[width=140mm]{pics/Binomial_pmf_cdf.pdf}
-% \caption{PMF and CDF of the Binomial distribution plotted using the provided R-code.}
-% \label{fig:Bionomial_pmf_cdf}
-%\end{figure}
-%
-%  \bigskip 
-%
-%\begin{tabular}{p{2cm}cl}
-%\textbf{name} & & Binomial (ID: 0000018)\\ 
-% 
-%\textbf{type} & & discrete \\\textbf{support} & & $k \in \{0,\dots,n\}$
-%\end{tabular}
-%\subsubsection*{Parameter1}
-%
-%\noindent\begin{tabular}{p{2cm}cl}
-%\textbf{name} & & number of trials \\\textbf{symbol} & & $n$  \\
-%\textbf{definition} & & $n \in N, n \ge 0$
+%\textbf{name} & & Poisson intensity \\\textbf{symbol} & & $\lambda$  \\
+%\textbf{definition} & & $\lambda \in R, \lambda > 0$
 %\end{tabular}
 %\subsubsection*{Parameter2}
 %
 %\noindent\begin{tabular}{p{2cm}cl}
-%\textbf{name} & & success probability in each trial \\\textbf{symbol} & & $p$  \\
+%\textbf{name} & & dispersion \\\textbf{symbol} & & $\delta$  \\
+%\textbf{definition} & & $\max(-1,-\lambda/4) < \delta < 1$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%\begin{equation*}\frac{\lambda (\lambda+k\delta)^{k-1}\times e^{-\lambda - k \delta}}{k!}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
+%
+%  
+%  \section*{NegativeBinomial1} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Negative Binomial 1 (ID: 0000055)\\ 
+% 
+%\textbf{type} & & discrete \\\textbf{support} & & $k \in \{0,1,2,3,\dots\}$
+%\end{tabular}
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=140mm]{pics/NB1_pmf_cdf.pdf}
+% \caption{PMF and CDF of the Negative Binomial distribution, NB1,
+%plotted using the provided R-code.}
+% \label{fig:NB1pmfcdf}
+%\end{figure}
+%
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & number of failures \\\textbf{symbol} & & $r$  \\
+%\textbf{definition} & & $r > 0, r \in N$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & success probability \\\textbf{symbol} & & $p$  \\
 %\textbf{definition} & & $p \in [0,1]$
 %\end{tabular}
 %\subsubsection*{Functions}
 %
 %\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-%\begin{equation*}{n \choose k}\, p^k (1-p)^{n-k}\end{equation*}
+%\begin{equation*}\binom {k+r-1}k (1-p)^r p^k\end{equation*}
 %
 %\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-%\begin{equation*}I_{1-p}(n - k, 1 + k)\end{equation*}
-%
-%
-% \section*{CategoricalNonordered} 
+%\begin{equation*}1 - I_{p}(k+1, r)\end{equation*}
+%\section*{NegativeBinomial2} 
 %
 %  \bigskip 
 %
 %\begin{tabular}{p{2cm}cl}
-%\textbf{name} & & Categorical Nonordered (ID: 0000038)\\ 
+%\textbf{name} & & Negative Binomial 2 (ID: 0000064)\\ 
 % 
-%\textbf{type} & & discrete \\\textbf{support} & & $x \in \{1,\dots,k\}$
+%\textbf{type} & & discrete \\\textbf{support} & & $k \in \{0,1,2,3,\dots\}$
 %\end{tabular}
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=70mm]{pics/NB2_pmf.pdf}
+% \caption{PMF of the Negative Binomial distribution, NB2,
+% plotted using the provided R-code.}
+% \label{fig:NB2pmfcdf}
+%\end{figure}
+%
 %\subsubsection*{Parameter1}
 %
 %\noindent\begin{tabular}{p{2cm}cl}
-%\textbf{name} & & number of categories \\\textbf{symbol} & & $k$  \\
-%\textbf{definition} & & $k > 0, k \in Z$
+%\textbf{name} & & Poisson intensity \\\textbf{symbol} & & $\lambda$  \\
+%\textbf{definition} & & $\lambda \in R, \lambda > 0$
 %\end{tabular}
-%\subsubsection*{Parameter1}
+%\subsubsection*{Parameter2}
 %
 %\noindent\begin{tabular}{p{2cm}cl}
-%\textbf{name} & & event probabilities \\\textbf{symbol} & & $p_1, \ldots, p_k$  \\
-%\textbf{definition} & & $p_1, \ldots, p_k, \Sigma p_i = 1$
+%\textbf{name} & & overdispersion \\\textbf{symbol} & & $\tau$  \\
+%\textbf{definition} & & $\tau \in R$
 %\end{tabular}
 %\subsubsection*{Functions}
 %
 %\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-%\begin{equation*}p(x=i)=p_i\end{equation*}
+%\begin{equation*}\frac{\Gamma(k + \frac{1}{\tau})}{k!\; \Gamma(\frac{1}{\tau})} \Big(\frac{1}{1+\tau \lambda} \Big)^{\frac{1}{\tau}} 
+%\Big(\frac{\lambda}{\frac{1}{\tau} + \lambda} \Big)^{k}\end{equation*}
 %
 %\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-%\begin{equation*}undefined\end{equation*}
-%\section*{CategoricalOrdered} 
+%\begin{equation*}-\end{equation*}
+%
+%
+%\section*{Poisson} 
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=140mm]{pics/Poisson_pmf_cdf.pdf}
+% \caption{PMF and CDF of the Poisson distribution plotted using the provided R-code.}
+% \label{fig:Poisson_pmf_cdf}
+%\end{figure}
 %
 %  \bigskip 
 %
 %\begin{tabular}{p{2cm}cl}
-%\textbf{name} & & Categorical Ordered (ID: 0000028)\\ 
-% 
-%\textbf{type} & & discrete \\\textbf{support} & & $x \in \{1,\dots,k\}$
-%\end{tabular}
-%\subsubsection*{Parameter1}
-%
-%\noindent\begin{tabular}{p{2cm}cl}
-%\textbf{name} & & number of categories \\\textbf{symbol} & & $k$  \\
-%\textbf{definition} & & $k > 0, k \in Z$
-%\end{tabular}
-%\subsubsection*{Parameter1}
-%
-%\noindent\begin{tabular}{p{2cm}cl}
-%\textbf{name} & & event probabilities \\\textbf{symbol} & & $p_1, \ldots, p_k$  \\
-%\textbf{definition} & & $p_1, \ldots, p_k, \Sigma p_i = 1$
-%\end{tabular}
-%\subsubsection*{Functions}
-%
-%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-%\begin{equation*}p(x=i)=p_i\end{equation*}
-%
-%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-%\begin{equation*}\begin{cases}
-%    0 & \text{for }x<1 \\
-%    \sum_{j=1}^i p_j & \text{for }x \in [i,i+1) \\
-%    1 & \text{for }x \geq k
-%    \end{cases}\end{equation*}
-%
-%
-%\section*{GeneralizedPoisson} 
-%
-%  \bigskip 
-%
-%\begin{tabular}{p{2cm}cl}
-%\textbf{name} & & Generalized Poisson (ID: 0000177)\\ 
+%\textbf{name} & & Poisson (ID: 0000111)\\ 
 % 
 %\textbf{type} & & discrete \\\textbf{support} & & $k \in \{0,1,2,3,\dots\}$
 %\end{tabular}
 %\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Poisson intensity \\\textbf{symbol} & & $\lambda$  \\
-\textbf{definition} & & $\lambda \in R, \lambda > 0$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & dispersion \\\textbf{symbol} & & $\delta$  \\
-\textbf{definition} & & $\max(-1,-\lambda/4) < \delta < 1$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}\frac{\lambda (\lambda+k\delta)^{k-1}\times e^{-\lambda - k \delta}}{k!}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-
-  
-  \section*{NegativeBinomial1} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Negative Binomial 1 (ID: 0000055)\\ 
- 
-\textbf{type} & & discrete \\\textbf{support} & & $k \in \{0,1,2,3,\dots\}$
-\end{tabular}
-
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=140mm]{pics/NB1_pmf_cdf.pdf}
- \caption{PMF and CDF of the Negative Binomial distribution, NB1,
-plotted using the provided R-code.}
- \label{fig:NB1pmfcdf}
-\end{figure}
-
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & number of failures \\\textbf{symbol} & & $r$  \\
-\textbf{definition} & & $r > 0, r \in N$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & success probability \\\textbf{symbol} & & $p$  \\
-\textbf{definition} & & $p \in [0,1]$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}\binom {k+r-1}k (1-p)^r p^k\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}1 - I_{p}(k+1, r)\end{equation*}
-\section*{NegativeBinomial2} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Negative Binomial 2 (ID: 0000064)\\ 
- 
-\textbf{type} & & discrete \\\textbf{support} & & $k \in \{0,1,2,3,\dots\}$
-\end{tabular}
-
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=70mm]{pics/NB2_pmf.pdf}
- \caption{PMF of the Negative Binomial distribution, NB2,
- plotted using the provided R-code.}
- \label{fig:NB2pmfcdf}
-\end{figure}
-
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Poisson intensity \\\textbf{symbol} & & $\lambda$  \\
-\textbf{definition} & & $\lambda \in R, \lambda > 0$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & overdispersion \\\textbf{symbol} & & $\tau$  \\
-\textbf{definition} & & $\tau \in R$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}\frac{\Gamma(k + \frac{1}{\tau})}{k!\; \Gamma(\frac{1}{\tau})} \Big(\frac{1}{1+\tau \lambda} \Big)^{\frac{1}{\tau}} 
-\Big(\frac{\lambda}{\frac{1}{\tau} + \lambda} \Big)^{k}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-
-
-\section*{Poisson} 
-
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=140mm]{pics/Poisson_pmf_cdf.pdf}
- \caption{PMF and CDF of the Poisson distribution plotted using the provided R-code.}
- \label{fig:Poisson_pmf_cdf}
-\end{figure}
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Poisson (ID: 0000111)\\ 
- 
-\textbf{type} & & discrete \\\textbf{support} & & $k \in \{0,1,2,3,\dots\}$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Poisson intensity\\ \textbf{symbol} & & $\lambda$  \\
-\textbf{definition} & & $\lambda \in R, \lambda > 0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}\frac{\lambda^k}{k!}e^{-\lambda}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac{\Gamma(\lfloor k+1 \rfloor,\lambda)}{\lfloor k \rfloor!}\end{equation*}
-
-\paragraph{Note} There are surprising many different names for the Poisson parameter, such as
-\label{par:poissonParameterNames}
-\begin{itemize}
-\item 
-\emph{shape} in Distributome, \url{http://www.distributome.org/V3/Distributome.xml.html}
-\item 
-\emph{mean} or \emph{variance} in Forbes et al. 2010, \cite{Forbes:2010jk}
-\item 
-\emph{rate} in UncertML, \url{http://www.uncertml.org/distributions/poisson}
-\item 
-\emph{scale} in Leemis et al. 2008, \url{http://www.math.wm.edu/~leemis/chart/UDR/PDFs/Poisson.pdf}
-\end{itemize}
-As we have followed the UncertML naming convention, \emph{rate} is the 
-code name to be used with ProbOnto.
-
-  
-  \section*{ZeroInflatedPoisson} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Zero-inflated Poisson (ID: 0000210)\\ 
- 
-\textbf{type} & & discrete \\\textbf{support} & & $k \in \{0,1,2,3,\dots\}$
-\end{tabular}
-
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=70mm]{pics/ZIP_pmf.pdf}
- \caption{PMF of the ZIP distribution plotted using the provided R-code.}
- \label{fig:Poisson_pmf_cdf}
-\end{figure}
-
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Poisson intensity \\\textbf{symbol} & & $\lambda$  \\
-\textbf{definition} & & $\lambda \in R, \lambda > 0$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & probability of extra zeros \\\textbf{symbol} & & $\pi$  \\
-\textbf{definition} & & $0<\pi<1, \pi \in  R$ 
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}\begin{cases}
-\pi + (1-\pi) e^{-\lambda}& \text{for } k = 0 \\ 
-(1-\pi) e^{-\lambda} \frac{\lambda^k}{k!} & \text{for } k > 0
-\end{cases}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Discrete multivariate distributions}
-
-\section*{Multinomial} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Multinomial (ID: 0000023)\\ 
- 
-\textbf{type} & & discrete \\\textbf{support} & & $X_i \in \{0,\dots,n\}, \Sigma X_i = n$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & number of trials \\\textbf{symbol} & & $n$  \\
-\textbf{definition} & & $n > 0, n \in N$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & event probabilities \\\textbf{symbol} & & $p_1, \ldots, p_k$  \\
-\textbf{definition} & & $p_1, \ldots, p_k, \Sigma p_i = 1$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}\frac{n!}{x_1!\cdots x_k!} p_1^{x_1} \cdots p_k^{x_k}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Continuous univariate distributions}
-
-\section*{Beta} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Beta (ID: 0000009)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,1)$
-\end{tabular}
-
-\begin{figure}[ht!]
-\centering
-  \includegraphics[width=140mm]{pics/Beta_pdf_cdf.pdf}
- \caption{PDF and CDF of the Beta distribution plotted using the provided R-code.}
- \label{fig:Beta_pdf_cdf}
-\end{figure}
-
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & shape \\\textbf{symbol} & & $\alpha$  \\
-\textbf{definition} & & $\alpha > 0$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & shape \\\textbf{symbol} & & $\beta$  \\
-\textbf{definition} & & $\beta > 0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{x^{\alpha-1}(1-x)^{\beta-1}} {B(\alpha,\beta)} \end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}I_x(\alpha,\beta)\end{equation*}
-
-
-  \section*{ChiSquared} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Chi-squared (ID: 0000060)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in [0,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & degrees of freedom \\\textbf{symbol} & & $k$  \\
-\textbf{definition} & & $k \in N$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{1}{2^{\frac{k}{2}}\Gamma\left(\frac{k}{2}\right)}\; x^{\frac{k}{2}-1} e^{-\frac{x}{2}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac{1}{\Gamma\left(\frac{k}{2}\right)}\; \gamma\left(\frac{k}{2},\,\frac{x}{2}\right)\end{equation*}
-
-
-  \section*{Exponential} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Exponential (ID: 0000128)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in [0,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & rate or inverse scale \\\textbf{symbol} & & $\lambda$  \\
-\textbf{definition} & & $\lambda > 0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\lambda e^{-\lambda x}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}1 - e^{-\lambda x}\end{equation*}
-
-
-  \section*{F} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & F (ID: 0000136)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in [0,+\infty)$
-\end{tabular}
-
-\begin{figure}[ht!]
-\centering
-  \includegraphics[width=140mm]{pics/F_pdf_cdf.pdf}
- \caption{PDF and CDF of the F distribution plotted using the provided R-code.}
- \label{fig:F_pdf_cdf}
-\end{figure}
-
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & degree of freedom \\\textbf{symbol} & & $d_1$  \\
-\textbf{definition} & & $d_1 > 0$
-\end{tabular}
-
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & degree of freedom \\\textbf{symbol} & & $d_2$  \\
-\textbf{definition} & & $d_2 > 0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{\sqrt{\frac{(d_1 x)^{d_1}d_2^{d_2}}
-{(d_1 x+d_2)^{d_1+d_2}}}}
-{x \;B\!\left(\frac{d_1}{2},\frac{d_2}{2}\right)}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}I_{\frac{d_1 x}{d_1 x + d_2}} \left(\tfrac{d_1}{2}, \tfrac{d_2}{2} \right)\end{equation*}
-
-
-  \section*{Gamma} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Gamma (ID: 0000146)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & shape \\\textbf{symbol} & & $k$  \\
-\textbf{definition} & & $k > 0$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & scale \\\textbf{symbol} & & $\theta$  \\
-\textbf{definition} & & $\theta > 0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{1}{\Gamma(k) \theta^k} x^{k \,-\, 1} e^{-\frac{x}{\theta}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac{1}{\Gamma(k)} \gamma\left(k,\, \frac{x}{\theta}\right)\end{equation*}
-
-
-  \section*{Generalized Gamma \cite{stacy1962generalization}} 
-\begin{description} 
-\item[Code name] GeneralizedGamma
-\item[ID] 0000167
-\item[Type] continuous
-\item[Support] $x \in (0,+\infty)$
-\item[Parameter1]
- \begin{description}
-\item[Name] -
-\item[symbol] $a$
-\item[definition] $a > 0$
-\end{description}
-\item[Parameter2]
- \begin{description}
-\item[Name] -
-\item[symbol] $d$
-\item[definition] $d > 0$
-\end{description}
-\item[Parameter3]
- \begin{description}
-\item[Name] -
-\item[symbol] $p$
-\item[definition] $p > 0$
-\end{description}
-\item[PDF] $\frac{p/a^d}{\Gamma(d/p)} x^{d-1}e^{-(x/a)^p}$
-\item[CDF] $\frac{\gamma(d/p, (x/a)^p)}{\Gamma(d/p)}$
-  \end{description}
-
-
-\section*{LogNormal1} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Log-Normal 1 (ID: 0000230)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,+\infty)$
-\end{tabular}
-
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=140mm]{pics/LN1_pdf_cdf.pdf}
- \caption{PDF and CDF of the Log-Normal distribution, LN1,
- plotted using the provided R-code.}
- \label{fig:LN1pdfcdf}
-\end{figure}
-
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & mean of log(x) \\\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu \in R$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & shape \\\textbf{symbol} & & $\sigma$  \\
-\textbf{definition} & & $\sigma > 0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left(\ln x-\mu\right)^2}{2\sigma^2}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac12 + \frac12\,\text{erf}\Big[\frac{\ln x-\mu}{\sqrt{2}\sigma}\Big]\end{equation*}
-\section*{LogNormal2} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Log-Normal 2 (ID: 0000235)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & mean of log(x) \\\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu \in R$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & shape \\\textbf{symbol} & & $v$  \\
-\textbf{definition} & & $v > 0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{1}{x\sqrt{v}\sqrt{2\pi}}\ e^{-\frac{\left(\ln x-\mu\right)^2}{2 v}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-\section*{LogNormal3} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Log-Normal 3 (ID: 0000240)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & median / geometric mean \\\textbf{symbol} & & $m$  \\
-\textbf{definition} & & $m>0$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & shape \\\textbf{symbol} & & $\sigma$  \\
-\textbf{definition} & & $\sigma > 0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left[\ln (x/m)\right]^2}{2\sigma^2}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-\section*{LogNormal4} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Log-Normal 4 (ID: 0000245)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & median / geometric mean \\\textbf{symbol} & & $m$  \\
-\textbf{definition} & & $m>0$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & coefficient of variation \\\textbf{symbol} & & $cv$  \\
-\textbf{definition} & & $cv>0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{1}{x\sqrt{\ln(cv^2+1)}\sqrt{2\pi}}\ e^{-\frac{\left[\ln (x/m)\right]^2}{2\ln(cv^2+1)}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-\section*{LogNormal5} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Log-Normal 5 (ID: 0000250)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & mean of log(x)  \\\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu \in R$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & precision \\\textbf{symbol} & & $\tau$  \\
-\textbf{definition} & & $\tau > 0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\sqrt{\frac{\tau}{2 \pi}} \frac{1}{x}e^{-\frac{\tau}{2}(\log x-\mu)^2}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-
-
-\section*{Normal1} 
-
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=140mm]{pics/Normal1_pdf_cdf.pdf}
- \caption{PDF and CDF of the Normal distribution, N1,
- plotted using the provided R-code.}
- \label{fig:N1pdfcdf}
-\end{figure}
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Normal 1 (ID: 0000071)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in R$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & mean \\\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu \in  R$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & standard deviation \\\textbf{symbol} & & $\sigma$  \\
-\textbf{definition} & & $\sigma> 0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{1}{\sigma \sqrt{2 \pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac12\left[1 + \text{erf}\left( \frac{x-\mu}{\sigma\sqrt{2}}\right)\right]\end{equation*}
-\section*{Normal2} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Normal 2 (ID: 0000081)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in R$
-\end{tabular}
-
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=140mm]{pics/Normal2_pdf_cdf.pdf}
- \caption{PDF and CDF of the Normal distribution, N2,
- plotted using the provided R-code.}
- \label{fig:N2pdfcdf}
-\end{figure}
-
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & mean \\\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu \in  R$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & variance \\\textbf{symbol} & & $v$  \\
-\textbf{definition} & & $v>0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{1}{\sqrt{v} \sqrt{2 \pi}}e^{-\frac{(x-\mu)^2}{2*v}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac12\left[1 + \text{erf}\left( \frac{x-\mu}{\sqrt{v}\sqrt{2}}\right)\right]\end{equation*}
-\section*{Normal3} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Normal 3 (ID: 0000088)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in R$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & mean \\\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu \in  R$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & precision \\\textbf{symbol} & & $\tau$  \\
-\textbf{definition} & & $\tau>0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\sqrt{\frac{\tau}{2 \pi}} e^{-\frac{\tau}{2}(x-\mu)^2}\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\sqrt{\frac{\tau}{2 \pi}} exp\Big(-\frac{\tau}{2}(x-\mu)^2\Big)\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-
-
-\section*{StudentT} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Student's t-distribution (ID: 0000132)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in (-\infty,+\infty)$
-\end{tabular}
-
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=140mm]{pics/StudentT_pdf_cdf.pdf}
- \caption{PDF and CDF of the StudentT distribution plotted using the provided R-code.}
- \label{fig:StudentTpdfcdf}
-\end{figure}
-
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & degrees of freedom \\\textbf{symbol} & & $\nu$  \\
-\textbf{definition} & & $\nu > 0, \nu \in  R$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{\Gamma \left(\frac{\nu+1}{2} \right)} {\sqrt{\nu\pi}\,\Gamma \left(\frac{\nu}{2} \right)} \left(1+\frac{x^2}{\nu} \right)^{-\frac{\nu+1}{2}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\begin{matrix}
-     \frac{1}{2} + x \Gamma \left( \frac{\nu+1}{2} \right)  \times
-     \frac{\,_2F_1 \left ( \frac{1}{2},\frac{\nu+1}{2};\frac{3}{2};
-           -\frac{x^2}{\nu} \right)}
-     {\sqrt{\pi\nu}\,\Gamma \left(\frac{\nu}{2}\right)}
-     \end{matrix}\end{equation*}
-
-
-\section*{StandardNormal} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Standard Normal (ID: 0000123)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in R$
-\end{tabular}
-
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=140mm]{pics/StandardNormal_pdf_cdf.pdf}
- \caption{PDF and CDF of the Standard Normal distribution plotted using the provided R-code.}
- \label{fig:StandardNormalpdfcdf}
-\end{figure}
-
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & mean \\\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu=0$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & standard deviation \\\textbf{symbol} & & $\sigma$  \\
-\textbf{definition} & & $\sigma=1$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{e^{-\frac{1}{2} x^2}}{\sqrt{2\pi}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac12\left[1 + \text{erf}\left( \frac{x}{\sqrt{2}}\right)\right]\end{equation*}
-\section*{StandardUniform} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Standard Uniform (ID: 0000141)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in [0,1]$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & minimum \\
-\textbf{symbol} & & $a$  \\
-\textbf{definition} & & $a=0$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & maximum \\\textbf{symbol} & & $b$  \\
-\textbf{definition} & & $b=1$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}1\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}x\end{equation*}
-
-
-\section*{Uniform} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Uniform (ID: 0000151)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in [a,b]$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & minimum \\\textbf{symbol} & & $a$  \\
-\textbf{definition} & & $a \in  R$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & maximum \\\textbf{symbol} & & $b$  \\
-\textbf{definition} & & $b \in R, a < b$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\begin{cases}
-                  \frac{1}{b - a} & \text{for } x \in [a,b]  \\
-                  0               & \text{otherwise}
-                \end{cases}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\begin{cases}
-                  0               & \text{for } x < a \\
-                  \frac{x-a}{b-a} & \text{for } x \in [a,b) \\
-                  1               & \text{for } x \ge b
-                \end{cases}\end{equation*}
-
-
-  \section*{Weibull1} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Weibull (ID: 0000182)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in [0,+\infty)$
-\end{tabular}
-
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=140mm]{pics/Weibull1_pdf_cdf.pdf}
- \caption{PDF and CDF of the Weibull1 distribution plotted using the provided R-code.}
- \label{fig:Weibull1pdfcdf}
-\end{figure}
-
-
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & scale \\\textbf{symbol} & & $\lambda$  \\
-\textbf{definition} & & $\lambda\in (0, +\infty)$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & shape \\\textbf{symbol} & & $k$  \\
-\textbf{definition} & & $k\in (0, +\infty)$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}f(x)=\begin{cases}
-\frac{k}{\lambda}\left(\frac{x}{\lambda}\right)^{k-1}e^{-(x/\lambda)^{k}} & x\geq0\\
-0 & x<0\end{cases}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\begin{cases}1- e^{-(x/\lambda)^k} & x\geq0\\ 0 & x<0\end{cases}\end{equation*}
-
-   
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Continuous multivariate distributions}
-
-
-\section*{InverseWishart} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Inverse-Wishart (ID: 0000215)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $X(p \times p) - \text{positive-definite matrix}$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & scale matrix \\\textbf{symbol} & & $\Psi$  \\
-\textbf{definition} & & $\Psi > 0, \text{positive-definite matrix}$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & degrees of freedom \\\textbf{symbol} & & $\nu$  \\
-\textbf{definition} & & $\nu > p-1, \nu \in  R$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{\left|\Psi\right|^{\frac{\nu}{2}}}{2^{\frac{\nu p}{2}}\Gamma_p(\frac{\nu}{2})} \left|X\right|^{-\frac{\nu+p+1}{2}}e^{-\frac{1}{2}\text{tr}(\Psi X^{-1})}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-
-
-\section*{MultivariateNormal} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Multivariate Normal (ID: 0000033)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $x \in \mu + \text{span}(\Sigma) \subseteq  R^k$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & location \\\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu \in R^k$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & covariance \\\textbf{symbol} & & $\Sigma$  \\
-\textbf{definition} & & $\Sigma \in R^{k\times k}$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}(2\pi)^{-\frac{k}{2}}|\Sigma|^{-\frac{1}{2}}\, e^{ -\frac{1}{2}(x-\mu)'\Sigma^{-1}(x-\mu) }\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\text{no analytic expression}\end{equation*}
-
-  
-  \section*{Wishart1} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Wishart 1 (ID: 0000192)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $X(p \times p) - \text{positive definite matrix}$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & scale matrix \\\textbf{symbol} & & $V$  \\
-\textbf{definition} & & $V > 0, p\times p - \text{positive definite matrix}$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & degrees of freedom \\\textbf{symbol} & & $n$  \\
-\textbf{definition} & & $n > p-1$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{|X|^{\frac{n-p-1}{2}} e^{-\frac{\text{tr}(V^{-1}X)}{2}}}{2^\frac{np}{2}|V|^\frac{n}{2}\Gamma_p(\frac{n}{2})}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-  
-  \section*{Wishart2} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Wishart 2 (ID: NN)\\ 
- 
-\textbf{type} & & continuous \\\textbf{support} & & $X(p \times p) - \text{symmetric, positive definite matrix}$
-\end{tabular}
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & scale matrix \\\textbf{symbol} & & $R$  \\
-\textbf{definition} & & $R(p \times p) - \text{positive definite matrix}$
-\end{tabular}
-\subsubsection*{Parameter2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & $-$ \\
-\textbf{symbol} & & $k$  \\
-\textbf{definition} & & $-$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}
-|R|^{k/2}|x|^{(k-p-1)/2}e^{-\frac{1}2\,tr(Rx)}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-
-     
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Univariate Mixture Distributions}
-
-
-\section*{MixtureDistribution} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Mixture Distribution (ID: 0000014)\\ 
- 
-\textbf{type} & & continuous/discrete \\
-\textbf{support} & & $-$
-\end{tabular}
-
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=140mm]{pics/MixturePoisson_pmf_cdf}
- \caption{PMF and CDF of the Mixture Poisson distribution plotted using the formula for 
- for various values as shown in the legend of the left plot. The PMF reads: $(1\!-\!\pi) \,\lambda_1^k/k! \,\exp(-\lambda_1) + \pi\,\lambda_2^k / k! \, \exp(-\lambda_2)$. The CDF reads: $(1-\pi)\,\Gamma(\lfloor k+1 , \lambda_1 \rfloor) / \lfloor k \rfloor!+\pi \,\Gamma(\lfloor k+1 , \lambda_2 \rfloor) / \lfloor k \rfloor!$.}
- \label{fig:MixturePoisson_pmf_cdf}
-\end{figure}
-
-\subsubsection*{Parameter1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & mixing coefficients \\\textbf{symbol} & & $\pi_1, \ldots, \pi_k$  \\
-\textbf{definition} & & $\Sigma_{i=1}^K \pi_i=1; 0\le \pi_i \le 1$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}f(x; \pi, \theta) = \sum_{i=1}^{K} \pi_{i}\; p_i(x; \theta_i)  \end{equation*}
-where $p_i(x; \theta_i)$ the PDF of the $i^{th}$ component with parameters $\theta_i$.
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}f(x; \pi, \theta) = \sum_{i=1}^{K} \pi_{i}; p_i(x; \theta_i)  \end{equation*}
-where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\theta_i$.
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-
-
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Poisson intensity\\ \textbf{symbol} & & $\lambda$  \\
+%\textbf{definition} & & $\lambda \in R, \lambda > 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%\begin{equation*}\frac{\lambda^k}{k!}e^{-\lambda}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\frac{\Gamma(\lfloor k+1 \rfloor,\lambda)}{\lfloor k \rfloor!}\end{equation*}
+%
+%\paragraph{Note} There are surprising many different names for the Poisson parameter, such as
+%\label{par:poissonParameterNames}
+%\begin{itemize}
+%\item 
+%\emph{shape} in Distributome, \url{http://www.distributome.org/V3/Distributome.xml.html}
+%\item 
+%\emph{mean} or \emph{variance} in Forbes et al. 2010, \cite{Forbes:2010jk}
+%\item 
+%\emph{rate} in UncertML, \url{http://www.uncertml.org/distributions/poisson}
+%\item 
+%\emph{scale} in Leemis et al. 2008, \url{http://www.math.wm.edu/~leemis/chart/UDR/PDFs/Poisson.pdf}
+%\end{itemize}
+%As we have followed the UncertML naming convention, \emph{rate} is the 
+%code name to be used with ProbOnto.
+%
+%  
+%  \section*{ZeroInflatedPoisson} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Zero-inflated Poisson (ID: 0000210)\\ 
+% 
+%\textbf{type} & & discrete \\\textbf{support} & & $k \in \{0,1,2,3,\dots\}$
+%\end{tabular}
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=70mm]{pics/ZIP_pmf.pdf}
+% \caption{PMF of the ZIP distribution plotted using the provided R-code.}
+% \label{fig:Poisson_pmf_cdf}
+%\end{figure}
+%
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Poisson intensity \\\textbf{symbol} & & $\lambda$  \\
+%\textbf{definition} & & $\lambda \in R, \lambda > 0$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & probability of extra zeros \\\textbf{symbol} & & $\pi$  \\
+%\textbf{definition} & & $0<\pi<1, \pi \in  R$ 
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%\begin{equation*}\begin{cases}
+%\pi + (1-\pi) e^{-\lambda}& \text{for } k = 0 \\ 
+%(1-\pi) e^{-\lambda} \frac{\lambda^k}{k!} & \text{for } k > 0
+%\end{cases}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Discrete multivariate distributions}
+%
+%\section*{Multinomial} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Multinomial (ID: 0000023)\\ 
+% 
+%\textbf{type} & & discrete \\\textbf{support} & & $X_i \in \{0,\dots,n\}, \Sigma X_i = n$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & number of trials \\\textbf{symbol} & & $n$  \\
+%\textbf{definition} & & $n > 0, n \in N$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & event probabilities \\\textbf{symbol} & & $p_1, \ldots, p_k$  \\
+%\textbf{definition} & & $p_1, \ldots, p_k, \Sigma p_i = 1$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%\begin{equation*}\frac{n!}{x_1!\cdots x_k!} p_1^{x_1} \cdots p_k^{x_k}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Continuous univariate distributions}
+%
+%\section*{Beta} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Beta (ID: 0000009)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,1)$
+%\end{tabular}
+%
+%\begin{figure}[ht!]
+%\centering
+%  \includegraphics[width=140mm]{pics/Beta_pdf_cdf.pdf}
+% \caption{PDF and CDF of the Beta distribution plotted using the provided R-code.}
+% \label{fig:Beta_pdf_cdf}
+%\end{figure}
+%
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & shape \\\textbf{symbol} & & $\alpha$  \\
+%\textbf{definition} & & $\alpha > 0$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & shape \\\textbf{symbol} & & $\beta$  \\
+%\textbf{definition} & & $\beta > 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{x^{\alpha-1}(1-x)^{\beta-1}} {B(\alpha,\beta)} \end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}I_x(\alpha,\beta)\end{equation*}
+%
+%
+%  \section*{ChiSquared} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Chi-squared (ID: 0000060)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in [0,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & degrees of freedom \\\textbf{symbol} & & $k$  \\
+%\textbf{definition} & & $k \in N$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{1}{2^{\frac{k}{2}}\Gamma\left(\frac{k}{2}\right)}\; x^{\frac{k}{2}-1} e^{-\frac{x}{2}}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\frac{1}{\Gamma\left(\frac{k}{2}\right)}\; \gamma\left(\frac{k}{2},\,\frac{x}{2}\right)\end{equation*}
+%
+%
+%  \section*{Exponential} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Exponential (ID: 0000128)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in [0,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & rate or inverse scale \\\textbf{symbol} & & $\lambda$  \\
+%\textbf{definition} & & $\lambda > 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\lambda e^{-\lambda x}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}1 - e^{-\lambda x}\end{equation*}
+%
+%
+%  \section*{F} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & F (ID: 0000136)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in [0,+\infty)$
+%\end{tabular}
+%
+%\begin{figure}[ht!]
+%\centering
+%  \includegraphics[width=140mm]{pics/F_pdf_cdf.pdf}
+% \caption{PDF and CDF of the F distribution plotted using the provided R-code.}
+% \label{fig:F_pdf_cdf}
+%\end{figure}
+%
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & degree of freedom \\\textbf{symbol} & & $d_1$  \\
+%\textbf{definition} & & $d_1 > 0$
+%\end{tabular}
+%
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & degree of freedom \\\textbf{symbol} & & $d_2$  \\
+%\textbf{definition} & & $d_2 > 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{\sqrt{\frac{(d_1 x)^{d_1}d_2^{d_2}}
+%{(d_1 x+d_2)^{d_1+d_2}}}}
+%{x \;B\!\left(\frac{d_1}{2},\frac{d_2}{2}\right)}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}I_{\frac{d_1 x}{d_1 x + d_2}} \left(\tfrac{d_1}{2}, \tfrac{d_2}{2} \right)\end{equation*}
+%
+%
+%  \section*{Gamma} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Gamma (ID: 0000146)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & shape \\\textbf{symbol} & & $k$  \\
+%\textbf{definition} & & $k > 0$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & scale \\\textbf{symbol} & & $\theta$  \\
+%\textbf{definition} & & $\theta > 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{1}{\Gamma(k) \theta^k} x^{k \,-\, 1} e^{-\frac{x}{\theta}}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\frac{1}{\Gamma(k)} \gamma\left(k,\, \frac{x}{\theta}\right)\end{equation*}
+%
+%
+%  \section*{Generalized Gamma \cite{stacy1962generalization}} 
+%\begin{description} 
+%\item[Code name] GeneralizedGamma
+%\item[ID] 0000167
+%\item[Type] continuous
+%\item[Support] $x \in (0,+\infty)$
+%\item[Parameter1]
+% \begin{description}
+%\item[Name] -
+%\item[symbol] $a$
+%\item[definition] $a > 0$
+%\end{description}
+%\item[Parameter2]
+% \begin{description}
+%\item[Name] -
+%\item[symbol] $d$
+%\item[definition] $d > 0$
+%\end{description}
+%\item[Parameter3]
+% \begin{description}
+%\item[Name] -
+%\item[symbol] $p$
+%\item[definition] $p > 0$
+%\end{description}
+%\item[PDF] $\frac{p/a^d}{\Gamma(d/p)} x^{d-1}e^{-(x/a)^p}$
+%\item[CDF] $\frac{\gamma(d/p, (x/a)^p)}{\Gamma(d/p)}$
+%  \end{description}
+%
+%
+%\section*{LogNormal1} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Log-Normal 1 (ID: 0000230)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,+\infty)$
+%\end{tabular}
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=140mm]{pics/LN1_pdf_cdf.pdf}
+% \caption{PDF and CDF of the Log-Normal distribution, LN1,
+% plotted using the provided R-code.}
+% \label{fig:LN1pdfcdf}
+%\end{figure}
+%
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & mean of log(x) \\\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu \in R$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & shape \\\textbf{symbol} & & $\sigma$  \\
+%\textbf{definition} & & $\sigma > 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left(\ln x-\mu\right)^2}{2\sigma^2}}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\frac12 + \frac12\,\text{erf}\Big[\frac{\ln x-\mu}{\sqrt{2}\sigma}\Big]\end{equation*}
+%\section*{LogNormal2} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Log-Normal 2 (ID: 0000235)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & mean of log(x) \\\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu \in R$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & shape \\\textbf{symbol} & & $v$  \\
+%\textbf{definition} & & $v > 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{1}{x\sqrt{v}\sqrt{2\pi}}\ e^{-\frac{\left(\ln x-\mu\right)^2}{2 v}}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
+%\section*{LogNormal3} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Log-Normal 3 (ID: 0000240)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & median / geometric mean \\\textbf{symbol} & & $m$  \\
+%\textbf{definition} & & $m>0$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & shape \\\textbf{symbol} & & $\sigma$  \\
+%\textbf{definition} & & $\sigma > 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left[\ln (x/m)\right]^2}{2\sigma^2}}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
+%\section*{LogNormal4} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Log-Normal 4 (ID: 0000245)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & median / geometric mean \\\textbf{symbol} & & $m$  \\
+%\textbf{definition} & & $m>0$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & coefficient of variation \\\textbf{symbol} & & $cv$  \\
+%\textbf{definition} & & $cv>0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{1}{x\sqrt{\ln(cv^2+1)}\sqrt{2\pi}}\ e^{-\frac{\left[\ln (x/m)\right]^2}{2\ln(cv^2+1)}}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
+%\section*{LogNormal5} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Log-Normal 5 (ID: 0000250)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in (0,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & mean of log(x)  \\\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu \in R$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & precision \\\textbf{symbol} & & $\tau$  \\
+%\textbf{definition} & & $\tau > 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\sqrt{\frac{\tau}{2 \pi}} \frac{1}{x}e^{-\frac{\tau}{2}(\log x-\mu)^2}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
+%
+%
+%\section*{Normal1} 
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=140mm]{pics/Normal1_pdf_cdf.pdf}
+% \caption{PDF and CDF of the Normal distribution, N1,
+% plotted using the provided R-code.}
+% \label{fig:N1pdfcdf}
+%\end{figure}
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Normal 1 (ID: 0000071)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in R$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & mean \\\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu \in  R$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & standard deviation \\\textbf{symbol} & & $\sigma$  \\
+%\textbf{definition} & & $\sigma> 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{1}{\sigma \sqrt{2 \pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\frac12\left[1 + \text{erf}\left( \frac{x-\mu}{\sigma\sqrt{2}}\right)\right]\end{equation*}
+%\section*{Normal2} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Normal 2 (ID: 0000081)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in R$
+%\end{tabular}
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=140mm]{pics/Normal2_pdf_cdf.pdf}
+% \caption{PDF and CDF of the Normal distribution, N2,
+% plotted using the provided R-code.}
+% \label{fig:N2pdfcdf}
+%\end{figure}
+%
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & mean \\\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu \in  R$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & variance \\\textbf{symbol} & & $v$  \\
+%\textbf{definition} & & $v>0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{1}{\sqrt{v} \sqrt{2 \pi}}e^{-\frac{(x-\mu)^2}{2*v}}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\frac12\left[1 + \text{erf}\left( \frac{x-\mu}{\sqrt{v}\sqrt{2}}\right)\right]\end{equation*}
+%\section*{Normal3} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Normal 3 (ID: 0000088)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in R$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & mean \\\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu \in  R$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & precision \\\textbf{symbol} & & $\tau$  \\
+%\textbf{definition} & & $\tau>0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\sqrt{\frac{\tau}{2 \pi}} e^{-\frac{\tau}{2}(x-\mu)^2}\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\sqrt{\frac{\tau}{2 \pi}} exp\Big(-\frac{\tau}{2}(x-\mu)^2\Big)\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
+%
+%
+%\section*{StudentT} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Student's t-distribution (ID: 0000132)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in (-\infty,+\infty)$
+%\end{tabular}
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=140mm]{pics/StudentT_pdf_cdf.pdf}
+% \caption{PDF and CDF of the StudentT distribution plotted using the provided R-code.}
+% \label{fig:StudentTpdfcdf}
+%\end{figure}
+%
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & degrees of freedom \\\textbf{symbol} & & $\nu$  \\
+%\textbf{definition} & & $\nu > 0, \nu \in  R$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{\Gamma \left(\frac{\nu+1}{2} \right)} {\sqrt{\nu\pi}\,\Gamma \left(\frac{\nu}{2} \right)} \left(1+\frac{x^2}{\nu} \right)^{-\frac{\nu+1}{2}}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\begin{matrix}
+%     \frac{1}{2} + x \Gamma \left( \frac{\nu+1}{2} \right)  \times
+%     \frac{\,_2F_1 \left ( \frac{1}{2},\frac{\nu+1}{2};\frac{3}{2};
+%           -\frac{x^2}{\nu} \right)}
+%     {\sqrt{\pi\nu}\,\Gamma \left(\frac{\nu}{2}\right)}
+%     \end{matrix}\end{equation*}
+%
+%
+%\section*{StandardNormal} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Standard Normal (ID: 0000123)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in R$
+%\end{tabular}
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=140mm]{pics/StandardNormal_pdf_cdf.pdf}
+% \caption{PDF and CDF of the Standard Normal distribution plotted using the provided R-code.}
+% \label{fig:StandardNormalpdfcdf}
+%\end{figure}
+%
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & mean \\\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu=0$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & standard deviation \\\textbf{symbol} & & $\sigma$  \\
+%\textbf{definition} & & $\sigma=1$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{e^{-\frac{1}{2} x^2}}{\sqrt{2\pi}}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\frac12\left[1 + \text{erf}\left( \frac{x}{\sqrt{2}}\right)\right]\end{equation*}
+%\section*{StandardUniform} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Standard Uniform (ID: 0000141)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in [0,1]$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & minimum \\
+%\textbf{symbol} & & $a$  \\
+%\textbf{definition} & & $a=0$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & maximum \\\textbf{symbol} & & $b$  \\
+%\textbf{definition} & & $b=1$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}1\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}x\end{equation*}
+%
+%
+%\section*{Uniform} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Uniform (ID: 0000151)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in [a,b]$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & minimum \\\textbf{symbol} & & $a$  \\
+%\textbf{definition} & & $a \in  R$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & maximum \\\textbf{symbol} & & $b$  \\
+%\textbf{definition} & & $b \in R, a < b$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\begin{cases}
+%                  \frac{1}{b - a} & \text{for } x \in [a,b]  \\
+%                  0               & \text{otherwise}
+%                \end{cases}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\begin{cases}
+%                  0               & \text{for } x < a \\
+%                  \frac{x-a}{b-a} & \text{for } x \in [a,b) \\
+%                  1               & \text{for } x \ge b
+%                \end{cases}\end{equation*}
+%
+%
+%  \section*{Weibull1} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Weibull (ID: 0000182)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in [0,+\infty)$
+%\end{tabular}
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=140mm]{pics/Weibull1_pdf_cdf.pdf}
+% \caption{PDF and CDF of the Weibull1 distribution plotted using the provided R-code.}
+% \label{fig:Weibull1pdfcdf}
+%\end{figure}
+%
+%
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & scale \\\textbf{symbol} & & $\lambda$  \\
+%\textbf{definition} & & $\lambda\in (0, +\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & shape \\\textbf{symbol} & & $k$  \\
+%\textbf{definition} & & $k\in (0, +\infty)$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}f(x)=\begin{cases}
+%\frac{k}{\lambda}\left(\frac{x}{\lambda}\right)^{k-1}e^{-(x/\lambda)^{k}} & x\geq0\\
+%0 & x<0\end{cases}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\begin{cases}1- e^{-(x/\lambda)^k} & x\geq0\\ 0 & x<0\end{cases}\end{equation*}
+%
+%   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Continuous multivariate distributions}
+%
+%
+%\section*{InverseWishart} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Inverse-Wishart (ID: 0000215)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $X(p \times p) - \text{positive-definite matrix}$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & scale matrix \\\textbf{symbol} & & $\Psi$  \\
+%\textbf{definition} & & $\Psi > 0, \text{positive-definite matrix}$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & degrees of freedom \\\textbf{symbol} & & $\nu$  \\
+%\textbf{definition} & & $\nu > p-1, \nu \in  R$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{\left|\Psi\right|^{\frac{\nu}{2}}}{2^{\frac{\nu p}{2}}\Gamma_p(\frac{\nu}{2})} \left|X\right|^{-\frac{\nu+p+1}{2}}e^{-\frac{1}{2}\text{tr}(\Psi X^{-1})}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
+%
+%
+%\section*{MultivariateNormal} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Multivariate Normal (ID: 0000033)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $x \in \mu + \text{span}(\Sigma) \subseteq  R^k$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & location \\\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu \in R^k$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & covariance \\\textbf{symbol} & & $\Sigma$  \\
+%\textbf{definition} & & $\Sigma \in R^{k\times k}$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}(2\pi)^{-\frac{k}{2}}|\Sigma|^{-\frac{1}{2}}\, e^{ -\frac{1}{2}(x-\mu)'\Sigma^{-1}(x-\mu) }\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\text{no analytic expression}\end{equation*}
+%
+%  
+%  \section*{Wishart1} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Wishart 1 (ID: 0000192)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $X(p \times p) - \text{positive definite matrix}$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & scale matrix \\\textbf{symbol} & & $V$  \\
+%\textbf{definition} & & $V > 0, p\times p - \text{positive definite matrix}$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & degrees of freedom \\\textbf{symbol} & & $n$  \\
+%\textbf{definition} & & $n > p-1$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{|X|^{\frac{n-p-1}{2}} e^{-\frac{\text{tr}(V^{-1}X)}{2}}}{2^\frac{np}{2}|V|^\frac{n}{2}\Gamma_p(\frac{n}{2})}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
+%  
+%  \section*{Wishart2} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Wishart 2 (ID: NN)\\ 
+% 
+%\textbf{type} & & continuous \\\textbf{support} & & $X(p \times p) - \text{symmetric, positive definite matrix}$
+%\end{tabular}
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & scale matrix \\\textbf{symbol} & & $R$  \\
+%\textbf{definition} & & $R(p \times p) - \text{positive definite matrix}$
+%\end{tabular}
+%\subsubsection*{Parameter2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & $-$ \\
+%\textbf{symbol} & & $k$  \\
+%\textbf{definition} & & $-$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}
+%|R|^{k/2}|x|^{(k-p-1)/2}e^{-\frac{1}2\,tr(Rx)}\end{equation*}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
+%
+%     
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Univariate Mixture Distributions}
+%
+%
+%\section*{MixtureDistribution} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Mixture Distribution (ID: 0000014)\\ 
+% 
+%\textbf{type} & & continuous/discrete \\
+%\textbf{support} & & $-$
+%\end{tabular}
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=140mm]{pics/MixturePoisson_pmf_cdf}
+% \caption{PMF and CDF of the Mixture Poisson distribution plotted using the formula for 
+% for various values as shown in the legend of the left plot. The PMF reads: $(1\!-\!\pi) \,\lambda_1^k/k! \,\exp(-\lambda_1) + \pi\,\lambda_2^k / k! \, \exp(-\lambda_2)$. The CDF reads: $(1-\pi)\,\Gamma(\lfloor k+1 , \lambda_1 \rfloor) / \lfloor k \rfloor!+\pi \,\Gamma(\lfloor k+1 , \lambda_2 \rfloor) / \lfloor k \rfloor!$.}
+% \label{fig:MixturePoisson_pmf_cdf}
+%\end{figure}
+%
+%\subsubsection*{Parameter1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & mixing coefficients \\\textbf{symbol} & & $\pi_1, \ldots, \pi_k$  \\
+%\textbf{definition} & & $\Sigma_{i=1}^K \pi_i=1; 0\le \pi_i \le 1$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}f(x; \pi, \theta) = \sum_{i=1}^{K} \pi_{i}\; p_i(x; \theta_i)  \end{equation*}
+%where $p_i(x; \theta_i)$ the PDF of the $i^{th}$ component with parameters $\theta_i$.
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%\begin{equation*}f(x; \pi, \theta) = \sum_{i=1}^{K} \pi_{i}; p_i(x; \theta_i)  \end{equation*}
+%where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\theta_i$.
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
+%
+%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -5311,18 +5312,10 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 \begin{equation*}\begin{cases}
     q=(1-p) & \text{for }k=0 \\ p & \text{for }k=1
     \end{cases}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}-\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\begin{cases}
     0 & \text{for }k<0 \\ q & \text{for }0\leq k<1 \\ 1 & \text{for }k\geq 1
     \end{cases}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}-\end{equation*}
-
 \smallskip\section*{Beta} 
 
   \bigskip 
@@ -5336,6 +5329,12 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 
 \textbf{support} & & $x \in (0,1)$
 \end{tabular}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Beta_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Beta distribution plotted using the provided R-code.}
+ \label{fig:Beta_pdf_cdf}
+\end{figure}
 \subsubsection*{Parameter: alpha}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -5356,16 +5355,19 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{x^{\alpha-1}(1-x)^{\beta-1}} {B(\alpha,\beta)} \end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}(x^(alpha-1)*(1-x)^(beta-1))/B(alpha,beta)\end{equation*}
+\begin{verbbox}
+(x^(alpha-1)*(1-x)^(beta-1))/B(alpha,beta)
+\end{verbbox}
+\begin{figure}[ht]
+  \centering
+  \theverbbox
+\end{figure}
 
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}I_x(\alpha,\beta)\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}Rbeta(x, a, b)\end{equation*}
-
+\begin{verbatim}Rbeta(x, a, b)\end{verbatim}
 \smallskip\section*{Binomial} 
 
   \bigskip 
@@ -5407,15 +5409,12 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}{n \choose k}\, p^k (1-p)^{n-k}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}choose(n,k) * p^k*(1-p)^(n-k)\end{equation*}
-
+\begin{verbatim}choose(n,k) * p^k*(1-p)^(n-k)\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}I_{1-p}(n - k, 1 + k)\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}Rbeta(1-p, n-k, 1+k)\end{equation*}
+\begin{verbatim}Rbeta(1-p, n-k, 1+k)\end{verbatim}
 
 \smallskip\section*{CategoricalNonordered} 
 
@@ -5442,16 +5441,8 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}p(x=i)=p_i\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}undefined\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{CategoricalOrdered} 
 
   \bigskip 
@@ -5477,20 +5468,12 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}p(x=i)=p_i\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\begin{cases}
     0 & \text{for }x<1 \\
     \sum_{j=1}^i p_j & \text{for }x \in [i,i+1) \\
     1 & \text{for }x \geq k
     \end{cases}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Cauchy} 
 
   \bigskip 
@@ -5524,16 +5507,8 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{\pi\gamma\,\left[1 + \left(\frac{x-x_0}{\gamma}\right)^2\right]}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{ChiSquared} 
 
   \bigskip 
@@ -5559,43 +5534,8 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{2^{\frac{k}{2}}\Gamma\left(\frac{k}{2}\right)}\; x^{\frac{k}{2}-1} e^{-\frac{x}{2}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac{1}{\Gamma\left(\frac{k}{2}\right)}\; \gamma\left(\frac{k}{2},\,\frac{x}{2}\right)\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
-\smallskip\section*{DiracDelta} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Dirac Delta (ID: 0000069)\\ 
- 
-\textbf{type} & &  \\ 
-
-\textbf{variate} & & $-$, - \\ 
-
-\textbf{support} & & $-$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{} 
-\begin{equation*}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{ in R}  
-\begin{equation*}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Dirichlet} 
 
   \bigskip 
@@ -5621,16 +5561,8 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{B(\alpha)} \prod_{i=1}^K x_i^{\alpha_i - 1} \\ \text{where} \quad B(\alpha) = \frac{\prod_{i=1}^K \Gamma(\alpha_i)}{\Gamma\bigl(\sum_{i=1}^K \alpha_i\bigr)} \\ \text{where} \quad \alpha=(\alpha_1,\ldots,\alpha_K)\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Exponential} 
 
   \bigskip 
@@ -5656,16 +5588,8 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\lambda e^{-\lambda x}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}1 - e^{-\lambda x}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{F} 
 
   \bigskip 
@@ -5679,6 +5603,12 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 
 \textbf{support} & & $x \in [0,+\infty)$
 \end{tabular}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/F_pdf_cdf.pdf}
+ \caption{PDF and CDF of the F distribution plotted using the provided R-code.}
+ \label{fig:F_pdf_cdf}
+\end{figure}
 \subsubsection*{Parameter: numerator}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -5701,16 +5631,12 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 \begin{equation*}\frac{\sqrt{\frac{(d_1 x)^{d_1}d_2^{d_2}}
 {(d_1 x+d_2)^{d_1+d_2}}}}
 {x B\left(\frac{d_1}{2},\frac{d_2}{2}\right)}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}sqrt((d1*x)^d1*d2^(d2) / (d1*x+d2)^(d1+d2) ) / (x*beta(d1/2,d2/2))\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}I_{\frac{d_1 x}{d_1 x + d_2}} \left(\tfrac{d_1}{2}, \tfrac{d_2}{2} \right)\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}Rbeta(d1*x / (d1*x + d2), d1/2, d2/2)\end{verbatim}
 \smallskip\section*{Gamma} 
 
   \bigskip 
@@ -5744,16 +5670,8 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{\Gamma(k) \theta^k} x^{k \,-\, 1} e^{-\frac{x}{\theta}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac{1}{\Gamma(k)} \gamma\left(k,\, \frac{x}{\theta}\right)\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{GeneralizedGamma1} 
 
   \bigskip 
@@ -5795,16 +5713,8 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{p/a^d}{\Gamma(d/p)} x^{d-1}e^{-(x/a)^p}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac{\gamma(d/p, (x/a)^p)}{\Gamma(d/p)}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{GeneralizedGamma2} 
 
   \bigskip 
@@ -5854,16 +5764,8 @@ where $p_i(x; \theta_i)$ the PMF of the $i^{th}$ component with parameters $\the
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{k (x-a)^{kc-1}}{b^{kc}\Gamma(c)}\exp\Big[-\Big(\frac{x-a}{b}\Big)^k\Big]\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{GeneralizedPoisson} 
 
   \bigskip 
@@ -5878,15 +5780,6 @@ $, scalar \\
 
 \textbf{support} & & $k \in \{0,1,2,3,\dots\}$
 \end{tabular}
-
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=70mm]{pics/GeneralisedPoisson_pmf_cdf}
- \caption{PMF of the Generalised Poisson distribution,
-plotted using the provided R-code.}
- \label{fig:NB1pmfcdf}
-\end{figure}
-
 \subsubsection*{Parameter: rate}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -5907,16 +5800,8 @@ plotted using the provided R-code.}
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}\frac{\lambda (\lambda+k\delta)^{k-1}\times e^{-\lambda - k \delta}}{k!}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Geometric} 
 
   \bigskip 
@@ -5943,16 +5828,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}(1 - p)^{k-1}\,p\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}1-(1 - p)^k\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Gompertz} 
 
   \bigskip 
@@ -5986,16 +5863,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}b\eta e^{bx}e^{\eta}\exp\left(-\eta e^{bx} \right)\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}1-\exp\left(-\eta\left(e^{bx}-1 \right)\right)\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Gumbel} 
 
   \bigskip 
@@ -6029,16 +5898,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{e^{-e^{-\frac{x-\mu}{\beta}}} e^{-\frac{x-\mu}{\beta}}}{\beta}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}e^{-e^{-(x-\mu)/\beta}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Hypergeometric} 
 
   \bigskip 
@@ -6081,16 +5942,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}{{{K \choose k} {{N-K} \choose {n-k}}}\over {N \choose n}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}1-{{{n \choose {k+1}}{{N-n} \choose {K-k-1}}}\over {N \choose K}} \,_3F_2\!\!\left[\begin{array}{c}1,\ k+1-K,\ k+1-n \\ k+2,\ N+k+2-K-n\end{array};1\right]\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{InverseGamma} 
 
   \bigskip 
@@ -6124,16 +5977,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{\beta^\alpha}{\Gamma(\alpha)} x^{-\alpha - 1} \exp \left(\frac{-\beta}{x}\right)\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac{\Gamma(\alpha, \beta/x)}{\Gamma(\alpha)}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{InverseWishart} 
 
   \bigskip 
@@ -6167,16 +6012,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{\left|\Psi\right|^{\frac{\nu}{2}}}{2^{\frac{\nu p}{2}}\Gamma_p(\frac{\nu}{2})} \left|X\right|^{-\frac{\nu+p+1}{2}}e^{-\frac{1}{2}\text{tr}(\Psi X^{-1})}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Laplace1} 
 
   \bigskip 
@@ -6210,20 +6047,12 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{2\,b} \exp \left(-\frac{|x-\mu|}b \right)\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\begin{cases}
       \frac12 \exp \left( \frac{x-\mu}{b} \right) & \mbox{if }x < \mu
              \\[8pt]
           1-\frac12 \exp \left( -\frac{x-\mu}{b} \right) & \mbox{if }x \geq \mu
        \end{cases}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Laplace2} 
 
   \bigskip 
@@ -6257,16 +6086,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{\tau}{2} \exp \left(-\tau|x-\mu| \right)\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{LogNormal1} 
 
   \bigskip 
@@ -6280,6 +6101,13 @@ $, scalar \\
 
 \textbf{support} & & $x \in (0,+\infty)$
 \end{tabular}
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/LN1_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Log-Normal distribution, LN1,
+ plotted using the provided R-code.}
+ \label{fig:LN1pdfcdf}
+\end{figure}
 \subsubsection*{Parameter: meanLog}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -6300,16 +6128,12 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left(\ln x-\mu\right)^2}{2\sigma^2}}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}1/(x*sigma*sqrt(2*pi)) * exp((-(log(x)-mu)^2)/(2*sigma^2))\end{equation*}
-
+\begin{verbatim}1/(x*sigma*sqrt(2*pi)) * exp((-(log(x)-mu)^2)/(2*sigma^2))\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac12 + \frac12\,\text{erf}\Big[\frac{\ln x-\mu}{\sqrt{2}\sigma}\Big]\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}1/2 + 1/2 *erf( (log(x)-mu)/(sqrt(2)*sigma) )\end{equation*}
-
+\begin{verbatim}1/2 + 1/2 *erf( (log(x)-mu)/(sqrt(2)*sigma) )\end{verbatim}
 \smallskip\section*{LogNormal2} 
 
   \bigskip 
@@ -6343,16 +6167,10 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{x\sqrt{v}\sqrt{2\pi}}\ e^{-\frac{\left(\ln x-\mu\right)^2}{2 v}}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}1/(x*sqrt(v)*sqrt(2*pi)) * exp(-(ln(x)-mu)^2/(2*v))\end{equation*}
-
+\begin{verbatim}1/(x*sqrt(v)*sqrt(2*pi)) * exp(-(ln(x)-mu)^2/(2*v))\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{LogNormal3} 
 
   \bigskip 
@@ -6386,16 +6204,10 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left[\ln (x/m)\right]^2}{2\sigma^2}}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}1/(x*sigma*sqrt(2*pi)) * exp(-(log(x/m))^2 / (2*sigma^2))\end{equation*}
-
+\begin{verbatim}1/(x*sigma*sqrt(2*pi)) * exp(-(log(x/m))^2 / (2*sigma^2))\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{LogNormal4} 
 
   \bigskip 
@@ -6429,16 +6241,10 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{x\sqrt{\ln(cv^2+1)}\sqrt{2\pi}}\ e^{-\frac{\left[\ln (x/m)\right]^2}{2\ln(cv^2+1)}}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}1/(x*sqrt(log(cv^2+1))*sqrt(2*pi)) * exp( -(log(x/m))^2 / (2*log(cv^2+1)) )\end{equation*}
-
+\begin{verbatim}1/(x*sqrt(log(cv^2+1))*sqrt(2*pi)) * exp( -(log(x/m))^2 / (2*log(cv^2+1)) )\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{LogNormal5} 
 
   \bigskip 
@@ -6472,16 +6278,10 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\sqrt{\frac{\tau}{2 \pi}} \frac{1}{x}e^{-\frac{\tau}{2}(\log x-\mu)^2}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}sqrt(tau / (2*pi)) * (1/x) * exp(- (tau/2)*(log(x)-mu)^2 )\end{equation*}
-
+\begin{verbatim}sqrt(tau / (2*pi)) * (1/x) * exp(- (tau/2)*(log(x)-mu)^2 )\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Logistic} 
 
   \bigskip 
@@ -6515,16 +6315,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{e^{-\frac{x-\mu}{s}}} {s\left(1+e^{-\frac{x-\mu}{s}}\right)^2}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac{1}{1+e^{-\frac{x-\mu}{s}}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{MixtureDistribution} 
 
   \bigskip 
@@ -6538,6 +6330,13 @@ $, scalar \\
 
 \textbf{support} & & $-$
 \end{tabular}
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/MixturePoisson_pmf_cdf}
+ \caption{PMF and CDF of the Mixture Poisson distribution plotted using the formula for 
+ for various values as shown in the legend of the left plot. The PMF reads: $(1\!-\!\pi) \,\lambda_1^k/k! \,\exp(-\lambda_1) + \pi\,\lambda_2^k / k! \, \exp(-\lambda_2)$. The CDF reads: $(1-\pi)\,\Gamma(\lfloor k+1 , \lambda_1 \rfloor) / \lfloor k \rfloor!+\pi \,\Gamma(\lfloor k+1 , \lambda_2 \rfloor) / \lfloor k \rfloor!$.}
+ \label{fig:MixturePoisson_pmf_cdf}
+\end{figure}
 \subsubsection*{Parameter: weight}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -6550,16 +6349,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}f(x; \pi, \theta) = \sum_{i=1}^{K} \pi_{i}\; p_i(x; \theta_i) \text{ where } p_i(x; \theta_i) \text{the PDF of the } i^{th} \text{ component with parameters } \theta_i\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Multinomial} 
 
   \bigskip 
@@ -6593,16 +6384,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}\frac{n!}{x_1!\cdots x_k!} p_1^{x_1} \cdots p_k^{x_k}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{MultivariateNormal1} 
 
   \bigskip 
@@ -6636,16 +6419,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}(2\pi)^{-\frac{k}{2}}|\Sigma|^{-\frac{1}{2}}\, e^{ -\frac{1}{2}(x-\mu)'\Sigma^{-1}(x-\mu) }\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\text{no analytic expression}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{MultivariateNormal2} 
 
   \bigskip 
@@ -6679,16 +6454,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}(2\pi)^{-d/2}|T|^{\frac{1}{2}}\, \exp\big( -\frac{1}{2}(x-\mu)' T (x-\mu) \big)\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\text{no analytic expression}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{MultivariateStudentT1} 
 
   \bigskip 
@@ -6730,16 +6497,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{\Gamma\left[(\nu+p)/2\right]}{\Gamma(\nu/2)\nu^{p/2}\pi^{p/2}\left|\Sigma\right|^{1/2}\left[1+\frac{1}{\nu}(x-\mu)^{\rm T}\Sigma^{-1}(x-\mu)\right]^{(\nu+p)/2}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\text{no analytic expression}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{MultivariateStudentT2} 
 
   \bigskip 
@@ -6781,16 +6540,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{\Gamma((k+d)/2)}{\Gamma(k/2) k^{d/2} \pi^{d/2}}|T|^{1/2} \Big[ 1 + \frac{1}{k}(x-\mu)' T (x-\mu) \Big]^{-(k+d)/2}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{NegativeBinomial1} 
 
   \bigskip 
@@ -6804,6 +6555,13 @@ $, scalar \\
 
 \textbf{support} & & $k \in \{0,1,2,3,\dots\}$
 \end{tabular}
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/NB1_pmf_cdf.pdf}
+ \caption{PMF and CDF of the Negative Binomial distribution, NB1,
+plotted using the provided R-code.}
+ \label{fig:NB1pmfcdf}
+\end{figure}
 \subsubsection*{Parameter: numberOfFailures}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -6824,16 +6582,12 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}\binom {k+r-1}k (1-p)^r p^k\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}choose(k+r-1,k)*(1-p)^r*p^k\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}1 - I_{p}(k+1, r)\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}1 - Rbeta(p, k+1, r)\end{verbatim}
 \smallskip\section*{NegativeBinomial2} 
 
   \bigskip 
@@ -6868,16 +6622,10 @@ $, scalar \\
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}\frac{\Gamma(k + \frac{1}{\tau})}{k!\; \Gamma(\frac{1}{\tau})} \Big(\frac{1}{1+\tau \lambda} \Big)^{\frac{1}{\tau}} 
 \Big(\frac{\lambda}{\frac{1}{\tau} + \lambda} \Big)^{k}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}gamma(k + 1/tau)/(factorial(k) * gamma(1/tau)) * 1/(1+tau*lambda)^(1/tau) * (lambda/(1/tau + lambda))^k\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{NegativeBinomial3} 
 
   \bigskip 
@@ -6912,16 +6660,8 @@ $, scalar \\
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}\frac{\Gamma(\theta + y)}{\Gamma(a)\Gamma(y+1)} \Big(\frac{\theta}{\theta + \mu} \Big)^{\theta} 
 \Big(\frac{\mu}{\theta + \mu} \Big)^{y}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Normal1} 
 
   \bigskip 
@@ -6935,6 +6675,13 @@ $, scalar \\
 
 \textbf{support} & & $x \in R$
 \end{tabular}
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/Normal1_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Normal distribution, N1,
+ plotted using the provided R-code.}
+ \label{fig:N1pdfcdf}
+\end{figure}
 \subsubsection*{Parameter: mean}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -6955,16 +6702,12 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{\sigma \sqrt{2 \pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}1/(sigma*sqrt(2*pi))*exp(-(x-mu)^2/(2*sigma^2))\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac12\left[1 + \text{erf}\left( \frac{x-\mu}{\sigma\sqrt{2}}\right)\right]\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}1/2 * (1 + erf((x-mu)/(sigma*sqrt(2))))\end{verbatim}
 \smallskip\section*{Normal2} 
 
   \bigskip 
@@ -6978,6 +6721,13 @@ $, scalar \\
 
 \textbf{support} & & $x \in R$
 \end{tabular}
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/Normal2_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Normal distribution, N2,
+ plotted using the provided R-code.}
+ \label{fig:N2pdfcdf}
+\end{figure}
 \subsubsection*{Parameter: mean}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -6998,16 +6748,12 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{\sqrt{v} \sqrt{2 \pi}}e^{-\frac{(x-\mu)^2}{2*v}}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}1/(sqrt(var)*sqrt(2*pi))*exp(-(x-mu)^2/(2*var))\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac12\left[1 + \text{erf}\left( \frac{x-\mu}{\sqrt{v}\sqrt{2}}\right)\right]\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}1/2 * (1 + erf((x-mu)/(sqrt(var)*sqrt(2))))\end{verbatim}
 \smallskip\section*{Normal3} 
 
   \bigskip 
@@ -7041,16 +6787,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\sqrt{\frac{\tau}{2 \pi}} e^{-\frac{\tau}{2}(x-\mu)^2}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{NormalInverseGamma} 
 
   \bigskip 
@@ -7100,16 +6838,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac {\sqrt{\lambda}} {\sigma\sqrt{2\pi} }  \frac{\beta^\alpha}{\Gamma(\alpha)} \, \left( \frac{1}{\sigma^2} \right)^{\alpha + 1}   e^{ -\frac { 2\beta + \lambda(x - \mu)^2} {2\sigma^2}  } \end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Pareto} 
 
   \bigskip 
@@ -7143,16 +6873,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{\alpha\,x_m^\alpha}{x^{\alpha+1}}\text{ for }x\ge x_m\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}1-\left(\frac{x_m}{x}\right)^\alpha \text{ for } x \ge x_m\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Poisson} 
 
   \bigskip 
@@ -7178,16 +6900,12 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}\frac{\lambda^k}{k!}e^{-\lambda}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}lambda^k/factorial(k) * exp(-lambda)\end{equation*}
-
+\begin{verbatim}lambda^k/factorial(k) * exp(-lambda)\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac{\Gamma(\lfloor k+1 \rfloor,\lambda)}{\lfloor k \rfloor!}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}Igamma(floor(k+1), lambda, lower=F) / factorial(floor(k))\end{equation*}
-
+\begin{verbatim}Igamma(floor(k+1), lambda, lower=F) / factorial(floor(k))\end{verbatim}
 \smallskip\section*{Rayleigh} 
 
   \bigskip 
@@ -7213,16 +6931,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{x}{\sigma^2} e^{-x^2/2\sigma^2}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}1 - e^{-x^2/2\sigma^2}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{StandardNormal} 
 
   \bigskip 
@@ -7236,6 +6946,12 @@ $, scalar \\
 
 \textbf{support} & & $x \in R$
 \end{tabular}
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/StandardNormal_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Standard Normal distribution plotted using the provided R-code.}
+ \label{fig:StandardNormalpdfcdf}
+\end{figure}
 \subsubsection*{Parameter: mean}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -7256,16 +6972,12 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{e^{-\frac{1}{2} x^2}}{\sqrt{2\pi}}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}1/(sqrt(2*pi))*exp(-x^2/2)\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac12\left[1 + \text{erf}\left( \frac{x}{\sqrt{2}}\right)\right]\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}1/2 * (1 + erf(x/(sqrt(2))))\end{verbatim}
 \smallskip\section*{StandardUniform} 
 
   \bigskip 
@@ -7299,16 +7011,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}1\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}x\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{StudentT} 
 
   \bigskip 
@@ -7322,6 +7026,12 @@ $, scalar \\
 
 \textbf{support} & & $x \in (-\infty,+\infty)$
 \end{tabular}
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/StudentT_pdf_cdf.pdf}
+ \caption{PDF and CDF of the StudentT distribution plotted using the provided R-code.}
+ \label{fig:StudentTpdfcdf}
+\end{figure}
 \subsubsection*{Parameter: degreesOfFreedom}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -7334,10 +7044,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{\Gamma \left(\frac{\nu+1}{2} \right)} {\sqrt{\nu\pi}\,\Gamma \left(\frac{\nu}{2} \right)} \left(1+\frac{x^2}{\nu} \right)^{-\frac{\nu+1}{2}}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}gamma((nu+1)/2)/(sqrt(nu*pi)*gamma(nu/2))*(1+x^2/nu)^(-(nu+1)/2)\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\begin{matrix}
      \frac{1}{2} + x \Gamma \left( \frac{\nu+1}{2} \right)  \times
@@ -7345,10 +7053,8 @@ $, scalar \\
            -\frac{x^2}{\nu} \right)}
      {\sqrt{\pi\nu}\,\Gamma \left(\frac{\nu}{2}\right)}
      \end{matrix}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}1/2+x*gamma((nu+1)/2)*hypergeo(1/2,(nu+1)/2,3/2,-x^2/nu)/( sqrt(pi*nu) *gamma(nu/2))\end{verbatim}
 \smallskip\section*{Uniform} 
 
   \bigskip 
@@ -7385,20 +7091,12 @@ $, scalar \\
                   \frac{1}{b - a} & \text{for } x \in [a,b]  \\
                   0               & \text{otherwise}
                 \end{cases}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\begin{cases}
                   0               & \text{for } x < a \\
                   \frac{x-a}{b-a} & \text{for } x \in [a,b) \\
                   1               & \text{for } x \ge b
                 \end{cases}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{UniformDiscrete1} 
 
   \bigskip 
@@ -7440,16 +7138,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}1/n\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac{\lfloor k \rfloor -a+1}{n}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{UniformDiscrete2} 
 
   \bigskip 
@@ -7483,16 +7173,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}1/(n+1)\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac{x+1}{n+1}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Weibull1} 
 
   \bigskip 
@@ -7506,6 +7188,12 @@ $, scalar \\
 
 \textbf{support} & & $x \in [0,+\infty)$
 \end{tabular}
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/Weibull1_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Weibull1 distribution plotted using the provided R-code.}
+ \label{fig:Weibull1pdfcdf}
+\end{figure}
 \subsubsection*{Parameter: scale}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -7528,16 +7216,12 @@ $, scalar \\
 \begin{equation*}\begin{cases}
 \frac{k}{\lambda}\left(\frac{x}{\lambda}\right)^{k-1}e^{-(x/\lambda)^{k}} & x\geq0\\
 0 & x<0\end{cases}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}k/lambda * (x/lambda)^(k-1) * exp(-(x/lambda)^k)\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\begin{cases}1- e^{-(x/\lambda)^k} & x\geq0\\ 0 & x<0\end{cases}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}1- exp(-(x/lambda)^k)\end{verbatim}
 \smallskip\section*{Weibull2} 
 
   \bigskip 
@@ -7571,16 +7255,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}v\lambda \,x^{v-1} e^{-\lambda x^{v}}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Wishart1} 
 
   \bigskip 
@@ -7614,16 +7290,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{|X|^{\frac{n-p-1}{2}} e^{-\frac{\text{tr}(V^{-1}X)}{2}}}{2^\frac{np}{2}|V|^\frac{n}{2}\Gamma_p(\frac{n}{2})}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{Wishart2} 
 
   \bigskip 
@@ -7657,16 +7325,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}|R|^{k/2}|x|^{(k-p-1)/2}e^{-\frac{1}2\,tr(Rx)}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{ZeroInflatedNegativeBinomial} 
 
   \bigskip 
@@ -7713,16 +7373,8 @@ p + (1-p) \frac{\Gamma(\theta + y)}{\Gamma(a)\Gamma(y+1)} \Big(\frac{\theta}{\th
 (1-p) \frac{\Gamma(\theta + y)}{\Gamma(a)\Gamma(y+1)} \Big(\frac{\theta}{\theta + \mu} \Big)^{\theta} 
 \Big(\frac{\mu}{\theta + \mu} \Big)^{y} & \text{for } y > 0
 \end{cases}\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
 \smallskip\section*{ZeroInflatedPoisson} 
 
   \bigskip 
@@ -7736,6 +7388,12 @@ p + (1-p) \frac{\Gamma(\theta + y)}{\Gamma(a)\Gamma(y+1)} \Big(\frac{\theta}{\th
 
 \textbf{support} & & $k \in \{0,1,2,3,\dots\}$
 \end{tabular}
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=70mm]{pics/ZIP_pmf.pdf}
+ \caption{PMF of the ZIP distribution plotted using the provided R-code.}
+ \label{fig:Poisson_pmf_cdf}
+\end{figure}
 \subsubsection*{Parameter: rate}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -7759,17 +7417,11 @@ p + (1-p) \frac{\Gamma(\theta + y)}{\Gamma(a)\Gamma(y+1)} \Big(\frac{\theta}{\th
 \pi + (1-\pi) e^{-\lambda}& \text{for } k = 0 \\ 
 (1-\pi) e^{-\lambda} \frac{\lambda^k}{k!} & \text{for } k > 0
 \end{cases}\end{equation*}
-
 \smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{equation*}\end{equation*}
-
+\begin{verbatim}pi + (1-pi)*exp(-lambda) if k=0\\
+(1-pi)*exp(-lambda) * lambda^k/factorial(k)  if k>0\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{equation*}\end{equation*}
-
-
 
 
 
