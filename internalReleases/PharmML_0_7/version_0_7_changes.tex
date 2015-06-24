@@ -1052,25 +1052,24 @@ distributions supported in ProbOnto. See also Appendix \ref{ch:probontoAppendix}
 \begin{longtable}{l | lcccc}
   \hline
   \hline
-\multicolumn{1}{c}{\textbf{ProbOnto}} & Parameters 	& \textbf{UncertML} 	& \textbf{WinBUGS} & \textbf{Monolix} & \textbf{NONMEM}\\
-\multicolumn{1}{c}{0.2}				& 			&  3.0				& 1.4 			  & 4.3			&
-	7.3 \\
+\multicolumn{1}{c}{\textbf{ProbOnto}} & Parameters & \textbf{UncertML} & \textbf{WinBUGS} & \textbf{Monolix} & \textbf{NONMEM}\\
+\multicolumn{1}{c}{0.2}			& 			&  3.0			& 1.4 			& 4.3  		    &	7.3 \\
   \hline
   \hline
   \multicolumn{6}{c}{\textit{Discrete Multivariate}} \\
   \hline
-Multinomial	 		& $n, p_1, \ldots, p_k$ &	y	&	y & --		& -- 		\\
+Multinomial	 		& $n, p_1, \ldots, p_k$ 		& y	& y 	& --	& -- 	\\
   \hline
   \multicolumn{6}{c}{\textit{Continuous Multivariate}} \\
   \hline
-Dirichlet				& $\alpha_1, \dots, \alpha_K$	& y	& y & --		& -- 		\\
-Inverse-Wishart		& $\Psi, \nu$	& --  & --  & --		& -- 		\\[0.5ex]
-Multivariate Normal	1 	& $\mu, \Sigma $	& y	& --	 & --		& -- 		\\
-Multivariate Normal	2 	& $\mu, T $	& --	& y	 & --		& -- 		\\[0.5ex]
-Multivariate (Student) T 1	& $\mu, \Sigma, \nu$	& y	& --	 & --		& -- 		\\
-Multivariate (Student) T 2& $\mu, T, k$ & --	& y	 & --		& -- 		\\[0.5ex]
-Wishart 1				& $V, n$	& y	& --	& --		& -- 		 \\
-Wishart 2				& $R, k$	& --	& y	 & --		& -- 		\\
+Dirichlet				& $\alpha_1, \dots, \alpha_K$	& y	& y 	& --	& -- 	\\
+Inverse-Wishart		& $\Psi, \nu$				& --  	& --  	& --	& y 	\\[0.5ex]
+Multivariate Normal	1 	& $\mu, \Sigma $			& y	& --	& --	& -- 	\\
+Multivariate Normal	2 	& $\mu, T $				& --	& y	& --	& -- 	\\[0.5ex]
+Multivariate (Student) T 1	& $\mu, \Sigma, \nu$		& y	& --	& --	& -- 	\\
+Multivariate (Student) T 2& $\mu, T, k$ 				& --	& y	& --	& -- 	\\[0.5ex]
+Wishart 1				& $V, n$					& y	& --	& --	& --  	\\
+Wishart 2				& $R, k$					& --	& y	& --	& -- 	\\
    \hline
 \caption{Multivariate distributions. See the Appendix \ref{ch:probontoAppendix}
 for the detailed description of the most relevant distributions -- full ProbOnto database 
@@ -1091,16 +1090,16 @@ will be released soon.}
   \hline
   \hline
 \multicolumn{1}{c}{\textbf{Distribution}}& \multicolumn{4}{c}{\textbf{Parameters}} \\ 
-Code name		& Symbol & Code name & Symbol & Code name \\
+Code name				& Symbol & Code name 			& Symbol 			& Code name \\
   \hline
   \hline
   \multicolumn{5}{c}{\textit{Discrete Multivariate}} \\
   \hline
-Multinomial & $n$	& numberOfTrials & $p_1, \ldots, p_k$	& probabilityOfSuccess   \\
+Multinomial 				& $n$	& \xatt{numberOfTrials} 	& $p_1, \ldots, p_k$	& \xatt{probabilityOfSuccess}   \\
   \hline
   \multicolumn{5}{c}{\textit{Continuous Multivariate}} \\
   \hline
-\xatt{Dirichlet}				& $\alpha_1, \dots, \alpha_K$		& \xatt{concentration} 	& --		& --  \\
+\xatt{Dirichlet}				& $\alpha_1, \dots, \alpha_K$	& \xatt{concentration} 	& --		& --  \\
 \xatt{InverseWishart}		& $\Psi$		& \xatt{scaleMatrix}	& $\nu$ 			& \xatt{degreesOfFreedom} \\
 \xatt{MultivariateNormal1}	& ${\mu}$		& \xatt{mean}		& $\Sigma$		& \xatt{covarianceMatrix}  \\
 \xatt{MultivariateNormal2	}	& ${\mu}$		& \xatt{mean}		& $T$ 			& \xatt{precisionMatrix}	 \\ [0.5ex]
@@ -1108,8 +1107,8 @@ Multinomial & $n$	& numberOfTrials & $p_1, \ldots, p_k$	& probabilityOfSuccess  
 						&			&				& $ \nu$			& \xatt{degreesOfFreedom} \\ [0.5ex]
 \xatt{MultivariateStudentT2}	& ${\mu}$ 	& \xatt{mean} 		& $T$			& \xatt{precisionMatrix}	 \\[-0.5ex]
 						&			&				& $k$ 			& \xatt{degreesOfFreedom} \\
-\xatt{Wishart1} 			& $V$		& \xatt{scaleMatrix}	& $n$			& \xatt{degreesOfFreedom} \\
-\xatt{Wishart2} 			& $R$		& \xatt{inverseScaleMatrix} & $k$		& \xatt{degreesOfFreedom} \\
+\xatt{Wishart1} 				& $V$		& \xatt{scaleMatrix}	& $n$			& \xatt{degreesOfFreedom} \\
+\xatt{Wishart2} 				& $R$		& \xatt{inverseScaleMatrix} & $k$		& \xatt{degreesOfFreedom} \\
    \hline
 \caption{Code names for the multivariate distributions and their parameters.
 See the Appendix \ref{ch:probontoAppendix}.}
@@ -1431,6 +1430,15 @@ The use of a generic \emph{MixtureDistribution} seems well justified in this cas
 However, because reference literature exists for general Mixed Poisson regression models, 
 \cite{Wang:1996fj}, the introduction of such specialised mixture distribution 
 could be considered for ProbOnto in future as well.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Independency of ProbOnto}
+\label{sec:ProbOntoIndependent}
+It is worth to stress that ProbOnto ontology and knowledge base are fully 
+independent from PharmML. This allows it to be used across the target 
+tools and languages. 
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2494,7 +2502,7 @@ in PharmML reads
         
         <PopulationParameter symbId="invOMEGA_P">
             <ct:VariabilityReference>
-                <ct:SymbRef symbIdRef="pri" blkIdRef="model"/>
+                <ct:SymbRef symbIdRef="pop" blkIdRef="model"/>
             </ct:VariabilityReference>
             <Distribution>
                 <ProbOnto name="Wishart1">
@@ -2522,7 +2530,7 @@ in PharmML reads
 \begin{lstlisting}
         <PopulationParameter symbId="TAU_T">
             <ct:VariabilityReference>
-                <ct:SymbRef symbIdRef="pri" blkIdRef="model"/>
+                <ct:SymbRef symbIdRef="pop" blkIdRef="model"/>
             </ct:VariabilityReference>
             <Distribution>
                 <ProbOnto name="Gamma">
@@ -2563,7 +2571,7 @@ in PharmML reads
 \begin{lstlisting}
         <PopulationParameter symbId="POP_T">
             <ct:VariabilityReference>
-                <ct:SymbRef symbIdRef="pri" blkIdRef="model"/>
+                <ct:SymbRef symbIdRef="pop" blkIdRef="model"/>
             </ct:VariabilityReference>
             <Distribution>
                 <ProbOnto name="Gamma">
@@ -4089,7 +4097,11 @@ FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH
 
 The full first version of ProbOnto will be released soon. Here we provide 
 a brief overview of a part of its content for the most frequently used distributions 
-and/or alternative parameterisations (33 out of about 55). 
+and/or alternative parameterisations (37 out of about 55). 
+
+The according plots have been performed using the R code stored in ProbOnto 
+and provided for each distribution for which it's available. There is no easy way 
+to conver
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -5282,8 +5294,8 @@ listed in the subsequent sections are collected here with references
 %
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{New version}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\chapter{New version}
 
 \section*{Bernoulli} 
 
@@ -5356,13 +5368,9 @@ listed in the subsequent sections are collected here with references
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{x^{\alpha-1}(1-x)^{\beta-1}} {B(\alpha,\beta)} \end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{verbbox}
+\begin{verbatim}
 (x^(alpha-1)*(1-x)^(beta-1))/B(alpha,beta)
-\end{verbbox}
-\begin{figure}[ht]
-  \centering
-  \theverbbox
-\end{figure}
+\end{verbatim}
 
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}I_x(\alpha,\beta)\end{equation*}
@@ -5495,6 +5503,14 @@ listed in the subsequent sections are collected here with references
 \textbf{symbol} & & $x_0$  \\
 \textbf{definition} & & $x_0 \in  R$
 \end{tabular}
+
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/Cauchy_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Cauchy distribution plotted using the provided R-code.}
+ \label{fig:Cauchy_pdf_cdf}
+\end{figure}
+
 \subsubsection*{Parameter: scale}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -5507,8 +5523,20 @@ listed in the subsequent sections are collected here with references
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{\pi\gamma\,\left[1 + \left(\frac{x-x_0}{\gamma}\right)^2\right]}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
+\begin{verbatim}
+1/(pi*gamma*(1 + ((x-x0)^2/gamma^2)))
+\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+\begin{equation*}
+\frac{1}{\pi} \arctan\left(\frac{x-x_0}{\gamma}\right)+\frac{1}{2}
+\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R}  
+\begin{verbatim}
+1/pi * atan((x-x0)/gamma)+1/2
+\end{verbatim}
+
+
 \smallskip\section*{ChiSquared} 
 
   \bigskip 
@@ -5522,6 +5550,14 @@ listed in the subsequent sections are collected here with references
 
 \textbf{support} & & $x \in [0,+\infty)$
 \end{tabular}
+
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/ChiSquared_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Chi-squared distribution plotted using the provided R-code.}
+ \label{fig:ChiSquared_pdf_cdf}
+\end{figure}
+
 \subsubsection*{Parameter: degreesOfFreedom}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -5534,8 +5570,17 @@ listed in the subsequent sections are collected here with references
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{2^{\frac{k}{2}}\Gamma\left(\frac{k}{2}\right)}\; x^{\frac{k}{2}-1} e^{-\frac{x}{2}}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
+\begin{verbatim}
+1/( 2^k/2 * gamma(k/2) ) *  x^(k/2-1) * exp(-x/2)
+\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac{1}{\Gamma\left(\frac{k}{2}\right)}\; \gamma\left(\frac{k}{2},\,\frac{x}{2}\right)\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R}  
+\begin{verbatim}
+1/gamma(k/2) * Igamma(k/2,x/2)
+\end{verbatim}
+
 \smallskip\section*{Dirichlet} 
 
   \bigskip 
@@ -5650,6 +5695,9 @@ listed in the subsequent sections are collected here with references
 
 \textbf{support} & & $x \in (0,+\infty)$
 \end{tabular}
+
+Gamma plot
+
 \subsubsection*{Parameter: shape}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -5715,57 +5763,57 @@ listed in the subsequent sections are collected here with references
 \begin{equation*}\frac{p/a^d}{\Gamma(d/p)} x^{d-1}e^{-(x/a)^p}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac{\gamma(d/p, (x/a)^p)}{\Gamma(d/p)}\end{equation*}
-\smallskip\section*{GeneralizedGamma2} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Generalized Gamma 2 (ID: 0000134)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $0 < a < x$
-\end{tabular}
-\subsubsection*{Parameter: location}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & location \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $a$  \\
-\textbf{definition} & & $a > 0$
-\end{tabular}
-\subsubsection*{Parameter: scale}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & b > 0 \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $b$  \\
-\textbf{definition} & & $scale$
-\end{tabular}
-\subsubsection*{Parameter: shape1}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & shape \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $c$  \\
-\textbf{definition} & & $c > 0$
-\end{tabular}
-\subsubsection*{Parameter: shape2}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & shape2 \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $k$  \\
-\textbf{definition} & & $k > 0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{k (x-a)^{kc-1}}{b^{kc}\Gamma(c)}\exp\Big[-\Big(\frac{x-a}{b}\Big)^k\Big]\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+%\smallskip\section*{GeneralizedGamma2} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Generalized Gamma 2 (ID: 0000134)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, scalar \\ 
+%
+%\textbf{support} & & $0 < a < x$
+%\end{tabular}
+%\subsubsection*{Parameter: location}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & location \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $a$  \\
+%\textbf{definition} & & $a > 0$
+%\end{tabular}
+%\subsubsection*{Parameter: scale}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & b > 0 \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $b$  \\
+%\textbf{definition} & & $scale$
+%\end{tabular}
+%\subsubsection*{Parameter: shape1}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & shape \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $c$  \\
+%\textbf{definition} & & $c > 0$
+%\end{tabular}
+%\subsubsection*{Parameter: shape2}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & shape2 \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $k$  \\
+%\textbf{definition} & & $k > 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{k (x-a)^{kc-1}}{b^{kc}\Gamma(c)}\exp\Big[-\Big(\frac{x-a}{b}\Big)^k\Big]\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
 \smallskip\section*{GeneralizedPoisson} 
 
   \bigskip 
@@ -5780,6 +5828,12 @@ $, scalar \\
 
 \textbf{support} & & $k \in \{0,1,2,3,\dots\}$
 \end{tabular}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=70mm]{pics/GeneralisedPoisson_pmf_cdf.pdf}
+ \caption{PMF of the Generalised Poisson distribution plotted using the provided R-code.}
+ \label{fig:GeneralisedPoisson_pmf_cdf}
+\end{figure}
 \subsubsection*{Parameter: rate}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -5802,183 +5856,183 @@ $, scalar \\
 \begin{equation*}\frac{\lambda (\lambda+k\delta)^{k-1}\times e^{-\lambda - k \delta}}{k!}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-\smallskip\section*{Geometric} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Geometric (ID: 0000115)\\ 
- 
-\textbf{type} & & discrete \\ 
-
-\textbf{variate} & & $k
-$, scalar \\ 
-
-\textbf{support} & & $k \in \{1,2,3,\dots\}$
-\end{tabular}
-\subsubsection*{Parameter: probability}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & success probability \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $p$  \\
-\textbf{definition} & & $0< p \leq 1$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}(1 - p)^{k-1}\,p\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}1-(1 - p)^k\end{equation*}
-\smallskip\section*{Gompertz} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Gompertz (ID: 0000155)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $x \in (-\infty,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter: shape}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & shape \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\eta$  \\
-\textbf{definition} & & $\eta > 0$
-\end{tabular}
-\subsubsection*{Parameter: scale}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & scale \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $b$  \\
-\textbf{definition} & & $b > 0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}b\eta e^{bx}e^{\eta}\exp\left(-\eta e^{bx} \right)\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}1-\exp\left(-\eta\left(e^{bx}-1 \right)\right)\end{equation*}
-\smallskip\section*{Gumbel} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Gumbel (ID: 0000165)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $x \in (-\infty,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter: location}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & location \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu \in  R$
-\end{tabular}
-\subsubsection*{Parameter: scale}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & scale \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\beta$  \\
-\textbf{definition} & & $\beta>0, \beta \in  R$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{e^{-e^{-\frac{x-\mu}{\beta}}} e^{-\frac{x-\mu}{\beta}}}{\beta}\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}e^{-e^{-(x-\mu)/\beta}}\end{equation*}
-\smallskip\section*{Hypergeometric} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Hypergeometric (ID: 0000176)\\ 
- 
-\textbf{type} & & discrete \\ 
-
-\textbf{variate} & & $k
-$, scalar \\ 
-
-\textbf{support} & & $k\, \in\, \left\{\max{(0,\, n+K-N)},\, \dots,\, \min{(n,\, K )}\right\}$
-\end{tabular}
-\subsubsection*{Parameter: populationSize}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & population size \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $N$  \\
-\textbf{definition} & & $N \in \left\{0,1,2,\dots\right\}$
-\end{tabular}
-\subsubsection*{Parameter: numberOfTrials}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & number of trials \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $K$  \\
-\textbf{definition} & & $K \in \left\{0,1,2,\dots,N\right\} $
-\end{tabular}
-\subsubsection*{Parameter: numberOfSuccesses}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & number of successes \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $n$  \\
-\textbf{definition} & & $n \in \left\{0,1,2,\dots,N\right\}$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}{{{K \choose k} {{N-K} \choose {n-k}}}\over {N \choose n}}\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}1-{{{n \choose {k+1}}{{N-n} \choose {K-k-1}}}\over {N \choose K}} \,_3F_2\!\!\left[\begin{array}{c}1,\ k+1-K,\ k+1-n \\ k+2,\ N+k+2-K-n\end{array};1\right]\end{equation*}
-\smallskip\section*{InverseGamma} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Inverse-Gamma (ID: 0000187)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $x \in (0,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter: shape}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & shape \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\alpha$  \\
-\textbf{definition} & & $\alpha>0, \alpha \in  R$
-\end{tabular}
-\subsubsection*{Parameter: scale}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & scale \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\beta$  \\
-\textbf{definition} & & $\beta>0, \beta \in  R$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{\beta^\alpha}{\Gamma(\alpha)} x^{-\alpha - 1} \exp \left(\frac{-\beta}{x}\right)\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac{\Gamma(\alpha, \beta/x)}{\Gamma(\alpha)}\end{equation*}
+%\smallskip\section*{Geometric} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Geometric (ID: 0000115)\\ 
+% 
+%\textbf{type} & & discrete \\ 
+%
+%\textbf{variate} & & $k
+%$, scalar \\ 
+%
+%\textbf{support} & & $k \in \{1,2,3,\dots\}$
+%\end{tabular}
+%\subsubsection*{Parameter: probability}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & success probability \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $p$  \\
+%\textbf{definition} & & $0< p \leq 1$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%\begin{equation*}(1 - p)^{k-1}\,p\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}1-(1 - p)^k\end{equation*}
+%\smallskip\section*{Gompertz} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Gompertz (ID: 0000155)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, scalar \\ 
+%
+%\textbf{support} & & $x \in (-\infty,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter: shape}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & shape \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\eta$  \\
+%\textbf{definition} & & $\eta > 0$
+%\end{tabular}
+%\subsubsection*{Parameter: scale}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & scale \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $b$  \\
+%\textbf{definition} & & $b > 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}b\eta e^{bx}e^{\eta}\exp\left(-\eta e^{bx} \right)\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}1-\exp\left(-\eta\left(e^{bx}-1 \right)\right)\end{equation*}
+%\smallskip\section*{Gumbel} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Gumbel (ID: 0000165)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, scalar \\ 
+%
+%\textbf{support} & & $x \in (-\infty,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter: location}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & location \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu \in  R$
+%\end{tabular}
+%\subsubsection*{Parameter: scale}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & scale \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\beta$  \\
+%\textbf{definition} & & $\beta>0, \beta \in  R$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{e^{-e^{-\frac{x-\mu}{\beta}}} e^{-\frac{x-\mu}{\beta}}}{\beta}\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}e^{-e^{-(x-\mu)/\beta}}\end{equation*}
+%\smallskip\section*{Hypergeometric} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Hypergeometric (ID: 0000176)\\ 
+% 
+%\textbf{type} & & discrete \\ 
+%
+%\textbf{variate} & & $k
+%$, scalar \\ 
+%
+%\textbf{support} & & $k\, \in\, \left\{\max{(0,\, n+K-N)},\, \dots,\, \min{(n,\, K )}\right\}$
+%\end{tabular}
+%\subsubsection*{Parameter: populationSize}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & population size \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $N$  \\
+%\textbf{definition} & & $N \in \left\{0,1,2,\dots\right\}$
+%\end{tabular}
+%\subsubsection*{Parameter: numberOfTrials}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & number of trials \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $K$  \\
+%\textbf{definition} & & $K \in \left\{0,1,2,\dots,N\right\} $
+%\end{tabular}
+%\subsubsection*{Parameter: numberOfSuccesses}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & number of successes \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $n$  \\
+%\textbf{definition} & & $n \in \left\{0,1,2,\dots,N\right\}$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%\begin{equation*}{{{K \choose k} {{N-K} \choose {n-k}}}\over {N \choose n}}\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}1-{{{n \choose {k+1}}{{N-n} \choose {K-k-1}}}\over {N \choose K}} \,_3F_2\!\!\left[\begin{array}{c}1,\ k+1-K,\ k+1-n \\ k+2,\ N+k+2-K-n\end{array};1\right]\end{equation*}
+%\smallskip\section*{InverseGamma} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Inverse-Gamma (ID: 0000187)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, scalar \\ 
+%
+%\textbf{support} & & $x \in (0,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter: shape}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & shape \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\alpha$  \\
+%\textbf{definition} & & $\alpha>0, \alpha \in  R$
+%\end{tabular}
+%\subsubsection*{Parameter: scale}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & scale \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\beta$  \\
+%\textbf{definition} & & $\beta>0, \beta \in  R$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{\beta^\alpha}{\Gamma(\alpha)} x^{-\alpha - 1} \exp \left(\frac{-\beta}{x}\right)\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\frac{\Gamma(\alpha, \beta/x)}{\Gamma(\alpha)}\end{equation*}
 \smallskip\section*{InverseWishart} 
 
   \bigskip 
@@ -6014,80 +6068,80 @@ $, scalar \\
 \begin{equation*}\frac{\left|\Psi\right|^{\frac{\nu}{2}}}{2^{\frac{\nu p}{2}}\Gamma_p(\frac{\nu}{2})} \left|X\right|^{-\frac{\nu+p+1}{2}}e^{-\frac{1}{2}\text{tr}(\Psi X^{-1})}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-\smallskip\section*{Laplace1} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Laplace 1 (ID: 0000207)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $x \in (-\infty,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter: location}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & location \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu \in R$
-\end{tabular}
-\subsubsection*{Parameter: scale}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & scale \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $b$  \\
-\textbf{definition} & & $b > 0, b \in R$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{1}{2\,b} \exp \left(-\frac{|x-\mu|}b \right)\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\begin{cases}
-      \frac12 \exp \left( \frac{x-\mu}{b} \right) & \mbox{if }x < \mu
-             \\[8pt]
-          1-\frac12 \exp \left( -\frac{x-\mu}{b} \right) & \mbox{if }x \geq \mu
-       \end{cases}\end{equation*}
-\smallskip\section*{Laplace2} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Laplace 2 (ID: 0000217)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $x \in (-\infty,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter: location}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & - \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $-$
-\end{tabular}
-\subsubsection*{Parameter: tau}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & - \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\tau$  \\
-\textbf{definition} & & $-$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{\tau}{2} \exp \left(-\tau|x-\mu| \right)\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+%\smallskip\section*{Laplace1} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Laplace 1 (ID: 0000207)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, scalar \\ 
+%
+%\textbf{support} & & $x \in (-\infty,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter: location}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & location \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu \in R$
+%\end{tabular}
+%\subsubsection*{Parameter: scale}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & scale \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $b$  \\
+%\textbf{definition} & & $b > 0, b \in R$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{1}{2\,b} \exp \left(-\frac{|x-\mu|}b \right)\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\begin{cases}
+%      \frac12 \exp \left( \frac{x-\mu}{b} \right) & \mbox{if }x < \mu
+%             \\[8pt]
+%          1-\frac12 \exp \left( -\frac{x-\mu}{b} \right) & \mbox{if }x \geq \mu
+%       \end{cases}\end{equation*}
+%\smallskip\section*{Laplace2} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Laplace 2 (ID: 0000217)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, scalar \\ 
+%
+%\textbf{support} & & $x \in (-\infty,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter: location}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & - \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $-$
+%\end{tabular}
+%\subsubsection*{Parameter: tau}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & - \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\tau$  \\
+%\textbf{definition} & & $-$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{\tau}{2} \exp \left(-\tau|x-\mu| \right)\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
 \smallskip\section*{LogNormal1} 
 
   \bigskip 
@@ -6282,41 +6336,41 @@ $, scalar \\
 \begin{verbatim}sqrt(tau / (2*pi)) * (1/x) * exp(- (tau/2)*(log(x)-mu)^2 )\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-\smallskip\section*{Logistic} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Logistic (ID: 0000263)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $x \in (-\infty,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter: location}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & location \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu \in R$
-\end{tabular}
-\subsubsection*{Parameter: scale}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & scale \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $s$  \\
-\textbf{definition} & & $s > 0, s \in R$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{e^{-\frac{x-\mu}{s}}} {s\left(1+e^{-\frac{x-\mu}{s}}\right)^2}\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac{1}{1+e^{-\frac{x-\mu}{s}}}\end{equation*}
+%\smallskip\section*{Logistic} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Logistic (ID: 0000263)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, scalar \\ 
+%
+%\textbf{support} & & $x \in (-\infty,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter: location}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & location \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu \in R$
+%\end{tabular}
+%\subsubsection*{Parameter: scale}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & scale \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $s$  \\
+%\textbf{definition} & & $s > 0, s \in R$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{e^{-\frac{x-\mu}{s}}} {s\left(1+e^{-\frac{x-\mu}{s}}\right)^2}\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\frac{1}{1+e^{-\frac{x-\mu}{s}}}\end{equation*}
 \smallskip\section*{MixtureDistribution} 
 
   \bigskip 
@@ -6349,6 +6403,8 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}f(x; \pi, \theta) = \sum_{i=1}^{K} \pi_{i}\; p_i(x; \theta_i) \text{ where } p_i(x; \theta_i) \text{the PDF of the } i^{th} \text{ component with parameters } \theta_i\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+\begin{equation*}f(x; \pi, \theta) = \sum_{i=1}^{K} \pi_{i}\; p_i(x; \theta_i) \text{ where } p_i(x; \theta_i) \text{the PMF of the } i^{th} \text{ component with parameters } \theta_i\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
 \smallskip\section*{Multinomial} 
@@ -6421,127 +6477,127 @@ $, scalar \\
 \begin{equation*}(2\pi)^{-\frac{k}{2}}|\Sigma|^{-\frac{1}{2}}\, e^{ -\frac{1}{2}(x-\mu)'\Sigma^{-1}(x-\mu) }\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\text{no analytic expression}\end{equation*}
-\smallskip\section*{MultivariateNormal2} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Multivariate Normal 2 (ID: 0000004)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, vector \\ 
-
-\textbf{support} & & $x \in \mu + \text{span}(\Sigma) \subseteq  R^k$
-\end{tabular}
-\subsubsection*{Parameter: mean}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & location \\
-\textbf{type} & & vector \\
-\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu \in R^k$
-\end{tabular}
-\subsubsection*{Parameter: precisionMatrix}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & precision matrix \\
-\textbf{type} & & matrix \\
-\textbf{symbol} & & $T$  \\
-\textbf{definition} & & $-$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}(2\pi)^{-d/2}|T|^{\frac{1}{2}}\, \exp\big( -\frac{1}{2}(x-\mu)' T (x-\mu) \big)\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\text{no analytic expression}\end{equation*}
-\smallskip\section*{MultivariateStudentT1} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Multivariate (Student) T 1 (ID: 0000014)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, vector \\ 
-
-\textbf{support} & & $x \in R^p$
-\end{tabular}
-\subsubsection*{Parameter: mean}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & location \\
-\textbf{type} & & vector \\
-\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu = [\mu_1, \dots, \mu_p]^T, \mu_i \in R$
-\end{tabular}
-\subsubsection*{Parameter: covarianceMatrix}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & covariance matrix \\
-\textbf{type} & & matrix \\
-\textbf{symbol} & & $\Sigma$  \\
-\textbf{definition} & & $\Sigma, \text{ positive-definite real } p\times p \text{ matrix}$
-\end{tabular}
-\subsubsection*{Parameter: degreesOfFreedom}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & degrees of freedom \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\nu$  \\
-\textbf{definition} & & $\nu$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{\Gamma\left[(\nu+p)/2\right]}{\Gamma(\nu/2)\nu^{p/2}\pi^{p/2}\left|\Sigma\right|^{1/2}\left[1+\frac{1}{\nu}(x-\mu)^{\rm T}\Sigma^{-1}(x-\mu)\right]^{(\nu+p)/2}}\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\text{no analytic expression}\end{equation*}
-\smallskip\section*{MultivariateStudentT2} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Multivariate (Student) T 2 (ID: 0000025)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, vector \\ 
-
-\textbf{support} & & $x \in R^p, k\geq 2$
-\end{tabular}
-\subsubsection*{Parameter: mean}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & location \\
-\textbf{type} & & vector \\
-\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu = [\mu_1, \dots, \mu_p]^T, \mu_i \in R$
-\end{tabular}
-\subsubsection*{Parameter: precisionMatrix}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & precision matrix \\
-\textbf{type} & & matrix \\
-\textbf{symbol} & & $T$  \\
-\textbf{definition} & & $-$
-\end{tabular}
-\subsubsection*{Parameter: degreesOfFreedom}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & degrees of freedom \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $k$  \\
-\textbf{definition} & & $-$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{\Gamma((k+d)/2)}{\Gamma(k/2) k^{d/2} \pi^{d/2}}|T|^{1/2} \Big[ 1 + \frac{1}{k}(x-\mu)' T (x-\mu) \Big]^{-(k+d)/2}\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+%\smallskip\section*{MultivariateNormal2} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Multivariate Normal 2 (ID: 0000004)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, vector \\ 
+%
+%\textbf{support} & & $x \in \mu + \text{span}(\Sigma) \subseteq  R^k$
+%\end{tabular}
+%\subsubsection*{Parameter: mean}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & location \\
+%\textbf{type} & & vector \\
+%\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu \in R^k$
+%\end{tabular}
+%\subsubsection*{Parameter: precisionMatrix}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & precision matrix \\
+%\textbf{type} & & matrix \\
+%\textbf{symbol} & & $T$  \\
+%\textbf{definition} & & $-$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}(2\pi)^{-d/2}|T|^{\frac{1}{2}}\, \exp\big( -\frac{1}{2}(x-\mu)' T (x-\mu) \big)\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\text{no analytic expression}\end{equation*}
+%\smallskip\section*{MultivariateStudentT1} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Multivariate (Student) T 1 (ID: 0000014)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, vector \\ 
+%
+%\textbf{support} & & $x \in R^p$
+%\end{tabular}
+%\subsubsection*{Parameter: mean}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & location \\
+%\textbf{type} & & vector \\
+%\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu = [\mu_1, \dots, \mu_p]^T, \mu_i \in R$
+%\end{tabular}
+%\subsubsection*{Parameter: covarianceMatrix}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & covariance matrix \\
+%\textbf{type} & & matrix \\
+%\textbf{symbol} & & $\Sigma$  \\
+%\textbf{definition} & & $\Sigma, \text{ positive-definite real } p\times p \text{ matrix}$
+%\end{tabular}
+%\subsubsection*{Parameter: degreesOfFreedom}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & degrees of freedom \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\nu$  \\
+%\textbf{definition} & & $\nu$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{\Gamma\left[(\nu+p)/2\right]}{\Gamma(\nu/2)\nu^{p/2}\pi^{p/2}\left|\Sigma\right|^{1/2}\left[1+\frac{1}{\nu}(x-\mu)^{\rm T}\Sigma^{-1}(x-\mu)\right]^{(\nu+p)/2}}\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\text{no analytic expression}\end{equation*}
+%\smallskip\section*{MultivariateStudentT2} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Multivariate (Student) T 2 (ID: 0000025)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, vector \\ 
+%
+%\textbf{support} & & $x \in R^p, k\geq 2$
+%\end{tabular}
+%\subsubsection*{Parameter: mean}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & location \\
+%\textbf{type} & & vector \\
+%\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu = [\mu_1, \dots, \mu_p]^T, \mu_i \in R$
+%\end{tabular}
+%\subsubsection*{Parameter: precisionMatrix}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & precision matrix \\
+%\textbf{type} & & matrix \\
+%\textbf{symbol} & & $T$  \\
+%\textbf{definition} & & $-$
+%\end{tabular}
+%\subsubsection*{Parameter: degreesOfFreedom}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & degrees of freedom \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $k$  \\
+%\textbf{definition} & & $-$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{\Gamma((k+d)/2)}{\Gamma(k/2) k^{d/2} \pi^{d/2}}|T|^{1/2} \Big[ 1 + \frac{1}{k}(x-\mu)' T (x-\mu) \Big]^{-(k+d)/2}\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
 \smallskip\section*{NegativeBinomial1} 
 
   \bigskip 
@@ -6601,6 +6657,13 @@ plotted using the provided R-code.}
 
 \textbf{support} & & $k \in \{0,1,2,3,\dots\}$
 \end{tabular}
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=70mm]{pics/NB2_pmf.pdf}
+ \caption{PMF of the Negative Binomial distribution, NB2,
+plotted using the provided R-code.}
+ \label{fig:NB2pmf}
+\end{figure}
 \subsubsection*{Parameter: rate}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -6623,45 +6686,45 @@ plotted using the provided R-code.}
 \begin{equation*}\frac{\Gamma(k + \frac{1}{\tau})}{k!\; \Gamma(\frac{1}{\tau})} \Big(\frac{1}{1+\tau \lambda} \Big)^{\frac{1}{\tau}} 
 \Big(\frac{\lambda}{\frac{1}{\tau} + \lambda} \Big)^{k}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{verbatim}gamma(k + 1/tau)/(factorial(k) * gamma(1/tau)) * 1/(1+tau*lambda)^(1/tau) * (lambda/(1/tau + lambda))^k\end{verbatim}
+\begin{verbatim}gamma(k+1/tau)/(factorial(k)*gamma(1/tau))*1/(1+tau*lambda)^(1/tau)*(lambda/(1/tau + lambda))^k\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-\smallskip\section*{NegativeBinomial3} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Negative Binomial 3 (ID: 0000055)\\ 
- 
-\textbf{type} & & discrete \\ 
-
-\textbf{variate} & & $y$, scalar \\ 
-
-\textbf{support} & & $y \in \{0,1,2,3,\dots\}$
-\end{tabular}
-\subsubsection*{Parameter: }
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & mean \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $-$
-\end{tabular}
-\subsubsection*{Parameter: -}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & size parameter \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\theta$  \\
-\textbf{definition} & & $-$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}\frac{\Gamma(\theta + y)}{\Gamma(a)\Gamma(y+1)} \Big(\frac{\theta}{\theta + \mu} \Big)^{\theta} 
-\Big(\frac{\mu}{\theta + \mu} \Big)^{y}\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+%\smallskip\section*{NegativeBinomial3} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Negative Binomial 3 (ID: 0000055)\\ 
+% 
+%\textbf{type} & & discrete \\ 
+%
+%\textbf{variate} & & $y$, scalar \\ 
+%
+%\textbf{support} & & $y \in \{0,1,2,3,\dots\}$
+%\end{tabular}
+%\subsubsection*{Parameter: }
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & mean \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $-$
+%\end{tabular}
+%\subsubsection*{Parameter: -}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & size parameter \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\theta$  \\
+%\textbf{definition} & & $-$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%\begin{equation*}\frac{\Gamma(\theta + y)}{\Gamma(a)\Gamma(y+1)} \Big(\frac{\theta}{\theta + \mu} \Big)^{\theta} 
+%\Big(\frac{\mu}{\theta + \mu} \Big)^{y}\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
 \smallskip\section*{Normal1} 
 
   \bigskip 
@@ -6789,92 +6852,92 @@ plotted using the provided R-code.}
 \begin{equation*}\sqrt{\frac{\tau}{2 \pi}} e^{-\frac{\tau}{2}(x-\mu)^2}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
-\smallskip\section*{NormalInverseGamma} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Normal- inverse-gamma (ID: 0000089)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $x \in (-\infty,+\infty), \sigma^2 \in (0,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter: mean}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & location \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu \in  R$
-\end{tabular}
-\subsubsection*{Parameter: lambda}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & - \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\lambda$  \\
-\textbf{definition} & & $\lambda > 0, \lambda \in  R$
-\end{tabular}
-\subsubsection*{Parameter: alpha}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & - \\
-\textbf{type} & & - \\
-\textbf{symbol} & & $\alpha$  \\
-\textbf{definition} & & $\alpha > 0, \alpha \in  R$
-\end{tabular}
-\subsubsection*{Parameter: beta}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & - \\
-\textbf{type} & & - \\
-\textbf{symbol} & & $\beta$  \\
-\textbf{definition} & & $\beta > 0, \beta \in  R$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac {\sqrt{\lambda}} {\sigma\sqrt{2\pi} }  \frac{\beta^\alpha}{\Gamma(\alpha)} \, \left( \frac{1}{\sigma^2} \right)^{\alpha + 1}   e^{ -\frac { 2\beta + \lambda(x - \mu)^2} {2\sigma^2}  } \end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
-\smallskip\section*{Pareto} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Pareto (ID: 0000101)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $x \in [x_m, +\infty)$
-\end{tabular}
-\subsubsection*{Parameter: scale}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & scale \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $x_m$  \\
-\textbf{definition} & & $x_m > 0, x_m >  R$
-\end{tabular}
-\subsubsection*{Parameter: shape}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & shape \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\alpha$  \\
-\textbf{definition} & & $\alpha > 0, \alpha >  R$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{\alpha\,x_m^\alpha}{x^{\alpha+1}}\text{ for }x\ge x_m\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}1-\left(\frac{x_m}{x}\right)^\alpha \text{ for } x \ge x_m\end{equation*}
+%\smallskip\section*{NormalInverseGamma} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Normal- inverse-gamma (ID: 0000089)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, scalar \\ 
+%
+%\textbf{support} & & $x \in (-\infty,+\infty), \sigma^2 \in (0,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter: mean}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & location \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\mu$  \\
+%\textbf{definition} & & $\mu \in  R$
+%\end{tabular}
+%\subsubsection*{Parameter: lambda}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & - \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\lambda$  \\
+%\textbf{definition} & & $\lambda > 0, \lambda \in  R$
+%\end{tabular}
+%\subsubsection*{Parameter: alpha}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & - \\
+%\textbf{type} & & - \\
+%\textbf{symbol} & & $\alpha$  \\
+%\textbf{definition} & & $\alpha > 0, \alpha \in  R$
+%\end{tabular}
+%\subsubsection*{Parameter: beta}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & - \\
+%\textbf{type} & & - \\
+%\textbf{symbol} & & $\beta$  \\
+%\textbf{definition} & & $\beta > 0, \beta \in  R$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac {\sqrt{\lambda}} {\sigma\sqrt{2\pi} }  \frac{\beta^\alpha}{\Gamma(\alpha)} \, \left( \frac{1}{\sigma^2} \right)^{\alpha + 1}   e^{ -\frac { 2\beta + \lambda(x - \mu)^2} {2\sigma^2}  } \end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
+%\smallskip\section*{Pareto} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Pareto (ID: 0000101)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, scalar \\ 
+%
+%\textbf{support} & & $x \in [x_m, +\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter: scale}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & scale \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $x_m$  \\
+%\textbf{definition} & & $x_m > 0, x_m >  R$
+%\end{tabular}
+%\subsubsection*{Parameter: shape}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & shape \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\alpha$  \\
+%\textbf{definition} & & $\alpha > 0, \alpha >  R$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{\alpha\,x_m^\alpha}{x^{\alpha+1}}\text{ for }x\ge x_m\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}1-\left(\frac{x_m}{x}\right)^\alpha \text{ for } x \ge x_m\end{equation*}
 \smallskip\section*{Poisson} 
 
   \bigskip 
@@ -6888,6 +6951,14 @@ plotted using the provided R-code.}
 
 \textbf{support} & & $k \in \{0,1,2,3,\dots\}$
 \end{tabular}
+
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/Poisson_pmf_cdf.pdf}
+ \caption{PMF and CDF of the Poisson distribution plotted using the provided R-code.}
+ \label{fig:Poissonpmfcdf}
+\end{figure}
+
 \subsubsection*{Parameter: rate}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -6906,33 +6977,50 @@ plotted using the provided R-code.}
 \begin{equation*}\frac{\Gamma(\lfloor k+1 \rfloor,\lambda)}{\lfloor k \rfloor!}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
 \begin{verbatim}Igamma(floor(k+1), lambda, lower=F) / factorial(floor(k))\end{verbatim}
-\smallskip\section*{Rayleigh} 
 
-  \bigskip 
+\paragraph{Note} There are surprising many different names for the Poisson parameter, such as
+\label{par:poissonParameterNames}
+\begin{itemize}
+\item 
+\emph{shape} in Distributome, \url{http://www.distributome.org/V3/Distributome.xml.html}
+\item 
+\emph{mean} or \emph{variance} in Forbes et al. 2010, \cite{Forbes:2010jk}
+\item 
+\emph{rate} in UncertML, \url{http://www.uncertml.org/distributions/poisson}
+\item 
+\emph{scale} in Leemis et al. 2008, \url{http://www.math.wm.edu/~leemis/chart/UDR/PDFs/Poisson.pdf}
+\end{itemize}
+As we have followed the UncertML naming convention, \emph{rate} is the 
+code name to be used with ProbOnto.
 
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Rayleigh (ID: 0000119)\\ 
- 
-\textbf{type} & & continuous \\ 
 
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $x \in [0,+\infty)$
-\end{tabular}
-\subsubsection*{Parameter: scale}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & scale \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\sigma$  \\
-\textbf{definition} & & $\sigma > 0$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{x}{\sigma^2} e^{-x^2/2\sigma^2}\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}1 - e^{-x^2/2\sigma^2}\end{equation*}
+%\smallskip\section*{Rayleigh} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Rayleigh (ID: 0000119)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, scalar \\ 
+%
+%\textbf{support} & & $x \in [0,+\infty)$
+%\end{tabular}
+%\subsubsection*{Parameter: scale}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & scale \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\sigma$  \\
+%\textbf{definition} & & $\sigma > 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}\frac{x}{\sigma^2} e^{-x^2/2\sigma^2}\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}1 - e^{-x^2/2\sigma^2}\end{equation*}
 \smallskip\section*{StandardNormal} 
 
   \bigskip 
@@ -6946,12 +7034,14 @@ plotted using the provided R-code.}
 
 \textbf{support} & & $x \in R$
 \end{tabular}
+
 \begin{figure}[htb!]
 \centering
   \includegraphics[width=140mm]{pics/StandardNormal_pdf_cdf.pdf}
  \caption{PDF and CDF of the Standard Normal distribution plotted using the provided R-code.}
  \label{fig:StandardNormalpdfcdf}
 \end{figure}
+
 \subsubsection*{Parameter: mean}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -7097,84 +7187,84 @@ plotted using the provided R-code.}
                   \frac{x-a}{b-a} & \text{for } x \in [a,b) \\
                   1               & \text{for } x \ge b
                 \end{cases}\end{equation*}
-\smallskip\section*{UniformDiscrete1} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Uniform Discrete 1 (ID: 0000170)\\ 
- 
-\textbf{type} & & discrete \\ 
-
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $a,b \in \{\dots,-2,-1,0,1,2,3,\dots\}$
-\end{tabular}
-\subsubsection*{Parameter: minimum}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & minimum \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $a$  \\
-\textbf{definition} & & $a \in \{\dots,-2,-1,0,1,2,3,\dots\}$
-\end{tabular}
-\subsubsection*{Parameter: maximum}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & maximum \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $b$  \\
-\textbf{definition} & & $b \in \{\dots,-2,-1,0,1,2,3,\dots\}, b \ge a$
-\end{tabular}
-\subsubsection*{Parameter: }
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & number of values \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $n$  \\
-\textbf{definition} & & $n=b-a+1$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}1/n\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac{\lfloor k \rfloor -a+1}{n}\end{equation*}
-\smallskip\section*{UniformDiscrete2} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Uniform Discrete 2 (ID: 0000182)\\ 
- 
-\textbf{type} & & discrete \\ 
-
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $x \in \{0,1,2,\dots,n\}$
-\end{tabular}
-\subsubsection*{Parameter: minimum}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & minimum \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $a$  \\
-\textbf{definition} & & $a=0$
-\end{tabular}
-\subsubsection*{Parameter: numberOfValues}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & number of values \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $n$  \\
-\textbf{definition} & & $n \in N$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}1/(n+1)\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac{x+1}{n+1}\end{equation*}
+%\smallskip\section*{UniformDiscrete1} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Uniform Discrete 1 (ID: 0000170)\\ 
+% 
+%\textbf{type} & & discrete \\ 
+%
+%\textbf{variate} & & $x$, scalar \\ 
+%
+%\textbf{support} & & $a,b \in \{\dots,-2,-1,0,1,2,3,\dots\}$
+%\end{tabular}
+%\subsubsection*{Parameter: minimum}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & minimum \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $a$  \\
+%\textbf{definition} & & $a \in \{\dots,-2,-1,0,1,2,3,\dots\}$
+%\end{tabular}
+%\subsubsection*{Parameter: maximum}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & maximum \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $b$  \\
+%\textbf{definition} & & $b \in \{\dots,-2,-1,0,1,2,3,\dots\}, b \ge a$
+%\end{tabular}
+%\subsubsection*{Parameter: }
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & number of values \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $n$  \\
+%\textbf{definition} & & $n=b-a+1$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%\begin{equation*}1/n\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\frac{\lfloor k \rfloor -a+1}{n}\end{equation*}
+%\smallskip\section*{UniformDiscrete2} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Uniform Discrete 2 (ID: 0000182)\\ 
+% 
+%\textbf{type} & & discrete \\ 
+%
+%\textbf{variate} & & $x$, scalar \\ 
+%
+%\textbf{support} & & $x \in \{0,1,2,\dots,n\}$
+%\end{tabular}
+%\subsubsection*{Parameter: minimum}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & minimum \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $a$  \\
+%\textbf{definition} & & $a=0$
+%\end{tabular}
+%\subsubsection*{Parameter: numberOfValues}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & number of values \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $n$  \\
+%\textbf{definition} & & $n \in N$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%\begin{equation*}1/(n+1)\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\frac{x+1}{n+1}\end{equation*}
 \smallskip\section*{Weibull1} 
 
   \bigskip 
@@ -7222,41 +7312,41 @@ plotted using the provided R-code.}
 \begin{equation*}\begin{cases}1- e^{-(x/\lambda)^k} & x\geq0\\ 0 & x<0\end{cases}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
 \begin{verbatim}1- exp(-(x/lambda)^k)\end{verbatim}
-\smallskip\section*{Weibull2} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Weibull 2 (ID: 0000202)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $x > 0$
-\end{tabular}
-\subsubsection*{Parameter: lambda}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & lambda \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\lambda$  \\
-\textbf{definition} & & $-$
-\end{tabular}
-\subsubsection*{Parameter: shape}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & shape \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $v$  \\
-\textbf{definition} & & $-$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}v\lambda \,x^{v-1} e^{-\lambda x^{v}}\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+%\smallskip\section*{Weibull2} 
+%
+%  \bigskip 
+%
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Weibull 2 (ID: 0000202)\\ 
+% 
+%\textbf{type} & & continuous \\ 
+%
+%\textbf{variate} & & $x$, scalar \\ 
+%
+%\textbf{support} & & $x > 0$
+%\end{tabular}
+%\subsubsection*{Parameter: lambda}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & lambda \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\lambda$  \\
+%\textbf{definition} & & $-$
+%\end{tabular}
+%\subsubsection*{Parameter: shape}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & shape \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $v$  \\
+%\textbf{definition} & & $-$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+%\begin{equation*}v\lambda \,x^{v-1} e^{-\lambda x^{v}}\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}-\end{equation*}
 \smallskip\section*{Wishart1} 
 
   \bigskip 
@@ -7418,8 +7508,8 @@ p + (1-p) \frac{\Gamma(\theta + y)}{\Gamma(a)\Gamma(y+1)} \Big(\frac{\theta}{\th
 (1-\pi) e^{-\lambda} \frac{\lambda^k}{k!} & \text{for } k > 0
 \end{cases}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{verbatim}pi + (1-pi)*exp(-lambda) if k=0\\
-(1-pi)*exp(-lambda) * lambda^k/factorial(k)  if k>0\end{verbatim}
+\begin{verbatim}pi + (1-pi)*exp(-lambda) 		if k=0
+(1-pi)*exp(-lambda) * lambda^k/factorial(k)  	if k>0\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
 
