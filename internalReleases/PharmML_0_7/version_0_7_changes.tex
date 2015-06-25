@@ -496,14 +496,13 @@ The parameter 'Code names' are specified using also a \xatt{name} attribute.
 The order of parameters doesn't matter. 
 \end{itemize}
 We have found instances of different names being used for the same parameters 
-of many distributions, see for example discussion in section \ref{par:poissonParameterNames}. 
-The majority of parameter names is identical to those used in UncertML.
-This is to keep the nomenclature consistent within PharmML and MDL, where
+of many distributions. The majority of parameter names is identical to those used 
+in UncertML. This is to keep the nomenclature consistent within PharmML and MDL, where
 the UncertML vocabulary is mostly used.
 
 In tables \ref{figTable:univariates} -- \ref{figTable:multivariatesCodes} and \ref{figTable:mixtures} 
-we have compiled the 'Code names'. Multiple examples in this and next sections/chapters 
-how to apply the above rules in implement the distributions.
+we have compiled the \emph{code names}. Multiple examples in this and next sections/chapters 
+show how to apply the above rules in implementing distributions.
 
 \begin{example}
 The negative binomial implementation illustrates how this works. There are two 
@@ -514,13 +513,11 @@ is frequently used in discrete data models.
 \begin{lstlisting}
     <Distribution>
         <ProbOnto name="NegativeBinomial1">
-            <!-- Poisson intensity -->
             <Parameter name="rate">
                 <ct:Assign>
                     <ct:SymbRef blkIdRef="pm1" symbIdRef="rabbit"/>
                 </ct:Assign>
             </Parameter>
-            <!-- overdispersion -->
             <Parameter name="overdispersion">
                 <ct:Assign>
                     <ct:SymbRef blkIdRef="pm2" symbIdRef="piggy"/>
@@ -548,8 +545,9 @@ The following elements are new in this version
 \ref{figTable:univariatesCodes} and \ref{figTable:multivariatesCodes} with children elements
 \begin{itemize}
 \item
-\xelem{Parameter}  with the \xatt{name} attribute for the parameter code names, see tables 
-\ref{figTable:univariatesCodes} and \ref{figTable:multivariatesCodes}.
+\xelem{Parameter} with the \xatt{name} attribute for the parameter code names, see tables 
+\ref{figTable:univariatesCodes} and \ref{figTable:multivariatesCodes}. Its main feature is that 
+it can be assigned any expression.
 \item
 \xelem{LowerTruncationBound} and \xelem{LowerTruncationBound} to indicate the
 truncation bounds for univariate distributions with attribute \xatt{type} which can
@@ -1141,10 +1139,11 @@ See the Appendix \ref{ch:probontoAppendix}.}
 \end{center}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{ProbOnto and discrete data models}
-\label{sec:ProbOntoAndDiscrete}
+\section{ProbOnto examples}
+
 
 \subsection{Categorical data models}
+\label{sec:ProbOntoAndDiscrete}
 For categorical models we always list in PharmML all categories 
 \lstset{language=XML}
 \begin{lstlisting}
@@ -1432,12 +1431,81 @@ However, because reference literature exists for general Mixed Poisson regressio
 could be considered for ProbOnto in future as well.
 
 
+
+\subsection{Truncated distributions}
+FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH \\
+FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH \\
+FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH \\
+FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH \\
+FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH \\
+FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH \\
+\lstset{language=XML}
+\begin{lstlisting}
+<!--            X ~normal(mu,sigma,lower=mu-1.96*sigma,upper=mu+1.96*sigma)-->
+    <IndividualParameter symbId="pTruncated">
+        <Distribution>
+            <ProbOnto name="Normal1">
+                <Parameter name="mean">
+                    <ct:Assign>
+                        <ct:SymbRef symbIdRef="mu"/>
+                    </ct:Assign>
+                </Parameter>
+                <Parameter name="stdev">
+                    <ct:Assign>
+                        <ct:SymbRef symbIdRef="sigma"/>
+                    </ct:Assign>
+                </Parameter>
+                <LowerTruncationBound>
+                    <ct:Assign>
+                        <math:Equation>
+                            <math:Binop op="minus">
+                                <ct:SymbRef symbIdRef="mu"/>
+                                <math:Binop op="times">
+                                    <ct:Real>1.96</ct:Real>
+                                    <ct:SymbRef symbIdRef="sigma"/>
+                                </math:Binop>
+                            </math:Binop>
+                        </math:Equation>
+                    </ct:Assign>
+                </LowerTruncationBound>
+                <UpperTruncationBound>
+                    <ct:Assign>
+                        <math:Equation>
+                            <math:Binop op="plus">
+                                <ct:SymbRef symbIdRef="mu"/>
+                                <math:Binop op="times">
+                                    <ct:Real>1.96</ct:Real>
+                                    <ct:SymbRef symbIdRef="sigma"/>
+                                </math:Binop>
+                            </math:Binop>
+                        </math:Equation>
+                    </ct:Assign>
+                </UpperTruncationBound>
+            </ProbOnto>
+        </Distribution>
+    </IndividualParameter>
+\end{lstlisting}
+
+
+
+
+\subsection{REGRESSORS}
+FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH \\
+FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH \\
+FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH \\
+FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH \\
+FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH \\
+FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH \\
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Independency of ProbOnto}
 \label{sec:ProbOntoIndependent}
 It is worth to stress that ProbOnto ontology and knowledge base are fully 
 independent from PharmML. This allows it to be used across the target 
-tools and languages. 
+tools and languages. It doesn't enforce a certain way to implement it from
+a tool designer.
 
 
 
@@ -4004,7 +4072,7 @@ values.
 
 \begin{itemize}
 \item 
-Covariate model comes with an explicit assignment option -- any expression 
+Covariate model, \xelem{CovariateModel}, comes with an explicit assignment option -- any expression 
 can be encoded here providing a missing so far option to define new covariates
 out of existing ones. For example, the definition a new covariate based on exiting ones, 
 such as $C=A+B$ reads in PharmML as follows 
@@ -4031,7 +4099,33 @@ such as $C=A+B$ reads in PharmML as follows
         </Covariate>
     </CovariateModel>
 \end{lstlisting}
-
+\item 
+\xelem{InitialEstimate}, \xelem{LowerBound} and \xelem{UpperBound} definition
+has been extended to allow for initial assignments required for parameters 
+(vectors or matrices) of multivariate distributions, as the following code snippet 
+shows
+\lstset{language=XML}
+\begin{lstlisting}
+        <ParameterEstimation>
+            <ct:SymbRef symbIdRef="SIGMA_POP_P"/>
+            <InitialEstimate>
+                <ct:Matrix matrixType="Any">
+                    <ct:MatrixRow>
+                        <ct:RowIndex><ct:Int>1</ct:Int></ct:RowIndex>
+                        <ct:Real>1</ct:Real>
+                        <ct:Real>0.1</ct:Real>
+                    </ct:MatrixRow>
+                    <ct:MatrixRow>
+                        <ct:RowIndex><ct:Int>2</ct:Int></ct:RowIndex>
+                        <ct:Real>0.1</ct:Real>
+                        <ct:Real>1</ct:Real>
+                    </ct:MatrixRow>
+                </ct:Matrix>
+            </InitialEstimate>
+        </ParameterEstimation>
+\end{lstlisting}
+in which the covariance matrix of a multivariate normal distribution
+is assigned initial values.
 \item 
 \xelem{NumberCounts} element allows to identify the dependent variable 
 in discrete count data models, usually denoted as \emph{k}. This was implemented
@@ -4071,18 +4165,30 @@ contained wrong references to structural model within the \xelem{TargetMapping},
 Instead of \xatt{sm1}, it should be the value assigned to \emph{blkIdRef} of the 
 according structural model, e.g. \xatt{sm12} in the \emph{PKmacros\_advan12.xml} 
 example. Thanks to Henrik for spotting that.
+\item
+A number of typos/bugs were find in remaining 0.6 examples, see next section for
+a detailed description.
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Debugging with libPharmML}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Debugging with libPharmML}
+%
+%Florent helped to find a large number of typos, missing block references and 
+%unassigned parameters using the updated libPharmML in the examples released
+%with 0.6 version.
 
-Florent helped to find a large number of typos, missing block references and 
-unassigned parameters using the updated libPharmML in the examples released
-with 0.6 version. All \\
-FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH 
-FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH 
-FINISH FINISH FINISH FINISH FINISH FINISH FINISH FINISH
+\section{Debugging with libPharmML}
+The examples used in PharmML 0.6 have been fixed thanks to the validation procedure 
+of the version 0.4.1 of libPharmML. This last version includes validation of symbol, object 
+and column references, additionally to dataset validation.  Those examples contained 
+some unresolved references, sometimes due to a missing \xatt{blkIdRef} attribute value, an 
+undefined referred parameter or a typo. Some of the dataset rows also used a data 
+type incompatible with the column definition.
 
+The validation can be performed within the non-Java tools using the stand-alone 
+validator that can be run from the command line. The jar is available on sourceforge: 
+\url{https://sourceforge.net/projects/libpharmml.ddmore.p/files/Stand-alone%20validator/}. 
+A new validator version for PharmML 0.7 will be provided soon.
 
 
 
@@ -4100,8 +4206,7 @@ a brief overview of a part of its content for the most frequently used distribut
 and/or alternative parameterisations (37 out of about 55). 
 
 The according plots have been performed using the R code stored in ProbOnto 
-and provided for each distribution for which it's available. There is no easy way 
-to conver
+and provided for each distribution for which it's available.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -4720,10 +4825,10 @@ listed in the subsequent sections are collected here with references
 %\subsubsection*{Functions}
 %
 %\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-%\begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left(\ln x-\mu\right)^2}{2\sigma^2}}\end{equation*}
+%\begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left(\log x-\mu\right)^2}{2\sigma^2}}\end{equation*}
 %
 %\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-%\begin{equation*}\frac12 + \frac12\,\text{erf}\Big[\frac{\ln x-\mu}{\sqrt{2}\sigma}\Big]\end{equation*}
+%\begin{equation*}\frac12 + \frac12\,\text{erf}\Big[\frac{\log x-\mu}{\sqrt{2}\sigma}\Big]\end{equation*}
 %\section*{LogNormal2} 
 %
 %  \bigskip 
@@ -4748,7 +4853,7 @@ listed in the subsequent sections are collected here with references
 %\subsubsection*{Functions}
 %
 %\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-%\begin{equation*}\frac{1}{x\sqrt{v}\sqrt{2\pi}}\ e^{-\frac{\left(\ln x-\mu\right)^2}{2 v}}\end{equation*}
+%\begin{equation*}\frac{1}{x\sqrt{v}\sqrt{2\pi}}\ e^{-\frac{\left(\log x-\mu\right)^2}{2 v}}\end{equation*}
 %
 %\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 %\begin{equation*}-\end{equation*}
@@ -4776,7 +4881,7 @@ listed in the subsequent sections are collected here with references
 %\subsubsection*{Functions}
 %
 %\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-%\begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left[\ln (x/m)\right]^2}{2\sigma^2}}\end{equation*}
+%\begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left[\log (x/m)\right]^2}{2\sigma^2}}\end{equation*}
 %
 %\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 %\begin{equation*}-\end{equation*}
@@ -4804,7 +4909,7 @@ listed in the subsequent sections are collected here with references
 %\subsubsection*{Functions}
 %
 %\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-%\begin{equation*}\frac{1}{x\sqrt{\ln(cv^2+1)}\sqrt{2\pi}}\ e^{-\frac{\left[\ln (x/m)\right]^2}{2\ln(cv^2+1)}}\end{equation*}
+%\begin{equation*}\frac{1}{x\sqrt{\log(cv^2+1)}\sqrt{2\pi}}\ e^{-\frac{\left[\log (x/m)\right]^2}{2\log(cv^2+1)}}\end{equation*}
 %
 %\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 %\begin{equation*}-\end{equation*}
@@ -5621,6 +5726,15 @@ listed in the subsequent sections are collected here with references
 
 \textbf{support} & & $x \in [0,+\infty)$
 \end{tabular}
+
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Exponential_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Exponential distribution plotted using the provided R-code.}
+ \label{fig:Exponential_pdf_cdf}
+\end{figure}
+
 \subsubsection*{Parameter: rate}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -5633,8 +5747,13 @@ listed in the subsequent sections are collected here with references
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\lambda e^{-\lambda x}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{PDF in R} 
+\begin{verbatim}lambda*exp(-lambda*x)\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}1 - e^{-\lambda x}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
+\begin{verbatim}1-exp(-lambda*x)\end{verbatim}
+
 \smallskip\section*{F} 
 
   \bigskip 
@@ -5706,6 +5825,14 @@ Gamma plot
 \textbf{symbol} & & $k$  \\
 \textbf{definition} & & $k > 0$
 \end{tabular}
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Gamma_pdf_cdf.pdf}
+ \caption{PMF of the Gamma distribution plotted using the provided R-code.}
+ \label{fig:Gamma_pdf_cdf}
+\end{figure}
+
 \subsubsection*{Parameter: scale}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -5718,8 +5845,12 @@ Gamma plot
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{\Gamma(k) \theta^k} x^{k \,-\, 1} e^{-\frac{x}{\theta}}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
+\begin{verbatim}1 / (gamma(k) * theta^k) * x^(k-1) * exp(-x/theta)\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac{1}{\Gamma(k)} \gamma\left(k,\, \frac{x}{\theta}\right)\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R}  
+\begin{verbatim}1/gamma(k) * Igamma(k,x/theta,lower=T)\end{verbatim}
 \smallskip\section*{GeneralizedGamma1} 
 
   \bigskip 
@@ -5733,6 +5864,14 @@ Gamma plot
 
 \textbf{support} & & $x \in (0,+\infty)$
 \end{tabular}
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/GeneralisedGamma_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Generalised Gamma distribution plotted using the provided R-code.}
+ \label{fig:GeneralisedGamma_pdf_cdf}
+\end{figure}
+
 \subsubsection*{Parameter: scale}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -5761,8 +5900,17 @@ Gamma plot
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{p/a^d}{\Gamma(d/p)} x^{d-1}e^{-(x/a)^p}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
+\begin{verbatim}
+p/a^d/gamma(d/p) * x^(d-1) * exp(-(x/a)^p)
+\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\frac{\gamma(d/p, (x/a)^p)}{\Gamma(d/p)}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R}  
+\begin{verbatim}
+Igamma(d/p, (x/a)^p, lower=T) / gamma(d/p)
+\end{verbatim}
+
 %\smallskip\section*{GeneralizedGamma2} 
 %
 %  \bigskip 
@@ -5828,12 +5976,14 @@ $, scalar \\
 
 \textbf{support} & & $k \in \{0,1,2,3,\dots\}$
 \end{tabular}
+
 \begin{figure}[ht!]
 \centering
   \includegraphics[width=70mm]{pics/GeneralisedPoisson_pmf_cdf.pdf}
  \caption{PMF of the Generalised Poisson distribution plotted using the provided R-code.}
  \label{fig:GeneralisedPoisson_pmf_cdf}
 \end{figure}
+
 \subsubsection*{Parameter: rate}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -5854,6 +6004,10 @@ $, scalar \\
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
 \begin{equation*}\frac{\lambda (\lambda+k\delta)^{k-1}\times e^{-\lambda - k \delta}}{k!}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
+\begin{verbatim}
+(lambda*(lambda+k*delta)^(k-1) * exp(-lambda-k*delta)) / factorial(k)
+\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}-\end{equation*}
 %\smallskip\section*{Geometric} 
@@ -6155,6 +6309,7 @@ $, scalar \\
 
 \textbf{support} & & $x \in (0,+\infty)$
 \end{tabular}
+
 \begin{figure}[htb!]
 \centering
   \includegraphics[width=140mm]{pics/LN1_pdf_cdf.pdf}
@@ -6162,6 +6317,7 @@ $, scalar \\
  plotted using the provided R-code.}
  \label{fig:LN1pdfcdf}
 \end{figure}
+
 \subsubsection*{Parameter: meanLog}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -6181,11 +6337,11 @@ $, scalar \\
 \subsubsection*{Functions}
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left(\ln x-\mu\right)^2}{2\sigma^2}}\end{equation*}
+\begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left(\log x-\mu\right)^2}{2\sigma^2}}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
 \begin{verbatim}1/(x*sigma*sqrt(2*pi)) * exp((-(log(x)-mu)^2)/(2*sigma^2))\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac12 + \frac12\,\text{erf}\Big[\frac{\ln x-\mu}{\sqrt{2}\sigma}\Big]\end{equation*}
+\begin{equation*}\frac12 + \frac12\,\text{erf}\Big[\frac{\log x-\mu}{\sqrt{2}\sigma}\Big]\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
 \begin{verbatim}1/2 + 1/2 *erf( (log(x)-mu)/(sqrt(2)*sigma) )\end{verbatim}
 \smallskip\section*{LogNormal2} 
@@ -6201,6 +6357,15 @@ $, scalar \\
 
 \textbf{support} & & $x \in (0,+\infty)$
 \end{tabular}
+
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/LogNormal2_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Log-Normal distribution, LN1,
+ plotted using the provided R-code.}
+ \label{fig:LN2pdfcdf}
+\end{figure}
+
 \subsubsection*{Parameter: meanLog}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -6220,11 +6385,13 @@ $, scalar \\
 \subsubsection*{Functions}
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{1}{x\sqrt{v}\sqrt{2\pi}}\ e^{-\frac{\left(\ln x-\mu\right)^2}{2 v}}\end{equation*}
+\begin{equation*}\frac{1}{x\sqrt{v}\sqrt{2\pi}}\ e^{-\frac{\left(\log x-\mu\right)^2}{2 v}}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
 \begin{verbatim}1/(x*sqrt(v)*sqrt(2*pi)) * exp(-(ln(x)-mu)^2/(2*v))\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+\begin{equation*}\frac12 + \frac12\,\text{erf}\Big[\frac{\log x-\mu}{\sqrt{2\,v}}\Big]\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R}  
+\begin{verbatim}1/2 + 1/2*erf( (log(x)-mu) / (sqrt(2*v)))\end{verbatim}
 \smallskip\section*{LogNormal3} 
 
   \bigskip 
@@ -6238,6 +6405,15 @@ $, scalar \\
 
 \textbf{support} & & $x \in (0,+\infty)$
 \end{tabular}
+
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/LogNormal3_pdf_cdf}
+ \caption{PDF and CDF of the Log-Normal distribution, LN3,
+ plotted using the provided R-code.}
+ \label{fig:LN3pdfcdf}
+\end{figure}
+
 \subsubsection*{Parameter: median}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -6246,6 +6422,9 @@ $, scalar \\
 \textbf{symbol} & & $m$  \\
 \textbf{definition} & & $m>0$
 \end{tabular}
+
+
+
 \subsubsection*{Parameter: stdevLog}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -6257,11 +6436,13 @@ $, scalar \\
 \subsubsection*{Functions}
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left[\ln (x/m)\right]^2}{2\sigma^2}}\end{equation*}
+\begin{equation*}\frac{1}{x\sigma\sqrt{2\pi}}\ e^{-\frac{\left[\log (x/m)\right]^2}{2\sigma^2}}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
 \begin{verbatim}1/(x*sigma*sqrt(2*pi)) * exp(-(log(x/m))^2 / (2*sigma^2))\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+\begin{equation*}\frac12 + \frac12\,\text{erf}\Big[\frac{\log x-\log m}{\sqrt{2}\sigma}\Big]\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R}  
+\begin{verbatim}1/2 + 1/2 * erf( (log(x)-log(m)) / (sqrt(2)*sigma) )\end{verbatim}
 \smallskip\section*{LogNormal4} 
 
   \bigskip 
@@ -6275,6 +6456,15 @@ $, scalar \\
 
 \textbf{support} & & $x \in (0,+\infty)$
 \end{tabular}
+
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/LogNormal4_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Log-Normal distribution, LN4,
+ plotted using the provided R-code.}
+ \label{fig:LN4pdfcdf}
+\end{figure}
+
 \subsubsection*{Parameter: median}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -6294,11 +6484,14 @@ $, scalar \\
 \subsubsection*{Functions}
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{1}{x\sqrt{\ln(cv^2+1)}\sqrt{2\pi}}\ e^{-\frac{\left[\ln (x/m)\right]^2}{2\ln(cv^2+1)}}\end{equation*}
+\begin{equation*}\frac{1}{x\sqrt{\log(cv^2+1)}\sqrt{2\pi}}\ e^{-\frac{\left[\log (x/m)\right]^2}{2\log(cv^2+1)}}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
 \begin{verbatim}1/(x*sqrt(log(cv^2+1))*sqrt(2*pi)) * exp( -(log(x/m))^2 / (2*log(cv^2+1)) )\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+\begin{equation*}\frac12 + \frac12\,\text{erf}\Big[\frac{\log x-\log m}{\sqrt{2}\sqrt{\log(cv^2+1)}}\Big]\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R}  
+\begin{verbatim}1/2 + 1/2*erf( (log(x)-log(m)) / (sqrt(2*log(cv^2+1))) )\end{verbatim}
+
 \smallskip\section*{LogNormal5} 
 
   \bigskip 
@@ -6312,6 +6505,15 @@ $, scalar \\
 
 \textbf{support} & & $x \in (0,+\infty)$
 \end{tabular}
+
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/LogNormal5_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Log-Normal distribution, LN5,
+ plotted using the provided R-code.}
+ \label{fig:LN5pdfcdf}
+\end{figure}
+
 \subsubsection*{Parameter: meanLog}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -6333,9 +6535,12 @@ $, scalar \\
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\sqrt{\frac{\tau}{2 \pi}} \frac{1}{x}e^{-\frac{\tau}{2}(\log x-\mu)^2}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{verbatim}sqrt(tau / (2*pi)) * (1/x) * exp(- (tau/2)*(log(x)-mu)^2 )\end{verbatim}
+\begin{verbatim}sqrt(tau/(2*pi)) * (1/x) * exp(-(tau/2)*(log(x)-mu)^2)\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+\begin{equation*}\frac12 + \frac12\,\text{erf}\Big[\frac{\ln x-\mu}{\sqrt{2/\tau}}\Big]\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R}  
+\begin{verbatim}1/2 + 1/2*erf( (log(x)-mu) / sqrt(2/tau) )\end{verbatim}
+
 %\smallskip\section*{Logistic} 
 %
 %  \bigskip 
