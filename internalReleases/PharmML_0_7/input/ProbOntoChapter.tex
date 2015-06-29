@@ -1,0 +1,1235 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{\emph{ProbOnto} -- Ontology/Knowledge Base of Probability Distributions}
+\label{ch:ProbOnto}
+
+
+\paragraph{Background}
+When encoding probabilistic uncertainties using a parametric distribution its name and 
+parameters are sufficient to specify it in an unambiguous way as 
+in most cases such parameter set is unique. But, because for a number of cases 
+two or more parameterisations exist, one needs to be precise what 
+parameters are used when referring to a distribution, otherwise one might 
+end up with a wrong model (see for an example Figure \ref{fig:whatCanGoWrong}).
+For this purpose an external standard reference is very useful as it allows to 
+considerably reduce the effort of declaring the required distribution in a language 
+such as MDL or PharmML.
+
+\begin{figure}[htb!]
+\centering
+\begin{tabular}{cc}
+ \includegraphics[width=100mm]{pics/whatCanGoWrong}
+\end{tabular}
+\caption{Illustration of possible model misspecification when using incorrect 
+parameterisation. (1) The black curve corresponds to a log-normal 
+distribution of body weight, $\mathcal {LN}(\mu\!=\!\log(70),\sigma\!=\!0.5)$, the 
+intended parameterisation. (2) Here it was mistakenly assumed that 0.5 corresponds 
+to the variance and calculation of standard deviation as required by the R function 
+\emph{dlnorm} gives $\sigma = \sqrt{0.5}=0.707$ (red). (3) Here the modeller 
+assumed that the 2nd input value corresponds to the precision and calculated the 
+standard deviation as $\sigma = 1/\sqrt{0.5}=1.41$ (blue). Small numerical 
+differences in $\sigma$, on the log-scale, result in significant differences on the natural scale.}
+\label{fig:whatCanGoWrong}
+\end{figure}
+
+Until now, we have been relying on the UncertML, \cite{uncertml3:2014}, 
+which provides means to encode in MDL/PharmML a range of continuous and 
+discrete uni/multi-variate probability distributions. However, from the perspective 
+of PharmML, it has several limitations as described in section \ref{sec:uncertmlLimits}. 
+
+\paragraph{Idea} The initial motivation for \emph{ProbOnto} was to create an ontology of probability 
+distributions purely for annotation purposes. Many resources are available online 
+and in printed format but no proper ontology exists so far\footnote{For 
+example, the Statistics Ontology, STATO, \url{http://stato-ontology.org/}, provides 
+for most distributions merely a link to an external reference/definition. No parameters
+or related functions and quantities are defined in the ontology making their annotation
+impossible. Other ontologies, we have analysed number of them featured in the 
+BioPortal, \cite{noy2009bioportal}, suffer from equivalent limitations
+as they are designed in a similar way.}.  
+Similarly, the databases of distributions available online come with analog issues\footnote{Distributome, 
+\url{http://www.distributome.org/}, comes with an impressive and well referenced collection
+of 90+ distributions but doesn't contain many of relevant for us cases and/or 
+parameterisations and is limited to univariate parametric ones.}.
+It turns out that \emph{ProbOnto} can be very helpful in
+designing a flexible alternative for UncertML with many additional features.
+It turns out that it can be used e.g. in PharmML or other target tools/languages \emph{both} 
+as ontological resource for annotation purposes and as a knowledge base, 
+see next section for their definitions, to provide the means to specify a wide range 
+of distributions and distribution related functions and quantities.
+
+In fact, such solution is indispensable in the face of requirements 
+posed by models we would like to encode currently and in the foreseeable future. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Ontology versus Knowledge Base}
+\begin{description}
+\item[Ontology] is a formal representation of a domain of knowledge. It is an abstract entity 
+defining the vocabulary for a domain and the relations between concepts.
+However, an ontology doesn't specify how that knowledge is stored 
+(as physical file, in a database, or in some other form), and how the knowledge 
+can be accessed.
+\item[Knowledge base] is a physical artifact. It is a database, a repository of information 
+that can be accessed and manipulated in some predefined fashion.
+\end{description}
+The knowledge in a knowledge base is modelled according to rules and relationships 
+defined in an ontology.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Limitations of the application of UncertML in PharmML}
+\label{sec:uncertmlLimits}
+Although very useful to a certain extent, there are limitations in
+the design and scope of UncertML making the encoding of some 
+probability distributions cumbersome or even impossible, see examples below. 
+Here some known limitations (in the order of severity):
+\begin{itemize}
+\item
+it doesn't support the assignment of expressions for distribution parameters or 
+the specification of block references, which is required if the parameter in question 
+is defined elsewhere in the model. 
+\item
+it doesn't cover many distributions used in Pharmacometrics, e.g. 
+\begin{itemize}
+\item 
+multivariate continues distributions such as Inverse-Wishart
+\item
+discrete distributions such as Generalized Poisson, Zero-inflated Poisson etc.
+\item
+or alternative parameterisations for distributions such as Negative Binomial, 
+Log-Normal etc.
+\end{itemize}
+\item
+\xelem{degreesOfFreedom} parameter element of the Wishart distribution doesn't support
+referencing a variable (required for Bayesian inference) -- a known bug/limitation 
+but with no solution for now.
+\item
+UncertML is a reference resource for distributions but does not provide 
+mechanisms to retrieve programmatically related functions and
+quantities.  
+\end{itemize}
+Other minor issues:
+\begin{itemize}
+%\item
+%changes/updates in the unpublished version 3.0 happen without providing 
+%documentation change-log.
+\item
+the implementation of \xelem{MultivariateNormalDistribution} requires the specification 
+of the \xatt{dimension} attribute of the covariance matrix -- although this can be estimated
+it requires unnecessary calculations when translating models to PharmML. 
+\item
+every extension requires changes in the already complex XML schema.
+\item
+doesn't support the precision parameter, $\tau$, used in winBUGS  
+rather then standard deviation or variance and precision matrix, $T$, instead 
+of covariance matrix $\Sigma$, see tables \ref{figTable:univariates} and \ref{figTable:multivariates}.
+\item
+version 3.0 which we currently use is not yet released publicly, the UncertML website 
+is not updated and 3.0 documentation is not available.
+\end{itemize}
+
+\paragraph{UncertML extension} A seemingly easy solution would be to extend UncertML 
+but to do so, it would mean to introduce major extensions and changes to its 
+current XML schema. Only the support of the most important missing features would 
+de facto require to rewrite the entire standard, as UncertML doesn't possess the 
+structure to support encoding of even basic expressions. And because it would most 
+certainly result in a different, compared to PharmML, mathematical notation we would 
+be faced with inconsistent, layered and/or overlapping schemas difficult to handle and 
+to process.
+
+\paragraph{Suggested way forward} ProbOnto offers an alternative solution allowing
+to avoid all the limitations listed above while providing number of additional features
+and means to build in a very flexible probability distribution support in MDL and PharmML 
+and other languages/tools within DDMoRe and beyond. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{ProbOnto Features}
+\begin{itemize}
+\item
+General 
+\begin{itemize}
+\item
+Covers more then 50 distributions and alternative parameterisations.
+\item
+Supports encoding of univariate mixture distributions and truncation bounds (open/closed).
+\item
+Allows for easy encoding of distributions and related functions in target 
+tools/languages thanks to its generic format.
+\item
+Doesn't enforce specific implementation in target tools.
+\item
+In PharmML only few extensions were required to provide flexible encoding support
+for all distributions and their features, see section \ref{sec:workingProbOnto}.
+\item
+Collection of supported distributions, see appendix \ref{ch:probontoAppendix} for 
+some selected types and their essential features, is easily extendable 
+without non or limited impact on the PharmML structure.
+\item
+All mathematical functions and quantities are available in Latex and  for a number 
+of functions R-code is provided.
+\end{itemize}
+\item
+ProbOnto as Ontology
+\begin{itemize}
+\item
+It can be used to annotate statistical models based on supported probability 
+distributions, e.g. their name, parameters, truncation bounds, their defining 
+functions and quantities.
+\end{itemize}
+\item
+ProbOnto as Knowledge Base
+\begin{itemize}
+\item
+Provides for each distribution either PDF or PMF and in many cases also 
+other distribution related functions such as CDF, hazard and survival functions 
+-- the level of coverage depends on the particular distribution. 
+%see Appendix \ref{ch:probontoAppendix}.
+\item
+Provides related quantities such as mean, median, mode, variance etc.
+\item
+Provides other info about \emph{support/range} and relationships to other distributions.
+\end{itemize}
+\end{itemize}
+The distribution collection and their features are based, among others, on
+probability distribution pages of the english Wikipedia\footnote{See the list of 
+distributions on Wikipedia at \url{https://en.wikipedia.org/wiki/List_of_probability_distributions}}, 
+\cite{Forbes:2010jk}, \cite{Leemis:2008tg}, \cite{song2011eighty}, and 
+Wolfram MathWorld \cite{weisstein2007wolfram}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Features under construction}
+The following features are under construction and not available in the current 
+release
+\begin{itemize}
+\item
+truncation bounds -- supported already for all univariate distributions but an extension 
+to multivariate distributions is needed.
+%\item
+%mixture models - added but more testing required -- see example 'Poisson with mixture distribution', PMIX.
+\item
+non-parametric distributions.
+\end{itemize}
+They are available to certain extend in UncertML, which can be used instead for the time being, if required.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Working with ProbOnto}
+\label{sec:workingProbOnto}
+The subsequent chapters come with a number of examples of ProbOnto use
+but it is worth to point out two basic implementation rules 
+\begin{itemize}
+\item 
+The name of a distribution, encoded in the \xelem{DistributionName} tag, 
+must be one of the 'Code names' assigned to each distribution in ProbOnto
+using the \xatt{name} attribute. 
+\item
+The same holds of the parameters of a distribution, encoded in the \xelem{Parameter} tag.
+The parameter 'Code names' are specified using also a \xatt{name} attribute. 
+The order of parameters doesn't matter. 
+\end{itemize}
+%We have found in the literature many instances of different names being used 
+%for parameters a given distributions. 
+To remain consistent within the nomenclature used so far in PharmML and MDL (which
+was based on UncertML vocabulary) the majority of parameter names is identical 
+to those used in UncertML. For new distributions and their parameters we have 
+defined the most common names used in the literature. 
+In tables \ref{figTable:univariatesCodes}, \ref{figTable:multivariatesCodes} 
+and \ref{figTable:mixtures} we have compiled the \emph{code names}. 
+
+\begin{example}
+The negative binomial implementation illustrates how this works. There are two 
+parametrisations for this distribution but the version with Poisson intensity, $\lambda$, 
+and over-dispersion, $\tau$, as parameters, with the code name, \emph{NegativeBinomial2}, 
+is frequently used in discrete data models.
+\lstset{language=XML}
+\begin{lstlisting}
+    <Distribution>
+        <ProbOnto name="NegativeBinomial1">
+            <Parameter name="rate">
+                <ct:Assign>
+                    <ct:SymbRef blkIdRef="pm1" symbIdRef="rabbit"/>
+                </ct:Assign>
+            </Parameter>
+            <Parameter name="overdispersion">
+                <ct:Assign>
+                    <ct:SymbRef blkIdRef="pm2" symbIdRef="piggy"/>
+                </ct:Assign>
+            </Parameter>
+        </ProbOnto>
+    </Distribution>
+\end{lstlisting}
+%	
+According to the rules, the names of the distributions and their parameters 
+must be the code names defined by ProbOnto, see table \ref{figTable:multivariatesCodes}. 
+The user can then assign any symbols to the parameters,
+with \emph{rabbit} standing for \emph{rate}, defined in 
+parameter model \xatt{pm1} and \emph{piggy} for \emph{overdispersion}, 
+defined in parameter model \xatt{pm2}.
+%effort required in PharmML and other target 
+%tools to make use of ProbOnto is reduced to minimum.
+\end{example}
+
+\subsection{New elements supporting ProbOnto}
+The following elements are new in this version to support ProbOnto encoding 
+\begin{itemize}
+\item
+\xelem{ProbOnto} tag with the \xatt{name} attribute for the distribution code names, tables 
+\ref{figTable:univariatesCodes} and \ref{figTable:multivariatesCodes}, with children elements
+\begin{itemize}
+\item
+\xelem{Parameter} with the \xatt{name} attribute for the parameter code names, see tables 
+\ref{figTable:univariatesCodes} and \ref{figTable:multivariatesCodes}. It can be assigned any expression.
+\item
+\xelem{LowerTruncationBound} and \xelem{LowerTruncationBound} to indicate the
+truncation bounds for univariate distributions with attribute \xatt{type} which can
+be either \emph{closed} or \emph{open}.
+\item
+\xelem{MixtureComponent} with the \xatt{name} attribute of the code name of mixture 
+components.
+\end{itemize}
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Alternative parameterisations -- examples}
+Providing alternative parameterisations is required for number of reasons, such as
+model type, application area, available data and target tool -- e.g. BUGS using 
+precision, $\tau$, rather then standard deviation or variance for a number of 
+distributions. (See also a discussion on parameters difference between BUGS
+and R, \cite{lebauer2013translating}). A few typical examples are given in next sections.
+
+\subsection{Negative binomial distribution} 
+The available parameterisations, among others, are
+\begin{itemize}
+\item
+NegativeBinomial1\,($r$, $p$) with r -- \emph{number of failures} and p -- \emph{success probability},
+\begin{align}
+P(y=k;r,p) = \binom {k+r-1}k (1-p)^r p^k \nonumber
+\end{align}
+\item
+NegativeBinomial2\,($\lambda$, $\tau$) with $\lambda$ -- \emph{Poisson intensity} and $\tau$ -- \emph{over-dispersion},
+\begin{align}
+P(y=k;\lambda,\tau) = \frac{\Gamma(k + \frac{1}{\tau})}{k!\; \Gamma(\frac{1}{\tau})} \Big(\frac{1}{1+\tau \lambda} \Big)^{\frac{1}{\tau}} 
+\Big(\frac{\lambda}{\frac{1}{\tau} + \lambda} \Big)^{k} \nonumber
+\end{align}
+%\item
+%NegativeBinomial3\,($\lambda$, $\theta$) with $\lambda$ -- \emph{Poisson intensity} and $\theta$,
+%\begin{align}
+%\frac{\Gamma(\theta + y)}{\Gamma(a)\Gamma(y+1)} \Big(\frac{\theta}{\theta + \mu} \Big)^{\theta} 
+%\Big(\frac{\mu}{\theta + \mu} \Big)^{y} \nonumber
+%\end{align}
+\end{itemize}
+with the latter being used in typical pharmacometric discrete data models, \cite{Plan:2009fk, Troconiz:2009fv}.
+See the Wikipedia article\footnote{\url{en.wikipedia.org/wiki/Negative_binomial_distribution}, 
+section 'Alternative formulations'}, explaining the reasons behind the various representations.
+
+\subsection{Normal distribution}
+Available parameterisations (see also Table \ref{figTable:logNormalParameterisations} 
+with indication about their coverage in target tools) are
+\begin{itemize}
+\item
+Normal1\,($\mu$, $\sigma$) with $\mu$ -- \emph{mean} and $\sigma$ -- \emph{standard deviation}, 
+\item
+Normal2\,($\mu$, \emph{v}) with $\mu$ -- \emph{mean} and \emph{v} -- \emph{variance},
+\item
+Normal3\,($\mu$, $\tau$) with $\mu$ -- \emph{mean} and $\tau$ -- \emph{precision} ($\tau=1/\sigma^2$)
+\end{itemize}
+
+\subsubsection{Re-parameterisation formulas}
+In this case the recalculation between the representations are very simple
+but are given here for the completeness.
+\begin{itemize}
+\item 
+\begin{description}
+\item[N1($\mu$, $\sigma$) $\rightarrow$ N2($\mu$, $v$)]:
+$\mu \rightarrow \mu; \quad \sigma \rightarrow v=\sigma^2$
+
+\item[N2($\mu$, $v$) $\rightarrow$ N1($\mu$, $\sigma$)]:
+$\mu \rightarrow \mu; \quad v \rightarrow \sigma = \sqrt{v}$
+\end{description}
+
+\item 
+\begin{description}
+\item[N1($\mu$, $\sigma$) $\rightarrow$ N3($\mu$, $\tau$)]:
+$\mu \rightarrow \mu; \quad \sigma \rightarrow \tau=1/\sigma^2$
+
+\item[N3($\mu$, $\tau$) $\rightarrow$ N1($\mu$, $\sigma$)]:
+$\mu \rightarrow \mu; \quad \tau \rightarrow \sigma=1/\sqrt{\tau}$
+\end{description}
+
+\item 
+\begin{description}
+\item[N2($\mu$, $v$) $\rightarrow$ N3($\mu$, $\tau$)]:
+$\mu \rightarrow \mu; \quad v \rightarrow \tau=1/v$
+
+\item[N3($\mu$, $\tau$) $\rightarrow$ N2($\mu$, $v$)]:
+$\mu \rightarrow \mu; \quad \tau \rightarrow v=1/\tau$
+\end{description}
+\end{itemize}
+
+\begin{figure}[htb!]
+\centering
+\begin{tabular}{cc}
+% \includegraphics[width=140mm]{pics/CDF_17Dec} \\
+ \includegraphics[width=160mm]{pics/normalAndLogDomain_schema}
+\end{tabular}
+\caption{Schematic representation of the lognormaly distributed data on the natural (left) 
+and logarithmic scale (right), see Figure \ref{fig:insulinData} for real-life data example. 
+\textbf{Bold} symbols stand for quantities commonly used to parameterise a log-normally 
+distributed variable.}
+\label{fig:schematicLogNormal}
+\end{figure}
+
+\subsection{Log-normal distribution}
+\label{subsec:logNormalForms}
+The log-normal distribution is special in that not only different parameter sets exist
+but also because they are defined either on the natural or logarithmic scale. Interestingly, in one 
+case the parameters are defined on two different scales, see Figure \ref{fig:schematicLogNormal},
+for an overview.\\
+Available parameterisations (also listed in Table \ref{figTable:univariates} 
+with indication about their coverage in target tools) are 
+\begin{itemize}
+\item
+LogNormal1\,($\mu$, $\sigma$) with \emph{mean}, $\mu$, and \emph{standard deviation}, $\sigma$, both on the log-scale, 
+\item
+LogNormal2\,($\mu$, \textit{v}) with \emph{mean}, $\mu$, and \emph{variance}, $v$, both on the log-scale, 
+\item
+LogNormal3\,(\textit{m}, $\sigma$)  with \emph{median}, $m$, on the natural scale and \emph{standard deviation}, $\sigma$, on the log-scale, 
+\item
+LogNormal4\,(\textit{m}, \textit{cv}) with \emph{median}, $m$, and \emph{coefficient of variation}, $cv$, both on the natural scale, 
+\item
+LogNormal5\,($\mu$, $\tau$) with \emph{mean}, $\mu$, and \emph{precision}, $\tau$, both on the log-scale.
+\end{itemize}
+
+\begin{figure}[htb!]
+\centering
+\begin{tabular}{cc}
+ \includegraphics[width=160mm]{pics/normalAndLogDomain}
+\end{tabular}
+\caption{Representation of the lognormaly distributed basal insulin data in diabetic patients 
+\cite{Rudenski:1991aa} on the natural scale (left) and on the logarithmic scale after 
+$log$--transformation (right), colour code as in Figure \ref{fig:schematicLogNormal}. 
+The density estimation for the data on the natural scale and its plotting was performed 
+using the R package \textit{logspline} \cite{Kooperberg:2013}.}
+\label{fig:insulinData}
+\end{figure}
+
+\subsubsection{Re-parameterisation formulas}
+\label{subsubsec:formulas}
+The recalculation between given parameterisations is error prone 
+and should, whenever required, be taken over by the converters. The 
+following equations might be useful when providing such translation support 
+between target tools. For example when translating a model implemented 
+for Monolix/NONMEM, which use either LN1 or LN2, with winBUGS as the 
+target tool, which uses only LN5.\\
+\begin{itemize}
+\item 
+\begin{description}
+\item[LN1($\mu$, $\sigma$) $\rightarrow$ LN2($\mu$, $v$)]:
+$\mu \rightarrow \mu; \quad \sigma \rightarrow v=\sigma^2$
+
+\item[LN2($\mu$, $v$) $\rightarrow$ LN1($\mu$, $\sigma$)]:
+$\mu \rightarrow \mu; \quad v \rightarrow \sigma = \sqrt{v}$
+\end{description}
+
+\item 
+\begin{description}
+\item[LN1($\mu$, $\sigma$) $\rightarrow$ LN3($m$, $\sigma$)]:
+$\mu \rightarrow m=\exp(\mu); \quad \sigma \rightarrow \sigma$
+
+\item[LN3($m$, $\sigma$) $\rightarrow$ LN1($\mu$, $\sigma$)]:
+$m \rightarrow \mu=\log(m); \quad \sigma \rightarrow \sigma$
+\end{description}
+
+\item 
+\begin{description}
+\item[LN1($\mu$, $\sigma$) $\rightarrow$ LN4($m$, $cv$)]:
+$\mu \rightarrow m=\exp(\mu); \quad \sigma \rightarrow cv=\sqrt{\exp(\sigma^2)-1}$
+
+\item[LN4($m$, $cv$) $\rightarrow$ LN1($\mu$, $\sigma$)]:
+$m \rightarrow \mu=\log(m); \quad cv \rightarrow \sigma=\sqrt{\log(cv^2 + 1)}$
+\end{description}
+
+\item 
+\begin{description}
+\item[LN1($\mu$, $\sigma$) $\rightarrow$ LN5($\mu$, $\tau$)]:
+$\mu \rightarrow \mu; \quad \sigma \rightarrow \tau=1/\sigma^2$
+
+\item[LN5($\mu$, $\tau$) $\rightarrow$ LN1($\mu$, $\sigma$)]:
+$\mu \rightarrow \mu; \quad \tau \rightarrow \sigma=1/\sqrt{\tau}$
+\end{description}
+
+\item 
+\begin{description}
+\item[LN2($\mu$, $v$) $\rightarrow$ LN3($m$, $\sigma$)]:
+$\mu \rightarrow m=\exp(\mu); \quad v \rightarrow \sigma=\sqrt{v}$
+
+\item[LN3($m$, $\sigma$) $\rightarrow$ LN2($\mu$, $v$)]:
+$m \rightarrow \mu=\log(m); \quad \sigma \rightarrow v=\sigma^2$
+\end{description}
+
+
+\item 
+\begin{description}
+\item[LN2($\mu$, $v$) $\rightarrow$ LN4($m$, $cv$)]:
+$\mu \rightarrow m=\exp(\mu); \quad v \rightarrow cv=\sqrt{\exp(v) -1}$
+
+\item[LN4($m$, $cv$) $\rightarrow$ LN2($\mu$, $v$)]:
+$m \rightarrow \mu=\log(m); \quad cv \rightarrow v=\log(cv^2+1)$
+\end{description}
+
+\item 
+\begin{description}
+\item[LN2($\mu$, $v$) $\rightarrow$ LN5($\mu$, $\tau$)]:
+$\mu \rightarrow \mu; \quad v \rightarrow \tau=1/v$
+
+\item[LN5($\mu$, $\tau$) $\rightarrow$ LN2($\mu$, $v$)]:
+$\mu \rightarrow \mu; \quad \tau \rightarrow v=1/\tau$
+\end{description}
+
+\item 
+\begin{description}
+\item[LN3($m$, $\sigma$) $\rightarrow$ LN4($m$, $cv$)]:
+$m \rightarrow m; \quad \sigma \rightarrow cv=\sqrt{\exp(\sigma^2)-1}$
+
+\item[LN4($m$, $cv$) $\rightarrow$ LN3($m$, $\sigma$)]:
+$m \rightarrow m; \quad cv \rightarrow \sigma=\sqrt{\log(cv^2 + 1)}$
+\end{description}
+
+\item 
+\begin{description}
+\item[LN3($m$, $\sigma$) $\rightarrow$ LN5($\mu$, $\tau$)]:
+$m \rightarrow \mu=\log(m); \quad \sigma \rightarrow \tau=1/\sigma^2$
+
+\item[LN5($\mu$, $\tau$) $\rightarrow$ LN3($m$, $\sigma$)]:
+$\mu \rightarrow m=\exp(\mu); \quad \tau \rightarrow \sigma=1/\sqrt{\tau}$
+\end{description}
+
+\item 
+\begin{description}
+\item[LN4($m$, $cv$) $\rightarrow$ LN5($\mu$, $\tau$)]:
+$m \rightarrow \mu=\log(m); \quad cv \rightarrow \tau=1/\log(cv^2+1)$
+
+\item[LN5($\mu$, $\tau$) $\rightarrow$ LN4($m$, $cv$)]:
+$\mu \rightarrow m; \quad \tau \rightarrow cv=\sqrt{\exp(1/\tau)-1}$
+\end{description}
+\end{itemize}
+
+The proof of the majority of the formulas is straightforward taking into account the definition
+of the parameters in question. The relationship between $\sigma$ or $\tau$ (on the log scale) 
+and $cv$ (on the natural scale), essential for the re-calculation formulas involving
+LN4 parameterisation, is a bit more tricky to see. The 
+proof starts with the known relationships for the mean, $mean$, and variance, $var$, on the natural 
+scale, collected in table \ref{figTable:logNormalParameterisations}. 
+Then the square of the coefficient of variation, $cv$, on the natural scale reads
+\begin{align}
+	cv^2 &= \frac{var}{mean^2} = \frac{(e^{\sigma^2}-1)\; e^{2\mu + \sigma^2}}{e^{(\mu + 1/2\sigma^2)^2}}
+	= (e^{\sigma^2}-1) \Leftrightarrow cv = \sqrt{e^{\sigma^2}-1} \;\;\; \& \;\;\; \sigma=\sqrt{\log(cv^2 + 1)}. \nonumber
+%	\frac{\cancel{a= b+c}}{\cancel{f} & = b-c
+\end{align}
+
+%\footnote{Based on a Stack Overflow discussion \url{tinyurl.com/qavgvln}}
+
+%\begin{align}
+%	\frac{\cancel{a= b+c}}{\cancel{f} & = b-c
+%\end{align}
+
+
+
+\cleardoublepage
+\setlength{\tabcolsep}{2em}
+\captionsetup[longtable]{skip=1em}
+\LTcapwidth=.95\textwidth
+\begin{center}
+%\small
+\renewcommand{\arraystretch}{1}%
+\begin{longtable}{ccc}
+ \hline
+ \hline
+\multicolumn{1}{c}{Log-normal distribution} 	& \multirow{2}{*}{Quantity} 	&\multicolumn{1}{c}{Normal distribution on the} \\ [-.5ex]
+\multicolumn{1}{c}{on the natural scale (NS)} 	&						& \multicolumn{1}{c}{log-transformed scale (LS)} \\
+   \hline
+  \hline
+  \multicolumn{3}{c}{$LN1: P(x;\boldsymbol\mu,\boldsymbol\sigma)=\Gape[.5cm][.3cm]{} \frac{1}{x \sigma \sqrt{2 \pi}} \exp\Big[ \frac{-(\log x - \mu)^2}{2\sigma^2}\Big] $ }\\
+   \hline
+$e^{\mu + \frac{1}{2}\sigma^2}$			& \Gape[.4cm][0cm]{}Mean  	& $\boldsymbol\mu$ \\ [.25ex]
+$e^{2\mu + \sigma^2}[e^{\sigma^2}-1]$		& Variance 				& $\sigma^2$	\\ [.25ex]
+$e^{\mu + \frac{1}{2}\sigma^2}\sqrt{e^{\sigma^2}-1}$ & Standard deviation	& $\boldsymbol\sigma$	\\ [.25ex]
+%									& deviation  				&		 	\\ [.25ex]
+ $e^{\mu - \sigma^2}$	 				& Mode 					&	 $\mu$	\\ [.25ex]
+$e^\mu$								& Median					& $\mu$ \\ [.25ex]
+$\sqrt{e^{\sigma^2}-1}$					& Coefficient of variation		& $\sigma/\mu$ \\ [.5EX]
+%									& of variation				& \\
+  \hline
+  \multicolumn{3}{c}{$LN2: P(x;\boldsymbol\mu,\boldsymbol {v})=\Gape[.5cm][.3cm]{} \frac{1}{x \sqrt{v} \sqrt{2 \pi}} \exp\Big[ \frac{-(\log x - \mu)^2}{2 v}\Big] $ }\\
+   \hline
+$e^{\mu + \frac{1}{2}v}$					& \Gape[.4cm][0cm]{}Mean  	& $\boldsymbol\mu$ \\ [.25ex]
+$e^{2\mu + v}[e^{v}-1]$					& Variance 				& $\boldsymbol v$	\\ [.25ex]
+$e^{\mu + \frac{1}{2} v}\sqrt{e^{v}-1}$ 		& Standard deviation		& $ {\sqrt{v}}$	\\ [.25ex]
+%									& deviation  				& 	\\ [.25ex]
+$e^{\mu - v}$	 						& Mode 					& $\mu$	\\ [.25ex]
+$e^\mu$								& Median					& $\mu$ \\ [.25ex]
+$\sqrt{e^{v}-1}$						& Coefficient of variation		& ${\sqrt{v}} /\mu$ \\ [.5EX]
+%									& of variation				& \\
+  \hline
+  \multicolumn{3}{c}{$LN3: P(x;\boldsymbol m,\boldsymbol \sigma) =\Gape[.5cm][.3cm]{} \frac{1}{x \sigma \sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2\sigma^2}\Big] $ }\\ %[1.5EX]
+   \hline
+ $m\, e^{\frac{1}{2}\sigma^2}$				& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
+ $m^2 e^{\sigma^2} [e^{\sigma^2}-1]$		& Variance 				& $\sigma^2$	\\ [.25ex]
+$m\sqrt{e^{\sigma^2} (e^{\sigma^2}-1)}$		& Standard deviation	  	& $\boldsymbol\sigma$	\\ [.25ex]
+%									& deviation  				& 	\\ [.25ex]
+ $m/e^{\sigma^2}$	 					& Mode 					& $\log( m)$	\\ [.25ex]
+ $\boldsymbol m$						& Median 					& $\log( m)$	\\ [.25ex]
+$\sqrt{e^{\sigma^2}-1}$					& Coefficient of variation		& $\sigma/\log( m)$ \\ [.5EX]
+% 									&  of variation				&  \\
+  \hline
+   \multicolumn{3}{c}{$LN4: P(x;\boldsymbol m,\boldsymbol {cv})=\Gape[.5cm][.3cm]{} \frac{1}{x \sqrt{\log(cv^2+1)} \sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2\log(cv^2+1)}\Big] $} 	\\
+   \hline
+ $m \sqrt{cv^2 + 1}$						& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
+ $m^2 \,(cv^2+1)\,cv^2$					& Variance 				& $\log(cv^2 + 1)$	\\ [.25ex]
+$m\,cv \sqrt{(cv^2+1)}$					& Standard  deviation		& $\sqrt{\log(cv^2 + 1)}$	\\ [.25ex]
+% 									& deviation  				& 	\\ [.25ex]
+ $m / (cv^2 + 1)$	 					& Mode 					& $\log( m)$	\\ [.25ex]
+ $\boldsymbol m$						& Median 					& $\log( m)$	\\ [.25ex]
+ ${\boldsymbol {cv}}$					& Coefficient of variation		& $\sqrt{\log(cv^2 + 1)}/\log( m)$ \\ [.5EX]
+% 									& of variation				&  \\
+  \hline
+  \multicolumn{3}{c}{$LN5: P(x;\boldsymbol\mu,\boldsymbol \tau)=\Gape[.5cm][.3cm]{} \sqrt{\frac{\tau}{2 \pi}} \frac{1}{x} \exp\Big[ {-\frac{\tau}{2}(\log x-\mu)^2} \Big] $ }\\
+   \hline
+ $e^{\mu + \frac{1}{2\tau}}$				& \Gape[.4cm][0cm]{}Mean  	& $\boldsymbol\mu$ \\ [.25ex]
+ $e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]$ & Variance 			& $1/\tau$	\\ [.25ex]
+$e^{\mu + \frac{1}{2} \frac{1}{\tau}}\sqrt{e^{\frac{1}{\tau}}-1}$ 	& Standard deviation & $\sqrt{1/\tau}$	\\ [.25ex]
+%									& deviation  				& 	\\ [.25ex]
+ $e^{\mu - \frac{1}{\tau}}$					& Mode 					& $\mu$	\\ [.25ex]
+ $e^\mu$								& Median					& $\mu$ \\ [.25ex]
+%									&						& \\[.25ex]
+$\sqrt{e^{\frac{1}{\tau}}-1}$				& Coefficient of variation		& $\sqrt{1/\tau} / \mu$ \\ [.25EX]
+%									& of variation				& \\
+  $1/\big(e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]\big)$ & Precision				& $\boldsymbol\tau$ \\ [.5ex]
+   \hline
+\caption{The available parameterisations for the log-normal distribution and their characterising 
+quantities as functions of the respective parameters. With $\boldsymbol m$ -- median (NS), 
+$\boldsymbol {cv}$ -- coefficient of variation (NS), $\boldsymbol \mu$ -- mean (LS), 
+$\boldsymbol \sigma$ -- standard deviation (LS), $\boldsymbol v$ -- variance (LS), 
+$\boldsymbol \tau$ -- precision (LS). See Figure \ref{fig:schematicLogNormal} and 
+section \ref{subsec:logNormalForms} for the meaning of the symbols.\\ \small Small print: 
+The re-parameterisation formulas, page \pageref{subsubsec:formulas}, and expressions in this table are partially from 
+literature, partially self calculated (by MJS), use them on your own risk.}
+\label{figTable:logNormalParameterisations}
+\vspace{-3.5em}
+\end{longtable}
+\end{center}
+
+\setlength{\tabcolsep}{1em}
+
+\newpage 
+
+\captionsetup[longtable]{skip=1em}
+\LTcapwidth=.95\textwidth
+\begin{center}
+\setlength{\tabcolsep}{7pt}
+%\small
+\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{l | lcccc}
+  \hline
+  \hline
+\multicolumn{1}{c}{\textbf{ProbOnto}}& Parameters 	& \textbf{UncertML} 	& \textbf{WinBUGS}	& \textbf{Monolix} & \textbf{NONMEM} \\
+\multicolumn{1}{c}{0.2}			&		&  3.0			& 1.4		& 4.3	& 7.3 \\
+  \hline
+  \hline
+  \multicolumn{6}{c}{\textit{Discrete Univariate}}  \\
+  \hline
+Bernoulli				& \emph{p}		&	y	&	y	& --  &  -- \\
+Binomial				& \emph{n, p}		&	y	&	y	& --  &  -- \\
+Categorical ordered		& $p_1, \ldots, p_k$	& y	&	y	& --  &  -- \\
+Categorical unordered	& $p_1, \ldots, p_k$	&	y	&	y	& --  &  -- \\
+Generalized Poisson	& $\lambda, \delta$	& --  & --  & --  &  -- \\
+Geometric			& \emph{p}		&	y	& --  & --  &  -- \\
+Hypergeometric		& \emph{N, K, n}	&	y	& --  & --  &  -- \\
+Negative Binomial 1		& \emph{r, p}		&	y	&	y	& --  &  -- \\
+Negative Binomial 2 		& $\lambda, \tau$ 	& --  & --  & --  &  -- \\
+%Negative Binomial 3 		& $\lambda, \theta$ 	& --  & --  & --  &  -- \\
+Poisson				& $\lambda$		&	y	&	y	& --  &  -- \\
+Uniform 1 (discrete)		&  \emph{a, b}		& --	& --	& -- & --  \\
+Uniform 2 (discrete)		&  0, \emph{n}		& --	& --	& -- & --  \\
+Zero-inflated Poisson	& $\lambda, \pi$	& --  & --  & --  &  -- \\
+%Zero-Inflated Negative Binomial & $\mu, \theta, p$	& --  & --  & --  &  -- \\
+  \hline
+  \multicolumn{6}{c}{\textit{Continuous Univariate}}	\\
+  \hline
+Beta					& $\alpha, \beta$	&	y	&	y	&	y	&  -- \\
+Cauchy				& $x_0, \gamma$	&	y	& --  & --  &  -- \\
+Chi-squared			& \emph{k}		&	y	&	y	&	y	&  -- \\
+%Dirac Delta			&	&	y	& --  & --  &  -- \\
+Exponential			& $\lambda$		&	y	&	y	&	y	&  -- \\
+F (aka Fisher-Snedecor)	& $d_1, d_2$		&	y	& --  &	y	&  -- \\
+Gamma				& $k, \theta$		&	y	&	y	&	y	&  -- \\
+Generalized Gamma	& \emph{a, d, p}	&	y	& --  & --  & --	  \\
+Gompertz				& $\eta, b$		& --  &	y	& --  & --	  \\
+Gumbel (aka Extreme Value)	& $\mu, \beta$	& --  &	y 	& --  & -- \\ 
+Inverse-Gamma		& $\alpha, \beta$	&	y	& --  & --  &  -- \\
+Laplace 1				& \multirow{2}{*}{$\mu, b$} &	\multirow{2}{*}{y}	&	\multirow{2}{*}{--}	& \multirow{2}{*}{--}  & \multirow{2}{*}{--} \\ [-0.5ex]
+(Double-exponential 1) \\
+Laplace 2				& \multirow{2}{*}{$\mu, \tau$} &	\multirow{2}{*}{--}	&	\multirow{2}{*}{y}	& \multirow{2}{*}{--}  & \multirow{2}{*}{--} \\ [-0.5ex]
+(Double-exponential 2) \\[0.5ex]
+Log-Normal 1			& $\mu, \sigma$	&	y	&	--	&	y	&  -- \\
+Log-Normal 2			& $\mu$, \textit{v}	&	y	&	--	&	y	&  -- \\
+Log-Normal 3			& \emph{m}, $\sigma$	&	--	&	--	&	--	&  -- \\
+Log-Normal 4			& \emph{m, cv}		& 	--	&	--	&	--	&  -- \\
+Log-Normal 5			& $\mu$, $\tau$	& 	--	&	y	&	--	&  -- \\[0.5ex]
+Logistic				& $\mu, s$		&	y	&	y	& --  &  -- \\[0.5ex]
+Normal 1				& $\mu, \sigma$	&	y	&	--	&	y	& y  \\
+Normal 2				& $\mu, v$		&	y	&	--	&	y	&  -- \\
+Normal 3				& $\mu, \tau$		&	--	&	y	&	--	&  -- \\[0.5ex]
+Normal-inverse-gamma	& $\mu, \lambda, \alpha, \beta$	& y	& --  & --  &  -- \\
+Pareto				& $x_m, \alpha$	& y	& y	& --  &  -- \\
+Rayleigh				& $\sigma$		& --  & --  & y	&  -- \\
+Standard Normal 		& $\mu\!=\!0, \sigma\!=\!1$	& y & -- &	 y & y  \\
+Student's T			& $\nu$			& y	& y	& y	&  -- \\
+Standard Uniform		& $a\!=\!0, b\!=\!1$		& --	& --	& y & y  \\
+Uniform				&  \emph{a, b}		& y	& y	& y		& --  \\
+Weibull 1				& $\lambda, k$		& y	& --	& y	&  -- \\
+Weibull 2				& $\lambda, v$		& --	& y	& --	&  -- \\
+   \hline 
+\caption{Univariate distributions supported in ProbOnto. See Appendix \ref{ch:probontoAppendix} 
+for the detailed description.}
+\label{figTable:univariates}
+\vspace{-2.5em}
+\end{longtable}
+\end{center}
+
+\newpage
+
+\captionsetup[longtable]{skip=1em}
+\LTcapwidth=.95\textwidth
+\begin{center}
+\setlength{\tabcolsep}{7pt}
+%\small
+\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{l | llllll}
+  \hline
+  \hline
+\multicolumn{1}{c}{\textbf{Distribution}}& \multicolumn{6}{c}{\textbf{Parameters}} \\ 
+Code name		& Symbol & Code name & Symbol & Code name \\
+  \hline
+  \hline
+  \multicolumn{6}{c}{\textit{Discrete Univariate}}  \\
+  \hline
+\xatt{Bernoulli}				& \emph{p}		& \xatt{probability} 		& --			& -- \\
+\xatt{Binomial} 				& \emph{n}		& \xatt{numberOfFailures}& \emph{p}	& \xatt{probability} \\
+\xatt{CategoricalOrdered}		& $p_1,\dots,p_k$ 	& \xatt{categoryProb}  	&  --			& -- \\
+\xatt{CategoricalUnordered}	& $p_1,\dots ,p_k$ 	& \xatt{categoryProb}	&  --			& -- \\
+\xatt{GeneralizedPoisson}	& $\lambda$		& \xatt{rate}			& $\delta$		& \xatt{dispersion} \\
+\xatt{Geometric} 			& \emph{p}		& \xatt{probability}		& --			& --	\\[-0.5ex]
+\xatt{Hypergeometric} 		& \emph{N}		& \xatt{populationSize}	& \emph{K}	& \xatt{numberOfTrials} \\[-0.5ex]
+						&				&					&\emph{n}	& \xatt{numberOfSuccesses} \\[0.5ex]
+\xatt{NegativeBinomial1} 		& \emph{r}		& \xatt{numberOfFailures	}&  \emph{p}	& \xatt{probability}	\\
+\xatt{NegativeBinomial2} 		& $\lambda$ 		& \xatt{rate}			& $\tau$		& \xatt{overdispersion}	\\
+\xatt{Poisson} 				& $\lambda$		& \xatt{rate}			& --			& -- 	\\
+\xatt{UniformDiscrete1} 		&  \emph{a}		& \xatt{minimum}		& \emph{b}	& \xatt{maximum}	\\
+\xatt{UniformDiscrete2} 		&  0				& \xatt{minimum}		& \emph{n} 	& \xatt{numberOfValues}	\\
+\xatt{ZeroInflatedPoisson} 	& $\lambda$		& \xatt{rate}			& $\pi$ 		& \xatt{probabilityOfZero}	\\
+  \hline
+  \multicolumn{7}{c}{\textit{Continuous Univariate}}	\\
+  \hline
+\xatt{Beta} 				& $\alpha$		& \xatt{alpha}			& $\beta$		& \xatt{beta}	\\
+\xatt{Cauchy} 				& $x_0$			& \xatt{location}		& $\gamma$	& \xatt{scale}	\\
+\xatt{ChiSquared}			& \emph{k}		& \xatt{degreesOfFreedom} & --		&  --		\\
+\xatt{Exponential}			& $\lambda$		& \xatt{rate}			& --			& -- 		\\
+\xatt{F}					& $d_1$			& \xatt{numerator}		& $d_2$		& \xatt{denumerator} \\
+\xatt{Gamma}				& $k$			& \xatt{shape}			& $\theta$	& \xatt{scale} 	\\[0.5ex]
+\xatt{GeneralizedGamma}	& \emph{a}		& \xatt{scale}			& \emph{d}	& \xatt{shape1}		\\
+						&				&					& \emph{p} 	& \xatt{shape2} \\
+\xatt{Gompertz}			& $\eta$			& \xatt{shape}			& \emph{b}	& \xatt{scale}		\\
+\xatt{Gumbel} 				& $\mu$			& \xatt{location}		& $\beta$		& \xatt{scale}		\\ 
+\xatt{InverseGamma}		& $\alpha$		& \xatt{shape}			& $\beta$		& \xatt{scale}		\\
+\xatt{Laplace1}				& $\mu$ 			& \xatt{location}		& \emph{b}	& \xatt{scale}		\\
+\xatt{Laplace2}				& $\mu$ 			& \xatt{location}		& $\tau$		& \xatt{tau}		\\
+\xatt{LogNormal1}			& $\mu$			& \xatt{meanLog}		& $\sigma$ 	& \xatt{stdevLog}	\\
+\xatt{LogNormal2}			& $\mu$			& \xatt{meanLog}		& \textit{v}	& \xatt{varLog}		\\
+\xatt{LogNormal3}			& \emph{m} 		& \xatt{median}		& $\sigma$	& \xatt{stdevLog}	\\
+\xatt{LogNormal4}			& \emph{m}		& \xatt{median}			& \emph{cv}	& \xatt{coefVar	}	\\
+\xatt{LogNormal5}			& $\mu$			& \xatt{meanLog}		& $\tau$		& \xatt{precision}	\\
+\xatt{Logistic}				& $\mu$			& \xatt{location}		& \emph{s}	& \xatt{scale}		\\
+\xatt{Normal1}				& $\mu$			& \xatt{mean}			& $\sigma$ 	& \xatt{stdev}		\\
+\xatt{Normal2}				& $\mu$			& \xatt{mean}			& \emph{v}	& \xatt{var}		\\
+\xatt{Normal3}				& $\mu$			& \xatt{mean}			& $\tau$ 		& \xatt{precision} 	\\[0.5ex]
+\xatt{NormalInverseGamma}	& $\mu$			& \xatt{mean}			& $\lambda$	& \xatt{lambda}		\\[-0.5ex]
+						& $\alpha$ 		& \xatt{alpha}			& $\beta$ 	& \xatt{beta} \\
+\xatt{Pareto}				& $x_m$			& \xatt{scale}			& $\alpha$ 	& \xatt{shape} 		\\
+\xatt{Rayleigh}				& $\sigma$		& \xatt{scale}			& --			& -- 			\\
+\xatt{StandardNormal} 		& $\mu\!=\!0$		& \xatt{mean}			& $\sigma\!=\!1$ & \xatt{stdev} 	\\
+\xatt{StudentT}				& $\nu$			& \xatt{degreesOfFreedom} & --		& -- 		\\
+\xatt{StandardUniform}		& $a\!=\!0$		& \xatt{minimum}		& $b\!=\!1$ 	& \xatt{maximum}	\\
+\xatt{Uniform}				& \emph{a}		& \xatt{minimum}		& \emph{b}	& \xatt{maximum}	\\
+\xatt{Weibull1}				& $\lambda$		& \xatt{scale}			& \emph{k}	& \xatt{shape}		\\
+\xatt{Weibull2}				& $\lambda$		& \xatt{lambda}			& \emph{v}	& \xatt{shape}		\\
+   \hline 
+\caption{Code names for distribution and parameter names of the univariate 
+distributions supported in ProbOnto. See also Appendix \ref{ch:probontoAppendix}.}
+\label{figTable:univariatesCodes}
+\vspace{-2.5em}
+\end{longtable}
+\end{center}
+
+\newpage
+
+\captionsetup[longtable]{skip=1em}
+\LTcapwidth=.95\textwidth
+\begin{center}
+\setlength{\tabcolsep}{7pt}
+%\small
+\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{l | lcccc}
+  \hline
+  \hline
+\multicolumn{1}{c}{\textbf{ProbOnto}} & Parameters & \textbf{UncertML} & \textbf{WinBUGS} & \textbf{Monolix} & \textbf{NONMEM}\\
+\multicolumn{1}{c}{0.2}			& 			&  3.0			& 1.4 			& 4.3  		    &	7.3 \\
+  \hline
+  \hline
+  \multicolumn{6}{c}{\textit{Discrete Multivariate}} \\
+  \hline
+Multinomial	 		& $n, p_1, \ldots, p_k$ 		& y	& y 	& --	& -- 	\\
+  \hline
+  \multicolumn{6}{c}{\textit{Continuous Multivariate}} \\
+  \hline
+Dirichlet				& $\alpha_1, \dots, \alpha_K$	& y	& y 	& --	& -- 	\\
+Inverse-Wishart		& $\Psi, \nu$				& --  	& --  	& --	& y 	\\[0.5ex]
+Multivariate Normal	1 	& $\mu, \Sigma $			& y	& --	& --	& -- 	\\
+Multivariate Normal	2 	& $\mu, T $				& --	& y	& --	& -- 	\\[0.5ex]
+Multivariate (Student) T 1	& $\mu, \Sigma, \nu$		& y	& --	& --	& -- 	\\
+Multivariate (Student) T 2& $\mu, T, k$ 				& --	& y	& --	& -- 	\\[0.5ex]
+Wishart 1				& $V, n$					& y	& --	& --	& --  	\\
+Wishart 2				& $R, k$					& --	& y	& --	& -- 	\\
+   \hline
+\caption{Multivariate distributions. See the Appendix \ref{ch:probontoAppendix}
+for the detailed description of the most relevant distributions -- full ProbOnto database 
+will be released soon.}
+\label{figTable:multivariates}
+\vspace{-2.5em}
+\end{longtable}
+\end{center}
+
+
+\captionsetup[longtable]{skip=1em}
+\LTcapwidth=.95\textwidth
+\begin{center}
+\setlength{\tabcolsep}{7pt}
+%\small
+\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{l | llllll}
+  \hline
+  \hline
+\multicolumn{1}{c}{\textbf{Distribution}}& \multicolumn{4}{c}{\textbf{Parameters}} \\ 
+Code name				& Symbol & Code name 			& Symbol 			& Code name \\
+  \hline
+  \hline
+  \multicolumn{5}{c}{\textit{Discrete Multivariate}} \\
+  \hline
+Multinomial 				& $n$	& \xatt{numberOfTrials} 	& $p_1, \ldots, p_k$	& \xatt{probabilityOfSuccess}   \\
+  \hline
+  \multicolumn{5}{c}{\textit{Continuous Multivariate}} \\
+  \hline
+\xatt{Dirichlet}				& $\alpha_1, \dots, \alpha_K$	& \xatt{concentration} 	& --		& --  \\
+\xatt{InverseWishart}		& $\Psi$		& \xatt{scaleMatrix}	& $\nu$ 			& \xatt{degreesOfFreedom} \\
+\xatt{MultivariateNormal1}	& ${\mu}$		& \xatt{mean}		& $\Sigma$		& \xatt{covarianceMatrix}  \\
+\xatt{MultivariateNormal2	}	& ${\mu}$		& \xatt{mean}		& $T$ 			& \xatt{precisionMatrix}	 \\ [0.5ex]
+\xatt{MultivariateStudentT1}	& ${\mu}$		& \xatt{mean}		& $\Sigma$		& \xatt{covarianceMatrix} \\[-0.5ex]
+						&			&				& $ \nu$			& \xatt{degreesOfFreedom} \\ [0.5ex]
+\xatt{MultivariateStudentT2}	& ${\mu}$ 	& \xatt{mean} 		& $T$			& \xatt{precisionMatrix}	 \\[-0.5ex]
+						&			&				& $k$ 			& \xatt{degreesOfFreedom} \\
+\xatt{Wishart1} 				& $V$		& \xatt{scaleMatrix}	& $n$			& \xatt{degreesOfFreedom} \\
+\xatt{Wishart2} 				& $R$		& \xatt{inverseScaleMatrix} & $k$		& \xatt{degreesOfFreedom} \\
+   \hline
+\caption{Code names for the multivariate distributions and their parameters.
+See the Appendix \ref{ch:probontoAppendix}.}
+\label{figTable:multivariatesCodes}
+\vspace{-2.5em}
+\end{longtable}
+\end{center}
+
+
+\captionsetup[longtable]{skip=1em}
+\LTcapwidth=.95\textwidth
+\begin{center}
+\setlength{\tabcolsep}{10pt}
+%\small
+\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{l | cccc}
+  \hline
+  \hline
+\multicolumn{1}{c}{\textbf{ProbOnto}}	&   \multicolumn{2}{c}{Parameters} 	& \textbf{UncertML}  \\
+\multicolumn{1}{c}{0.2}				&  Symbol					& Code name 	&  3.0		 \\
+  \hline
+  \hline
+\xatt{MixtureDistribution} & $\pi_1, \ldots, \pi_k$ & \xatt{weight} &	y \\
+  \hline
+   \hline
+\caption{Mixture distribution -  so far only for univariate distributions.}
+\label{figTable:mixtures}
+\vspace{-2.5em}
+\end{longtable}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{ProbOnto examples}
+
+
+\subsection{Categorical data models}
+\label{sec:ProbOntoAndDiscrete}
+For categorical models we always first list in PharmML all categories 
+\lstset{language=XML}
+\begin{lstlisting}
+    <ListOfCategories> 
+        <Category symbId="cat1"/>
+        <Category symbId="cat2"/>
+        <Category symbId="cat3"/>
+    </ListOfCategories>                    
+\end{lstlisting}
+which informs the user/target tool about the number and identifiers of
+the categories in question. As ProbOnto specify the 'k' probabilities vector 
+$p_i, i=1,\dots,k$ as the only parameter and the user has two options.
+She/he can declare either
+\begin{itemize}
+\item 
+explicitly the probabilities for all $k$ categories or
+\item 
+the $k\!-\!1$ probabilities, with the last probability, $p_k$, known assuming $\Sigma_i p_i = 1$.
+\end{itemize}
+Note that the order of the categories in \xelem{ListOfCategories} and 
+the \xelem{Parameter} (where the probability vector, $p_i$, is encoded) elements, 
+must be preserved.
+
+ 
+\subsubsection{Example: Nominal categorical model}
+
+Consider the following \emph{Observation model} for nominal categorical 
+data, \cite{Swat:2014bb}:
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete/categorical
+\item
+Category variable: $y$
+\item
+Set of categories: $\{1,2,3\}$
+\item
+Probabilities for category '1' and '2'
+\begin{eqnarray}
+&& p2 := P(y=1) = a1/(a1+a2+a3)  \nonumber \\
+&& p1 := P(y=2) = a2/(a1+a2+a3)  \nonumber 
+\end{eqnarray}
+\end{itemize}
+The following code shows how to implement the model 
+starting with the general information: parameters involved and equations
+for the probabilities 
+\lstset{language=XML}
+\begin{lstlisting}
+<CategoricalData ordered="no">
+    <!-- can alternatively be defined as individual parameters with IIV etc.-->
+    <PopulationParameter symbId="a1"/> 
+    <PopulationParameter symbId="a2"/>
+    <PopulationParameter symbId="a3"/>
+    
+    <PopulationParameter symbId="p1">
+        <ct:Assign>
+            <math:Equation>
+                <math:Binop op="divide">
+                    <ct:SymbRef symbIdRef="a1"/>
+                    <math:Binop op="plus">
+                        <ct:SymbRef symbIdRef="a1"/>
+                        <math:Binop op="plus">
+                            <ct:SymbRef symbIdRef="a2"/>
+                            <ct:SymbRef symbIdRef="a3"/>
+                        </math:Binop>
+                    </math:Binop>
+                </math:Binop>
+            </math:Equation>
+        </ct:Assign>
+    </PopulationParameter>
+    <PopulationParameter symbId="p2">
+        <ct:Assign>
+            <math:Equation>
+                <math:Binop op="divide">
+                    <ct:SymbRef symbIdRef="a2"/>
+                    <math:Binop op="plus">
+                        <ct:SymbRef symbIdRef="a1"/>
+                        <math:Binop op="plus">
+                            <ct:SymbRef symbIdRef="a2"/>
+                            <ct:SymbRef symbIdRef="a3"/>
+                        </math:Binop>
+                    </math:Binop>
+                </math:Binop>
+            </math:Equation>
+        </ct:Assign>
+    </PopulationParameter>
+\end{lstlisting}
+then listing the categories and specifying the category variable
+\lstset{language=XML}
+\begin{lstlisting}
+    <ListOfCategories> 
+        <Category symbId="cat1"/>
+        <Category symbId="cat2"/>
+        <Category symbId="cat3"/>
+    </ListOfCategories>                    
+    <CategoryVariable symbId="y"/>
+\end{lstlisting}
+and eventually defining the unordered categorical distribution, \emph{CategoricalNonordered} 
+in ProbOnto with one vector parameter
+\begin{itemize}
+\item 
+\xatt{categoryProb}  -- event probabilities vector, $p_1, \ldots, p_k$
+\end{itemize}
+with the number of categories, here equal $k\!=\!3$, which can be inferred from the length of the 
+\xelem{ListOfCategories}. The PMF reads then
+
+\lstset{language=XML}
+\begin{lstlisting}
+    <PMF linkFunction="identity">
+        <Distribution>
+            <ProbOnto name="CategoricalNonordered">
+		<!-- category probabilities - a vector of length 2 (=k-1) -->
+                <Parameter name="categoryProb">
+                    <ct:Assign>
+                        <ct:Vector>
+                            <ct:VectorElements>
+                                <ct:SymbRef symbIdRef="p1"/>
+                                <ct:SymbRef symbIdRef="p2"/>
+                            </ct:VectorElements>
+                        </ct:Vector>
+                    </ct:Assign>
+                </Parameter>
+            </ProbOnto>
+        </Distribution>
+    </PMF>
+</CategoricalData>
+\end{lstlisting}
+Given that there are $k$ categories, by default the specification of $k-1$ probabilities 
+is sufficient assuming $\Sigma p_i = 1$. Note that alternatively, the expressions for 
+$p1$ and $p2$ could be implemented directly as \xelem{VectorElements}.
+
+\subsection{Count data models}
+
+\subsubsection{Zero-inflated Poisson -- ZIP}
+ProbOnto simplifies the encoding of many discrete models significantly. 
+So far unavailable distributions such as Generalized Poisson (GP), 
+Zero-inflated Poisson (ZIP) and others frequently used in pharmacometrics,
+\cite{Plan:2009fk, Troconiz:2009fv}, are now much more easy to encode. The following example illustrates that.
+
+The essential elements of the model is the following PMF
+\[
+\begin{cases}
+  \log(P(Y=k)) = \log(1-p0) - \lambda + k\log(\lambda) - \text{factln}(k) 	& \text{if } k > 0 \\
+  \log(P(Y=k)) = \log(p0 + (1-p0)\exp(-\lambda)) 					& \text{otherwise}
+\end{cases}
+\]
+and the definition of model parameters, the Poisson intensity, $\lambda$,
+and the probability of extra zeros, $p0$. In the case of explicitly encoded PMF
+the model becomes lengthly. This comes always with a risk of encoding bugs/typos.  
+
+\paragraph{Explicitly encoded ZIP model}
+The following explicit encoding of the Zero-inflated Poisson model was the only 
+possibility in PharmML $\leq$ 0.6. Although the use of the model specific parameter 
+elements, here \xelem{IntensityParameter} and \xelem{ZeroProbabilityParameter} is not 
+mandatory, the complex conditional definition of this model within the \xelem{PMF} 
+element, was still required. 
+\lstset{language=XML}
+\begin{lstlisting}
+<ObservationModel blkId="om1">
+    <Discrete>
+        <CountData>
+            <CountVariable symbId="y"/>
+            <NumberCounts symbId="k"/>
+            
+            <IntensityParameter symbId="Lambda">
+                <ct:Assign>
+                    <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
+                </ct:Assign>
+            </IntensityParameter>
+            
+            <ZeroProbabilityParameter symbId="P0">
+                <ct:Assign>
+                    <ct:SymbRef blkIdRef="pm1" symbIdRef="p0"/>
+                </ct:Assign>
+            </ZeroProbabilityParameter>
+            
+            <PMF linkFunction="log">
+                <math:LogicBinop op="eq">
+                    <ct:SymbRef symbIdRef="y"/>
+                    <ct:SymbRef symbIdRef="k"/>
+                </math:LogicBinop>
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Piecewise>
+                        <!-- 50 lines of code skipped here -->
+                        <!-- for encoding of the conditional PMF: -->
+                        <!-- if (k > 0): log(1-p0)-lambda+k*log(lambda)-factln(k) -->
+                        <!-- else: log(p0+(1-p0)*exp(-lambda)) -->
+                        </math:Piecewise>
+                    </math:Equation>
+                </ct:Assign>
+            </PMF>
+        </CountData>
+    </Discrete>
+</ObservationModel>
+\end{lstlisting}
+Note that \marginpar{\HandCuffLeft} the explicit encoding of PMF's remains
+as an option in PharmML for user-defined or other distributions not covered by ProbOnto.
+        
+\paragraph{ZIP model encode using ProbOnto}
+In contrast to the first option, encoding of models supported by ProbOnto
+becomes very easy as only the code names for the distribution and its parameters 
+need to be specified.
+
+\lstset{language=XML}
+\begin{lstlisting}
+<ObservationModel blkId="om1A">
+    <Discrete>
+        <CountData>
+            <CountVariable symbId="y"/>
+            <NumberCounts symbId="k"/>
+            
+            <PMF linkFunction="log">
+                <math:LogicBinop op="eq">
+                    <ct:SymbRef symbIdRef="y"/>
+                    <ct:SymbRef symbIdRef="k"/>
+                </math:LogicBinop>
+                <Distribution>
+                    <ProbOnto name="ZeroInflatedPoisson">
+                        <Parameter name="rate">
+                            <ct:Assign>
+                                <ct:SymbRef blkIdRef="pm1" symbIdRef="Lambda"/>
+                            </ct:Assign>
+                        </Parameter>
+                        <Parameter name="probabilityOfZero">
+                            <ct:Assign>
+                                <ct:SymbRef blkIdRef="pm1" symbIdRef="P0"/>
+                            </ct:Assign>
+                        </Parameter>
+                    </ProbOnto>
+                </Distribution>
+            </PMF>
+        </CountData>
+    </Discrete>
+</ObservationModel>\end{lstlisting}
+
+\subsubsection{Poisson with mixtures -- PMIX}
+Rather then creating specific types for Poisson, or other models, with mixture distributions for 
+individual observations (PMIX), described in the PharmML 0.6 spec, \cite{Pharmml_06},
+\begin{eqnarray}
+P(y_{ij} = k;\pi,\lambda_1,\lambda_2) &=& \pi \frac{e^{-\lambda_1} \lambda_1^k}{k!} + (1-\pi) \frac{e^{-\lambda_2} \lambda_2^k}{k!} \nonumber
+\end{eqnarray}
+with $\lambda_1, \lambda_2 > 0$ and $\pi \in [0,1]$, the generic \emph{MixtureDistribution}, 
+can be used as the following code shows
+\lstset{language=XML}
+\begin{lstlisting}
+        <PMF linkFunction="log">
+            <Distribution>
+                <ProbOnto name="MixtureDistribution">
+                    <!-- mixing weight -->
+                    <Parameter name="weight">
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="pi1"/>
+                        </ct:Assign>
+                    </Parameter>
+                    <!-- lambda1 - Poisson intensity -->
+                    <MixtureComponent name="Poisson">
+                        <Parameter name="rate">
+                            <ct:Assign>
+                                <ct:SymbRef symbIdRef="lambda1"/>
+                            </ct:Assign>
+                        </Parameter>
+                    </MixtureComponent>
+                    <!-- lambda2 - Poisson intensity -->
+                    <MixtureComponent name="Poisson">
+                        <Parameter name="rate">
+                            <ct:Assign>
+                                <ct:SymbRef symbIdRef="lambda2"/>
+                            </ct:Assign>
+                        </Parameter>
+                    </MixtureComponent>
+                </ProbOnto>
+            </Distribution>
+        </PMF>
+\end{lstlisting}
+The \xelem{MixtureComponent} elements hold the mixtures in question and 
+\xelem{Parameter}, $\pi$, the mixture probability or \emph{weight}. The solution has the advantage 
+to be extendable to any number of mixing components, $m$, \cite{Forbes:2010jk}. 
+The parameter $\pi$ becomes a vector, $\pi_i \text{ with } \pi_i \in [0,1], i=1,\dots,m$, 
+and can be encoded as such using the \xelem{Vector} element.
+\paragraph{Discussion}
+The use of a generic \emph{MixtureDistribution} seems well justified in this case. 
+However, because reference literature exists for general Mixed Poisson regression models, 
+\cite{Wang:1996fj}, the introduction of such specialised mixture distribution 
+could be considered for ProbOnto in future as well.
+
+
+
+\subsection{Truncated distributions}
+Truncation bounds can be set using \xelem{LowerTruncationBound} and 
+\xelem{UpperTruncationBound} elements which accept any expression, such as
+$X \sim \mathcal N(\mu,\sigma,lower=\mu-1.96\,\sigma,upper=\mu+1.96\,\sigma)$
+which in PharmML reads
+\lstset{language=XML}
+\begin{lstlisting}
+    <IndividualParameter symbId="pTruncated">
+        <Distribution>
+            <ProbOnto name="Normal1">
+                <Parameter name="mean">
+                    <ct:Assign>
+                        <ct:SymbRef symbIdRef="mu"/>
+                    </ct:Assign>
+                </Parameter>
+                <Parameter name="stdev">
+                    <ct:Assign>
+                        <ct:SymbRef symbIdRef="sigma"/>
+                    </ct:Assign>
+                </Parameter>
+                <LowerTruncationBound>
+                    <ct:Assign>
+                        <math:Equation>
+                            <math:Binop op="minus">
+                                <ct:SymbRef symbIdRef="mu"/>
+                                <math:Binop op="times">
+                                    <ct:Real>1.96</ct:Real>
+                                    <ct:SymbRef symbIdRef="sigma"/>
+                                </math:Binop>
+                            </math:Binop>
+                        </math:Equation>
+                    </ct:Assign>
+                </LowerTruncationBound>
+                <UpperTruncationBound>
+                    <ct:Assign>
+                        <math:Equation>
+                            <math:Binop op="plus">
+                                <ct:SymbRef symbIdRef="mu"/>
+                                <math:Binop op="times">
+                                    <ct:Real>1.96</ct:Real>
+                                    <ct:SymbRef symbIdRef="sigma"/>
+                                </math:Binop>
+                            </math:Binop>
+                        </math:Equation>
+                    </ct:Assign>
+                </UpperTruncationBound>
+            </ProbOnto>
+        </Distribution>
+    </IndividualParameter>
+\end{lstlisting}
+The following Figure \ref{fig:truncatedNormal1} illustrates few examples of truncated 
+normal distribution on the interval [-2.5,1]
+\begin{figure}[htb!]
+\centering
+ \includegraphics[width=140mm]{pics/TruncatedNormal1_pdf.pdf}
+\caption{Truncated normal distribution, N1. The truncated density plots on the right hand side
+were performed using the \emph{truncnorm} function of the \emph{dtruncnorm} R-package.}
+\vspace{-1em}
+\label{fig:truncatedNormal1}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Independency of ProbOnto}
+\label{sec:ProbOntoIndependent}
+It is worth to stress that ProbOnto ontology and knowledge base are fully 
+independent from PharmML. ProbOnto doesn't enforce a certain way to implement it from
+a tool designer which allows it to be used across the target tools and languages. 
+
