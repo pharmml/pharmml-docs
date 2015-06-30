@@ -459,7 +459,8 @@ Available observation model representation has been extended and the available t
 \end{align*}
 is still used with the \xelem{Standard} tag (but comes with extended interpretation 
 and allows non-Gaussian residual errors (see the related discussion in section 
-\ref{sec:individualParameter}).
+\ref{sec:individualParameter}). Also the Box-Cox transformation can be applied 
+in this case, see discussion in section \ref{sec:BoxCoxTrafo}.
 \item[Type O2] General model (equation type), unchanged compared to 0.6
 %(VariabilityReference not required, LHS transformation optional)
 \begin{align*}
@@ -1194,7 +1195,7 @@ with
 declared in parameter model, \xatt{pm1}.
 
 \section{Hierarchical model example}
-The following model has been proposed, \cite{LavielleFourModels:2014},
+The following model has been proposed by Marc Lavielle, \cite{LavielleFourModels:2014},
 to test the capabilities of the DDMoRe platform with respect to the encoding of
 hierarchical models, encoded here in MLXTRAN
 \lstset{language=MLX}
@@ -1391,13 +1392,16 @@ are encode as
 \end{lstlisting}
 
 
-%\section{To-do}
-%So far, regarding Bayesian inference and hierarchical models, the intention 
-%was directed towards model definition but the mapping to the underlying dataset 
-%is not fully defined. While the typical dosing, observation, covariate datasets as 
-%use by Monolix or NONMEM can be satisfactory mapped to the model definition 
-%in PharmML, winBUGS uses different data format and its mapping requires more
-%testing.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Additional examples implemented}
+In addition eight examples as described in \cite{Chiudinelli2015} have been 
+successfully implemented in PharmML 0.7 and are provided with the release:
+\emph{example331.xml}, \emph{example332.xml}, \emph{example333.xml}, 
+\emph{example334.xml}, \emph{example335.xml}, \emph{example3311.xml},
+\emph{example3312.xml}, \emph{example3321.xml}.
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1767,9 +1771,11 @@ or alternatively for the entire model using the \xelem{FullReset}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\xelem{Interval} element}
+\label{subsec:interval}
 The \xelem{Interval} with children elements \xelem{LeftEndpoint} and \xelem{RightEndpoint}
 has been designed for the use e.g. in defining the design spaces as the 
-following example for optimising the observation times shows. 
+following example for optimising the observation times shows (but use in other 
+situations is possible as well). 
 \lstset{language=XML}
 \begin{lstlisting}
     <DesignSpaces>
@@ -2175,11 +2181,50 @@ and observations in question as shown in the code snippet
 Note that the \xelem{InterventionsReference} element is new in this version.
 \end{example}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Design examples implemented}
+The examples listed below coming with the MDL proposal, \cite{CommetsExamples2015},
+have been successfully implemented in PharmML and are provided with the release:
+
+\begin{itemize}
+\item 
+example1: Basic PK model with five tasks
+%\begin{itemize}
+%\item 
+%\emph{example1$\_$task1$\_$onegroup$\_$evaluate.xml}, \emph{example1$\_$task1$\_$twogroups$\_$evaluate.xml}, 
+%\emph{example1$\_$task2$\_$twogroups$\_$optimise.xml}, \emph{example1$\_$task3$\_$onegroup$\_$optimiseFW.xml},%\emph{example1$\_$task4$\_$fourgroup$\_$optimisePopED.xml}%\end{itemize}
+\item 
+example2: PK/PD model with four tasks
+%\begin{itemize}
+%\item 
+%\emph{example2$\_$task1.xml}, \emph{example2$\_$task2.xml}, \emph{example2$\_$task3.xml},
+%\emph{example2$\_$task4.xml}
+%\end{itemize}
+\item 
+example3: PK model with two covariates with three tasks
+%\begin{itemize}
+%\item 
+%\emph{example3$\_$task1.xml}, \emph{example3$\_$task2.xml},\emph{example3$\_$task3.xml}
+%\end{itemize}
+\item 
+example4: PK with IOV and treatment covariate (different for each occasion)
+%\begin{itemize}
+%\item 
+%\emph{example4$\_$task1.xml}, \emph{example4$\_$task2.xml}, \emph{example4$\_$task3.xml}%\end{itemize}
+\item 
+example5: Combination of two treatments - evaluation and optimisation
+%\begin{itemize}
+%\item 
+%\emph{example5$\_$task1.xml}
+%\end{itemize}
+\end{itemize}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Differences compared to MDL}
 Here a short list of features related to the trial design not yet covered in MDL
-\begin{itemize}
+\begin{itemize}	
 \item 
 Conditional distributions, see section \ref{subsec:condDistrib}
 \item 
@@ -2190,6 +2235,8 @@ is not yet available in MDL (or just not described in the MDL design spec,
 Encoding of individual observations/administrations/covariates (available in \pml since 
 version 0.2.1).\
 \end{itemize}
+
+
 
 %-- reference to observation data not required
 %\lstset{language=XML}
@@ -2385,6 +2432,7 @@ Note that we use ProbOnto's normal distribution, \xatt{Normal2}, which is parame
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Encoding of missing data}
+\label{sec:missingData}
 Following discussion at Pavia meeting November 2013, described in the meeting 
 report \cite{Swat:2013pavia}, and later comments, it is proposed to extend 
 PharmML both for inline or external storage of data records and to provide means 
@@ -2499,6 +2547,7 @@ PharmML along with the particular dataset.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Dataset headers}
+\label{sec:headers}
 Even though headers are currently not used by the main estimation target 
 tools, Monolix or NONMEM, to carry any information which can directly be interpreted 
 and used, others, such as Simcyp Simulator, makes frequent use of headers. 
@@ -2565,10 +2614,10 @@ values.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Regressor support}
+\section{Regressor support}
 \label{sec:regressors}
 
-\subsubsection{Support in $\leq$ 0.6 versions}
+\subsection{Support in $\leq$ 0.6 versions}
 Already since version 0.3 (introduced in April 2014), PharmML accounts for 
 regressors if they are coming from datasets, by means of \xatt{columnType} attribute 
 which can be specified as \xatt{reg} for regressors (time-varying covariates) 
@@ -2614,7 +2663,7 @@ with interpolation type with respect to a variable of modellers choice, e.g.
             </ct:Variable>
 \end{lstlisting}
 
-\subsubsection{Support in 0.7 version}
+\subsection{Support in 0.7 version}
 The issue with the usage of \xelem{Variable} as regressor it that it cannot be 
 easily recognised as such. Therefore we have introduced for this release 
 an additional and optional attribute: \xatt{regressor} with \emph{yes}/\emph{no} 
@@ -2649,6 +2698,7 @@ if the model for \emph{C} comes from an external source.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Minor changes/bug fixing}
+\label{sec:minorChanges}
 
 \begin{itemize}
 \item 

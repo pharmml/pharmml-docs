@@ -70,6 +70,14 @@ listed in the subsequent sections are collected here with references
 
 \textbf{support} & & $k \in \{0,1\}$
 \end{tabular}
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Bernoulli_pmf_cdf.pdf}
+ \caption{PDF and CDF of the Bernoulli distribution.}
+ \label{fig:Bernoulli_pmf_cdf}
+\end{figure}
+
 \subsubsection*{Parameter: probability}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -197,6 +205,15 @@ listed in the subsequent sections are collected here with references
 
 \textbf{support} & & $x \in \{1,\dots,k\}$
 \end{tabular}
+
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=70mm]{pics/CategoricalUnOrdered_pmf_cdf.pdf}
+ \caption{An example for a PMF of the Categorical Unordered distribution 
+ for pets owned by children. In this case the CDF is undefined.}
+ \label{fig:CategoricalUnOrdered_pmf_cdf}
+\end{figure}
+
 \subsubsection*{Parameter: categoryProb}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -479,7 +496,12 @@ listed in the subsequent sections are collected here with references
 \textbf{support} & & $x \in (0,+\infty)$
 \end{tabular}
 
-Gamma plot
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Gamma_pdf_cdf.pdf}
+ \caption{PMF of the Gamma distribution plotted using the provided R-code.}
+ \label{fig:Gamma_pdf_cdf}
+\end{figure}
 
 \subsubsection*{Parameter: shape}
 
@@ -489,13 +511,6 @@ Gamma plot
 \textbf{symbol} & & $k$  \\
 \textbf{definition} & & $k > 0$
 \end{tabular}
-
-\begin{figure}[ht!]
-\centering
-  \includegraphics[width=140mm]{pics/Gamma_pdf_cdf.pdf}
- \caption{PMF of the Gamma distribution plotted using the provided R-code.}
- \label{fig:Gamma_pdf_cdf}
-\end{figure}
 
 \subsubsection*{Parameter: scale}
 
@@ -715,14 +730,12 @@ $, scalar \\
 
 \textbf{support} & & $x \in (-\infty,+\infty)$
 \end{tabular}
-
 \begin{figure}[ht!]
 \centering
   \includegraphics[width=140mm]{pics/Gompertz_pdf_cdf.pdf}
  \caption{PMF of the Gompertz distribution plotted using the provided R-code.}
  \label{fig:Gompertz_pdf_cdf}
 \end{figure}
-
 \subsubsection*{Parameter: shape}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -1694,6 +1707,7 @@ erf <- function(x) 2 * pnorm(x * sqrt(2)) - 1
 
 \textbf{support} & & $x \in R$
 \end{tabular}
+
 \begin{figure}[htb!]
 \centering
   \includegraphics[width=140mm]{pics/Normal2_pdf_cdf.pdf}
@@ -1701,6 +1715,7 @@ erf <- function(x) 2 * pnorm(x * sqrt(2)) - 1
  plotted using the provided R-code.}
  \label{fig:N2pdfcdf}
 \end{figure}
+
 \subsubsection*{Parameter: mean}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -1742,6 +1757,15 @@ erf <- function(x) 2 * pnorm(x * sqrt(2)) - 1
 
 \textbf{support} & & $x \in R$
 \end{tabular}
+
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/Normal3_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Normal distribution, N3,
+ plotted using the provided R-code.}
+ \label{fig:N3pdfcdf}
+\end{figure}
+
 \subsubsection*{Parameter: mean}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -1762,8 +1786,17 @@ erf <- function(x) 2 * pnorm(x * sqrt(2)) - 1
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\sqrt{\frac{\tau}{2 \pi}} e^{-\frac{\tau}{2}(x-\mu)^2}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
+\begin{verbatim}sqrt(tau/(2*pi))*exp(-tau/2*(x-mu)^2)\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+\begin{equation*}\frac12\left[1 + \text{erf}\left( \frac{x-\mu}{\sqrt{1/\tau}\sqrt{2}}\right)\right]\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
+\begin{verbatim}
+erf <- function(x) 2 * pnorm(x * sqrt(2)) - 1
+1/2*(1+erf((x-mu)/(sqrt(1/tau)*sqrt(2)))) 
+\end{verbatim}
+\smallskip\section*{Normal3} 
+
 %\smallskip\section*{NormalInverseGamma} 
 %
 %  \bigskip 
@@ -1891,7 +1924,7 @@ erf <- function(x) 2 * pnorm(x * sqrt(2)) - 1
 \begin{verbatim}Igamma(floor(k+1), lambda, lower=F) / factorial(floor(k))\end{verbatim}
 using \emph{Igamma} from \url{http://cran.r-project.org/web/packages/zipfR/zipfR.pdf}.
 
-\paragraph{Note} There are surprising many different names for the Poisson parameter, such as
+\paragraph{Note} There are many different names for the Poisson parameter, such as
 \label{par:poissonParameterNames}
 \begin{itemize}
 \item 
@@ -2340,7 +2373,7 @@ erf <- function(x) 2 * pnorm(x * sqrt(2)) - 1
 \textbf{name} & & inverse scale matrix \\
 \textbf{type} & & matrix \\
 \textbf{symbol} & & $R$  \\
-\textbf{definition} & & $p\times p - symmetric, positive definite matrix$
+\textbf{definition} & & $p\times p - \text{symmetric, positive definite matrix}$
 \end{tabular}
 \subsubsection*{Parameter: degreesOfFreedom}
 
@@ -2369,6 +2402,14 @@ erf <- function(x) 2 * pnorm(x * sqrt(2)) - 1
 
 \textbf{support} & & $k \in \{0,1,2,3,\dots\}$
 \end{tabular}
+
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=70mm]{pics/ZINB_pmf_cdf.pdf}
+ \caption{PDF and CDF of the ZINB distribution plotted using the provided R-code.}
+ \label{fig:ZINBpdfcdf}
+\end{figure}
+
 \subsubsection*{Parameter: mean}
 
 \noindent\begin{tabular}{p{2cm}cl}
@@ -2377,13 +2418,6 @@ erf <- function(x) 2 * pnorm(x * sqrt(2)) - 1
 \textbf{symbol} & & $\mu$  \\
 \textbf{definition} & & $-$
 \end{tabular}
-
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=70mm]{pics/ZINB_pmf_cdf.pdf}
- \caption{PDF and CDF of the ZINB distribution plotted using the provided R-code.}
- \label{fig:ZINBpdfcdf}
-\end{figure}
 
 \subsubsection*{Parameter: sizeParameter}
 

@@ -159,12 +159,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Overview}
 
-This document describes extensions and changes in \pml compared to the
-previously released version 0.6.
+This document describes extensions and changes in \pml compared to version 0.6
+ released in January 2015.
 
 
-\section{Major changes/extensions in version 0.7 -- {\color{red} \scshape{under construction}}}
-The following table summarises the changes described in detail in following chapters.
+\section{Major changes/extensions in version 0.7}
+The following table summarises the major changes described in detail in following chapters. 
+Please, note that this list is not exhaustive.
 
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=\textwidth
@@ -180,11 +181,10 @@ or modelling aspect 			& 							& \\
   \multicolumn{3}{c}{\textit{ProbOnto}}		\\
 \hline
 \hline
-Probability distributions		& \uncertml used for encoding of 	& {\color{red} \scshape{new}} \xelem{Distribution} element with  \\
-						& distributions					& children \xelem{ProbOnto} and \xelem{UncertML} \\
-\hline
-Annotation and encoding of 	&  	--						& \emph{ProbOnto} - ontology and knowledge  \\
-statistical models			&							& base of probability distribution 	\\
+Probability distributions -- 	& \uncertml used for encoding of 	& {\color{red} \scshape{new}} \xelem{Distribution} element with  \\
+annotation and encoding of 	& distributions					& children \xelem{ProbOnto} and \xelem{UncertML} \\
+statistical models,			& 							& {\color{red} \scshape{new}} \emph{ProbOnto} - ontology and knowledge  \\
+chapter \ref{ch:ProbOnto}		&							& base of probability distribution 	\\
 						& 							& -- support for expressions as parameters \\
 						& 							& -- support for distribution functions \\
 						&							&  and quantities \\
@@ -197,12 +197,12 @@ statistical models			&							& base of probability distribution 	\\
 \hline
 \hline
 Covariates, parameters and 	& not available					& {\color{red} \scshape{new}} \emph{Distribution}-type model\\
-observations model  		&							& can be used with either \uncertml or \\
-			 			&							& ProbOnto for parameters, observations \\
+observations model,   		&							& can be used with either \uncertml or \\
+chapter \ref{ch:Models}		&							& ProbOnto for parameters, observations \\
 						&							& and covariates \\
 \hline
-Individual parameter model	& 3 types supported: 			& 4 types supported now \\
-						& -- \emph{Equation}-type		& -- {\color{red} \scshape{modified}} \emph{Structured}-type \\
+Individual parameter model,	& 3 types supported: 			& 4 types supported now \\
+section \ref{sec:individualParameter}& -- \emph{Equation}-type		& -- {\color{red} \scshape{modified}} \emph{Structured}-type \\
 						& -- \emph{Gaussian} with linear	& \xelem{GaussianModel} renamed to   \\
 						& -- \emph{Gaussian} with nonlinear & \xelem{StructuredModel} with linear/nonlinear \\
 						& covariate model				& covariate model\\
@@ -212,33 +212,42 @@ Individual parameter model	& 3 types supported: 			& 4 types supported now \\
 						&							& -- {\color{red} \scshape{new}} \emph{Distribution}-type model using  \\
 						&							& either UncertML or ProbOnto \\
 \hline
-Population parameter		& \xelem{SimpleParameter} used	&{\color{red} \scshape{new}} \xelem{PopulationParameter} element \\	
-						& with no distribution support		& replaces \xelem{SimpleParameter} element \\
+Population parameter,		& \xelem{SimpleParameter} used	&{\color{red} \scshape{new}} \xelem{PopulationParameter} element \\	
+section \ref{sec:populationParameter}& with no distribution support		& replaces \xelem{SimpleParameter} element \\
 \hline
-Covariate model			& Transformation, interpolation  	& {\color{red} \scshape{new}} Support for conditional distributions \\
-						& and distribution of covariates 	& wrt covariates or design elements  \\
+Observation model			& Gaussian and \emph{Equation}-type	& \\
+section \ref{subsec:contModels} 	&						& \\
+\hline
+Covariate model,			& Transformation, interpolation  	& {\color{red} \scshape{new}} Support for conditional distributions \\
+section \ref{sec:condDistros}	& and distribution of covariates 	& wrt covariates or design elements  \\
 						& supported					& \\
 \hline
-Matrix/Vector operators		& not supported				& {\color{red} \scshape{new}} \xelem{MatrixUniOp} element with \\
-						&							& values \emph{inverse, trace and transpose} \\
+Matrix/Vector operators,		& not supported				& {\color{red} \scshape{new}} \xelem{MatrixUniOp} element with \\
+chapter \ref{ch:Bayesian}		&							& values \emph{inverse, trace and transpose} \\
 \hline
-Transformation element 		& supported 					& new structure with attribute \xatt{type} \\
-						&							& to be assigned values such as \emph{log}, \emph{logit} etc. \\
+Transformation element, 		& supported 					& new structure with attribute \xatt{type} \\
+section \ref{sec:individualParameter} and \ref{sec:BoxCoxTrafo}	&					& to be assigned values such as \emph{log}, \emph{logit} etc. \\
 						&							& {\color{red} \scshape{new}} \emph{BoxCox} \\
+\hline
+Covariate model,			& not supported				& \xelem{CovariateModel} has an additional option \\
+section \ref{sec:minorChanges}&							& for creating new covariates out of exiting ones \\
+\hline
+Count data models,			& 							& {\color{red} \scshape{new}} \xelem{NumberCounts} element for variable \emph{k} \\
+section \ref{sec:minorChanges} &							& \\
 \hline
 \hline
   \multicolumn{3}{c}{\textit{BAYESIAN INFERENCE \& HIERARCHICAL MODELS}}  \\
 \hline
 \hline
-Population parameter		& not supported				& {\color{red} \scshape{new}} \xelem{PopulationParameter} with \\
- 						& 							&  \emph{Distribution}-type or \emph{Equation}-type \\
+Population parameter, 		& not supported				& {\color{red} \scshape{new}} \xelem{PopulationParameter} with \\
+chapter \ref{ch:Bayesian}		& 							&  \emph{Distribution}-type or \emph{Equation}-type \\
 \hline
 \hline
   \multicolumn{3}{c}{\textit{TRIAL DESIGN}}  \\
 \hline
 \hline
-Structure 					& CDISC based				& redesigned based on WP3 design proposal \\
-						&							& -- all design elements in \xelem{TrialDesign}  \\
+Structure, chapter \ref{ch:Design}	& CDISC based			& redesigned based on WP3 design proposal \\
+						&							& -- all design elements are in \xelem{TrialDesign}  \\
 						&							& -- dataset reference \xelem{ExternalDataSet} \\
 						&							&  relocated to trial section \\
 \hline
@@ -251,14 +260,36 @@ Simulation Step			& reference to interventions 		&  \xelem{InterventionsReferenc
   \multicolumn{3}{c}{\textit{GENERAL}}  \\
 \hline
 \hline
-Interval					& not available					& {\color{red} \scshape{new}} \xelem{Interval} with left/right- \\
+Interval, section \ref{subsec:interval} & not available				& {\color{red} \scshape{new}} \xelem{Interval} with left/right- \\
 						&							& endpoints of closed/open \xatt{type} attribute. \\
 						&							& \xatt{closed} is the default value. \\
 \hline
 Box-Cox transformation 		& not available					& \xelem{Transformation} with new value \\
 applied to observations		&							& \emph{BoxCox} for the \xatt{type} attribute and \\ 
-and parameters, sec. \ref{sec:BoxCoxTrafo}	&				& \xelem{Parameter} child element for \emph{lambda} \\
-						&							& parameter \\
+and parameters			&							& \xelem{Parameter} child element for \emph{lambda} \\
+ section \ref{sec:BoxCoxTrafo}	&							& parameter \\
+\hline
+Missing data, section \ref{sec:missingData}	& only \emph{NA} supported in inline & -- Inline datasets -- {\color{red} \scshape{new}} elements \\
+						& datasets					&  \xelem{NaN}, \xelem{minusInf}, \xelem{plusInf}, \xelem{ALQ}, \\
+						&							& \xelem{BLQ}\\
+						&							& -- External datasets -- {\color{red} \scshape{new}} elements \\
+						&							& \xelem{MissingData} with attributes \xatt{dataCode} \\
+						&							& and \xatt{missingDataType} with values: \\
+						&							& \{\emph{NA, NaN, plusInf, minusInf, BLQ, ALQ}\}\\
+\hline
+Dataset headers, 			& not supported       				& {\color{red} \scshape{new}} elements in dataset \\
+section \ref{sec:headers}		&							& -- \xelem{Definition}: \xelem{Header} with attributes \\
+						&							& \xatt{name}, \xatt{headerType}, \xatt{rowNumber} \\
+						&							& -- \xelem{Table}: \xelem{HeaderRow} with attribute \\
+						&							& \xatt{order} \\
+\hline
+Regressors, section \ref{sec:regressors}	& supported when using datasets  	& {\color{red} \scshape{new}} attribute \xatt{regressor} with values \\
+						& and lookup tables 				& \emph{yes/no} added to \xelem{Variable} element \\
+\hline
+SO column types,			& no SO specific types supported	& {\color{red} \scshape{new}} values for the \xatt{columnType} introduced: \\
+section \ref{sec:minorChanges} &							& \{\emph{indivParameter, popParameter, randEffect,} \\
+						&							& \emph{residual, strataVariable, statPrecision}\}\\ 
+\hline
 \caption{Overview of major differences between versions 0.7 and 0.6}
 \label{figTable:overviewTable}
 \vspace{-2em}
@@ -274,7 +305,7 @@ and parameters, sec. \ref{sec:BoxCoxTrafo}	&				& \xelem{Parameter} child elemen
 \input{input/mainChangesChapters}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\input{input/ProbOnto}
+\input{input/ProbOnto}
 
 
 
