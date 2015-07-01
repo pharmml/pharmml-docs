@@ -212,6 +212,7 @@ non-parametric distributions.
 \end{itemize}
 They are available to certain extend in UncertML, which can be used instead for the time being, if required.
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Working with ProbOnto}
 \label{sec:workingProbOnto}
@@ -288,6 +289,75 @@ be either \emph{closed} or \emph{open}.
 components.
 \end{itemize}
 \end{itemize}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Working with ProbOnto ontology}
+
+\subsection{Implementation in PharmML}
+The following code shows the typical Poisson model implementation 
+\lstset{language=XML}
+\begin{lstlisting}
+            <!-- using ProbOnto -->
+            <PMF linkFunction="log">
+                <Distribution>
+                    <ProbOnto  id="X1" name="Poisson">
+                        <Parameter  id="X2" name="rate">
+                            <ct:Assign>
+                                <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
+                            </ct:Assign>
+                        </Parameter>
+                    </ProbOnto>
+                </Distribution>
+            </PMF>
+\end{lstlisting}
+Notice that the code names for the distribution, \xelem{ProbOnto},  and its parameter,
+\xelem{Parameter} are given identifiers, \xatt{id="X1"} and \xatt{id="X2"}, respectively.
+This allows us to annotate these elements.  
+\begin{enumerate}
+\item 
+X1 ps:has-int probonto:0000111 -- 
+\item
+X2 ps:has-int probonto:0007777
+\end{enumerate}
+
+\begin{tabular}{p{2cm}cl}
+\textbf{name} & & Poisson (ID: 0000111)\\ 
+ 
+\textbf{type} & & discrete \\ 
+
+\textbf{variate} & & $k$, scalar \\ 
+
+\textbf{support} & & $k \in \{0,1,2,3,\dots\}$
+\end{tabular}
+
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/Poisson_pmf_cdf.pdf}
+ \caption{PMF and CDF of the Poisson distribution plotted using the provided R-code.}
+ \label{fig:Poissonpmfcdf}
+\end{figure}
+
+\subsubsection*{Parameter: rate}
+
+\noindent\begin{tabular}{p{2cm}cl}
+\textbf{name} & & Poisson intensity \\
+\textbf{type} & & scalar \\
+\textbf{symbol} & & $\lambda$  \\
+\textbf{definition} & & $\lambda \in R, \lambda > 0$
+\end{tabular}
+\subsubsection*{Functions}
+
+\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+\begin{equation*}\frac{\lambda^k}{k!}e^{-\lambda}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
+\begin{verbatim}lambda^k/factorial(k) * exp(-lambda)\end{verbatim}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+\begin{equation*}\frac{\Gamma(\lfloor k+1 \rfloor,\lambda)}{\lfloor k \rfloor!}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
+\begin{verbatim}Igamma(floor(k+1), lambda, lower=F) / factorial(floor(k))\end{verbatim}
+using \emph{Igamma} from \url{http://cran.r-project.org/web/packages/zipfR/zipfR.pdf}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
