@@ -20,7 +20,7 @@ such as MDL or PharmML.
 \begin{figure}[htb!]
 \centering
 \begin{tabular}{cc}
- \includegraphics[width=100mm]{pics/whatCanGoWrong}
+ \includegraphics[width=140mm]{pics/whatCanGoWrong}
 \end{tabular}
 \caption{Illustration of possible model misspecification when using incorrect 
 parameterisation. (1) The black curve corresponds to a log-normal 
@@ -292,18 +292,17 @@ components.
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Working with ProbOnto ontology}
+\section{Annotation of models with ProbOnto ontology}
 
 \subsection{Implementation in PharmML}
-The following code shows the typical Poisson model implementation 
+
+The following code shows the typical Poisson model implementation
 \lstset{language=XML}
 \begin{lstlisting}
-            <!-- using ProbOnto -->
             <PMF linkFunction="log">
                 <Distribution>
-                    <ProbOnto  id="X1" name="Poisson">
-                        <Parameter  id="X2" name="rate">
+                    <ProbOnto id="X1" name="Poisson">
+                        <Parameter id="X2" name="rate">
                             <ct:Assign>
                                 <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
                             </ct:Assign>
@@ -312,53 +311,158 @@ The following code shows the typical Poisson model implementation
                 </Distribution>
             </PMF>
 \end{lstlisting}
-Notice that the code names for the distribution, \xelem{ProbOnto},  and its parameter,
-\xelem{Parameter} are given identifiers, \xatt{id="X1"} and \xatt{id="X2"}, respectively.
-This allows us to annotate these elements.  
-\begin{enumerate}
-\item 
-X1 ps:has-int probonto:0000111 -- 
-\item
-X2 ps:has-int probonto:0007777
-\end{enumerate}
 
+\subsection{Annotation of PharmML}
+
+Notice that in the above sniper of code the elements defining the distribution used, \xelem{ProbOnto},  
+and its parameter, \xelem{Parameter} are given identifiers, \xatt{id="X1"} and \xatt{id="X2"}, respectively.
+This allows us to annotate these elements so that we can make explicit their intended interpretation. Using the PharmML metadata annotation schema, we would record such interpretation using the property {\emph{has-interpreted-type}. In what follows, 'ps' abbreviates the namespace for this schema and 'probonto' abbreviates the namespace for the ProbOnto ontology, part of the stack of ontologies used in PharmML annotation. 
+
+\begin{quote}
+\# The distribution element is interpreted as an instantiation of the Poisson distribution.
+
+\emph{X1 ps:has-interpreted-type probonto:0000111.}
+
+\# The parameter element is interpreted as an instantiation of the parameter element, $\lambda$, of the Poisson distribution.
+
+\emph{X2 ps:has-interpreted-type probonto:0000114.}
+\end{quote}
+
+In ProbOnto, \emph{0000111} and \emph{0000114} are the identifiers for the Poisson distribution 
+and its (unique) parameter, respectively. The two statements above encode the interpretation 
+of the PharmML code defining the distribution. Such statements can in principle be generated automatically 
+after processing the PharmML code.
+
+Annotating the actual PharmML model and the element to which the distribution applies would involve 
+more or a variation upon the above to the effect that the ProbOnto distribution is identified.
+
+\subsection{Background Information is Contained in ProbOnto}
+
+Given the annotation of the PharmML code linking to ProbOnto, we can then use ProbOnto to make explicit all the information that is packed into these two very terse annotation statements.
+
+\subsubsection*{Underlying accessible knowledge about Poisson distribution}
+
+We thus have access to the following regarding the distribution contained in the PharmML code (as much as is contained in the ProbOnto definition of the Poisson distribution):
+
+\bigskip
 \begin{tabular}{p{2cm}cl}
-\textbf{name} & & Poisson (ID: 0000111)\\ 
- 
-\textbf{type} & & discrete \\ 
+\textbf{name} & & Poisson (ID: 0000111)\\
 
-\textbf{variate} & & $k$, scalar \\ 
+\textbf{type} & & discrete \\
+
+\textbf{variate} & & $k$, scalar \\
 
 \textbf{support} & & $k \in \{0,1,2,3,\dots\}$
 \end{tabular}
+\bigskip \\
+Additionally, we can obtain from ProbOnto the following type of information. 
+\subsubsection*{Underlying accessible knowledge about the related functions}
+%\subsubsection*{Functions}
+\smallskip \noindent \hspace{.2cm} \textbf{PMF}
+\begin{equation*}\frac{\lambda^k}{k!}e^{-\lambda}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}
+\begin{verbatim}lambda^k/factorial(k) * exp(-lambda)\end{verbatim}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF}
+\begin{equation*}\frac{\Gamma(\lfloor k+1 \rfloor,\lambda)}{\lfloor k \rfloor!}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R}
+\begin{verbatim}Igamma(floor(k+1), lambda, lower=F) / factorial(floor(k))\end{verbatim}
+using \emph{Igamma} from \url{http://cran.r-project.org/web/packages/zipfR/zipfR.pdf}.
 
-\begin{figure}[htb!]
-\centering
-  \includegraphics[width=140mm]{pics/Poisson_pmf_cdf.pdf}
- \caption{PMF and CDF of the Poisson distribution plotted using the provided R-code.}
- \label{fig:Poissonpmfcdf}
-\end{figure}
-
-\subsubsection*{Parameter: rate}
+\subsubsection*{Underlying accessible knowledge about the (rate) parameter}
 
 \noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Poisson intensity \\
+\textbf{name} & & Poisson intensity  (ID: 0000114) \\
 \textbf{type} & & scalar \\
 \textbf{symbol} & & $\lambda$  \\
 \textbf{definition} & & $\lambda \in R, \lambda > 0$
 \end{tabular}
-\subsubsection*{Functions}
+\bigskip 
 
-\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}\frac{\lambda^k}{k!}e^{-\lambda}\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{verbatim}lambda^k/factorial(k) * exp(-lambda)\end{verbatim}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac{\Gamma(\lfloor k+1 \rfloor,\lambda)}{\lfloor k \rfloor!}\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{verbatim}Igamma(floor(k+1), lambda, lower=F) / factorial(floor(k))\end{verbatim}
-using \emph{Igamma} from \url{http://cran.r-project.org/web/packages/zipfR/zipfR.pdf}.
+The amount of information that may be encoded in ProbOnto is extensible. 
+Thus,  via a very simple and direct mechanism of annotation that amounts to 
+linking a distribution and its parameter(s) in a piece of PharmML code, we can
+ inherit and obtain all the background relevant information. 
+ This knowledge can be used either for our understanding and the validation of 
+ our PharmML encoding or, with adequate software support, for processing by 
+ tools. 
+ 
+Currently, such extensive software support is not available but is part of the 
+development path for PharmML and its implementation of ProbOnto. 
 
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=120mm]{pics/Poisson_pmf_cdf.pdf}
+ \caption{PMF and CDF of the Poisson distribution plotted using the R-code
+ stored in ProbOnto.}
+ \label{fig:PoissonExample}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Annotation of models with ProbOnto ontology}
+%
+%\subsubsection{Implementation in PharmML}
+%The following code shows the typical Poisson model implementation 
+%\lstset{language=XML}
+%\begin{lstlisting}
+%            <!-- using ProbOnto -->
+%            <PMF linkFunction="log">
+%                <Distribution>
+%                    <ProbOnto  id="X1" name="Poisson">
+%                        <Parameter  id="X2" name="rate">
+%                            <ct:Assign>
+%                                <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
+%                            </ct:Assign>
+%                        </Parameter>
+%                    </ProbOnto>
+%                </Distribution>
+%            </PMF>
+%\end{lstlisting}
+%Notice that the code names for the distribution, \xelem{ProbOnto},  and its parameter,
+%\xelem{Parameter} are given identifiers, \xatt{id="X1"} and \xatt{id="X2"}, respectively.
+%This allows us to annotate these elements.  
+%\begin{enumerate}
+%\item 
+%X1 ps:has-int probonto:0000111 -- 
+%\item
+%X2 ps:has-int probonto:0007777
+%\end{enumerate}
+%\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Poisson (ID: 0000111)\\ 
+% 
+%\textbf{type} & & discrete \\ 
+%
+%\textbf{variate} & & $k$, scalar \\ 
+%
+%\textbf{support} & & $k \in \{0,1,2,3,\dots\}$
+%\end{tabular}
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=140mm]{pics/Poisson_pmf_cdf.pdf}
+% \caption{PMF and CDF of the Poisson distribution plotted using the provided R-code.}
+% \label{fig:Poissonpmfcdf}
+%\end{figure}
+%
+%\subsubsection*{Parameter: rate}
+%
+%\noindent\begin{tabular}{p{2cm}cl}
+%\textbf{name} & & Poisson intensity \\
+%\textbf{type} & & scalar \\
+%\textbf{symbol} & & $\lambda$  \\
+%\textbf{definition} & & $\lambda \in R, \lambda > 0$
+%\end{tabular}
+%\subsubsection*{Functions}
+%
+%\smallskip \noindent \hspace{.2cm} \textbf{PMF} 
+%\begin{equation*}\frac{\lambda^k}{k!}e^{-\lambda}\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
+%\begin{verbatim}lambda^k/factorial(k) * exp(-lambda)\end{verbatim}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+%\begin{equation*}\frac{\Gamma(\lfloor k+1 \rfloor,\lambda)}{\lfloor k \rfloor!}\end{equation*}
+%\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
+%\begin{verbatim}Igamma(floor(k+1), lambda, lower=F) / factorial(floor(k))\end{verbatim}
+%using \emph{Igamma} from \url{http://cran.r-project.org/web/packages/zipfR/zipfR.pdf}.
+%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Alternative parameterisations -- examples}
