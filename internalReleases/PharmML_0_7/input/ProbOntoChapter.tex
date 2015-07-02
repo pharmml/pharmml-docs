@@ -50,11 +50,11 @@ BioPortal, \cite{noy2009bioportal}, suffer from equivalent limitations
 as they are designed in a similar way.}.  
 Similarly, the databases of distributions available online come with analog issues\footnote{Distributome, 
 \url{http://www.distributome.org/}, comes with an impressive and well referenced collection
-of 90+ distributions but doesn't contain many of relevant for us cases and/or 
+of 90+ distributions but doesn't contain many of relevant for us types and/or 
 parameterisations and is limited to univariate parametric ones.}.
 It turns out that \emph{ProbOnto} can be very helpful in
 designing a flexible alternative for UncertML with many additional features.
-It turns out that it can be used e.g. in PharmML or other target tools/languages \emph{both} 
+It can be used e.g. in PharmML or other target tools/languages \emph{both} 
 as ontological resource for annotation purposes and as a knowledge base, 
 see next section for their definitions, to provide the means to specify a wide range 
 of distributions and distribution related functions and quantities.
@@ -132,14 +132,14 @@ is not updated and 3.0 documentation is not available.
 but to do so, it would mean to introduce major extensions and changes to its 
 current XML schema. Only the support of the most important missing features would 
 de facto require to rewrite the entire standard, as UncertML doesn't possess the 
-structure to support encoding of even basic expressions. And because it would most 
+structure to encode even basic expressions. And because it would most 
 certainly result in a different, compared to PharmML, mathematical notation we would 
 be faced with inconsistent, layered and/or overlapping schemas difficult to handle and 
 to process.
 
 \paragraph{Suggested way forward} ProbOnto offers an alternative solution allowing
 to avoid all the limitations listed above while providing number of additional features
-and means to build in a very flexible probability distribution support in MDL and PharmML 
+and means to build in a very flexible probability distribution support in MDL, PharmML 
 and other languages/tools within DDMoRe and beyond. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -190,7 +190,7 @@ Provides related quantities such as mean, median, mode, variance etc.
 Provides other info about \emph{support/range} and relationships to other distributions.
 \end{itemize}
 \end{itemize}
-The distribution collection and their features are based, among others, on
+The distribution collection and their features are based on
 probability distribution pages of the english Wikipedia\footnote{See the list of 
 distributions on Wikipedia at \url{https://en.wikipedia.org/wiki/List_of_probability_distributions}}, 
 Forbes et al. 2010 \cite{Forbes:2010jk}, Leemis et al. 2008 \cite{Leemis:2008tg}, 
@@ -230,7 +230,7 @@ The order of parameters doesn't matter.
 \end{itemize}
 %We have found in the literature many instances of different names being used 
 %for parameters a given distributions. 
-To remain consistent within the nomenclature used so far in PharmML and MDL (which
+To remain consistent with the nomenclature used so far in PharmML and MDL (which
 was based on UncertML vocabulary) the majority of parameter names is identical 
 to those used in UncertML. For new distributions and their parameters we have 
 defined the most common names used in the literature. 
@@ -238,7 +238,7 @@ In tables \ref{figTable:univariatesCodes}, \ref{figTable:multivariatesCodes}
 and \ref{figTable:mixtures} we have compiled the \emph{code names}. 
 
 \begin{example}
-The negative binomial implementation illustrates how this works. There are two 
+The implementation of the negative binomial model illustrates how this works. There are two 
 parametrisations for this distribution but the version with Poisson intensity, $\lambda$, 
 and over-dispersion, $\tau$, as parameters, with the code name, \emph{NegativeBinomial2}, 
 is frequently used in discrete data models.
@@ -263,7 +263,7 @@ is frequently used in discrete data models.
 According to the rules, the names of the distributions and their parameters 
 must be the code names defined by ProbOnto, see table \ref{figTable:multivariatesCodes}. 
 The user can then assign any symbols to the parameters,
-with \emph{rabbit} standing for \emph{rate}, defined in 
+with \emph{rabbit} for \emph{rate}, defined in 
 parameter model \xatt{pm1} and \emph{piggy} for \emph{overdispersion}, 
 defined in parameter model \xatt{pm2}.
 %effort required in PharmML and other target 
@@ -274,19 +274,19 @@ defined in parameter model \xatt{pm2}.
 The following elements are new in this version to support ProbOnto encoding 
 \begin{itemize}
 \item
-\xelem{ProbOnto} tag with the \xatt{name} attribute for the distribution code names, tables 
-\ref{figTable:univariatesCodes} and \ref{figTable:multivariatesCodes}, with children elements
+\xelem{ProbOnto} tag with the \xatt{name} attribute for the distribution code names
+ with children elements
 \begin{itemize}
 \item
-\xelem{Parameter} with the \xatt{name} attribute for the parameter code names, see tables 
-\ref{figTable:univariatesCodes} and \ref{figTable:multivariatesCodes}. It can be assigned any expression.
+\xelem{Parameter} with the \xatt{name} attribute for the parameter code names. 
+It can be assigned any expression.
 \item
 \xelem{LowerTruncationBound} and \xelem{LowerTruncationBound} to indicate the
 truncation bounds for univariate distributions with attribute \xatt{type} which can
 be either \emph{closed} or \emph{open}.
 \item
-\xelem{MixtureComponent} with the \xatt{name} attribute of the code name of mixture 
-components.
+\xelem{MixtureComponent} with the \xatt{name} attribute for the code name of mixture 
+component.
 \end{itemize}
 \end{itemize}
 
@@ -940,7 +940,7 @@ Code name		& Symbol & Code name & Symbol & Code name \\
 \xatt{Weibull2}				& $\lambda$		& \xatt{lambda}			& \emph{v}	& \xatt{shape}		\\
    \hline 
 \caption{Code names for distribution and parameter names of the univariate 
-distributions supported in ProbOnto. See also Appendix \ref{ch:probontoAppendix}.}
+distributions supported in ProbOnto.}
 \label{figTable:univariatesCodes}
 \vspace{-2.5em}
 \end{longtable}
@@ -976,7 +976,7 @@ Multivariate (Student) T 2& $\mu, T, k$ 				& --	& y	& --	& -- 	\\[0.5ex]
 Wishart 1				& $V, n$					& y	& --	& --	& --  	\\
 Wishart 2				& $R, k$					& --	& y	& --	& -- 	\\
    \hline
-\caption{Multivariate distributions. See the Appendix \ref{ch:probontoAppendix}
+\caption{Multivariate distributions with overview of tool support. See the Appendix \ref{ch:probontoAppendix}
 for the detailed description of the most relevant distributions -- full ProbOnto database 
 will be released soon.}
 \label{figTable:multivariates}
@@ -1015,8 +1015,7 @@ Multinomial 				& $n$	& \xatt{numberOfTrials} 	& $p_1, \ldots, p_k$	& \xatt{prob
 \xatt{Wishart1} 				& $V$		& \xatt{scaleMatrix}	& $n$			& \xatt{degreesOfFreedom} \\
 \xatt{Wishart2} 				& $R$		& \xatt{inverseScaleMatrix} & $k$		& \xatt{degreesOfFreedom} \\
    \hline
-\caption{Code names for the multivariate distributions and their parameters.
-See the Appendix \ref{ch:probontoAppendix}.}
+\caption{Code names for the multivariate distributions and their parameters.}
 \label{figTable:multivariatesCodes}
 \vspace{-2.5em}
 \end{longtable}
@@ -1061,9 +1060,8 @@ For categorical models we always first list in PharmML all categories
     </ListOfCategories>                    
 \end{lstlisting}
 which informs the user/target tool about the number and identifiers of
-the categories in question. As ProbOnto specify the 'k' probabilities vector 
-$p_i, i=1,\dots,k$ as the only parameter and the user has two options.
-She/he can declare either
+the categories in question. The probabilities vector $p_i, i=1,\dots,k$ is the only 
+parameter and the user has two options. One can declare either
 \begin{itemize}
 \item 
 explicitly the probabilities for all $k$ categories or
@@ -1149,7 +1147,7 @@ then listing the categories and specifying the category variable
     <CategoryVariable symbId="y"/>
 \end{lstlisting}
 and eventually defining the unordered categorical distribution, \emph{CategoricalNonordered} 
-in ProbOnto with one vector parameter
+in ProbOnto, with the parameter
 \begin{itemize}
 \item 
 \xatt{categoryProb}  -- event probabilities vector, $p_1, \ldots, p_k$
@@ -1206,7 +1204,7 @@ The following explicit encoding of the Zero-inflated Poisson model was the only
 possibility in PharmML $\leq$ 0.6. Although the use of the model specific parameter 
 elements, here \xelem{IntensityParameter} and \xelem{ZeroProbabilityParameter} is not 
 mandatory, the complex conditional definition of this model within the \xelem{PMF} 
-element, was still required. 
+element, is still required, and reads
 \lstset{language=XML}
 \begin{lstlisting}
 <ObservationModel blkId="om1">
@@ -1235,7 +1233,7 @@ element, was still required.
                 <ct:Assign>
                     <math:Equation>
                         <math:Piecewise>
-                        <!-- 50 lines of code skipped here -->
+                        <!-- !!! 50 lines of code skipped here !!! -->
                         <!-- for encoding of the conditional PMF: -->
                         <!-- if (k > 0): log(1-p0)-lambda+k*log(lambda)-factln(k) -->
                         <!-- else: log(p0+(1-p0)*exp(-lambda)) -->
@@ -1253,7 +1251,7 @@ as an option in PharmML for user-defined or other distributions not covered by P
 \paragraph{ZIP model encode using ProbOnto}
 In contrast to the first option, encoding of models supported by ProbOnto
 becomes very easy as only the code names for the distribution and its parameters 
-need to be specified.
+need to be specified as the following code snippet shows
 
 \lstset{language=XML}
 \begin{lstlisting}
@@ -1293,7 +1291,7 @@ individual observations (PMIX), described in the PharmML 0.6 spec, \cite{Pharmml
 \begin{eqnarray}
 P(y_{ij} = k;\pi,\lambda_1,\lambda_2) &=& \pi \frac{e^{-\lambda_1} \lambda_1^k}{k!} + (1-\pi) \frac{e^{-\lambda_2} \lambda_2^k}{k!} \nonumber
 \end{eqnarray}
-with $\lambda_1, \lambda_2 > 0$ and $\pi \in [0,1]$, the generic \emph{MixtureDistribution}, 
+with $\lambda_1, \lambda_2 > 0$ and $\pi \in [0,1]$, the generic \emph{MixtureDistribution} 
 can be used as the following code shows
 \lstset{language=XML}
 \begin{lstlisting}
@@ -1326,7 +1324,8 @@ can be used as the following code shows
             </Distribution>
         </PMF>
 \end{lstlisting}
-The \xelem{MixtureComponent} elements hold the mixtures in question and 
+The \xelem{MixtureComponent} elements hold the mixtures in question, here
+Poisson with $\lambda_1$ and Poisson $\lambda_2$, and 
 \xelem{Parameter}, $\pi$, the mixture probability or \emph{weight}. The solution has the advantage 
 to be extendable to any number of mixing components, $m$, \cite{Forbes:2010jk}. 
 The parameter $\pi$ becomes a vector, $\pi_i \text{ with } \pi_i \in [0,1], i=1,\dots,m$, 
@@ -1391,14 +1390,14 @@ which in PharmML reads
 \end{lstlisting}
 The following Figure \ref{fig:truncatedNormal1} illustrates few examples of truncated 
 normal distribution on the interval [-2.5,1]
-\begin{figure}[htb!]
-\centering
- \includegraphics[width=140mm]{pics/TruncatedNormal1_pdf.pdf}
-\caption{Truncated normal distribution, N1. The truncated density plots on the right hand side
-were performed using the \emph{truncnorm} function of the \emph{dtruncnorm} R-package.}
-\vspace{-1em}
-\label{fig:truncatedNormal1}
-\end{figure}
+%\begin{figure}[htb!]
+%\centering
+% \includegraphics[width=140mm]{pics/TruncatedNormal1_pdf.pdf}
+%\caption{Truncated normal distribution, N1. The truncated density plots on the right hand side
+%were performed using the \emph{truncnorm} function of the \emph{dtruncnorm} R-package.}
+%\vspace{-1em}
+%\label{fig:truncatedNormal1}
+%\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

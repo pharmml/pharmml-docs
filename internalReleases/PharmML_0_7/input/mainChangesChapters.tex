@@ -220,7 +220,6 @@ expressions in parameters, e.g. $mean = \log(V_{pop})$ in the above equation.
 \end{align*}
 \end{note}
 
-
 \begin{figure}[htb!]
 \centering
  \includegraphics[width=120mm]{pics/IOV_2levels}
@@ -228,7 +227,6 @@ expressions in parameters, e.g. $mean = \log(V_{pop})$ in the above equation.
 \vspace{-1em}
 \label{fig:IOVtree}
 \end{figure}
-
 
 as the following PharmML snippet shows
 \lstset{language=XML}
@@ -289,7 +287,7 @@ effects would have to be declared.
 \label{sec:populationParameter}
 Population parameter comes with a flexible structure and can have an 
 associated distribution, see Chapter \ref{ch:Bayesian} on Bayesian inference 
-and hierarchical models.Two representations are available 
+and hierarchical models. Two representations are available 
 \begin{description} 
 \item[Type P1] Equation type
 \begin{align*}
@@ -308,36 +306,36 @@ and hierarchical models.Two representations are available
 \begin{note} 
 \xelem{PopulationParameter} replaces the \xelem{SimpleParameter} which 
 became redundant as the \marginpar{\HandCuffLeft} latter was used so far 
-as a population parameter.
+to encode a population parameter.
 \end{note} 
 
-\begin{example}
-Using UncertML - from \emph{example3311.xml} model:
-\begin{align*}
-	lPOP_K \sim \mathcal N\big(lMU_{POP_K}, VAR_{POP_K}\big)
-\end{align*}
-is encoded in PharmML as
-\lstset{language=XML}
-\begin{lstlisting}
-    <PopulationParameter symbId="lPOP_K">
-        <ct:VariabilityReference>
-            <ct:SymbRef symbIdRef="pop" blkIdRef="model"/>
-        </ct:VariabilityReference>
-        <Distribution>
-            <UncertML>
-                <NormalDistribution xmlns="http://www.uncertml.org/3.0" definition="">
-                    <mean>
-                        <var varId="lMU_POP_K"/>
-                    </mean>
-                    <variance>
-                        <var varId="VAR_POP_K"/>
-                    </variance>
-                </NormalDistribution>
-            </UncertML>
-        </Distribution>
-    </PopulationParameter>
-\end{lstlisting}
-\end{example}
+%\begin{example}
+%Using UncertML - from \emph{example3311.xml} model:
+%\begin{align*}
+%	lPOP_K \sim \mathcal N\big(lMU_{POP_K}, VAR_{POP_K}\big)
+%\end{align*}
+%is encoded in PharmML as
+%\lstset{language=XML}
+%\begin{lstlisting}
+%    <PopulationParameter symbId="lPOP_K">
+%        <ct:VariabilityReference>
+%            <ct:SymbRef symbIdRef="pop" blkIdRef="model"/>
+%        </ct:VariabilityReference>
+%        <Distribution>
+%            <UncertML>
+%                <NormalDistribution xmlns="http://www.uncertml.org/3.0" definition="">
+%                    <mean>
+%                        <var varId="lMU_POP_K"/>
+%                    </mean>
+%                    <variance>
+%                        <var varId="VAR_POP_K"/>
+%                    </variance>
+%                </NormalDistribution>
+%            </UncertML>
+%        </Distribution>
+%    </PopulationParameter>
+%\end{lstlisting}
+%\end{example}
 
 \begin{example}
 Using ProbOnto and Type P2 - from fourModels\_hierarchical.xml, \cite{LavielleFourModels:2014},
@@ -374,7 +372,7 @@ is encoded in PharmML as
 \end{example}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Observation model -- {\color{black} \scshape{extended}}}
+\section{Observation model -- extended}
 \label{sec:observationModel}
 
 
@@ -384,14 +382,14 @@ The new features are
 \item
 Seriously simplified encoding of discrete data models. In \pml versions $\leq$ 0.6 
 the implementation of explicit PMF was required for many models due to the lack of 
-their coverage in UncertML
+their coverage in UncertML.
 \item
 All common/relevant parametric distributions and/or their alternative parameterisations 
 are supported by ProbOnto, as described in Chapter \ref{ch:ProbOnto}.
 \item
-Addition of new distributions is straightforward and will be done upon request
+Addition of new distributions is straightforward and will be done upon request.
 \item
-As an example of ProbOnto use, we discuss here a complete observation model for count data
+As an example of ProbOnto use, we discuss here a complete observation model for count data.
 \begin{itemize}
 \item
 Type of observed variable -- discrete/count
@@ -1458,7 +1456,7 @@ The new trial design structure consists of
 \item
 Core structure based on the design elements developed for MDL, \cite{Commets2015, CommetsExamples2015}.
 \item
-Additional features available in PharmML since 0.2.1 such as individual 
+Additional features, some of which were available in PharmML since version 0.2.1 such as individual 
 observations, dosing, covariates.
 \end{itemize}
 While the detailed design is described in the according MDL specification proposal, 
@@ -1683,9 +1681,9 @@ Simple elements: ArmSize, DoseAmount, DosingTimes, Duration, NumberArms, NumberS
 \begin{flushleft} 
 \begin{itemize}
 \item 
-Simulation Step w. Operation
+Simulation Step / Operation
 \item 
-Estimation Step w. Parameter Estimation \& Operation
+Estimation Step / Operation
 \item 
 Design Optimization Step -- {\color{darkgreen} \scshape{under construction}} 
 \item 
@@ -1701,41 +1699,11 @@ Step dependencies
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Selected features}
-The trial design structure, although intuitive and relatively easy to learn,
+The trial design structure, although intuitive and clearly structured,
 is quite complex. The reader is referred to the original specification 
 and example documents, \cite{CommetsExamples2015,Commets2015}.
-Here we show only few examples of selected new features supported in this 
+Here we describe only few examples of selected new features supported in this 
 release and indicate differences between PharmML and MDL.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Conditional covariate distributions}
-\label{subsec:condDistrib}
-Covariates can in certain situation vary from arm to arm and/or be dependent 
-on other covariates, such as sex etc.
-Instead of defining them separately in according arms. Using a conditional 
-distribution defined in the \xelem{Covariates} block outside the \xelem{Arms},
-is a very effective way to express it. For example consider the following model
-\begin{align}
-P(WT|ARM) = 
-\left\{ \begin{array}{rcl}     
-\mathcal N \big(WT_{mean1}, WT_{variance1}\big) & \mbox{if} & ARM = arm1\\  
-\mathcal N \big(WT_{mean2}, WT_{variance2}\big) & \mbox{if} & ARM = arm2 
-\end{array}\right. \nonumber
-\end{align}
-The code is similar to that of conditional covariate distributions, 
-shown in Section \ref{sec:condDistros}, and will not be repeated here with the 
-exception of the \xelem{Condition} element using in this case the literal \xelem{True}
-of the Boolean data type
-\lstset{language=XML}
-\begin{lstlisting}
-                <Condition>
-                    <!-- "arm1" -->
-                    <LogicBinop op="eq">
-                        <ArmRef oidRef="arm1"/>
-                        <ct:True/>
-                    </LogicBinop>
-                </Condition>
-\end{lstlisting}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1915,11 +1883,43 @@ Note that design spaces are supposed to \marginpar{\HandCuffLeft} deal with
 any element of the design. The example document, \cite{CommetsExamples2015} and
 their PharmML implementation, feature multiple application cases.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Defining conditional covariate distribution}
+\label{subsec:condDistrib}
+Covariates can vary from arm to arm and/or be dependent 
+on other covariates, such as sex etc.
+Instead of defining them separately in according arms. Using a conditional 
+distribution defined in the \xelem{Covariates} block outside the \xelem{Arms},
+is a very effective way to express it. For example consider the following model
+\begin{align}
+P(WT|ARM) = 
+\left\{ \begin{array}{rcl}     
+\mathcal N \big(WT_{mean1}, WT_{variance1}\big) & \mbox{if} & ARM = arm1\\  
+\mathcal N \big(WT_{mean2}, WT_{variance2}\big) & \mbox{if} & ARM = arm2 
+\end{array}\right. \nonumber
+\end{align}
+The code is similar to that of conditional covariate distributions, 
+shown in Section \ref{sec:condDistros}, and will not be repeated here with the 
+exception of the \xelem{Condition} element using in this case the literal \xelem{True}
+of the Boolean data type
+\lstset{language=XML}
+\begin{lstlisting}
+                <Condition>
+                    <!-- "arm1" -->
+                    <LogicBinop op="eq">
+                        <ArmRef oidRef="arm1"/>
+                        <ct:True/>
+                    </LogicBinop>
+                </Condition>
+\end{lstlisting}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Optimising covariates distribution}
 One of the objectives in optimal design is to optimise the distribution of 
 relevant covariates, see \emph{example3\_taks2.xml} or the original MDL file, with 
-design elements to optimise on (given a design space)
+design elements to optimise on
 \begin{itemize}
 \item
 proportion of each genotype \& 
@@ -1950,7 +1950,7 @@ The covariate model, if it applies to all arms, will be defined just after
 the \xelem{Interventions} and \xelem{Observations} (another option is to define 
 arm-specific covariates within arms).
 
-Then the covariate model in the trial design starts with a rerefernce to the 
+Then the covariate model in the trial design starts with a refernce to the 
 base covariance model to be optimised.
 \lstset{language=XML}
 \begin{lstlisting}
@@ -2012,16 +2012,15 @@ base covariance model to be optimised.
         </Covariates>
         ...
 \end{lstlisting}
-The covariate model overwrites any settings encoded in the \xelem{ModelDefinition}
-section, which is referenced with \xelem{CovariateModelRef blkIdRef="cm1"} 
-to indicate the base model.
+The covariate model overwrites the base models in the \xelem{ModelDefinition}
+section, which is referenced with \xelem{CovariateModelRef blkIdRef="cm1"}.
 Also in this case we use \xelem{DesignParameter} element introduced in Section 
 \ref{subsec:paramsInDesign}, here \emph{Genp1}, \dots, \emph{Genp3} denoting 
 the proportions of each genotype, to be used later in the design spaces. Note that
 \xelem{DesignParameter} can be defined anywhere in the \xelem{TrialDesign} and 
 is valid in the entire section.
 
-Finally the design spaces can be defined, here an interval [0.25, 1] for \emph{Genp1}
+Finally the design spaces can be specified, here an interval [0.25, 1] for \emph{Genp1}
 \lstset{language=XML}
 \begin{lstlisting}
         <DesignSpaces>
@@ -2059,14 +2058,14 @@ the modellers. It can be used
 \begin{itemize}
 \item 
 in single subject scenarios to shorten the implementation burden 
-as such cases don't require explicit design structure. 
+as such cases don't require a typical explicit design structure (with arms). 
 \item 
 to support existing simulation tools, such as Simulx.
 \end{itemize}
 It comes with the possibility to define dosing, observations, lookup tables 
 etc. without the need to define the study arms. For consistency, the dosing,
 observations times etc. information will still be encoded in \xelem{TrialDesign} but 
-without placing them within the \xelem{Arms}. 
+without placing them within the \xelem{Arms} tags. 
 \begin{example}
 As a simple illustration consider a Simulx example\footnote{\url{http://webpopix.org:8080/dashboard/administration/}} 
 with explicit defined administration 
@@ -2094,7 +2093,7 @@ for a model defined as a combination of PK macros and ODEs (here in MLXTRAN spea
 	ddt_Ac =  ka*Ad - k*Ac
 	Cc = Ac/V
 \end{lstlisting}
-The administration related part of the show case, can be easily implemented using the 
+The administration related part of the show case can be easily implemented using the 
 \xelem{Administration} element within \xelem{Interventions} tag
 \lstset{language=XML}
 \begin{lstlisting}
@@ -2184,7 +2183,8 @@ Note that the \xelem{InterventionsReference} element is new in this version.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Design examples implemented}
 The examples listed below coming with the MDL proposal, \cite{CommetsExamples2015},
-have been successfully implemented in PharmML and are provided with the release:
+have been successfully implemented in PharmML and are provided with the release 
+(in total 16 examples):
 
 \begin{itemize}
 \item 
@@ -2192,7 +2192,9 @@ example1: Basic PK model with five tasks
 %\begin{itemize}
 %\item 
 %\emph{example1$\_$task1$\_$onegroup$\_$evaluate.xml}, \emph{example1$\_$task1$\_$twogroups$\_$evaluate.xml}, 
-%\emph{example1$\_$task2$\_$twogroups$\_$optimise.xml}, \emph{example1$\_$task3$\_$onegroup$\_$optimiseFW.xml},%\emph{example1$\_$task4$\_$fourgroup$\_$optimisePopED.xml}%\end{itemize}
+%\emph{example1$\_$task2$\_$twogroups$\_$optimise.xml}, \emph{example1$\_$task3$\_$onegroup$\_$optimiseFW.xml},
+%\emph{example1$\_$task4$\_$fourgroup$\_$optimisePopED.xml}
+%\end{itemize}
 \item 
 example2: PK/PD model with four tasks
 %\begin{itemize}
@@ -2210,7 +2212,8 @@ example3: PK model with two covariates with three tasks
 example4: PK with IOV and treatment covariate (different for each occasion)
 %\begin{itemize}
 %\item 
-%\emph{example4$\_$task1.xml}, \emph{example4$\_$task2.xml}, \emph{example4$\_$task3.xml}%\end{itemize}
+%\emph{example4$\_$task1.xml}, \emph{example4$\_$task2.xml}, \emph{example4$\_$task3.xml}
+%\end{itemize}
 \item 
 example5: Combination of two treatments - evaluation and optimisation
 %\begin{itemize}
@@ -2226,7 +2229,7 @@ example5: Combination of two treatments - evaluation and optimisation
 Here a short list of features related to the trial design not yet covered in MDL
 \begin{itemize}	
 \item 
-Conditional distributions, see section \ref{subsec:condDistrib}
+Conditional distributions, see section \ref{subsec:condDistrib}.
 \item 
 Defining dosing/observations without arm structure, see section \ref{sec:noArms},
 is not yet available in MDL (or just not described in the MDL design spec,
@@ -2267,7 +2270,7 @@ version 0.2.1).\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Box-Cox transformation}
 \label{sec:BoxCoxTrafo}
-The Box-Cox Transformation \cite{BoxCox:1964} is used to transform data to an approximate normal distribution
+The Box-Cox Transformation, \cite{BoxCox:1964}, is used to transform data to an approximate normal distribution
 and reads
 \begin{align}
 h(x) = \left\{ \begin{array}{rcl}  \frac{x^{\lambda} -1}{\lambda} & \mbox{for} & \lambda \neq 0 \\  \log(x) & \mbox{for} & \lambda = 0 \end{array}\right. \nonumber
@@ -2308,7 +2311,7 @@ can be implemented in PharmML as
 Note the new \xatt{type} attribute value, \emph{BoxCox}, in the \xelem{Transformation} 
 tag and the associated additional element \xelem{Parameter} where the Box-Cox 
 parameter is defined. The rest follows the pattern for the \xelem{StructuredModel}.
-Here the redesign structure is used of \xelem{StructuredModel} in that the 
+Here the redesigned structure is used of \xelem{StructuredModel} in that the 
 \xelem{PopulationValue} element can act alone without the \xelem{LinearCovariate} 
 parent element, see section \ref{sec:individualParameter}
 for more details.
@@ -2349,102 +2352,21 @@ The encoding of the Box-Cox transformation is already possible using the
 standard \xelem{FunctionDefinition} element and for now no new structure has been introduced.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conditional distributions}
-\label{sec:condDistros}
-This structure can be used e.g. in covariate or other models. In this 
-particular example the body weight, WT, is distributed differently for female and male subjects: 
-\begin{align}
-P(WT|SEX) = 
-\left\{ \begin{array}{rcl}     
-\mathcal N \big(WT^F_{mean}, WT^F_{variance}\big) & \mbox{for} & SEX == F \\  
-\mathcal N \big(WT^M_{mean}, WT^M_{variance}\big) & \mbox{for} & SEX == M
-\end{array}\right. \nonumber
-\end{align}
-To encode that first the SEX covariate needs to be defined 
-\lstset{language=XML}
-\begin{lstlisting}
-    <CovariateModel blkId="cm1">
-        <Covariate symbId="SEX">
-            <Categorical>
-                <Category catId="M"/>
-                <Category catId="F"/>
-            </Categorical>
-        </Covariate>
-\end{lstlisting}
-and then the BW covariate and its \xelem{Distribution} with the piece-wise
-structure and \xelem{ProbOnto}/\xelem{UncertML} support
-\lstset{language=XML}
-\begin{lstlisting}
-        <Covariate symbId="WT">  
-            <Continuous>
-                <Distribution>
-                    <Piecewise>
-                        <Piece xmlns="http://www.pharmml.org/pharmml/0.6/Maths">
-                            <ProbOnto name="Normal2">
-                                <mdef:Parameter name="mean">
-                                    <ct:Assign>
-                                        <ct:SymbRef symbIdRef="WT_F_mean"/>
-                                    </ct:Assign>
-                                </mdef:Parameter>
-                                <mdef:Parameter name="var">
-                                    <ct:Assign>
-                                        <ct:SymbRef symbIdRef="WT_F_variance"/>
-                                    </ct:Assign>
-                                </mdef:Parameter>
-                            </ProbOnto>
-                            <Condition>
-                                <!-- SEX=="F" -->
-                                <LogicBinop op="eq">
-                                    <ct:SymbRef blkIdRef="cm1" symbIdRef="SEX"/>
-                                    <ct:CatRef catIdRef="F"/>
-                                </LogicBinop>
-                            </Condition>
-                        </Piece>
-                        <Piece xmlns="http://www.pharmml.org/pharmml/0.6/Maths">
-                            <ProbOnto name="Normal2">
-                                <mdef:Parameter name="mean">
-                                    <ct:Assign>
-                                        <ct:SymbRef symbIdRef="WT_M_mean"/>
-                                    </ct:Assign>
-                                </mdef:Parameter>
-                                <mdef:Parameter name="var">
-                                    <ct:Assign>
-                                        <ct:SymbRef symbIdRef="WT_M_variance"/>
-                                    </ct:Assign>
-                                </mdef:Parameter>
-                            </ProbOnto>
-                            <Condition>
-                                <!-- SEX=="M" -->
-                                <LogicBinop op="eq">
-                                    <ct:SymbRef blkIdRef="cm1" symbIdRef="SEX"/>
-                                    <ct:CatRef catIdRef="M"/>
-                                </LogicBinop>
-                            </Condition>
-                        </Piece>
-                    </Piecewise>
-                </Distribution>
-            </Continuous>
-        </Covariate>
-\end{lstlisting}
-Note that we use ProbOnto's normal distribution, \xatt{Normal2}, which is parameterised with mean and variance.
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Encoding of missing data}
 \label{sec:missingData}
 Following discussion at Pavia meeting November 2013, described in the meeting 
-report \cite{Swat:2013pavia}, and later comments, it is proposed to extend 
-PharmML both for inline or external storage of data records and to provide means 
-to encode missing data using among other standard R (see 
-\href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/is.finite.html}{is.finite\{base\}}) 
-and SAS (see \href{http://support.sas.com/documentation/cdl/en/imlug/63541/HTML/default/viewer.htm#imlug_r_sect019.htm}{SAS/IML(R) 9.22}) symbols for special numerical 
-values\footnote{Other possible codes are \textbf{DEE} or \textbf{-99} (SAS) -- data entry 
-error or \textbf{SRA} or \textbf{-999} (SAS) -- subject refused answer, see \url{http://www.ats.ucla.edu/stat/sas/faq/how_to_code_missing_differently.htm}, but will not be 
-introduced unless required}.
+report \cite{Swat:2013pavia}, and later comments we have extended 
+PharmML both for inline or external storage of data records.  We reuse symbols for special numerical values
+used in R (see \href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/is.finite.html}{is.finite\{base\}}) 
+and SAS (see \href{http://support.sas.com/documentation/cdl/en/imlug/63541/HTML/default/viewer.htm#imlug_r_sect019.htm}{SAS/IML(R) 9.22})\footnote{Other possible codes are \textbf{DEE} or \textbf{-99} (SAS) 
+-- data entry error or \textbf{SRA} or \textbf{-999} (SAS) -- subject refused answer, 
+see \url{http://www.ats.ucla.edu/stat/sas/faq/how_to_code_missing_differently.htm}, 
+but will not be introduced unless required} to provide means to encode missing data.
 
 \subsection{Inline stored datasets}
-When data is stored inline, few new predefined XML elements are required. Here the 
+When data is stored inline within \pml, few new predefined XML elements are required. Here the 
 list of typical missing data types and corresponding elements introduced in this version:
 \begin{itemize}
 \item
@@ -2478,7 +2400,7 @@ ID 	& TIME	& DV	 \\
 \label{tab:uslessDataSet}
 \end{table}%
 
-could be encoded in PharmML as the following snippet shows
+can be encoded in PharmML as the following snippet shows
 \lstset{language=XML}
 \begin{lstlisting}
     <Definition>
@@ -2496,9 +2418,9 @@ could be encoded in PharmML as the following snippet shows
 \end{lstlisting}
 using the above defined elements.
 
-\paragraph{Note 1} Two of the elements described above, NA and $\infty$ (but not the $-\infty$), 
+\paragraph{Note 1} Two of the elements described above, NA and $\infty$, 
 were available before as child elements of \xelem{Constant} -- now merged with 
-other \emph{missing values} for consistency. The current version is also simpler 
+other \emph{missing values} for consistency. The current version is simpler 
 as it does allow to specify the missing values directly, without a parent element.  
 \paragraph{Note 2} The missing data encoding capabilities might be also very useful 
 in the SO, which inherits the dataset definition from PharmML. For this to work the SO 
@@ -2516,10 +2438,10 @@ new elements are available
 \xatt{dataCode} -- any symbol used in the referenced dataset
 \item 
 \xatt{missingDataType} -- one of \{\emph{NA}, \emph{NaN}, \emph{plusInf}, \emph{minusInf}, 
-\emph{BLQ}, \emph{ALQ} \}, as introduced in previous section.
+\emph{BLQ}, \emph{ALQ} \}, consistent with elements introduced in the previous section.
 \end{itemize}
 \end{itemize}                
-The dataset example used previously, table \ref{tab:uslessDataSet}, is stored now
+The dataset used previously, table \ref{tab:uslessDataSet}, is assumed now to be stored
 externally as \emph{myFile.csv}, see \xelem{path} element below.
 The missing data codes used in such the dataset are mapped to the allowed types
 as shown in the following code
@@ -2563,7 +2485,7 @@ following attributes
 \item[rowNumber] specifying the sequence of headers  
 \end{description}
 
-The \xelem{HeaderRow} elements, containing there actual header information, are places
+The \xelem{HeaderRow} elements, containing the actual header information, are places
 at the top of the \xelem{Table}. Their number must be equal the number of
 \xelem{Header} elements as the defined in the \xelem{Definition}. Their sequence is 
 indicated with the \xatt{order} attribute and must be in sync with the \xatt{rowNumber}
@@ -2627,11 +2549,11 @@ Another type of regressor support has been the \xelem{LookupTable} (also develop
 already for 0.3 version), which allows implementation of
 \begin{itemize}
 \item 
-concentration data which one wants to couple with a PD model. The PK data is 
+concentration data to be coupled with a PD model. The PK data is 
 available as a lookup table, i.e. measurement records for which the underlying 
 PK model is unknown or not essential.
 \item
-\emph{minimal model}-type models used frequently in diabetes which require the coupling
+\emph{minimal model}-type models used frequently in diabetes require the coupling
 of insulin input as discrete measurements to the glucose/insulin homeostasis model. 
 Also here the data is coming in form of a lookup table, usually with two columns, one for 
 time and the other for the dependent variable.
@@ -2665,27 +2587,25 @@ with interpolation type with respect to a variable of modellers choice, e.g.
 
 \subsection{Support in 0.7 version}
 The issue with the usage of \xelem{Variable} as regressor it that it cannot be 
-easily recognised as such. Therefore we have introduced for this release 
-an additional and optional attribute: \xatt{regressor} with \emph{yes}/\emph{no} 
-which will give Monolix oriented models the required support. 
-This will allow to implement models such as that described in
-\url{http://simulx.webpopix.org/userguide/function-time-regression}
-which will mean that such Simulx models can be supported by PharmML
-which means support for yet another tool which is a valuable extension from the
+easily recognised as such. Therefore we have introduced an additional and optional 
+attribute
+\begin{itemize}
+\item 
+\xatt{regressor} -- with possible values \emph{yes}/\emph{no} 
+\end{itemize}
+which will give e.g. Monolix the required support. This will also allow models such as 
+that described in \url{http://simulx.webpopix.org/userguide/function-time-regression}
+to be implemented in PharmML and run with Simulx .
+This means support for yet another tool which is a valuable extension from the
 perspective of the DDMoRe platform. 
 
-The PharmML loos then almost identical to the previous case if the source of
+The PharmML looks then almost identical to the previous case if the source of
 data for \emph{C} is a data vector in the \xelem{LookupTable}
 \lstset{language=XML}
 \begin{lstlisting}
             <ct:Variable symbolType="real" regressor="yes" symbId="C">
                 <ct:Assign>
-                    <ct:Interpolation>
-                        <ct:Algorithm>spline</ct:Algorithm>
-                        <ct:InterpIndepVar>
-                            <ct:SymbRef symbIdRef="t"/>
-                        </ct:InterpIndepVar>
-                    </ct:Interpolation>
+                    <!-- details skipped here -->
                 </ct:Assign>
             </ct:Variable>
 \end{lstlisting}
@@ -2695,6 +2615,87 @@ or even as short as
             <ct:Variable symbolType="real" regressor="yes" symbId="C"/>
 \end{lstlisting}
 if the model for \emph{C} comes from an external source.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conditional distributions}
+\label{sec:condDistros}
+This structure can be used e.g. in covariate or other models. In this 
+particular example the body weight, WT, is distributed differently for female and male subjects: 
+\begin{align}
+P(WT|SEX) = 
+\left\{ \begin{array}{rcl}     
+\mathcal N \big(WT^F_{mean}, WT^F_{variance}\big) & \mbox{for} & SEX == F \\  
+\mathcal N \big(WT^M_{mean}, WT^M_{variance}\big) & \mbox{for} & SEX == M
+\end{array}\right. \nonumber
+\end{align}
+To encode that first the SEX covariate needs to be defined 
+\lstset{language=XML}
+\begin{lstlisting}
+    <CovariateModel blkId="cm1">
+        <Covariate symbId="SEX">
+            <Categorical>
+                <Category catId="M"/>
+                <Category catId="F"/>
+            </Categorical>
+        </Covariate>
+\end{lstlisting}
+and then the WT covariate and its distribution with the piece-wise structure
+\lstset{language=XML}
+\begin{lstlisting}
+        <Covariate symbId="WT">  
+            <Continuous>
+                <Distribution>
+                    <Piecewise>
+                        <Piece xmlns="http://www.pharmml.org/pharmml/0.6/Maths">
+                            <ProbOnto name="Normal2">
+                                <mdef:Parameter name="mean">
+                                    <ct:Assign>
+                                        <ct:SymbRef symbIdRef="WT_F_mean"/>
+                                    </ct:Assign>
+                                </mdef:Parameter>
+                                <mdef:Parameter name="var">
+                                    <ct:Assign>
+                                        <ct:SymbRef symbIdRef="WT_F_variance"/>
+                                    </ct:Assign>
+                                </mdef:Parameter>
+                            </ProbOnto>
+                            <Condition>
+                                <!-- SEX=="F" -->
+                                <LogicBinop op="eq">
+                                    <ct:SymbRef blkIdRef="cm1" symbIdRef="SEX"/>
+                                    <ct:CatRef catIdRef="F"/>
+                                </LogicBinop>
+                            </Condition>
+                        </Piece>
+                        <Piece xmlns="http://www.pharmml.org/pharmml/0.6/Maths">
+                            <ProbOnto name="Normal2">
+                                <mdef:Parameter name="mean">
+                                    <ct:Assign>
+                                        <ct:SymbRef symbIdRef="WT_M_mean"/>
+                                    </ct:Assign>
+                                </mdef:Parameter>
+                                <mdef:Parameter name="var">
+                                    <ct:Assign>
+                                        <ct:SymbRef symbIdRef="WT_M_variance"/>
+                                    </ct:Assign>
+                                </mdef:Parameter>
+                            </ProbOnto>
+                            <Condition>
+                                <!-- SEX=="M" -->
+                                <LogicBinop op="eq">
+                                    <ct:SymbRef blkIdRef="cm1" symbIdRef="SEX"/>
+                                    <ct:CatRef catIdRef="M"/>
+                                </LogicBinop>
+                            </Condition>
+                        </Piece>
+                    </Piecewise>
+                </Distribution>
+            </Continuous>
+        </Covariate>
+\end{lstlisting}
+Note that we use ProbOnto's normal distribution, \xatt{Normal2}, which is parameterised with mean and variance.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Minor changes/bug fixing}
@@ -2759,7 +2760,8 @@ is assigned initial values.
 \item 
 \xelem{NumberCounts} element allows to identify the dependent variable 
 in discrete count data models, usually denoted as \emph{k}. This was implemented
-mistakingly with as a parameter in 0.6 examples, which are all corrected.
+mistakingly with as a parameter in 0.6 examples. These examples have all
+been corrected.
 \item 
 Added several \xatt{columnType} attribute values to be used in SO
 \begin{itemize}
@@ -2776,6 +2778,10 @@ Added several \xatt{columnType} attribute values to be used in SO
 \item
 \emph{statPrecision} to identify the measures and quantities expressing
 statistical precision, such as \emph{SE}, \emph{RSE} or \emph{ETA\_SHRINKAGE\_CL}.
+\item
+\emph{structParameter} to identify structural parameters.
+\item
+\emph{varParameter} to identify variability parameters.
 \end{itemize}
 \end{itemize}
 
@@ -2796,7 +2802,7 @@ Instead of \xatt{sm1}, it should be the value assigned to \emph{blkIdRef} of the
 according structural model, e.g. \xatt{sm12} in the \emph{PKmacros\_advan12.xml} 
 example. Thanks to Henrik for spotting that.
 \item
-A number of typos/bugs were find in remaining 0.6 examples, see next section for
+A number of typos/bugs were found in remaining 0.6 examples, see next section for
 a detailed description.
 \end{itemize}
 

@@ -146,7 +146,7 @@
 
 \begin{document}
 
-\input{title_0_7.tex} 
+\input{title_0_7_1.tex} 
 %\input{ProbOnto_title.tex} 
 
 \linenumbers
@@ -182,8 +182,8 @@ or modelling aspect 			& 							& \\
 \hline
 \hline
 Probability distributions -- 	& \uncertml used for encoding of 	& {\color{red} \scshape{new}} \xelem{Distribution} element with  \\
-annotation and encoding of 	& distributions					& children \xelem{ProbOnto} and \xelem{UncertML} \\
-statistical models,			& 							& {\color{red} \scshape{new}} \emph{ProbOnto} - ontology and knowledge  \\
+annotation and encoding of 	& distributions but no support for  	& children \xelem{ProbOnto} and \xelem{UncertML} \\
+statistical models,			& annotations					& {\color{red} \scshape{new}} \emph{ProbOnto} - ontology and knowledge  \\
 chapter \ref{ch:ProbOnto}		&							& base of probability distribution 	\\
 						& 							& -- support for expressions as parameters \\
 						& 							& -- support for distribution functions \\
@@ -196,12 +196,11 @@ chapter \ref{ch:ProbOnto}		&							& base of probability distribution 	\\
   \multicolumn{3}{c}{\textit{Models}}		\\
 \hline
 \hline
-Covariates, parameters and 	& not available					& {\color{red} \scshape{new}} \emph{Distribution}-type model\\
+Covariates, parameters and 	& \emph{Distribution}-type not available					& {\color{red} \scshape{new}} \emph{Distribution}-type model\\
 observations model,   		&							& can be used with either \uncertml or \\
-chapter \ref{ch:Models}		&							& ProbOnto for parameters, observations \\
-						&							& and covariates \\
+chapter \ref{ch:Models}		&							& ProbOnto \\
 \hline
-Individual parameter model,	& 3 types supported: 			& 4 types supported now \\
+Individual parameter model,	& 3 types supported: 			& 4 types supported  \\
 section \ref{sec:individualParameter}& -- \emph{Equation}-type		& -- {\color{red} \scshape{modified}} \emph{Structured}-type \\
 						& -- \emph{Gaussian} with linear	& \xelem{GaussianModel} renamed to   \\
 						& -- \emph{Gaussian} with nonlinear & \xelem{StructuredModel} with linear/nonlinear \\
@@ -211,26 +210,29 @@ section \ref{sec:individualParameter}& -- \emph{Equation}-type		& -- {\color{red
 						&							& -- \emph{Equation}-type (no changes) \\
 						&							& -- {\color{red} \scshape{new}} \emph{Distribution}-type model using  \\
 						&							& either UncertML or ProbOnto \\
+						&							& {\color{red} \scshape{new}} \xelem{RandomEffectMapping} \\
+						&							& to map variability levels in \emph{Distribution} \\
+						&							& -type models \\
 \hline
 Population parameter,		& \xelem{SimpleParameter} used	&{\color{red} \scshape{new}} \xelem{PopulationParameter} element \\	
 section \ref{sec:populationParameter}& with no distribution support		& replaces \xelem{SimpleParameter} element \\
 \hline
-Observation model			& Gaussian and \emph{Equation}-type	& \\
+Observation model			& Gaussian and \emph{Equation}-type	& {\color{red} \scshape{new}}  \emph{Distribution}-type \\
 section \ref{subsec:contModels} 	&						& \\
 \hline
 Covariate model,			& Transformation, interpolation  	& {\color{red} \scshape{new}} Support for conditional distributions \\
 section \ref{sec:condDistros}	& and distribution of covariates 	& wrt covariates or design elements  \\
 						& supported					& \\
+section \ref{sec:minorChanges}& not supported				& \xelem{CovariateModel} has an additional option \\
+						&							& for creating new covariates out of exiting  \\
+						&							& ones \\
 \hline
-Matrix/Vector operators,		& not supported				& {\color{red} \scshape{new}} \xelem{MatrixUniOp} element with \\
+Matrix/Vector operators,		& not supported basic types		& {\color{red} \scshape{new}} \xelem{MatrixUniOp} element with \\
 chapter \ref{ch:Bayesian}		&							& values \emph{inverse, trace and transpose} \\
 \hline
 Transformation element, 		& supported 					& new structure with attribute \xatt{type} \\
 section \ref{sec:individualParameter} and \ref{sec:BoxCoxTrafo}	&					& to be assigned values such as \emph{log}, \emph{logit} etc. \\
 						&							& {\color{red} \scshape{new}} \emph{BoxCox} \\
-\hline
-Covariate model,			& not supported				& \xelem{CovariateModel} has an additional option \\
-section \ref{sec:minorChanges}&							& for creating new covariates out of exiting ones \\
 \hline
 Count data models,			& 							& {\color{red} \scshape{new}} \xelem{NumberCounts} element for variable \emph{k} \\
 section \ref{sec:minorChanges} &							& \\
@@ -288,7 +290,8 @@ Regressors, section \ref{sec:regressors}	& supported when using datasets  	& {\c
 \hline
 SO column types,			& no SO specific types supported	& {\color{red} \scshape{new}} values for the \xatt{columnType} introduced: \\
 section \ref{sec:minorChanges} &							& \{\emph{indivParameter, popParameter, randEffect,} \\
-						&							& \emph{residual, strataVariable, statPrecision}\}\\ 
+						&							& \emph{residual, strataVariable, statPrecision,}\\ 
+						&							& \emph{structParameter, varParameter}\} \\
 \hline
 \caption{Overview of major differences between versions 0.7 and 0.6}
 \label{figTable:overviewTable}
@@ -297,12 +300,11 @@ section \ref{sec:minorChanges} &							& \{\emph{indivParameter, popParameter, r
 \end{center}
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \input{input/ProbOntoChapter}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{input/mainChangesChapters}
+%\input{input/mainChangesChapters}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\input{input/ProbOnto}
