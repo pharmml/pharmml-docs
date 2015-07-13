@@ -300,6 +300,39 @@ section \ref{sec:minorChanges} &							& \{\emph{indivParameter, popParameter, r
 \end{center}
 
 
+\section{Major changes/extensions in version 0.7.1}
+
+\captionsetup[longtable]{skip=1em}
+\LTcapwidth=\textwidth
+\begin{center}
+%\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{lll}
+\hline
+\hline
+\pml element 				&  version $\le$ 0.7 				& version 0.7.1 \\
+or modelling aspect 			& 							& \\
+\hline
+\hline
+  \multicolumn{3}{c}{\textit{GENERAL}}  \\
+\hline
+\hline
+ProbOnto support  			& elements implemented as part of 	& {\color{red} \scshape{new}} separate ProbOnto schema developed  \\
+						& PharmML schema				& -- allows flexible extending of the distribution  \\
+						&							& collection \\
+\hline
+Mathematical expressions	& \xelem{Equation} elements required & {\color{red} \scshape{TODO}}  \\
+						&							& \\
+\hline
+Optimal design tasks		& Encoding in \xelem{ModellingSteps} & {\color{red} \scshape{TODO}}  \\
+						& not supported				& \\
+\hline
+\caption{Overview of major differences between versions 0.7.1 and 0.7}
+\label{figTable:overviewTable}
+\vspace{-2em}
+\end{longtable}
+\end{center}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \input{input/ProbOntoChapter}
 
@@ -307,7 +340,7 @@ section \ref{sec:minorChanges} &							& \{\emph{indivParameter, popParameter, r
 %\input{input/mainChangesChapters}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\input{input/ProbOnto}
+\input{input/ProbOnto}
 
 
 
