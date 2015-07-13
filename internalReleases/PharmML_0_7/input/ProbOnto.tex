@@ -2495,7 +2495,6 @@ p + (1-p) \Big(\frac{\theta}{\theta + \mu} \Big)^{\theta}
 (1-\pi) e^{-\lambda} \frac{\lambda^k}{k!} & \text{for } k > 0
 \end{cases}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  \\
-if k=0 \begin{verbatim}pi + (1-pi)*exp(-lambda) \end{verbatim}
 \begin{verbatim}pi + (1-pi)*exp(-lambda) 		if k=0
 (1-pi)*exp(-lambda) * lambda^k/factorial(k)  	if k>0\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
@@ -2568,10 +2567,17 @@ if k=0 \begin{verbatim}pi + (1-pi)*exp(-lambda) \end{verbatim}
  \label{fig:Nakagami_pdf_cdf}
 \end{figure}
 
+%\smallskip\section*{NormalInverseGamma} 
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=70mm]{pics/NormalInverseGamma_pdf_cdf.pdf}
+ \caption{PDF and CDF of the Normal-Inverse-Gamma distribution plotted using the provided R-code.}
+ \label{fig:NormalInverseGamma_pdf_cdf}
+\end{figure}
+
 Noncentral Chi-Square Distribution\\
 Noncentral F Distribution\\
 Noncentral t Distribution\\
-Noncentral Parete:\\
 
 %\smallskip\section*{Pareto} 
 \begin{figure}[htb!]

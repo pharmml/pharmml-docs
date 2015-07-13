@@ -824,7 +824,7 @@ Negative Binomial 1		& \emph{r, p}		&	y	&	y	& --  &  -- \\
 Negative Binomial 2 		& $\lambda, \tau$ 	& --  & --  & --  &  -- \\
 %Negative Binomial 3 		& $\lambda, \theta$ 	& --  & --  & --  &  -- \\
 Poisson				& $\lambda$		&	y	&	y	& --  &  -- \\
-Uniform 1 (discrete)		&  \emph{a, b}		& --	& --	& -- & --  \\
+Uniform 1 (discrete)		&  \emph{a, b, n}		& --	& --	& -- & --  \\
 Uniform 2 (discrete)		&  0, \emph{n}		& --	& --	& -- & --  \\
 Zero-inflated Poisson	& $\lambda, \pi$	& --  & --  & --  &  -- \\
 %Zero-Inflated Negative Binomial & $\mu, \theta, p$	& --  & --  & --  &  -- \\
@@ -901,6 +901,7 @@ Code name		& Symbol & Code name & Symbol & Code name \\
 \xatt{NegativeBinomial2} 		& $\lambda$ 		& \xatt{rate}			& $\tau$		& \xatt{overdispersion}	\\
 \xatt{Poisson} 				& $\lambda$		& \xatt{rate}			& --			& -- 	\\
 \xatt{UniformDiscrete1} 		&  \emph{a}		& \xatt{minimum}		& \emph{b}	& \xatt{maximum}	\\
+						&				&					& \emph{n} 	& \xatt{numberOfValues} \\
 \xatt{UniformDiscrete2} 		&  0				& \xatt{minimum}		& \emph{n} 	& \xatt{numberOfValues}	\\
 \xatt{ZeroInflatedPoisson} 	& $\lambda$		& \xatt{rate}			& $\pi$ 		& \xatt{probabilityOfZero}	\\
   \hline
