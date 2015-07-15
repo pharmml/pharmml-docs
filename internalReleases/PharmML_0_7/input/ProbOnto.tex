@@ -1299,19 +1299,27 @@ erf <- function(x) 2 * pnorm(x * sqrt(2)) - 1
 \begin{tabular}{p{2cm}cl}
 \textbf{name} & & Mixture Distribution (ID: 0000268)\\ 
  
-\textbf{type} & & continuous \\ 
+\textbf{type} & & continuous/discrete \\ 
 
-\textbf{variate} & & $-$, - \\ 
+\textbf{variate} & & $-$, $-$ \\ 
 
 \textbf{support} & & $-$
 \end{tabular}
 \begin{figure}[htb!]
 \centering
   \includegraphics[width=140mm]{pics/MixturePoisson_pmf_cdf}
- \caption{PMF and CDF of the Mixture Poisson distribution plotted using the formula for 
- for various values as shown in the legend of the left plot. The PMF reads: $(1\!-\!\pi) \,\lambda_1^k/k! \,\exp(-\lambda_1) + \pi\,\lambda_2^k / k! \, \exp(-\lambda_2)$. The CDF reads: $(1-\pi)\,\Gamma(\lfloor k+1 , \lambda_1 \rfloor) / \lfloor k \rfloor!+\pi \,\Gamma(\lfloor k+1 , \lambda_2 \rfloor) / \lfloor k \rfloor!$.}
+ \caption{Example 1: PMF and CDF of the Mixture Poisson distribution plotted using the formula for 
+ for various values as shown in the legend of the left plot. The PMF reads: $(1\!-\!\pi_1) \,\lambda_1^k/k! \,\exp(-\lambda_1) + \pi_1\,\lambda_2^k / k! \, \exp(-\lambda_2)$. The CDF reads: $(1-\pi_1)\,\Gamma(\lfloor k+1 , \lambda_1 \rfloor) / \lfloor k \rfloor!+\pi_1 \,\Gamma(\lfloor k+1 , \lambda_2 \rfloor) / \lfloor k \rfloor!$.}
  \label{fig:MixturePoisson_pmf_cdf}
 \end{figure}
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=140mm]{pics/MixtureNormal_pdf_cdf.pdf}
+ \caption{Example 2: PDF and CDF of the Mixture Normal distribution plotted using the formula for 
+ for various values as shown in the legend of the left plot. The PDF reads: $(1\!-\!\pi_1)\times1/(\sigma_1\sqrt{2\pi})\exp(-(x-\mu_1)^2/(2\sigma_1^2)) + \pi_1\,\times1/(\sigma_2\sqrt{2\pi})\exp(-(x-\mu_2)^2/(2\sigma_2^2))$. The CDF reads: $(1\!-\!\pi_1)\times1/2 (1 + erf((x-\mu_1)/(\sigma_1\sqrt{2})))  + \pi_1\,\times1/2  (1 + erf((x-\mu_2)/(\sigma_2\sqrt{2})))$.}
+ \label{fig:MixtureNormal_pdf_cdf}
+\end{figure}
+
 \subsubsection*{Parameter: weight}
 
 \noindent\begin{tabular}{p{2cm}cl}
