@@ -1,0 +1,27 @@
+\begin{thebibliography}{1}
+
+\bibitem{greenwood1920inquiry}
+Major Greenwood and G~Udny Yule.
+\newblock An inquiry into the nature of frequency distributions representative
+  of multiple happenings with particular reference to the occurrence of
+  multiple attacks of disease or of repeated accidents.
+\newblock {\em Journal of the Royal statistical society}, pages 255--279, 1920.
+
+\bibitem{jain1971generalized}
+GC~Jain and PC~Consul.
+\newblock A generalized negative binomial distribution.
+\newblock {\em SIAM Journal on Applied Mathematics}, 21(4):501--513, 1971.
+
+\bibitem{Swat:2015a}
+Maciej~J Swat, Pierre Grenon, Florent Yvon, Sarala Wimalaratne, and Niels~Rode
+  Kristensen.
+\newblock {Extenstions in PharmML 0.7}.
+\newblock Technical report, EMBL-EBI, July 2015.
+
+\bibitem{yanagimoto1989inverse}
+Takemi Yanagimoto.
+\newblock The inverse binomial distribution as a statistical model.
+\newblock {\em Communications in Statistics-Theory and Methods},
+  18(10):3625--3633, 1989.
+
+\end{thebibliography}

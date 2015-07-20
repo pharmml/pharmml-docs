@@ -1,0 +1,129 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\chapter{Dispersion Models}
+%\label{ch:DispersionModels}
+%Following models are used for over dispersed data
+%\begin{itemize}
+%\item 
+%negative binomial 1 (NB1) with r -- \emph{number of failures} and p -- \emph{success probability},
+%\item 
+%negative binomial 2 (NB2) with $\lambda$ -- \emph{Poisson intensity} and $\tau$ -- \emph{over-dispersion},
+%\item 
+%generalised Poisson (GP)
+%\item 
+%zero inflated Poisson (ZIP)
+%\item 
+%zero inflated negative binomial (ZINB)
+%\end{itemize}
+%which are stored in ProbOnto knowledge base and available in PharmML from version 0.7.
+
+%\begin{align*}
+%f_{B}(y;n,p) &= {n \choose k}\, p^k (1-p)^{n-k}\\
+%f_{NB1}(y;\tau,\lambda) &= \binom {y+r-1}y (1-p)^r p^y\\
+%f_{NB2}(y;\alpha,\mu) &= \frac{\Gamma(y + 1/\alpha)}{\Gamma(y+1)\; \Gamma(1/\alpha)} \Big(\frac{1}{1+\alpha \mu} \Big)^{\frac{1}{\alpha}} \Big(1 - \frac{1}{1 + \alpha\mu} \Big)^{y}\\
+%f_{IB}(y;\rho,\lambda) &= \frac{\lambda \,\Gamma(2y+\lambda)}{ \Gamma(y+1) \;\Gamma(k+\lambda+1)} \rho^{k+\lambda} (1-\rho)^k ; 0.5<\rho<1, \lambda > 0\\
+%f_{IB}(y;\rho,\lambda) &= \frac{\Gamma(y + \frac{1}{\tau})}{y!\; \Gamma(\frac{1}{\tau})} \Big(\frac{1}{1+\tau \lambda} \Big)^{\frac{1}{\tau}} 
+%\Big(\frac{\lambda}{\frac{1}{\tau} + \lambda} \Big)^{y}
+%\end{align*}
+%
+
+\newpage
+\section{Generalised Negative Binomial Distribution}
+
+The negative binomial distribution, NB, was first proposed already in 1919 by
+Greenwood \& Woods, \cite{greenwood1920inquiry}, but its generalisation, 
+called the generalised negative binomial distribution (GNB), was shown by Jain \& Consul (1971), 
+\cite{jain1971generalized}. \\
+The PMF of the GNB is defined for $0<p<1$ and $|\alpha \beta| < 1$ and reads in original notation
+\begin{align*}
+b_{\beta}(x,n,\alpha) &= 
+\frac{n \; \Gamma(n+\beta x)}{x! \;\Gamma(n + \beta x - x +1)}  \; \alpha^x (1-\alpha)^{n+\beta x-x}, n>0, x=0,1,2,3,...
+\end{align*}
+such that
+\begin{align*}
+b_{\beta}(x,n,\alpha) &= 0 \text{ for } x \geq m \text{ if } n+bm < 0.
+\end{align*}
+Following distributions
+are special cases of GNB
+\begin{itemize}
+\item 
+binomial, B(n,p), for $\beta = 0$
+\item 
+negative binomial, NB(r,p)\footnote{This corresponds to the NB1 parameterisation 
+of the negative binomial distribution in ProbOnto.}, for $\beta=1$
+\item 
+inverse binomial, IN(k,p), for $\beta = 2, \alpha=1-p$ and $n=k$.
+\end{itemize}
+with the last two used for modelling of dispersed data.
+
+
+\subsection{GNB($x$,$\alpha$,$\beta$) $\rightarrow$ B($n$,$p$)}
+According to Jain \& Consul, \cite{jain1971generalized}, GNB reduces to B for $\beta = 0$ and 
+indeed this can be shown (replacing $\alpha$ with $p$)
+\begin{align*}
+ b_{\beta}(x,n,\alpha) \rightarrow P_{B}(x;n,p): %= \binom {k+r-1}k (1-p)^r p^k \nonumber
+ \frac{n \; \Gamma(n+\beta x)}{n! \;\Gamma(n + \beta x - x +1)}  \; \alpha^x (1-\alpha)^{n+\beta x-x} \rightarrow 
+\frac{n \; \Gamma(n)}{n! \;\Gamma(n - x +1)}  \; p^x (1-)^{n-x} 
+\end{align*}
+with the first term $\frac{n \; \Gamma(n)}{n! \;\Gamma(n - x +1)} = \frac{n (n-1)!}{x! (n-x)!} 
+= \frac{n!}{x!(n-x)!} = {n \choose x}$ we get 
+\begin{align*}
+P_{B}(x;n,p) = {n \choose x} p^x (1-p)^{n-x}.
+\end{align*}
+
+
+\subsection{GNB($x$,$\alpha$,$\beta$) $\rightarrow$ NB($r$,$p$)}
+According also to Jain \& Consul, \cite{jain1971generalized}, GNB reduces to NB for $\beta = 1$ and 
+indeed this can be shown (replacing $\alpha$ with $p$ and $n$ with $r$)
+\begin{align*}
+ b_{\beta}(x,n,\alpha) \rightarrow P_{NB}(x;r,p):
+ \frac{n \; \Gamma(n+\beta x)}{n! \;\Gamma(n + \beta x - x +1)}  \; \alpha^x (1-\alpha)^{n+\beta x-x} \rightarrow 
+\frac{r \; \Gamma(r + x)}{x! \;\Gamma(r + 1)}  \; p^x (1-)^{r} 
+\end{align*}
+with the first term $\frac{r \; \Gamma(r + x)}{x! \;\Gamma(r + 1)} = \frac{r \; (r + x - 1)!}{x! \;r!} = \frac{(r + x - 1)!}{x! \;(r-1)!}
+= {r + x - 1 \choose x}$ we get
+
+\begin{align*}
+P_{NB}(x;r,p) = {r + x - 1 \choose x} (1-p)^r p^x .
+\end{align*}
+
+
+\subsection{GNB($n$,$\alpha$,$\beta$) $\rightarrow$ IB($k$,$p$)}
+Yanagimoto, \cite{yanagimoto1989inverse}, proposed the derivation 
+of IB from GNB for $\beta = 2, \alpha=1-p$ and $n=k$
+\begin{align*}
+b_{\beta}(x,n,\alpha) \rightarrow P_{IB}(x;k,p):
+ \frac{n \; \Gamma(n+\beta x)}{n! \;\Gamma(n + \beta x - x +1)}  \; \alpha^x (1-\alpha)^{n+\beta x-x} \rightarrow 
+\frac{k \; \Gamma(k + 2x)}{x! \;\Gamma(k + x + 1)}  \; (1-p)^x p^{k+x} 
+\end{align*}
+so the result follows as formulated in \cite{yanagimoto1989inverse}
+\begin{align*}
+P_{IB}(x;r,p) = \frac{k \; \Gamma(k + 2x)}{\Gamma(x+1) \;\Gamma(k + x + 1)}  \; (1-p)^x p^{k+x} 
+\end{align*}
+
+
+%
+%\subsection{Negative binomial distribution} 
+%The available parameterisations, among others, are
+%\begin{itemize}
+%\item
+%NegativeBinomial1\,($r$, $p$) with r -- \emph{number of failures} and p -- \emph{success probability},
+%\begin{align}
+%P(y=k;r,p) = \binom {k+r-1}k (1-p)^r p^k \nonumber
+%\end{align}
+%\item
+%NegativeBinomial2\,($\lambda$, $\tau$) with $\lambda$ -- \emph{Poisson intensity} and $\tau$ -- \emph{over-dispersion},
+%\begin{align}
+%P(y=k;\lambda,\tau) = \frac{\Gamma(k + \frac{1}{\tau})}{k!\; \Gamma(\frac{1}{\tau})} \Big(\frac{1}{1+\tau \lambda} \Big)^{\frac{1}{\tau}} 
+%\Big(\frac{\lambda}{\frac{1}{\tau} + \lambda} \Big)^{k} \nonumber
+%\end{align}
+%
+%
+
+
+
+
