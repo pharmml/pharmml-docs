@@ -151,7 +151,7 @@
 \input{ProbOnto_title.tex} 
 
 \linenumbers
-\tableofcontents
+%\tableofcontents
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -335,90 +335,19 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\input{input/ProbOntoChapter}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{input/ProbOnto}
-
-
+\input{input/ProbOntoChapter}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\input{input/mainChangesChapters}
 
 
 \appendix
-\chapter{Generalised Negative Binomial Distribution}
-\section{Introduction}
-The \emph{negative binomial} distribution, NB, was first proposed almost 
-100 years ago in 1919 by Greenwood \& Woods, \cite{greenwood1920inquiry}, 
-but its generalisation for both \emph{binomial} and NB distributions called the 
-\emph{generalised negative binomial distribution}, GNB, was discovered 
-more then 50 years later by Jain \& Consul (1971), \cite{jain1971generalized}. 
-The PMF of the GNB is defined for $0<\alpha<1$ and $|\alpha \beta| < 1$ and reads in Jain \& Consul
-paper
-\begin{align*}
-b_{\beta}(x,n,\alpha) &= 
-\frac{n \; \Gamma(n+\beta x)}{x! \;\Gamma(n + \beta x - x +1)}  \; \alpha^x (1-\alpha)^{n+\beta x-x}, n>0, x=0,1,2,3,...
-\end{align*}
-such that $b_{\beta}(x,n,\alpha) = 0 \text{ for } x \leq m \text{ if } n+\beta m < 0.$\\
-Interestingly, following distributions are special cases of the GNB distribution
-\begin{itemize}
-\item 
-binomial, B(n,p)
-\item 
-negative binomial, NB(r,p)\footnote{This corresponds to the NB1 parameterisation 
-of the negative binomial distribution in ProbOnto, \cite{Swat:2015a}.}
-\item 
-inverse binomial, IB(k,p)
-\end{itemize}
-which will be shown in the following sections. 
 
-\section{GNB($\alpha$,$\beta$) $\rightarrow$ B($n$,$p$)}
-According to Jain \& Consul, \cite{jain1971generalized}, GNB reduces to B for $\beta = 0$ and 
-indeed this can be shown (replacing $\alpha$ with $p$) as follows
-\begin{align*}
- b_{\beta}(x,n,\alpha) \rightarrow P_{B}(x;n,p): %= \binom {k+r-1}k (1-p)^r p^k \nonumber
- \frac{n \; \Gamma(n+\beta x)}{x! \;\Gamma(n + \beta x - x +1)}  \; \alpha^x (1-\alpha)^{n+\beta x-x} \rightarrow 
-\frac{n \; \Gamma(n)}{x! \;\Gamma(n - x +1)}  \; p^x (1-p	)^{n-x} 
-\end{align*}
-with the first term in the last expression $\frac{n \; \Gamma(n)}{x! \;\Gamma(n - x +1)} = \frac{n (n-1)!}{x! (n-x)!} 
-= \frac{n!}{x!(n-x)!} = {n \choose x}$ we get the expected result
-\begin{align*}
-P_{B}(x;n,p) = {n \choose x} p^x (1-p)^{n-x}. % \quad \text{ with } \quad 0<p<1, n>0, x=0,1,2,3,....
-\end{align*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/ProbOnto}
 
-
-\section{GNB($\alpha$,$\beta$) $\rightarrow$ NB($r$,$p$)}
-According also to Jain \& Consul, \cite{jain1971generalized}, GNB reduces to NB for $\beta = 1$ and 
-indeed this can be shown (replacing $\alpha$ with $p$ and $n$ with $r$) as follows
-\begin{align*}
- b_{\beta}(x,n,\alpha) \rightarrow P_{N\!B}(x;r,p):
- \frac{n \; \Gamma(n+\beta x)}{x! \;\Gamma(n + \beta x - x +1)}  \; \alpha^x (1-\alpha)^{n+\beta x-x} \rightarrow 
-\frac{r \; \Gamma(r + x)}{x! \;\Gamma(r + 1)}  \; p^x (1-p)^{r} 
-\end{align*}
-with the first term $\frac{r \; \Gamma(r + x)}{x! \;\Gamma(r + 1)} = \frac{r \; (r + x - 1)!}{x! \;r!} = \frac{(r + x - 1)!}{x! \;(r-1)!}
-= {r + x - 1 \choose x}$ we get the correct PMF
-\begin{align*}
-P_{N\!B}(x;r,p) = {r + x - 1 \choose x} p^x (1-p)^r  .
-\end{align*}
-
-
-\section{GNB($\alpha$,$\beta$) $\rightarrow$ IB($k$,$p$)}
-Yanagimoto, \cite{yanagimoto1989inverse}, proposed the \emph{inverse binomial} 
-distribution as another special case of GNB for $\beta = 2, \alpha=1-p$ and $n=k$, which 
-can be derived as the following shows 
-\begin{align*}
-b_{\beta}(x,n,\alpha) \rightarrow P_{I\!B}(x;k,p):
- \frac{n \; \Gamma(n+\beta x)}{x! \;\Gamma(n + \beta x - x +1)}  \; \alpha^x (1-\alpha)^{n+\beta x-x} \rightarrow 
-\frac{k \; \Gamma(k + 2x)}{x! \;\Gamma(k + x + 1)}  \; (1-p)^x p^{k+x} 
-\end{align*}
-and the result follows in agreement with the formulation in \cite{yanagimoto1989inverse}, i.e.
-\begin{align*}
-P_{I\!B}(x;k,p) = \frac{k \; \Gamma(2x + k)}{\Gamma(x+1) \;\Gamma(x + k + 1)}  \; p^{k+x} (1-p)^x ,
-\end{align*}
-and from $|\alpha \beta| < 1$ and $0<\alpha<1$ one can derive the required condition for p, $1/2 < p < 1$.
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\input{input/GNBfamily}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\input{input/DispersionModels}

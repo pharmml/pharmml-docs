@@ -80,3 +80,11 @@ PKmacros_report/PKmacros_Report.pdf
 internalReleases/PharmML_0_7/version_0_7_1_changes.pdf
 
 internalReleases/PharmML_0_7/probonto.pdf
+
+*.log
+
+*.gz
+
+*.gz(busy)
+
+internalReleases/PharmML_0_7/archive/probonto_3July.pdf

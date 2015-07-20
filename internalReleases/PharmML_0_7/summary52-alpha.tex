@@ -1,60 +1,14 @@
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\chapter{Selected distributions in ProbOnto knowledge base}
-\label{ch:probontoAppendix}
-
-The full first version of ProbOnto will be released soon. Here we provide 
-a brief overview of a part of its content for the most frequently used distributions 
-and/or alternative parameterisations (38 out of about 55). 
-
-The according plots have been performed using the R code stored in ProbOnto 
-and provided for each distribution for which it's available.
+\documentclass{article}
+\usepackage{mathtools}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{Symbols used}
-Some of the symbols used in definitions of the functions and quantities 
-listed in the subsequent sections are collected here with references
-\begin{itemize}
-\item Beta function, $B$\\
-\url{http://mathworld.wolfram.com/BetaFunction.html}\\
-\url{http://en.wikipedia.org/wiki/Beta_function}
-\item Regularized incomplete Beta function,  $I_p$, $I_{1-p}$\\
-\url{http://mathworld.wolfram.com/RegularizedBetaFunction.html}\\
-\url{http://en.wikipedia.org/wiki/Beta_function#Incomplete_beta_function}
-\item Error function, $erf$\\
-\url{http://mathworld.wolfram.com/Erf.html}\\
-\url{https://en.wikipedia.org/wiki/Error_function}
-\item Floor function, $\lfloor k \rfloor$\\
-\url{http://mathworld.wolfram.com/FloorFunction.html}\\
-\url{https://en.wikipedia.org/wiki/Floor_and_ceiling_functions}
-\item Gamma function, $\Gamma$ \\
-\url{http://mathworld.wolfram.com/GammaFunction.html}\\
-\url{http://en.wikipedia.org/wiki/Gamma_function}
-\item Lower incomplete gamma function, $\gamma$\\
-\url{http://mathworld.wolfram.com/IncompleteGammaFunction.html}\\
-\url{https://en.wikipedia.org/wiki/Incomplete_gamma_function}
-\item Multivariate Gamma function,	$\Gamma_p$\\
-\url{https://en.wikipedia.org/wiki/Multivariate_gamma_function}
-\item Iverson bracket, $[x=i]$\\ 
-\url{http://mathworld.wolfram.com/IversonBracket.html}\\
-\url{http://en.wikipedia.org/wiki/Iverson_bracket}
-\item Linear span, $span$\\
-\url{http://mathworld.wolfram.com/VectorSpaceSpan.html}\\
-\url{https://en.wikipedia.org/wiki/Linear_span}
-\item (Generalized) Hypergeometric function, ($_pF_q$), $_2F_1$\\
-\url{http://mathworld.wolfram.com/HypergeometricFunction.html}\\
-\url{http://en.wikipedia.org/wiki/Hypergeometric_function}
-\end{itemize}
+\begin{document}
 
+\title{ProbOnto distribution list -- version}
 
+\date{}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\chapter{New version}
+\maketitle
 
 \section*{Bernoulli} 
 
@@ -208,9 +162,9 @@ p for k=1\end{verbatim}
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=70mm]{pics/BirnbaumSaunders.pdf}
- \caption{BirnbaumSaunders distribution plotted using the provided R code.}
- \label{fig:BirnbaumSaunders}
+  \includegraphics[width=140mm]{pics/Birnbaum-Saunders.pdf}
+ \caption{Birnbaum-Saunders distribution plotted using the provided R code.}
+ \label{fig:Birnbaum-Saunders}
 \end{figure}
 
 \subsubsection*{Parameter: scale}
@@ -254,9 +208,9 @@ p for k=1\end{verbatim}
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=70mm]{pics/CategoricalNonordered.pdf}
- \caption{CategoricalNonordered distribution plotted using the provided R code.}
- \label{fig:CategoricalNonordered}
+  \includegraphics[width=140mm]{pics/Categorical Nonordered.pdf}
+ \caption{Categorical Nonordered distribution plotted using the provided R code.}
+ \label{fig:Categorical Nonordered}
 \end{figure}
 
 \subsubsection*{Parameter: categoryProb}
@@ -289,9 +243,9 @@ p for k=1\end{verbatim}
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/CategoricalOrdered.pdf}
- \caption{CategoricalOrdered distribution plotted using the provided R code.}
- \label{fig:CategoricalOrdered}
+  \includegraphics[width=140mm]{pics/Categorical Ordered.pdf}
+ \caption{Categorical Ordered distribution plotted using the provided R code.}
+ \label{fig:Categorical Ordered}
 \end{figure}
 
 \subsubsection*{Parameter: categoryProb}
@@ -375,9 +329,9 @@ p for k=1\end{verbatim}
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/ChiSquared.pdf}
- \caption{ChiSquared distribution plotted using the provided R code.}
- \label{fig:ChiSquared}
+  \includegraphics[width=140mm]{pics/Chi-squared.pdf}
+ \caption{Chi-squared distribution plotted using the provided R code.}
+ \label{fig:Chi-squared}
 \end{figure}
 
 \subsubsection*{Parameter: degreesOfFreedom}
@@ -398,33 +352,33 @@ p for k=1\end{verbatim}
 \begin{equation*}\frac{1}{\Gamma\left(\frac{k}{2}\right)}\; \gamma\left(\frac{k}{2},\,\frac{x}{2}\right)\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
 \begin{verbatim}1/gamma(k/2) * Igamma(k/2,x/2)\end{verbatim}
-%\smallskip\section*{DiracDelta} 
-%
-%  \bigskip 
-%
-%\begin{tabular}{p{2cm}cl}
-%\textbf{name} & & Dirac Delta (ID: 0000082)\\ 
-% 
-%\textbf{type} & &  \\ 
-%
-%\textbf{variate} & & $-$, - \\ 
-%
-%\textbf{support} & & $-$
-%\end{tabular}
-%
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/DiracDelta.pdf}
-% \caption{DiracDelta distribution plotted using the provided R code.}
-% \label{fig:DiracDelta}
-%\end{figure}
-%
-%\subsubsection*{Functions}
-%
-%\smallskip \noindent \hspace{.2cm} \textbf{} 
-%\begin{equation*}\end{equation*}
-%\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-%\begin{equation*}-\end{equation*}
+\smallskip\section*{DiracDelta} 
+
+  \bigskip 
+
+\begin{tabular}{p{2cm}cl}
+\textbf{name} & & Dirac Delta (ID: 0000082)\\ 
+ 
+\textbf{type} & &  \\ 
+
+\textbf{variate} & & $-$, - \\ 
+
+\textbf{support} & & $-$
+\end{tabular}
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Dirac Delta.pdf}
+ \caption{Dirac Delta distribution plotted using the provided R code.}
+ \label{fig:Dirac Delta}
+\end{figure}
+
+\subsubsection*{Functions}
+
+\smallskip \noindent \hspace{.2cm} \textbf{} 
+\begin{equation*}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+\begin{equation*}-\end{equation*}
 \smallskip\section*{Dirichlet} 
 
   \bigskip 
@@ -439,12 +393,12 @@ p for k=1\end{verbatim}
 \textbf{support} & & $x_1, \cdots, x_K \quad\text{where}\quad x_i \in [0,1]\quad and \quad\sum_{i=1}^K x_i = 1$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/Dirichlet.pdf}
-% \caption{Dirichlet distribution plotted using the provided R code.}
-% \label{fig:Dirichlet}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Dirichlet.pdf}
+ \caption{Dirichlet distribution plotted using the provided R code.}
+ \label{fig:Dirichlet}
+\end{figure}
 
 \subsubsection*{Parameter: concentration}
 
@@ -611,9 +565,9 @@ p for k=1\end{verbatim}
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/GeneralizedGamma1.pdf}
- \caption{GeneralizedGamma1 distribution plotted using the provided R code.}
- \label{fig:GeneralizedGamma1}
+  \includegraphics[width=140mm]{pics/Generalized Gamma 1.pdf}
+ \caption{Generalized Gamma 1 distribution plotted using the provided R code.}
+ \label{fig:Generalized Gamma 1}
 \end{figure}
 
 \subsubsection*{Parameter: scale}
@@ -664,12 +618,12 @@ p for k=1\end{verbatim}
 \textbf{support} & & $0 < a < x$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/GeneralizedGamma2.pdf}
-% \caption{GeneralizedGamma2 distribution plotted using the provided R code.}
-% \label{fig:GeneralizedGamma2}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Generalized Gamma 2.pdf}
+ \caption{Generalized Gamma 2 distribution plotted using the provided R code.}
+ \label{fig:Generalized Gamma 2}
+\end{figure}
 
 \subsubsection*{Parameter: location}
 
@@ -726,9 +680,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=70mm]{pics/GeneralizedPoisson.pdf}
- \caption{GeneralizedPoisson distribution plotted using the provided R code.}
- \label{fig:GeneralizedPoisson}
+  \includegraphics[width=140mm]{pics/Generalized Poisson.pdf}
+ \caption{Generalized Poisson distribution plotted using the provided R code.}
+ \label{fig:Generalized Poisson}
 \end{figure}
 
 \subsubsection*{Parameter: rate}
@@ -957,9 +911,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/InverseGamma.pdf}
- \caption{InverseGamma distribution plotted using the provided R code.}
- \label{fig:InverseGamma}
+  \includegraphics[width=140mm]{pics/Inverse-Gamma.pdf}
+ \caption{Inverse-Gamma distribution plotted using the provided R code.}
+ \label{fig:Inverse-Gamma}
 \end{figure}
 
 \subsubsection*{Parameter: shape}
@@ -1000,9 +954,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/InverseGaussian.pdf}
- \caption{InverseGaussian distribution plotted using the provided R code.}
- \label{fig:InverseGaussian}
+  \includegraphics[width=140mm]{pics/Inverse Gaussian.pdf}
+ \caption{Inverse Gaussian distribution plotted using the provided R code.}
+ \label{fig:Inverse Gaussian}
 \end{figure}
 
 \subsubsection*{Parameter: shape}
@@ -1045,12 +999,12 @@ $, scalar \\
 \textbf{support} & & $X(p \times p) - \text{positive-definite matrix}$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/InverseWishart.pdf}
-% \caption{InverseWishart distribution plotted using the provided R code.}
-% \label{fig:InverseWishart}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Inverse-Wishart.pdf}
+ \caption{Inverse-Wishart distribution plotted using the provided R code.}
+ \label{fig:Inverse-Wishart}
+\end{figure}
 
 \subsubsection*{Parameter: scaleMatrix}
 
@@ -1090,9 +1044,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/Laplace1.pdf}
- \caption{Laplace1 distribution plotted using the provided R code.}
- \label{fig:Laplace1}
+  \includegraphics[width=140mm]{pics/Laplace 1.pdf}
+ \caption{Laplace 1 distribution plotted using the provided R code.}
+ \label{fig:Laplace 1}
 \end{figure}
 
 \subsubsection*{Parameter: location}
@@ -1139,12 +1093,12 @@ $, scalar \\
 \textbf{support} & & $x \in (-\infty,+\infty)$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/Laplace2.pdf}
-% \caption{Laplace2 distribution plotted using the provided R code.}
-% \label{fig:Laplace2}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Laplace 2.pdf}
+ \caption{Laplace 2 distribution plotted using the provided R code.}
+ \label{fig:Laplace 2}
+\end{figure}
 
 \subsubsection*{Parameter: location}
 
@@ -1184,9 +1138,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/LogLogistic.pdf}
- \caption{LogLogistic distribution plotted using the provided R code.}
- \label{fig:LogLogistic}
+  \includegraphics[width=140mm]{pics/Log-Logistic.pdf}
+ \caption{Log-Logistic distribution plotted using the provided R code.}
+ \label{fig:Log-Logistic}
 \end{figure}
 
 \subsubsection*{Parameter: scale}
@@ -1231,9 +1185,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/LogNormal1.pdf}
- \caption{LogNormal1 distribution plotted using the provided R code.}
- \label{fig:LogNormal1}
+  \includegraphics[width=140mm]{pics/Log-Normal 1.pdf}
+ \caption{Log-Normal 1 distribution plotted using the provided R code.}
+ \label{fig:Log-Normal 1}
 \end{figure}
 
 \subsubsection*{Parameter: meanLog}
@@ -1278,9 +1232,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/LogNormal2.pdf}
- \caption{LogNormal2 distribution plotted using the provided R code.}
- \label{fig:LogNormal2}
+  \includegraphics[width=140mm]{pics/Log-Normal 2.pdf}
+ \caption{Log-Normal 2 distribution plotted using the provided R code.}
+ \label{fig:Log-Normal 2}
 \end{figure}
 
 \subsubsection*{Parameter: meanLog}
@@ -1325,9 +1279,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/LogNormal3.pdf}
- \caption{LogNormal3 distribution plotted using the provided R code.}
- \label{fig:LogNormal3}
+  \includegraphics[width=140mm]{pics/Log-Normal 3.pdf}
+ \caption{Log-Normal 3 distribution plotted using the provided R code.}
+ \label{fig:Log-Normal 3}
 \end{figure}
 
 \subsubsection*{Parameter: median}
@@ -1372,9 +1326,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/LogNormal4.pdf}
- \caption{LogNormal4 distribution plotted using the provided R code.}
- \label{fig:LogNormal4}
+  \includegraphics[width=140mm]{pics/Log-Normal 4.pdf}
+ \caption{Log-Normal 4 distribution plotted using the provided R code.}
+ \label{fig:Log-Normal 4}
 \end{figure}
 
 \subsubsection*{Parameter: median}
@@ -1419,9 +1373,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/LogNormal5.pdf}
- \caption{LogNormal5 distribution plotted using the provided R code.}
- \label{fig:LogNormal5}
+  \includegraphics[width=140mm]{pics/Log-Normal 5.pdf}
+ \caption{Log-Normal 5 distribution plotted using the provided R code.}
+ \label{fig:Log-Normal 5}
 \end{figure}
 
 \subsubsection*{Parameter: meanLog}
@@ -1466,9 +1420,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/LogNormal6.pdf}
- \caption{LogNormal6 distribution plotted using the provided R code.}
- \label{fig:LogNormal6}
+  \includegraphics[width=140mm]{pics/Log-Normal 6.pdf}
+ \caption{Log-Normal 6 distribution plotted using the provided R code.}
+ \label{fig:Log-Normal 6}
 \end{figure}
 
 \subsubsection*{Functions}
@@ -1493,9 +1447,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/LogNormal7.pdf}
- \caption{LogNormal7 distribution plotted using the provided R code.}
- \label{fig:LogNormal7}
+  \includegraphics[width=140mm]{pics/Log-Normal 7.pdf}
+ \caption{Log-Normal 7 distribution plotted using the provided R code.}
+ \label{fig:Log-Normal 7}
 \end{figure}
 
 \subsubsection*{Functions}
@@ -1520,9 +1474,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/LogUniform.pdf}
- \caption{LogUniform distribution plotted using the provided R code.}
- \label{fig:LogUniform}
+  \includegraphics[width=140mm]{pics/Log-Uniform.pdf}
+ \caption{Log-Uniform distribution plotted using the provided R code.}
+ \label{fig:Log-Uniform}
 \end{figure}
 
 \subsubsection*{Parameter: minimum}
@@ -1612,12 +1566,12 @@ $, scalar \\
 \textbf{support} & & $-$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/MixtureDistribution.pdf}
-% \caption{MixtureDistribution distribution plotted using the provided R code.}
-% \label{fig:MixtureDistribution}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Mixture Distribution.pdf}
+ \caption{Mixture Distribution distribution plotted using the provided R code.}
+ \label{fig:Mixture Distribution}
+\end{figure}
 
 \subsubsection*{Parameter: weight}
 
@@ -1647,12 +1601,12 @@ $, scalar \\
 \textbf{support} & & $X_i \in \{0,\dots,n\}, \Sigma X_i = n$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/Multinomial.pdf}
-% \caption{Multinomial distribution plotted using the provided R code.}
-% \label{fig:Multinomial}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Multinomial.pdf}
+ \caption{Multinomial distribution plotted using the provided R code.}
+ \label{fig:Multinomial}
+\end{figure}
 
 \subsubsection*{Parameter: numberOfTrials}
 
@@ -1690,12 +1644,12 @@ $, scalar \\
 \textbf{support} & & $x \in \mu + \text{span}(\Sigma) \subseteq  R^k$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/MultivariateNormal1.pdf}
-% \caption{MultivariateNormal1 distribution plotted using the provided R code.}
-% \label{fig:MultivariateNormal1}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Multivariate Normal 1.pdf}
+ \caption{Multivariate Normal 1 distribution plotted using the provided R code.}
+ \label{fig:Multivariate Normal 1}
+\end{figure}
 
 \subsubsection*{Parameter: mean}
 
@@ -1733,12 +1687,12 @@ $, scalar \\
 \textbf{support} & & $x \in \mu + \text{span}(\Sigma) \subseteq  R^k$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/MultivariateNormal2.pdf}
-% \caption{MultivariateNormal2 distribution plotted using the provided R code.}
-% \label{fig:MultivariateNormal2}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Multivariate Normal 2.pdf}
+ \caption{Multivariate Normal 2 distribution plotted using the provided R code.}
+ \label{fig:Multivariate Normal 2}
+\end{figure}
 
 \subsubsection*{Parameter: mean}
 
@@ -1776,12 +1730,12 @@ $, scalar \\
 \textbf{support} & & $x \in R^p$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/MultivariateStudentT1.pdf}
-% \caption{MultivariateStudentT1 distribution plotted using the provided R code.}
-% \label{fig:MultivariateStudentT1}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Multivariate (Student) T 1.pdf}
+ \caption{Multivariate (Student) T 1 distribution plotted using the provided R code.}
+ \label{fig:Multivariate (Student) T 1}
+\end{figure}
 
 \subsubsection*{Parameter: mean}
 
@@ -1827,12 +1781,12 @@ $, scalar \\
 \textbf{support} & & $x \in R^p, k\geq 2$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/MultivariateStudentT2.pdf}
-% \caption{MultivariateStudentT2 distribution plotted using the provided R code.}
-% \label{fig:MultivariateStudentT2}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Multivariate (Student) T 2.pdf}
+ \caption{Multivariate (Student) T 2 distribution plotted using the provided R code.}
+ \label{fig:Multivariate (Student) T 2}
+\end{figure}
 
 \subsubsection*{Parameter: mean}
 
@@ -1927,9 +1881,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/NegativeBinomial1.pdf}
- \caption{NegativeBinomial1 distribution plotted using the provided R code.}
- \label{fig:NegativeBinomial1}
+  \includegraphics[width=140mm]{pics/Negative Binomial 1.pdf}
+ \caption{Negative Binomial 1 distribution plotted using the provided R code.}
+ \label{fig:Negative Binomial 1}
 \end{figure}
 
 \subsubsection*{Parameter: numberOfFailures}
@@ -1974,9 +1928,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=70mm]{pics/NegativeBinomial2.pdf}
- \caption{NegativeBinomial2 distribution plotted using the provided R code.}
- \label{fig:NegativeBinomial2}
+  \includegraphics[width=140mm]{pics/Negative Binomial 2.pdf}
+ \caption{Negative Binomial 2 distribution plotted using the provided R code.}
+ \label{fig:Negative Binomial 2}
 \end{figure}
 
 \subsubsection*{Parameter: rate}
@@ -2018,12 +1972,12 @@ $, scalar \\
 \textbf{support} & & $y \in \{0,1,2,3,\dots\}$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/NegativeBinomial3.pdf}
-% \caption{NegativeBinomial3 distribution plotted using the provided R code.}
-% \label{fig:NegativeBinomial3}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Negative Binomial 3.pdf}
+ \caption{Negative Binomial 3 distribution plotted using the provided R code.}
+ \label{fig:Negative Binomial 3}
+\end{figure}
 
 \subsubsection*{Parameter: }
 
@@ -2064,9 +2018,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/Normal1.pdf}
- \caption{Normal1 distribution plotted using the provided R code.}
- \label{fig:Normal1}
+  \includegraphics[width=140mm]{pics/Normal 1.pdf}
+ \caption{Normal 1 distribution plotted using the provided R code.}
+ \label{fig:Normal 1}
 \end{figure}
 
 \subsubsection*{Parameter: mean}
@@ -2111,9 +2065,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/Normal2.pdf}
- \caption{Normal2 distribution plotted using the provided R code.}
- \label{fig:Normal2}
+  \includegraphics[width=140mm]{pics/Normal 2.pdf}
+ \caption{Normal 2 distribution plotted using the provided R code.}
+ \label{fig:Normal 2}
 \end{figure}
 
 \subsubsection*{Parameter: mean}
@@ -2158,9 +2112,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/Normal3.pdf}
- \caption{Normal3 distribution plotted using the provided R code.}
- \label{fig:Normal3}
+  \includegraphics[width=140mm]{pics/Normal 3.pdf}
+ \caption{Normal 3 distribution plotted using the provided R code.}
+ \label{fig:Normal 3}
 \end{figure}
 
 \subsubsection*{Parameter: mean}
@@ -2205,9 +2159,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=70mm]{pics/NormalInverseGamma.pdf}
- \caption{NormalInverseGamma distribution plotted using the provided R code.}
- \label{fig:NormalInverseGamma}
+  \includegraphics[width=140mm]{pics/Normal- inverse-gamma.pdf}
+ \caption{Normal- inverse-gamma distribution plotted using the provided R code.}
+ \label{fig:Normal- inverse-gamma}
 \end{figure}
 
 \subsubsection*{Parameter: mean}
@@ -2383,9 +2337,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/StandardNormal.pdf}
- \caption{StandardNormal distribution plotted using the provided R code.}
- \label{fig:StandardNormal}
+  \includegraphics[width=140mm]{pics/Standard Normal.pdf}
+ \caption{Standard Normal distribution plotted using the provided R code.}
+ \label{fig:Standard Normal}
 \end{figure}
 
 \subsubsection*{Parameter: mean}
@@ -2430,9 +2384,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/StandardUniform.pdf}
- \caption{StandardUniform distribution plotted using the provided R code.}
- \label{fig:StandardUniform}
+  \includegraphics[width=140mm]{pics/Standard Uniform.pdf}
+ \caption{Standard Uniform distribution plotted using the provided R code.}
+ \label{fig:Standard Uniform}
 \end{figure}
 
 \subsubsection*{Parameter: minimum}
@@ -2477,9 +2431,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/StudentT.pdf}
- \caption{StudentT distribution plotted using the provided R code.}
- \label{fig:StudentT}
+  \includegraphics[width=140mm]{pics/Student's t-distribution.pdf}
+ \caption{Student's t-distribution distribution plotted using the provided R code.}
+ \label{fig:Student's t-distribution}
 \end{figure}
 
 \subsubsection*{Parameter: degreesOfFreedom}
@@ -2584,9 +2538,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/TruncatedNormal.pdf}
- \caption{TruncatedNormal distribution plotted using the provided R code.}
- \label{fig:TruncatedNormal}
+  \includegraphics[width=140mm]{pics/Truncated Normal.pdf}
+ \caption{Truncated Normal distribution plotted using the provided R code.}
+ \label{fig:Truncated Normal}
 \end{figure}
 
 \subsubsection*{Parameter: mean}
@@ -2699,12 +2653,12 @@ $, scalar \\
 \textbf{support} & & $a,b \in \{\dots,-2,-1,0,1,2,3,\dots\}$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/UniformDiscrete1.pdf}
-% \caption{UniformDiscrete1 distribution plotted using the provided R code.}
-% \label{fig:UniformDiscrete1}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Uniform Discrete 1.pdf}
+ \caption{Uniform Discrete 1 distribution plotted using the provided R code.}
+ \label{fig:Uniform Discrete 1}
+\end{figure}
 
 \subsubsection*{Parameter: minimum}
 
@@ -2750,12 +2704,12 @@ $, scalar \\
 \textbf{support} & & $x \in \{0,1,2,\dots,n\}$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/UniformDiscrete2.pdf}
-% \caption{UniformDiscrete2 distribution plotted using the provided R code.}
-% \label{fig:UniformDiscrete2}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Uniform Discrete 2.pdf}
+ \caption{Uniform Discrete 2 distribution plotted using the provided R code.}
+ \label{fig:Uniform Discrete 2}
+\end{figure}
 
 \subsubsection*{Parameter: minimum}
 
@@ -2795,9 +2749,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/Weibull1.pdf}
- \caption{Weibull1 distribution plotted using the provided R code.}
- \label{fig:Weibull1}
+  \includegraphics[width=140mm]{pics/Weibull 1.pdf}
+ \caption{Weibull 1 distribution plotted using the provided R code.}
+ \label{fig:Weibull 1}
 \end{figure}
 
 \subsubsection*{Parameter: scale}
@@ -2842,12 +2796,12 @@ $, scalar \\
 \textbf{support} & & $x > 0$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/Weibull2.pdf}
-% \caption{Weibull2 distribution plotted using the provided R code.}
-% \label{fig:Weibull2}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Weibull 2.pdf}
+ \caption{Weibull 2 distribution plotted using the provided R code.}
+ \label{fig:Weibull 2}
+\end{figure}
 
 \subsubsection*{Parameter: lambda}
 
@@ -2885,12 +2839,12 @@ $, scalar \\
 \textbf{support} & & $X(p \times p) - \text{positive definite matrix}$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/Wishart1.pdf}
-% \caption{Wishart1 distribution plotted using the provided R code.}
-% \label{fig:Wishart1}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Wishart 1.pdf}
+ \caption{Wishart 1 distribution plotted using the provided R code.}
+ \label{fig:Wishart 1}
+\end{figure}
 
 \subsubsection*{Parameter: scaleMatrix}
 
@@ -2928,12 +2882,12 @@ $, scalar \\
 \textbf{support} & & $X(p \times p) - \text{symmetric, positive definite matrix}$
 \end{tabular}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=140mm]{pics/Wishart2.pdf}
-% \caption{Wishart2 distribution plotted using the provided R code.}
-% \label{fig:Wishart2}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Wishart 2.pdf}
+ \caption{Wishart 2 distribution plotted using the provided R code.}
+ \label{fig:Wishart 2}
+\end{figure}
 
 \subsubsection*{Parameter: inverseScaleMatrix}
 
@@ -2973,9 +2927,9 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=70mm]{pics/ZeroInflatedNegativeBinomial.pdf}
- \caption{ZeroInflatedNegativeBinomial distribution plotted using the provided R code.}
- \label{fig:ZeroInflatedNegativeBinomial}
+  \includegraphics[width=140mm]{pics/Zero-Inflated Negative Binomial.pdf}
+ \caption{Zero-Inflated Negative Binomial distribution plotted using the provided R code.}
+ \label{fig:Zero-Inflated Negative Binomial}
 \end{figure}
 
 \subsubsection*{Parameter: mean}
@@ -3031,9 +2985,9 @@ p + (1-p) \Big(\frac{\theta}{\theta + \mu} \Big)^{\theta} & \text{for } y = 0 \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=70mm]{pics/ZeroInflatedPoisson.pdf}
- \caption{ZeroInflatedPoisson distribution plotted using the provided R code.}
- \label{fig:ZeroInflatedPoisson}
+  \includegraphics[width=140mm]{pics/Zero-inflated Poisson.pdf}
+ \caption{Zero-inflated Poisson distribution plotted using the provided R code.}
+ \label{fig:Zero-inflated Poisson}
 \end{figure}
 
 \subsubsection*{Parameter: rate}
@@ -3066,21 +3020,4 @@ p + (1-p) \Big(\frac{\theta}{\theta + \mu} \Big)^{\theta} & \text{for } y = 0 \\
 \begin{equation*}-\end{equation*}
 \smallskip
 
-\section{NEW STUFF}
-
-%%\smallskip\section*{Gumbel} 
-%\begin{figure}[htb!]
-%\centering
-%  \includegraphics[width=140mm]{pics/Gumbel_pdf_cdf.pdf}
-% \caption{PDF of the Gumbel distribution plotted using the provided R-code.}
-% \label{fig:Gumbel_pdf_cdf}
-%\end{figure}
-
-
-
-Noncentral Chi-Square Distribution\\
-Noncentral F Distribution\\
-Noncentral t Distribution\\
-
-
-
+\end{document}
