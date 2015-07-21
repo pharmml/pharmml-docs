@@ -1,0 +1,78 @@
+
+\chapter{Changes in 0.7.1}
+
+
+\section{Removing \xelem{Equation} element}
+Instead
+\lstset{language=XML}
+\begin{lstlisting}
+    <ct:FunctionDefinition symbolType="real" symbId="proportional">
+        <ct:FunctionArgument symbolType="real" symbId="b"/>
+        <ct:FunctionArgument symbolType="real" symbId="f"/>
+        <ct:Definition>
+            <ct:Assign>
+                <math:Binop op="times">
+                    <ct:SymbRef symbIdRef="b"/>
+                    <ct:SymbRef symbIdRef="f"/>
+                </math:Binop>
+            </ct:Assign>
+        </ct:Definition>
+    </ct:FunctionDefinition>
+\end{lstlisting}
+
+or replacing
+\lstset{language=XML}
+\begin{lstlisting}
+                    <Transformation>
+                        <TransformedCovariate symbId="theta2Weight"/>
+                        <math:Equation>
+                            <math:Binop op="power">
+                                <math:Binop op="divide">
+                                    <ct:SymbRef symbIdRef="Weight"/>
+                                    <ct:Real>70</ct:Real>
+                                </math:Binop>
+                                <ct:SymbRef blkIdRef="pm1" symbIdRef="theta2"/>
+                            </math:Binop>
+                        </math:Equation>
+                    </Transformation>
+\end{lstlisting}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<PopulationParameter symbId="CL">
+    <ct:Assign>
+        <math:Equation>
+            <math:Binop op="plus">
+                <ct:SymbRef symbIdRef="CLrenal"/>
+                <ct:SymbRef symbIdRef="CLother"/>
+            </math:Binop>
+        </math:Equation>
+    </ct:Assign>
+</PopulationParameter>
+\end{lstlisting}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<PopulationParameter symbId="CL">
+    <ct:Assign>
+        <math:Binop op="plus">
+            <ct:SymbRef symbIdRef="CLrenal"/>
+            <ct:SymbRef symbIdRef="CLother"/>
+        </math:Binop>
+    </ct:Assign>
+</PopulationParameter>
+\end{lstlisting}
+
+
+\section{Extending \xelem{Sequence} notation}
+A new option has been added to the first two elements, 
+\begin{itemize}
+\item 
+Begin:StepSize:End or
+\item 
+Begin:StepSize:StepNumber
+\item 
+Begin:StepNumber:End
+\end{itemize}
+
+
