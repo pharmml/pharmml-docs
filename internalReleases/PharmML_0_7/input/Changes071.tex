@@ -2,40 +2,11 @@
 \chapter{Changes in 0.7.1}
 
 
-\section{Removing \xelem{Equation} element}
-Instead
-\lstset{language=XML}
-\begin{lstlisting}
-    <ct:FunctionDefinition symbolType="real" symbId="proportional">
-        <ct:FunctionArgument symbolType="real" symbId="b"/>
-        <ct:FunctionArgument symbolType="real" symbId="f"/>
-        <ct:Definition>
-            <ct:Assign>
-                <math:Binop op="times">
-                    <ct:SymbRef symbIdRef="b"/>
-                    <ct:SymbRef symbIdRef="f"/>
-                </math:Binop>
-            </ct:Assign>
-        </ct:Definition>
-    </ct:FunctionDefinition>
-\end{lstlisting}
+\section{Separate schema for ProbOnto}
 
-or replacing
-\lstset{language=XML}
-\begin{lstlisting}
-                    <Transformation>
-                        <TransformedCovariate symbId="theta2Weight"/>
-                        <math:Equation>
-                            <math:Binop op="power">
-                                <math:Binop op="divide">
-                                    <ct:SymbRef symbIdRef="Weight"/>
-                                    <ct:Real>70</ct:Real>
-                                </math:Binop>
-                                <ct:SymbRef blkIdRef="pm1" symbIdRef="theta2"/>
-                            </math:Binop>
-                        </math:Equation>
-                    </Transformation>
-\end{lstlisting}
+\section{Removing \xelem{Equation} element}
+
+Removing
 
 \lstset{language=XML}
 \begin{lstlisting}
@@ -63,16 +34,112 @@ or replacing
 </PopulationParameter>
 \end{lstlisting}
 
+Instead
+\lstset{language=XML}
+\begin{lstlisting}
+    <ct:FunctionDefinition symbolType="real" symbId="proportional">
+        <ct:FunctionArgument symbolType="real" symbId="b"/>
+        <ct:FunctionArgument symbolType="real" symbId="f"/>
+        <ct:Definition>
+            <math:Equation>
+                <math:Binop op="times">
+                    <ct:SymbRef symbIdRef="b"/>
+                    <ct:SymbRef symbIdRef="f"/>
+                </math:Binop>
+            </math:Equation>
+        </ct:Definition>
+    </ct:FunctionDefinition>
+\end{lstlisting}
+now
+\lstset{language=XML}
+\begin{lstlisting}
+    <ct:FunctionDefinition symbolType="real" symbId="proportional">
+        <ct:FunctionArgument symbolType="real" symbId="b"/>
+        <ct:FunctionArgument symbolType="real" symbId="f"/>
+        <ct:Definition>
+            <ct:Assign>
+                <math:Binop op="times">
+                    <ct:SymbRef symbIdRef="b"/>
+                    <ct:SymbRef symbIdRef="f"/>
+                </math:Binop>
+            </ct:Assign>
+        </ct:Definition>
+    </ct:FunctionDefinition>
+\end{lstlisting}
+
 
 \section{Extending \xelem{Sequence} notation}
-A new option has been added to the first two elements, 
-\begin{itemize}
-\item 
+A new option has been added to the first two elements, which was
+missing in 0.7, see section \ref{sec:noArms}
+\begin{description}
+\item[option 1]
 Begin:StepSize:End or
-\item 
-Begin:StepSize:StepNumber
-\item 
+\item[option 2] 
+Begin:StepSize:StepNumber or
+\item[option 3]
 Begin:StepNumber:End
-\end{itemize}
+\end{description}
+
+With this the original version of the Simulx model is encodable which reads
+\lstset{language=MLX}
+\begin{lstlisting}
+	Cc <- list(name='Cc', time=seq(-5, 100, length=500))
+\end{lstlisting}
+can be encoded as 
+\lstset{language=XML}
+\begin{lstlisting}
+<TrialDesign>
+    <Interventions>
+        <Administration oid="adm1">
+            <Bolus>
+                <!-- details ommited here -->
+                <DosingTimes>
+                    <ct:Assign>
+                        <ct:Sequence>
+                            <ct:Begin><ct:Real>-5</ct:Real></ct:Begin>
+                            <ct:StepNumber><ct:Int>500</ct:Int></ct:StepNumber>
+                            <ct:End><ct:Real>100</ct:Real></ct:End>
+                        </ct:Sequence>
+                    </ct:Assign>
+                </DosingTimes>
+            </Bolus>
+        </Administration>
+\end{lstlisting}
+
+
+\section{\xatt{columnType} in definition of the dataset optional}
+If mapping of a particular column is defined as well then this 
+attribute it is not required. This helps avoiding redundancies or inconsistencies.
+
+Consider the following case from \emph{count\_PMAKmodel.xml}:
+\lstset{language=XML}
+\begin{lstlisting}
+<ColumnMapping>
+    <ds:ColumnRef columnIdRef="TIME"/>
+    <ct:SymbRef symbIdRef="t"/>
+</ColumnMapping>
+<ColumnMapping>
+    <ds:ColumnRef columnIdRef="Y"/>
+    <ct:SymbRef blkIdRef="om1" symbIdRef="y"/>
+</ColumnMapping>
+<ds:Definition>
+    <ds:Column columnId="ID" columnType="id" valueType="string" columnNum="1"/>
+    <ds:Column columnId="TIME" columnType="time" valueType="real" columnNum="2"/>
+    <ds:Column columnId="Y" columnType="dv" valueType="int" columnNum="3"/>
+</ds:Definition>
+\end{lstlisting}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

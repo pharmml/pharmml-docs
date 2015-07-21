@@ -1463,1428 +1463,1428 @@ successfully implemented in PharmML 0.7 and are provided with the release:
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\chapter{Design -- redesigned}
-%\label{ch:Design}
-%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Design in PharmML $\leq$ 0.6}
-%Since version 0.2 PharmML was using SDM-XML, a CDISC standard \cite{CDISC:2011a}, 
-%based trial design. With the beginning of the activities of a group working on trial design
-%for MDL it became clear that this structure is insufficient and had to be reorganised and 
-%redesigned, see figure \ref{fig:Flowchart07}. The main reasons are 
-%\begin{itemize}
-%\item
-%CDISC based design is missing many elements, the most important ones being 
-%the observations and design spaces. Although the former were supported in 
-%PharmML, their implementation not only had to be done in \xelem{ModellingSteps} 
-%section but it also lacked the connectivity to study arms.
-%\item
-%A number of typical design features, such as arm size, number of arms, total size,
-%number of samples, number of times, cost function, total cost, was not accounted for.
-%\item
-%The rigid structure with epochs/cells/segment was unfamiliar to modellers 
-%who need a more flexible arm based structure.
-%\item
-%Required specifically for optimal design, the re-definition of covariate 
-%model, required for covariates to be optimised, was not supported in the CDISC 
-%based structure.
-%\item
-%Design elements were spread over two sections, \xelem{TrialDesign} and \xelem{ModellingSteps}
-%which created an inconsistent structure.
-%\item
-%The specification of external datasets, was located in \xelem{ModellingSteps}, but as 
-%the source for design it belongs to trial design section.
-%\item
-%\xelem{ModellingSteps} section should contain only task description.
-%%- Separation between model-design-tasks required - in Steps only task description - with 2 new elements
-%\item
-%The lack of compatibility with the new MDL design proposal -- translation would be 
-%very hard to achieve given such two different structures.
-%\end{itemize}
-%The new design/trial design structure addresses the above issues and 
-%because it was developed with both MDL and PharmML in mind, it promises 
-%a very high \marginpar{\HandCuffLeft} degree of compatibility between 
-%these two languages -- to be verified during the coming months. 
-%
-%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Modifications and extensions}
-%The new trial design structure consists of
-%\begin{itemize}
-%\item
-%Core structure based on the design elements developed for MDL, \cite{Commets2015, CommetsExamples2015}.
-%\item
-%Additional features, some of which were available in PharmML since version 0.2.1 such as individual 
-%observations, dosing, covariates.
-%\end{itemize}
-%While the detailed design is described in the according MDL specification proposal, 
-%\cite{Commets2015}, the comparison on the following pages visualises the changes
-%and differences. In the left column on page \pageref{miniPage:comparison}, the PharmML 
-%$\leq$ 0.6 design elements are shown, distributed
-%over two sections, \xelem{TrialDesign} and \xelem{ModellingSteps}. 
-%On the right, a detailed list of current elements available for the trial design is given.
-%
-%All examples provided in the 'Modelling Description Language. Design 
-%elements - Examples', \cite{CommetsExamples2015}, and all explicit design 
-%based examples from the PharmML specification, \cite{Pharmml_06}, have 
-%been successfully implemented.
-%
-%\newpage
-%\begin{figure}[htb!]
-%\centering
-%  \includegraphics[width=165mm]{pics/Flowchart07}
-% \caption{Working with PharmML -- a schema showing three essential decision points: 
-% (A) the type of data (continuous and discrete), (B) the source of the study design and 
-% data (Monolix/NONMEM dataset or \xelem{TrialDesign}) and finally (C) the task type 
-% (for now only simulation and estimation tasks are fully supported, the design related 
-% tasks are under construction). \textbf{Note} that in comparison to 0.6 version, \cite{Pharmml_06}, 
-% all data and design elements are located in the \xelem{TrialDesign} section while the last 
-% section, \xelem{ModellingSteps}, carries only tasks related information.}
-% \label{fig:Flowchart07}
-%\end{figure}
-%
-%\newpage
-%
-%%\LTcapwidth=\textwidth
-%%\begin{center}
-%%\renewcommand{\arraystretch}{1.1}%
-%%\begin{longtable}{llcccc}
-%%  \hline
-%%  \hline
-%%0.6 & 0.7\\
-%%%\multicolumn{1}{c}{0.2}			& risation		&  3.0			& 1.4		& 4.3	& 7.3 \\
-%%  \hline
-%%
-%%  \hline \\
-%%\caption{Structure comparison of the trial design related features.}
-%%\label{Tab:NewOldDesign}
-%%%\vspace{-3.5em}
-%%\end{longtable}
-%%\end{center}
-%
-%
-%%%%%% LEFT PAGE %%%%%
-%\begin{minipage}{0.35\textwidth}
-%\small
-%\centering 
-%\pml $\le$ 0.6\\
-%{\color{red} \scshape{\xelem{TrialDesign}}}
-%\begin{flushleft} 
-%\begin{itemize}
-%\item 
-%Structure
-%\begin{itemize}
-%\item
-%Arm
-%\item
-%Cell
-%\item
-%Epoch
-%\item
-%Segment
-%\item
-%Activity
-%\begin{itemize}
-%\item
-%Bolus
-%\item
-%Infusion
-%\item
-%Washout
-%\item
-%Lookup table
-%\item
-%Epoch Ref/Period
-%\end{itemize}
-%\end{itemize}
-%\item
-%Population
-%\begin{itemize}
-%\item
-%Arm memberships \& covariates
-%\item
-%Demographics
-%\end{itemize}
-%\item 
-%Individual Dosing
-%\end{itemize}
-%\vspace{2em}
-%\end{flushleft}
-%\centering 
-%{\color{red} \scshape{\xelem{ModellingSteps}}}
-%\begin{flushleft} 
-%\begin{itemize}
-%\item 
-%\textbf{ExternalDataSet}
-%\item 
-%Simulation Step
-%\begin{itemize}
-%\item 
-%\textbf{Observations}
-%\item 
-%Operation
-%\end{itemize}
-%\item 
-%Estimation Step
-%\begin{itemize}
-%\item 
-%\textbf{ObjectiveData}
-%\item 
-%Parameter Estimation
-%\item 
-%Operation
-%\end{itemize}
-%\item 
-%Step dependencies
-%\end{itemize}
-%\end{flushleft}
-%\end{minipage}
-%%%%%% RIGHT PAGE %%%%%
-%\begin{minipage}{0.6\textwidth}
-%\small
-%\centering 
-%\pml 0.7\\
-%{\color{red} \scshape{\xelem{TrialDesign}}}
-%\begin{flushright}
-%\begin{itemize}
-%\item 
-%ExternalDataSet
-%\item 
-%Interventions
-%\begin{itemize}
-%\item 
-%Administration
-%\begin{itemize}
-%\item 
-%InterventionRef
-%\item
-%Bolus
-%\item
-%Infusion
-%\end{itemize}
-%\item 
-%IndividualAdministration
-%\item 
-%Action -- Washout
-%\begin{itemize}
-%\item 
-%full reset
-%\item 
-%variable-wise
-%\end{itemize}
-%\item
-%InterventionsCombination
-%\end{itemize}
-%\item 
-%Observations
-%\begin{itemize}
-%\item 
-%LookupTable 
-%\item 
-%IndividualObservations
-%\item 
-%Observation
-%\item 
-%ObservationsCombination
-%\end{itemize}
-%\item 
-%Covariates
-%\begin{itemize}
-%\item 
-%CovariateModel
-%\begin{itemize}
-%\item
-%Categorical/Category: Probability, OccasionRef, InterventionRef, InterventionSequence
-%\end{itemize}
-%\item 
-%IndividualCovariates
-%\end{itemize}
-%\item 
-%Occasions/OccasionList
-%\begin{itemize}
-%\item 
-%VariabilityReference
-%\item 
-%Occasion
-%\end{itemize}
-%\item 
-%Arms
-%\begin{itemize}
-%\item 
-%Simple elements: ArmSize, CostFunction, NumberArms, NumberSamples, NumberTimes, SameTimes, TotalCost, TotalSize
-%\item 
-%Arm
-%\begin{itemize}
-%\item 
-%Simple elements: ArmSize, NumberSamples, NumberTimes, SameTimes
-%\item 
-%InterventionSequence/List
-%\item 
-%ObservationSequence/List
-%\item 
-%OccasionSequence/List
-%\end{itemize}
-%\end{itemize}
-%\item 
-%DesignSpaces
-%\begin{itemize}
-%\item 
-%References: InterventionRef, ObservationRef, ArmRef, SymbRef, CovariateModelRef \& CovariateRef
-%\item 
-%Simple elements: ArmSize, DoseAmount, DosingTimes, Duration, NumberArms, NumberSamples, NumberTimes, SampleTimes
-%\end{itemize}
-%\end{itemize}
-%\end{flushright}
-%{\color{red} \scshape{\xelem{ModellingSteps}}}
-%\begin{flushleft} 
-%\begin{itemize}
-%\item 
-%Simulation Step / Operation
-%\item 
-%Estimation Step / Operation
-%\item 
-%Design Optimization Step -- {\color{darkgreen} \scshape{under construction}} 
-%\item 
-%Design Evaluation Step -- {\color{darkgreen} \scshape{under construction}}
-%\item 
-%Step dependencies
-%\end{itemize}
-%\end{flushleft}
-%\label{miniPage:comparison}
-%\end{minipage}
-%
-%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Selected features}
-%The trial design structure, although intuitive and clearly structured,
-%is quite complex. The reader is referred to the original specification 
-%and example documents, \cite{CommetsExamples2015,Commets2015}.
-%Here we describe only few examples of selected new features supported in this 
-%release and indicate differences between PharmML and MDL.
-%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Actions -- washout/reset options}
-%Washout can now be customised while in previous versions only
-%full reset was possible. One can define it for specific/selected variables 
-%in the model, e.g. for A1 -- which is set to 10 at t=0.5, using 
-%\xelem{VariableToReset} with optional \xelem{ResetValue} and 
-%\xelem{ResetTime}
-%\lstset{language=XML}
-%\begin{lstlisting}
-%            <Action oid="W1">
-%                <Washout>
-%                    <VariableToReset>
-%                        <ct:SymbRef symbIdRef="A1"/>
-%                        <ResetValue>10</ResetValue>
-%                        <ResetTime>0.5</ResetTime>
-%                    </VariableToReset>
-%                </Washout>
-%            </Action>
-%\end{lstlisting}
-%or alternatively for the entire model using the \xelem{FullReset}
-%\lstset{language=XML}
-%\begin{lstlisting}
-%            <Action oid="w2">
-%                <Washout>
-%                    <VariableToReset>
-%                        <FullReset/>
-%                    </VariableToReset>
-%                </Washout>
-%            </Action>
-%\end{lstlisting}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{\xelem{Interval} element}
-%\label{subsec:interval}
-%The \xelem{Interval} with children elements \xelem{LeftEndpoint} and \xelem{RightEndpoint}
-%has been designed for the use e.g. in defining the design spaces as the 
-%following example for optimising the observation times shows (but use in other 
-%situations is possible as well). 
-%\lstset{language=XML}
-%\begin{lstlisting}
-%    <DesignSpaces>
-%        <DesignSpace>
-%            <ObservationRef oidRef="window1"/>
-%            <ObservationTimes>
-%                <ct:Assign>
-%                    <ct:Interval>
-%                        <ct:LeftEndpoint>
-%                            <ct:Assign>
-%                                <ct:Real>0</ct:Real>
-%                            </ct:Assign>
-%                        </ct:LeftEndpoint>
-%                        <ct:RightEndpoint>
-%                            <ct:Assign>
-%                                <ct:Real>72</ct:Real>
-%                            </ct:Assign>
-%                        </ct:RightEndpoint>
-%                    </ct:Interval>
-%                </ct:Assign>
-%            </ObservationTimes>
-%        </DesignSpace>
-%\end{lstlisting}
-%First the observation in question is specified with \xelem{ObservationRef}, 
-%here \xatt{window1}, and subsequently the allowed interval, $[0,72]$, is defined.
-%
-%By default it is assumed that an endpoint is closed but the attribute \xatt{type}
-%is available with two values \{closed, open\} to specified it accordingly to the 
-%model requirements. E.g. for $[0,72)$\footnote{Note that in French notation this interval
-%would be denoted as $[0,72[$.} design space the following snippet shows the 
-%correct implementation
-%\lstset{language=XML}
-%\begin{lstlisting}
-%        <ct:LeftEndpoint>
-%            <!-- omitted details -->
-%        </ct:LeftEndpoint>
-%        <ct:RightEndpoint type="open">
-%            <!-- omitted details -->
-%        </ct:RightEndpoint>
-%\end{lstlisting}
-%
-%
-%%\subsection{Multiple references for design spaces are possible}
-%%In certain situation 
-%%\lstset{language=XML}
-%%\begin{lstlisting}
-%%            <DesignSpaces>
-%%                <DesignSpace>
-%%                    <InterventionRef oidRef="d1"/>
-%%                    <InterventionRef oidRef="d2"/>
-%%                    <DoseAmount>
-%%\end{lstlisting}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Using parameters in optimal design tasks} 
-%\label{subsec:paramsInDesign}
-%Consider a case of design optimisation, e.g. example 4, task 3 in 
-%\cite{CommetsExamples2015}. Original description of a task where 
-%a parameter, \emph{tdoseB}, is required, reads: \\
-%\emph{We assume now a sequential trial, where treatment B is given 
-%at time tdoseB after treatment A without washout, and we want to 
-%optimise the time between the two treatments.} 
-%
-%\paragraph{step 1} First, the design parameter is declared and initialised: 
-%\lstset{language=XML}
-%\begin{lstlisting}
-%          <Interventions>
-%                <mdef:DesignParameter symbId="tdoseB">
-%                    <ct:Assign>
-%                        <ct:Real>0</ct:Real>
-%                    </ct:Assign>
-%                </mdef:DesignParameter>
-%\end{lstlisting}
-%\paragraph{step 2} and used to define an administration, \xatt{trtB}, with dose amount equal 100 and
-%dosing time defined as a sequence, starting at \emph{tdoseB}, ending with \emph{tdoseB}+72
-%with steps every 24, which is implemented as
-%\lstset{language=XML}
-%\begin{lstlisting}
-%                <Administration oid="trtB">
-%                    <Bolus>
-%                        <DoseAmount inputTarget="admType">
-%                            <TargetMapping blkIdRef="sm1">
-%                                <ds:Map admNumber="2"/>
-%                            </TargetMapping>
-%                            <ct:Assign>
-%                                <ct:Real>100</ct:Real>
-%                            </ct:Assign>
-%                        </DoseAmount>
-%                        <DosingTimes>
-%                            <ct:Assign>
-%                                <ct:Sequence>
-%                                    <ct:Begin>
-%                                        <ct:SymbRef symbIdRef="tdoseB"/>
-%                                    </ct:Begin>
-%                                    <ct:StepSize>
-%                                        <ct:Real>24</ct:Real>
-%                                    </ct:StepSize>
-%                                    <ct:End>
-%                                        <Equation>
-%                                            <Binop op="plus">
-%                                                <ct:SymbRef symbIdRef="tdoseB"/>
-%                                                <ct:Real>72</ct:Real>
-%                                            </Binop>
-%                                        </Equation>
-%                                    </ct:End>
-%                                </ct:Sequence>
-%                            </ct:Assign>
-%                        </DosingTimes>
-%                    </Bolus>
-%                </Administration>
-%\end{lstlisting}
-%
-%\paragraph{step 3} Finally, the design space for \emph{tdoseB} is defined as 
-%an interval [0,72]:
-%\lstset{language=XML}
-%\begin{lstlisting}
-%                <DesignSpace>
-%                    <ct:SymbRef symbIdRef="tdoseB"/>
-%                    <ct:Assign>
-%                        <ct:Interval>
-%                            <ct:LeftEndpoint type="closed">
-%                                <ct:Assign>
-%                                    <ct:Real>0</ct:Real>
-%                                </ct:Assign>
-%                            </ct:LeftEndpoint>
-%                            <ct:RightEndpoint type="closed">
-%                                <ct:Assign>
-%                                    <ct:Real>72</ct:Real>
-%                                </ct:Assign>
-%                            </ct:RightEndpoint>
-%                        </ct:Interval>
-%                    </ct:Assign>
-%                </DesignSpace>
-%            </DesignSpaces>            
-%\end{lstlisting}
-%Note that design spaces are supposed to \marginpar{\HandCuffLeft} deal with 
-%any element of the design. The example document, \cite{CommetsExamples2015} and
-%their PharmML implementation, feature multiple application cases.
-%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Defining conditional covariate distribution}
-%\label{subsec:condDistrib}
-%Covariates can vary from arm to arm and/or be dependent 
-%on other covariates, such as sex etc.
-%Instead of defining them separately in according arms. Using a conditional 
-%distribution defined in the \xelem{Covariates} block outside the \xelem{Arms},
-%is a very effective way to express it. For example consider the following model
-%\begin{align}
-%P(WT|ARM) = 
-%\left\{ \begin{array}{rcl}     
-%\mathcal N \big(WT_{mean1}, WT_{variance1}\big) & \mbox{if} & ARM = arm1\\  
-%\mathcal N \big(WT_{mean2}, WT_{variance2}\big) & \mbox{if} & ARM = arm2 
-%\end{array}\right. \nonumber
-%\end{align}
-%The code is similar to that of conditional covariate distributions, 
-%shown in Section \ref{sec:condDistros}, and will not be repeated here with the 
-%exception of the \xelem{Condition} element using in this case the literal \xelem{True}
-%of the Boolean data type
-%\lstset{language=XML}
-%\begin{lstlisting}
-%                <Condition>
-%                    <!-- "arm1" -->
-%                    <LogicBinop op="eq">
-%                        <ArmRef oidRef="arm1"/>
-%                        <ct:True/>
-%                    </LogicBinop>
-%                </Condition>
-%\end{lstlisting}
-%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Optimising covariates distribution}
-%One of the objectives in optimal design is to optimise the distribution of 
-%relevant covariates, see \emph{example3\_taks2.xml} or the original MDL file, with 
-%design elements to optimise on
-%\begin{itemize}
-%\item
-%proportion of each genotype \& 
-%\item
-%proportion of each gender
-%\end{itemize}
-%In such case the initial covariate model is encoded in \xelem{ModelDefinition} as the following
-%code snippet shows
-%\lstset{language=XML}
-%\begin{lstlisting}
-%        <CovariateModel blkId="cm1">
-%            <Covariate symbId="SEX">
-%                <Categorical>
-%                    <Category catId="F"/>
-%                    <Category catId="M"/>
-%                </Categorical>
-%            </Covariate>
-%            <Covariate symbId="Genetics">
-%                <Categorical>
-%                    <Category catId="common_Hz"/>
-%                    <Category catId="hz"/>
-%                    <Category catId="rare_hz"/>
-%                </Categorical>
-%            </Covariate>
-%\end{lstlisting}
-%which can be overwritten in \xelem{TrialDesign} if required. 
-%The covariate model, if it applies to all arms, will be defined just after 
-%the \xelem{Interventions} and \xelem{Observations} (another option is to define 
-%arm-specific covariates within arms).
-%
-%Then the covariate model in the trial design starts with a refernce to the 
-%base covariance model to be optimised.
-%\lstset{language=XML}
-%\begin{lstlisting}
-%    <TrialDesign xmlns="http://www.pharmml.org/pharmml/0.6/TrialDesign">
-%        
-%        <mdef:DesignParameter symbId="Genp1">
-%            <!-- omitted details -->
-%        </mdef:DesignParameter>
-%        <!-- omitted Genp2 declaration -->
-%        <mdef:DesignParameter symbId="Genp3">
-%            <!-- omitted details -->
-%        </mdef:DesignParameter>
-%        
-%        <Interventions>
-%            <!-- omitted details -->
-%        </Interventions>            
-%        <Observations>
-%            <!-- omitted details -->
-%        </Observations>
-%        
-%        <Covariates>
-%            <!-- COVARIATE MODEL - overwritting covariate model defined in ModelDefinition -->
-%            <CovariateModel oid="td_cm1">
-%                <CovariateModelRef blkIdRef="cm1"/>
-%                <Covariate symbId="SEX">
-%                    <mdef:Categorical>
-%                        <mdef:Category catId="M">
-%                            <mdef:Probability>
-%                                <ct:Real>0.5</ct:Real>
-%                            </mdef:Probability>
-%                        </mdef:Category>
-%                        <mdef:Category catId="F">
-%                            <mdef:Probability>
-%                                <ct:Real>0.5</ct:Real>
-%                            </mdef:Probability>
-%                        </mdef:Category>
-%                    </mdef:Categorical>
-%                </Covariate>
-%                <Covariate symbId="Genetics">
-%                    <mdef:Categorical>
-%                        <mdef:Category catId="common_Hz">
-%                            <mdef:Probability>
-%                                <ct:SymbRef symbIdRef="Genp1"/>
-%                            </mdef:Probability>
-%                        </mdef:Category>
-%                        <mdef:Category catId="hz">
-%                            <mdef:Probability>
-%                                <ct:SymbRef symbIdRef="Genp2"/>
-%                            </mdef:Probability>
-%                        </mdef:Category>
-%                        <mdef:Category catId="rare_hz">
-%                            <mdef:Probability>
-%                                <ct:SymbRef symbIdRef="Genp3"/>
-%                            </mdef:Probability>
-%                        </mdef:Category>
-%                    </mdef:Categorical>
-%                </Covariate>
-%            </CovariateModel>            
-%        </Covariates>
-%        ...
-%\end{lstlisting}
-%The covariate model overwrites the base models in the \xelem{ModelDefinition}
-%section, which is referenced with \xelem{CovariateModelRef blkIdRef="cm1"}.
-%Also in this case we use \xelem{DesignParameter} element introduced in Section 
-%\ref{subsec:paramsInDesign}, here \emph{Genp1}, \dots, \emph{Genp3} denoting 
-%the proportions of each genotype, to be used later in the design spaces. Note that
-%\xelem{DesignParameter} can be defined anywhere in the \xelem{TrialDesign} and 
-%is valid in the entire section.
-%
-%Finally the design spaces can be specified, here an interval [0.25, 1] for \emph{Genp1}
-%\lstset{language=XML}
-%\begin{lstlisting}
-%        <DesignSpaces>
-%            <DesignSpace>
-%                <ct:SymbRef symbIdRef="Genp1"/>
-%                <ct:Assign>
-%                    <ct:Interval>
-%                        <ct:LeftEndpoint>
-%                            <ct:Assign>
-%                                <ct:Real>0.25</ct:Real>
-%                            </ct:Assign>
-%                        </ct:LeftEndpoint>
-%                        <ct:RightEndpoint>
-%                            <ct:Assign>
-%                                <ct:Real>1</ct:Real>
-%                            </ct:Assign>
-%                        </ct:RightEndpoint>
-%                    </ct:Interval>
-%                </ct:Assign>
-%            </DesignSpace>
-%            <!-- omitted design spaces for remaining design parameters-->
-%        </DesignSpaces>
-%\end{lstlisting}
-%
-%\subparagraph{Note} that the covariate model in the trial design uses 
-%the object identifiers, \xatt{oid}, rather then block identifiers, \xatt{blkId}.
-%The change was required for the consistency with the use of the former 
-%in the scope of the \xelem{TrialDesign} section.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Single subject design without arms} 
-%\label{sec:noArms}
-%This option is not currently supported in MDL proposal but was requested by 
-%the modellers. It can be used 
-%\begin{itemize}
-%\item 
-%in single subject scenarios to shorten the implementation burden 
-%as such cases don't require a typical explicit design structure (with arms). 
-%\item 
-%to support existing simulation tools, such as Simulx.
-%\end{itemize}
-%It comes with the possibility to define dosing, observations, lookup tables 
-%etc. without the need to define the study arms. For consistency, the dosing,
-%observations times etc. information will still be encoded in \xelem{TrialDesign} but 
-%without placing them within the \xelem{Arms} tags. 
-%\begin{example}
-%As a simple illustration consider a Simulx example\footnote{\url{http://webpopix.org:8080/dashboard/administration/}} 
-%with explicit defined administration 
-%\lstset{language=MLX}
-%\begin{lstlisting}
-%	adm1 <- list(type=1, amount=100, time=seq(0, 84, by=6))
-%	adm2 <- list(type=2, amount=50, time=seq(3, 87, by=12), tinf=1)
-%\end{lstlisting}
-%\lstset{language=MLX}
-%and observations\footnote{The original code uses 'length' argument which is currently not 
-%supported in the \xelem{Sequence} element.}
-%\begin{lstlisting}
-%	Cc <- list(name='Cc', time=seq(-5, 100, by=.1))
-%\end{lstlisting}
-%for a model defined as a combination of PK macros and ODEs (here in MLXTRAN speak):
-%\lstset{language=MLX}
-%\begin{lstlisting}
-%	PK:
-%	depot(type=1, target=Ad, p=F)
-%	depot(type=2, target=Ac)
-%
-%	EQUATION:
-%	k = Cl/V
-%	ddt_Ad = -ka*Ad
-%	ddt_Ac =  ka*Ad - k*Ac
-%	Cc = Ac/V
-%\end{lstlisting}
-%The administration related part of the show case can be easily implemented using the 
-%\xelem{Administration} element within \xelem{Interventions} tag
-%\lstset{language=XML}
-%\begin{lstlisting}
-%    <TrialDesign>
-%        <Interventions>
-%            <Administration oid="adm1">
-%                <Bolus>
-%                    <DoseAmount inputTarget="derivativeVariable">
-%                        <ct:SymbRef symbIdRef="Ad"/>
-%                        <ct:Assign>
-%                            <ct:Real>100</ct:Real>
-%                        </ct:Assign>
-%                    </DoseAmount>
-%                    <DosingTimes>
-%                        <ct:Assign>
-%                            <ct:Sequence>
-%                                <ct:Begin><ct:Real>0</ct:Real></ct:Begin>
-%                                <ct:StepSize><ct:Real>6</ct:Real></ct:StepSize>
-%                                <ct:End><ct:Real>84</ct:Real></ct:End>
-%                            </ct:Sequence>
-%                        </ct:Assign>
-%                    </DosingTimes>
-%                </Bolus>
-%            </Administration>
-%            <Administration oid="adm2">
-%                <Infusion>
-%                    <DoseAmount inputTarget="derivativeVariable">
-%                        <ct:SymbRef symbIdRef="Ac"/>
-%                        <ct:Assign>
-%                            <ct:Real>50</ct:Real>
-%                        </ct:Assign>
-%                    </DoseAmount>
-%                    <DosingTimes>
-%                        <!-- skipped, as similar to adm1 -->
-%                    </DosingTimes>
-%                    <Duration>
-%                        <ct:Assign>
-%                            <ct:Real>1</ct:Real>
-%                        </ct:Assign>
-%                    </Duration>
-%                </Infusion>
-%            </Administration>
-%        </Interventions>
-%\end{lstlisting}
-%Finally the observations are implemented as 
-%\lstset{language=XML}
-%\begin{lstlisting}
-%        <Observations>
-%            <Observation oid="OBSoid_Cc">
-%                <ObservationTimes>
-%                    <ct:Assign>
-%                        <ct:Sequence>
-%                            <ct:Begin><ct:Real>-5</ct:Real></ct:Begin>
-%                            <ct:StepSize><ct:Real>.1</ct:Real></ct:StepSize>
-%                            <ct:End><ct:Real>100</ct:Real></ct:End>
-%                        </ct:Sequence>
-%                    </ct:Assign>
-%                </ObservationTimes>
-%                <Continuous>
-%                    <ct:SymbRef symbIdRef="Cc"/>
-%                </Continuous>
-%            </Observation>
-%        </Observations>
-%    </TrialDesign>
-%\end{lstlisting}
-%The \xelem{SimulationStep} will contain the references to the interventions 
-%and observations in question as shown in the code snippet  
-%\lstset{language=XML}
-%\begin{lstlisting}
-%    <ModellingSteps xmlns="http://www.pharmml.org/pharmml/0.6/ModellingSteps">
-%        
-%        <SimulationStep oid="simTask1">
-%            <InterventionsReference>
-%                <ct:OidRef oidRef="adm1"/>
-%                <ct:OidRef oidRef="adm2"/>
-%            </InterventionsReference>
-%            
-%            <ObservationsReference>
-%                <ct:OidRef oidRef="OBSoid_Cc"/>
-%            </ObservationsReference>
-%        </SimulationStep>
-%    </ModellingSteps>
-%\end{lstlisting}
-%Note that the \xelem{InterventionsReference} element is new in this version.
-%\end{example}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Design examples implemented}
-%The examples listed below coming with the MDL proposal, \cite{CommetsExamples2015},
-%have been successfully implemented in PharmML and are provided with the release 
-%(in total 16 examples):
-%
-%\begin{itemize}
-%\item 
-%example1: Basic PK model with five tasks
-%%\begin{itemize}
-%%\item 
-%%\emph{example1$\_$task1$\_$onegroup$\_$evaluate.xml}, \emph{example1$\_$task1$\_$twogroups$\_$evaluate.xml}, 
-%%\emph{example1$\_$task2$\_$twogroups$\_$optimise.xml}, \emph{example1$\_$task3$\_$onegroup$\_$optimiseFW.xml},
-%%\emph{example1$\_$task4$\_$fourgroup$\_$optimisePopED.xml}
-%%\end{itemize}
-%\item 
-%example2: PK/PD model with four tasks
-%%\begin{itemize}
-%%\item 
-%%\emph{example2$\_$task1.xml}, \emph{example2$\_$task2.xml}, \emph{example2$\_$task3.xml},
-%%\emph{example2$\_$task4.xml}
-%%\end{itemize}
-%\item 
-%example3: PK model with two covariates with three tasks
-%%\begin{itemize}
-%%\item 
-%%\emph{example3$\_$task1.xml}, \emph{example3$\_$task2.xml},\emph{example3$\_$task3.xml}
-%%\end{itemize}
-%\item 
-%example4: PK with IOV and treatment covariate (different for each occasion)
-%%\begin{itemize}
-%%\item 
-%%\emph{example4$\_$task1.xml}, \emph{example4$\_$task2.xml}, \emph{example4$\_$task3.xml}
-%%\end{itemize}
-%\item 
-%example5: Combination of two treatments - evaluation and optimisation
-%%\begin{itemize}
-%%\item 
-%%\emph{example5$\_$task1.xml}
-%%\end{itemize}
-%\end{itemize}
-%
-%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Differences compared to MDL}
-%Here a short list of features related to the trial design not yet covered in MDL
-%\begin{itemize}	
-%\item 
-%Conditional distributions, see section \ref{subsec:condDistrib}.
-%\item 
-%Defining dosing/observations without arm structure, see section \ref{sec:noArms},
-%is not yet available in MDL (or just not described in the MDL design spec,
-%\cite{Commets2015} ) but is straight forward to achieve.
-%\item 
-%Encoding of individual observations/administrations/covariates (available in \pml since 
-%version 0.2.1).\
-%\end{itemize}
-%
-%
-%
-%%-- reference to observation data not required
-%%\lstset{language=XML}
-%%\begin{lstlisting}
-%%            <ObservationsReference>
-%%                <ct:OidRef oidRef="OBSoid"/>
-%%            </ObservationsReference>
-%%\end{lstlisting}
-%%-- old design supported Individual Dosing but now 
-%%arm-wise scaling is possible as well \\
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%\section{OTHERS}
-%%
-%%\begin{itemize}
-%%\item
-%%NEW StandardAssignType - DISCUSS!!!!
-%%\end{itemize}
-%%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\chapter{Other changes}
-%\label{ch:otherChanges}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Box-Cox transformation}
-%\label{sec:BoxCoxTrafo}
-%The Box-Cox Transformation, \cite{BoxCox:1964}, is used to transform data to an approximate normal distribution
-%and reads
-%\begin{align}
-%h(x) = \left\{ \begin{array}{rcl}  \frac{x^{\lambda} -1}{\lambda} & \mbox{for} & \lambda \neq 0 \\  \log(x) & \mbox{for} & \lambda = 0 \end{array}\right. \nonumber
-%\end{align}
-%It can be applied to parameters, observations and covariates. 
-%A random variable, $X$, is called power-normally distributed if its 
-%Box-Cox transformation is normally distributed, $h(x) \sim \mathcal {N} (\mu,\omega^2)$, 
-%and truncated so that $h(x) > 0$, \cite{LavielleBook:2014}.
-%
-%\subsection{Box-Cox in parameter model}
-%A parameter to which the Box-Cox transformation is applied 
-%\begin{align*}
-%        V_{i}^{(\lambda)} = V_{pop}^{(\lambda)} + \eta_V
-%\end{align*}
-%can be implemented in PharmML as
-%\lstset{language=XML}
-%\begin{lstlisting}
-%        <IndividualParameter symbId="V">
-%            <StructuredModel>
-%                <Transformation type="BoxCox">
-%                    <Parameter>
-%                        <ct:Assign>
-%                            <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
-%                        </ct:Assign>
-%                    </Parameter>
-%                </Transformation>
-%                <PopulationValue>
-%                    <ct:Assign>
-%                        <ct:SymbRef blkIdRef="pm1" symbIdRef="pop_V"/>
-%                    </ct:Assign>
-%                </PopulationValue>
-%                <RandomEffects>
-%                    <ct:SymbRef symbIdRef="eta_V"/>
-%                </RandomEffects>
-%            </StructuredModel>
-%        </IndividualParameter>
-% \end{lstlisting}
-%Note the new \xatt{type} attribute value, \emph{BoxCox}, in the \xelem{Transformation} 
-%tag and the associated additional element \xelem{Parameter} where the Box-Cox 
-%parameter is defined. The rest follows the pattern for the \xelem{StructuredModel}.
-%Here the redesigned structure is used of \xelem{StructuredModel} in that the 
-%\xelem{PopulationValue} element can act alone without the \xelem{LinearCovariate} 
-%parent element, see section \ref{sec:individualParameter}
-%for more details.
-%
-%\subsection{Box-Cox in observation model}
-%The following observation model 
-%\begin{align*}
-%        Cc_{obs}^{(\lambda)} = Cc^{(\lambda)} + a \epsilon, \quad \text{with} \quad \epsilon \sim N(0,1)
-%\end{align*}
-%is implemented analogously as 
-%\lstset{language=XML}
-%\begin{lstlisting}
-%                <Standard symbId="Cc_obs">
-%                    <Transformation type="BoxCox">
-%                        <Lambda>
-%                            <ct:Assign>
-%                                <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
-%                            </ct:Assign>
-%                        </Lambda>
-%                    </Transformation>
-%                    <Output>
-%                        <ct:SymbRef blkIdRef="sm1" symbIdRef="Cc"/>
-%                    </Output>
-%                    <ErrorModel>
-%                        <ct:Assign>
-%                            <ct:SymbRef blkIdRef="pm1" symbIdRef="a"/>
-%                        </ct:Assign>
-%                    </ErrorModel>
-%                    <ResidualError>
-%                        <ct:SymbRef symbIdRef="epsilon_Cc"/>
-%                    </ResidualError>
-%                </Standard>
-%\end{lstlisting}
-%
-%
-%\subsection{Box-Cox in covariate model}
-%The encoding of the Box-Cox transformation is already possible using the
-%standard \xelem{FunctionDefinition} element and for now no new structure has been introduced.
-%
-%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Encoding of missing data}
-%\label{sec:missingData}
-%Following discussion at Pavia meeting November 2013, described in the meeting 
-%report \cite{Swat:2013pavia}, and later comments we have extended 
-%PharmML both for inline or external storage of data records.  We reuse symbols for special numerical values
-%used in R (see \href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/is.finite.html}{is.finite\{base\}}) 
-%and SAS (see \href{http://support.sas.com/documentation/cdl/en/imlug/63541/HTML/default/viewer.htm#imlug_r_sect019.htm}{SAS/IML(R) 9.22})\footnote{Other possible codes are \textbf{DEE} or \textbf{-99} (SAS) 
-%-- data entry error or \textbf{SRA} or \textbf{-999} (SAS) -- subject refused answer, 
-%see \url{http://www.ats.ucla.edu/stat/sas/faq/how_to_code_missing_differently.htm}, 
-%but will not be introduced unless required} to provide means to encode missing data.
-%
-%\subsection{Inline stored datasets}
-%When data is stored inline within \pml, few new predefined XML elements are required. Here the 
-%list of typical missing data types and corresponding elements introduced in this version:
-%\begin{itemize}
-%\item
-%\textbf{NA} -- not available/missing data, \xelem{NA}
-%\item
-%\textbf{NaN} -- not a number -- impossible values (e.g., dividing by zero), \xelem{NaN}
-%\item
-%\textbf{+Inf}/\textbf{-Inf}  -- positive/negative infinity, \xelem{plusInf} and \xelem{minusInf}
-%\item
-%\textbf{BLQ}/\textbf{ALQ} -- below/above level of quantification\footnote{\textbf{L/H} -- symbols used in dataset in ADAPT5, \cite{DArgenio:2009aa}}, \xelem{BLQ} and \xelem{ALQ}
-%\end{itemize}
-%The following hypothetical dataset with several missing DV values
-%\begin{table}[htdp]
+\chapter{Design -- redesigned}
+\label{ch:Design}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Design in PharmML $\leq$ 0.6}
+Since version 0.2 PharmML was using SDM-XML, a CDISC standard \cite{CDISC:2011a}, 
+based trial design. With the beginning of the activities of a group working on trial design
+for MDL it became clear that this structure is insufficient and had to be reorganised and 
+redesigned, see figure \ref{fig:Flowchart07}. The main reasons are 
+\begin{itemize}
+\item
+CDISC based design is missing many elements, the most important ones being 
+the observations and design spaces. Although the former were supported in 
+PharmML, their implementation not only had to be done in \xelem{ModellingSteps} 
+section but it also lacked the connectivity to study arms.
+\item
+A number of typical design features, such as arm size, number of arms, total size,
+number of samples, number of times, cost function, total cost, was not accounted for.
+\item
+The rigid structure with epochs/cells/segment was unfamiliar to modellers 
+who need a more flexible arm based structure.
+\item
+Required specifically for optimal design, the re-definition of covariate 
+model, required for covariates to be optimised, was not supported in the CDISC 
+based structure.
+\item
+Design elements were spread over two sections, \xelem{TrialDesign} and \xelem{ModellingSteps}
+which created an inconsistent structure.
+\item
+The specification of external datasets, was located in \xelem{ModellingSteps}, but as 
+the source for design it belongs to trial design section.
+\item
+\xelem{ModellingSteps} section should contain only task description.
+%- Separation between model-design-tasks required - in Steps only task description - with 2 new elements
+\item
+The lack of compatibility with the new MDL design proposal -- translation would be 
+very hard to achieve given such two different structures.
+\end{itemize}
+The new design/trial design structure addresses the above issues and 
+because it was developed with both MDL and PharmML in mind, it promises 
+a very high \marginpar{\HandCuffLeft} degree of compatibility between 
+these two languages -- to be verified during the coming months. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Modifications and extensions}
+The new trial design structure consists of
+\begin{itemize}
+\item
+Core structure based on the design elements developed for MDL, \cite{Commets2015, CommetsExamples2015}.
+\item
+Additional features, some of which were available in PharmML since version 0.2.1 such as individual 
+observations, dosing, covariates.
+\end{itemize}
+While the detailed design is described in the according MDL specification proposal, 
+\cite{Commets2015}, the comparison on the following pages visualises the changes
+and differences. In the left column on page \pageref{miniPage:comparison}, the PharmML 
+$\leq$ 0.6 design elements are shown, distributed
+over two sections, \xelem{TrialDesign} and \xelem{ModellingSteps}. 
+On the right, a detailed list of current elements available for the trial design is given.
+
+All examples provided in the 'Modelling Description Language. Design 
+elements - Examples', \cite{CommetsExamples2015}, and all explicit design 
+based examples from the PharmML specification, \cite{Pharmml_06}, have 
+been successfully implemented.
+
+\newpage
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=165mm]{pics/Flowchart07}
+ \caption{Working with PharmML -- a schema showing three essential decision points: 
+ (A) the type of data (continuous and discrete), (B) the source of the study design and 
+ data (Monolix/NONMEM dataset or \xelem{TrialDesign}) and finally (C) the task type 
+ (for now only simulation and estimation tasks are fully supported, the design related 
+ tasks are under construction). \textbf{Note} that in comparison to 0.6 version, \cite{Pharmml_06}, 
+ all data and design elements are located in the \xelem{TrialDesign} section while the last 
+ section, \xelem{ModellingSteps}, carries only tasks related information.}
+ \label{fig:Flowchart07}
+\end{figure}
+
+\newpage
+
+%\LTcapwidth=\textwidth
 %\begin{center}
-%\small
-%\renewcommand{\arraystretch}{1.1}% 
-%\begin{tabular}{rrr}
-%\hline
-%ID 	& TIME	& DV	 \\ 
-%\hline
-%1 	& 3.43 		& -99 	\\ 
-%1 	& 5.2 		& 48.03 	 \\ 
-%1 	& 42.13 		& L	 \\ 
-%1 	& 52.63 		& +INF 	 \\ 
-%1 	& 57.53 		& 72.3  \\ 
-%...	& ...		& ...	\\ 
-%\hline
-%\end{tabular}
+%\renewcommand{\arraystretch}{1.1}%
+%\begin{longtable}{llcccc}
+%  \hline
+%  \hline
+%0.6 & 0.7\\
+%%\multicolumn{1}{c}{0.2}			& risation		&  3.0			& 1.4		& 4.3	& 7.3 \\
+%  \hline
+%
+%  \hline \\
+%\caption{Structure comparison of the trial design related features.}
+%\label{Tab:NewOldDesign}
+%%\vspace{-3.5em}
+%\end{longtable}
 %\end{center}
-%\vspace{-1em}\caption{A dataset with examples of missing data.}
-%\label{tab:uslessDataSet}
-%\end{table}%
-%
-%can be encoded in PharmML as the following snippet shows
+
+
+%%%%% LEFT PAGE %%%%%
+\begin{minipage}{0.35\textwidth}
+\small
+\centering 
+\pml $\le$ 0.6\\
+{\color{red} \scshape{\xelem{TrialDesign}}}
+\begin{flushleft} 
+\begin{itemize}
+\item 
+Structure
+\begin{itemize}
+\item
+Arm
+\item
+Cell
+\item
+Epoch
+\item
+Segment
+\item
+Activity
+\begin{itemize}
+\item
+Bolus
+\item
+Infusion
+\item
+Washout
+\item
+Lookup table
+\item
+Epoch Ref/Period
+\end{itemize}
+\end{itemize}
+\item
+Population
+\begin{itemize}
+\item
+Arm memberships \& covariates
+\item
+Demographics
+\end{itemize}
+\item 
+Individual Dosing
+\end{itemize}
+\vspace{2em}
+\end{flushleft}
+\centering 
+{\color{red} \scshape{\xelem{ModellingSteps}}}
+\begin{flushleft} 
+\begin{itemize}
+\item 
+\textbf{ExternalDataSet}
+\item 
+Simulation Step
+\begin{itemize}
+\item 
+\textbf{Observations}
+\item 
+Operation
+\end{itemize}
+\item 
+Estimation Step
+\begin{itemize}
+\item 
+\textbf{ObjectiveData}
+\item 
+Parameter Estimation
+\item 
+Operation
+\end{itemize}
+\item 
+Step dependencies
+\end{itemize}
+\end{flushleft}
+\end{minipage}
+%%%%% RIGHT PAGE %%%%%
+\begin{minipage}{0.6\textwidth}
+\small
+\centering 
+\pml 0.7\\
+{\color{red} \scshape{\xelem{TrialDesign}}}
+\begin{flushright}
+\begin{itemize}
+\item 
+ExternalDataSet
+\item 
+Interventions
+\begin{itemize}
+\item 
+Administration
+\begin{itemize}
+\item 
+InterventionRef
+\item
+Bolus
+\item
+Infusion
+\end{itemize}
+\item 
+IndividualAdministration
+\item 
+Action -- Washout
+\begin{itemize}
+\item 
+full reset
+\item 
+variable-wise
+\end{itemize}
+\item
+InterventionsCombination
+\end{itemize}
+\item 
+Observations
+\begin{itemize}
+\item 
+LookupTable 
+\item 
+IndividualObservations
+\item 
+Observation
+\item 
+ObservationsCombination
+\end{itemize}
+\item 
+Covariates
+\begin{itemize}
+\item 
+CovariateModel
+\begin{itemize}
+\item
+Categorical/Category: Probability, OccasionRef, InterventionRef, InterventionSequence
+\end{itemize}
+\item 
+IndividualCovariates
+\end{itemize}
+\item 
+Occasions/OccasionList
+\begin{itemize}
+\item 
+VariabilityReference
+\item 
+Occasion
+\end{itemize}
+\item 
+Arms
+\begin{itemize}
+\item 
+Simple elements: ArmSize, CostFunction, NumberArms, NumberSamples, NumberTimes, SameTimes, TotalCost, TotalSize
+\item 
+Arm
+\begin{itemize}
+\item 
+Simple elements: ArmSize, NumberSamples, NumberTimes, SameTimes
+\item 
+InterventionSequence/List
+\item 
+ObservationSequence/List
+\item 
+OccasionSequence/List
+\end{itemize}
+\end{itemize}
+\item 
+DesignSpaces
+\begin{itemize}
+\item 
+References: InterventionRef, ObservationRef, ArmRef, SymbRef, CovariateModelRef \& CovariateRef
+\item 
+Simple elements: ArmSize, DoseAmount, DosingTimes, Duration, NumberArms, NumberSamples, NumberTimes, SampleTimes
+\end{itemize}
+\end{itemize}
+\end{flushright}
+{\color{red} \scshape{\xelem{ModellingSteps}}}
+\begin{flushleft} 
+\begin{itemize}
+\item 
+Simulation Step / Operation
+\item 
+Estimation Step / Operation
+\item 
+Design Optimization Step -- {\color{darkgreen} \scshape{under construction}} 
+\item 
+Design Evaluation Step -- {\color{darkgreen} \scshape{under construction}}
+\item 
+Step dependencies
+\end{itemize}
+\end{flushleft}
+\label{miniPage:comparison}
+\end{minipage}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Selected features}
+The trial design structure, although intuitive and clearly structured,
+is quite complex. The reader is referred to the original specification 
+and example documents, \cite{CommetsExamples2015,Commets2015}.
+Here we describe only few examples of selected new features supported in this 
+release and indicate differences between PharmML and MDL.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Actions -- washout/reset options}
+Washout can now be customised while in previous versions only
+full reset was possible. One can define it for specific/selected variables 
+in the model, e.g. for A1 -- which is set to 10 at t=0.5, using 
+\xelem{VariableToReset} with optional \xelem{ResetValue} and 
+\xelem{ResetTime}
+\lstset{language=XML}
+\begin{lstlisting}
+            <Action oid="W1">
+                <Washout>
+                    <VariableToReset>
+                        <ct:SymbRef symbIdRef="A1"/>
+                        <ResetValue>10</ResetValue>
+                        <ResetTime>0.5</ResetTime>
+                    </VariableToReset>
+                </Washout>
+            </Action>
+\end{lstlisting}
+or alternatively for the entire model using the \xelem{FullReset}
+\lstset{language=XML}
+\begin{lstlisting}
+            <Action oid="w2">
+                <Washout>
+                    <VariableToReset>
+                        <FullReset/>
+                    </VariableToReset>
+                </Washout>
+            </Action>
+\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{\xelem{Interval} element}
+\label{subsec:interval}
+The \xelem{Interval} with children elements \xelem{LeftEndpoint} and \xelem{RightEndpoint}
+has been designed for the use e.g. in defining the design spaces as the 
+following example for optimising the observation times shows (but use in other 
+situations is possible as well). 
+\lstset{language=XML}
+\begin{lstlisting}
+    <DesignSpaces>
+        <DesignSpace>
+            <ObservationRef oidRef="window1"/>
+            <ObservationTimes>
+                <ct:Assign>
+                    <ct:Interval>
+                        <ct:LeftEndpoint>
+                            <ct:Assign>
+                                <ct:Real>0</ct:Real>
+                            </ct:Assign>
+                        </ct:LeftEndpoint>
+                        <ct:RightEndpoint>
+                            <ct:Assign>
+                                <ct:Real>72</ct:Real>
+                            </ct:Assign>
+                        </ct:RightEndpoint>
+                    </ct:Interval>
+                </ct:Assign>
+            </ObservationTimes>
+        </DesignSpace>
+\end{lstlisting}
+First the observation in question is specified with \xelem{ObservationRef}, 
+here \xatt{window1}, and subsequently the allowed interval, $[0,72]$, is defined.
+
+By default it is assumed that an endpoint is closed but the attribute \xatt{type}
+is available with two values \{closed, open\} to specified it accordingly to the 
+model requirements. E.g. for $[0,72)$\footnote{Note that in French notation this interval
+would be denoted as $[0,72[$.} design space the following snippet shows the 
+correct implementation
+\lstset{language=XML}
+\begin{lstlisting}
+        <ct:LeftEndpoint>
+            <!-- omitted details -->
+        </ct:LeftEndpoint>
+        <ct:RightEndpoint type="open">
+            <!-- omitted details -->
+        </ct:RightEndpoint>
+\end{lstlisting}
+
+
+%\subsection{Multiple references for design spaces are possible}
+%In certain situation 
 %\lstset{language=XML}
 %\begin{lstlisting}
-%    <Definition>
-%        <Column columnId="ID" columnType="id" valueType="id" columnNum="1"/>
-%        <Column columnId="TIME" columnType="idv" valueType="real" columnNum="2"/>
-%        <Column columnId="DV" columnType="dv" valueType="real" columnNum="3"/>
-%    </Definition>
-%    <Table>
-%        <!-- SUBJECT 1 -->
-%        <Row><ct:Id>i1</ct:Id><ct:Real>3.43</ct:Real><ct:NA/></Row>
-%        <Row><ct:Id>i1</ct:Id><ct:Real>5.3</ct:Real><ct:Real>48.03</ct:Real></Row> 
-%        <Row><ct:Id>i1</ct:Id><ct:Real>42.13</ct:Real><ct:BLQ/></Row>
-%        <Row><ct:Id>i1</ct:Id><ct:Real>52.63</ct:Real><ct:plusInf/></Row>
-%        <Row><ct:Id>i1</ct:Id><ct:Real>57.53</ct:Real><ct:Real>72.3</ct:Real></Row>
+%            <DesignSpaces>
+%                <DesignSpace>
+%                    <InterventionRef oidRef="d1"/>
+%                    <InterventionRef oidRef="d2"/>
+%                    <DoseAmount>
 %\end{lstlisting}
-%using the above defined elements.
-%
-%\paragraph{Note 1} Two of the elements described above, NA and $\infty$, 
-%were available before as child elements of \xelem{Constant} -- now merged with 
-%other \emph{missing values} for consistency. The current version is simpler 
-%as it does allow to specify the missing values directly, without a parent element.  
-%\paragraph{Note 2} The missing data encoding capabilities might be also very useful 
-%in the SO, which inherits the dataset definition from PharmML. For this to work the SO 
-%has to upgraded to be compliant with PharmML 0.7 so that it can make advantage of these features. 
-%
-%\subsection{External datasets}
-%Similar strategy is followed if an external dataset contains \emph{missing data}
-%records and this information needs to be passed to the target tool. Following 
-%new elements are available 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Using parameters in optimal design tasks} 
+\label{subsec:paramsInDesign}
+Consider a case of design optimisation, e.g. example 4, task 3 in 
+\cite{CommetsExamples2015}. Original description of a task where 
+a parameter, \emph{tdoseB}, is required, reads: \\
+\emph{We assume now a sequential trial, where treatment B is given 
+at time tdoseB after treatment A without washout, and we want to 
+optimise the time between the two treatments.} 
+
+\paragraph{step 1} First, the design parameter is declared and initialised: 
+\lstset{language=XML}
+\begin{lstlisting}
+          <Interventions>
+                <mdef:DesignParameter symbId="tdoseB">
+                    <ct:Assign>
+                        <ct:Real>0</ct:Real>
+                    </ct:Assign>
+                </mdef:DesignParameter>
+\end{lstlisting}
+\paragraph{step 2} and used to define an administration, \xatt{trtB}, with dose amount equal 100 and
+dosing time defined as a sequence, starting at \emph{tdoseB}, ending with \emph{tdoseB}+72
+with steps every 24, which is implemented as
+\lstset{language=XML}
+\begin{lstlisting}
+                <Administration oid="trtB">
+                    <Bolus>
+                        <DoseAmount inputTarget="admType">
+                            <TargetMapping blkIdRef="sm1">
+                                <ds:Map admNumber="2"/>
+                            </TargetMapping>
+                            <ct:Assign>
+                                <ct:Real>100</ct:Real>
+                            </ct:Assign>
+                        </DoseAmount>
+                        <DosingTimes>
+                            <ct:Assign>
+                                <ct:Sequence>
+                                    <ct:Begin>
+                                        <ct:SymbRef symbIdRef="tdoseB"/>
+                                    </ct:Begin>
+                                    <ct:StepSize>
+                                        <ct:Real>24</ct:Real>
+                                    </ct:StepSize>
+                                    <ct:End>
+                                        <Equation>
+                                            <Binop op="plus">
+                                                <ct:SymbRef symbIdRef="tdoseB"/>
+                                                <ct:Real>72</ct:Real>
+                                            </Binop>
+                                        </Equation>
+                                    </ct:End>
+                                </ct:Sequence>
+                            </ct:Assign>
+                        </DosingTimes>
+                    </Bolus>
+                </Administration>
+\end{lstlisting}
+
+\paragraph{step 3} Finally, the design space for \emph{tdoseB} is defined as 
+an interval [0,72]:
+\lstset{language=XML}
+\begin{lstlisting}
+                <DesignSpace>
+                    <ct:SymbRef symbIdRef="tdoseB"/>
+                    <ct:Assign>
+                        <ct:Interval>
+                            <ct:LeftEndpoint type="closed">
+                                <ct:Assign>
+                                    <ct:Real>0</ct:Real>
+                                </ct:Assign>
+                            </ct:LeftEndpoint>
+                            <ct:RightEndpoint type="closed">
+                                <ct:Assign>
+                                    <ct:Real>72</ct:Real>
+                                </ct:Assign>
+                            </ct:RightEndpoint>
+                        </ct:Interval>
+                    </ct:Assign>
+                </DesignSpace>
+            </DesignSpaces>            
+\end{lstlisting}
+Note that design spaces are supposed to \marginpar{\HandCuffLeft} deal with 
+any element of the design. The example document, \cite{CommetsExamples2015} and
+their PharmML implementation, feature multiple application cases.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Defining conditional covariate distribution}
+\label{subsec:condDistrib}
+Covariates can vary from arm to arm and/or be dependent 
+on other covariates, such as sex etc.
+Instead of defining them separately in according arms. Using a conditional 
+distribution defined in the \xelem{Covariates} block outside the \xelem{Arms},
+is a very effective way to express it. For example consider the following model
+\begin{align}
+P(WT|ARM) = 
+\left\{ \begin{array}{rcl}     
+\mathcal N \big(WT_{mean1}, WT_{variance1}\big) & \mbox{if} & ARM = arm1\\  
+\mathcal N \big(WT_{mean2}, WT_{variance2}\big) & \mbox{if} & ARM = arm2 
+\end{array}\right. \nonumber
+\end{align}
+The code is similar to that of conditional covariate distributions, 
+shown in Section \ref{sec:condDistros}, and will not be repeated here with the 
+exception of the \xelem{Condition} element using in this case the literal \xelem{True}
+of the Boolean data type
+\lstset{language=XML}
+\begin{lstlisting}
+                <Condition>
+                    <!-- "arm1" -->
+                    <LogicBinop op="eq">
+                        <ArmRef oidRef="arm1"/>
+                        <ct:True/>
+                    </LogicBinop>
+                </Condition>
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Optimising covariates distribution}
+One of the objectives in optimal design is to optimise the distribution of 
+relevant covariates, see \emph{example3\_taks2.xml} or the original MDL file, with 
+design elements to optimise on
+\begin{itemize}
+\item
+proportion of each genotype \& 
+\item
+proportion of each gender
+\end{itemize}
+In such case the initial covariate model is encoded in \xelem{ModelDefinition} as the following
+code snippet shows
+\lstset{language=XML}
+\begin{lstlisting}
+        <CovariateModel blkId="cm1">
+            <Covariate symbId="SEX">
+                <Categorical>
+                    <Category catId="F"/>
+                    <Category catId="M"/>
+                </Categorical>
+            </Covariate>
+            <Covariate symbId="Genetics">
+                <Categorical>
+                    <Category catId="common_Hz"/>
+                    <Category catId="hz"/>
+                    <Category catId="rare_hz"/>
+                </Categorical>
+            </Covariate>
+\end{lstlisting}
+which can be overwritten in \xelem{TrialDesign} if required. 
+The covariate model, if it applies to all arms, will be defined just after 
+the \xelem{Interventions} and \xelem{Observations} (another option is to define 
+arm-specific covariates within arms).
+
+Then the covariate model in the trial design starts with a refernce to the 
+base covariance model to be optimised.
+\lstset{language=XML}
+\begin{lstlisting}
+    <TrialDesign xmlns="http://www.pharmml.org/pharmml/0.6/TrialDesign">
+        
+        <mdef:DesignParameter symbId="Genp1">
+            <!-- omitted details -->
+        </mdef:DesignParameter>
+        <!-- omitted Genp2 declaration -->
+        <mdef:DesignParameter symbId="Genp3">
+            <!-- omitted details -->
+        </mdef:DesignParameter>
+        
+        <Interventions>
+            <!-- omitted details -->
+        </Interventions>            
+        <Observations>
+            <!-- omitted details -->
+        </Observations>
+        
+        <Covariates>
+            <!-- COVARIATE MODEL - overwritting covariate model defined in ModelDefinition -->
+            <CovariateModel oid="td_cm1">
+                <CovariateModelRef blkIdRef="cm1"/>
+                <Covariate symbId="SEX">
+                    <mdef:Categorical>
+                        <mdef:Category catId="M">
+                            <mdef:Probability>
+                                <ct:Real>0.5</ct:Real>
+                            </mdef:Probability>
+                        </mdef:Category>
+                        <mdef:Category catId="F">
+                            <mdef:Probability>
+                                <ct:Real>0.5</ct:Real>
+                            </mdef:Probability>
+                        </mdef:Category>
+                    </mdef:Categorical>
+                </Covariate>
+                <Covariate symbId="Genetics">
+                    <mdef:Categorical>
+                        <mdef:Category catId="common_Hz">
+                            <mdef:Probability>
+                                <ct:SymbRef symbIdRef="Genp1"/>
+                            </mdef:Probability>
+                        </mdef:Category>
+                        <mdef:Category catId="hz">
+                            <mdef:Probability>
+                                <ct:SymbRef symbIdRef="Genp2"/>
+                            </mdef:Probability>
+                        </mdef:Category>
+                        <mdef:Category catId="rare_hz">
+                            <mdef:Probability>
+                                <ct:SymbRef symbIdRef="Genp3"/>
+                            </mdef:Probability>
+                        </mdef:Category>
+                    </mdef:Categorical>
+                </Covariate>
+            </CovariateModel>            
+        </Covariates>
+        ...
+\end{lstlisting}
+The covariate model overwrites the base models in the \xelem{ModelDefinition}
+section, which is referenced with \xelem{CovariateModelRef blkIdRef="cm1"}.
+Also in this case we use \xelem{DesignParameter} element introduced in Section 
+\ref{subsec:paramsInDesign}, here \emph{Genp1}, \dots, \emph{Genp3} denoting 
+the proportions of each genotype, to be used later in the design spaces. Note that
+\xelem{DesignParameter} can be defined anywhere in the \xelem{TrialDesign} and 
+is valid in the entire section.
+
+Finally the design spaces can be specified, here an interval [0.25, 1] for \emph{Genp1}
+\lstset{language=XML}
+\begin{lstlisting}
+        <DesignSpaces>
+            <DesignSpace>
+                <ct:SymbRef symbIdRef="Genp1"/>
+                <ct:Assign>
+                    <ct:Interval>
+                        <ct:LeftEndpoint>
+                            <ct:Assign>
+                                <ct:Real>0.25</ct:Real>
+                            </ct:Assign>
+                        </ct:LeftEndpoint>
+                        <ct:RightEndpoint>
+                            <ct:Assign>
+                                <ct:Real>1</ct:Real>
+                            </ct:Assign>
+                        </ct:RightEndpoint>
+                    </ct:Interval>
+                </ct:Assign>
+            </DesignSpace>
+            <!-- omitted design spaces for remaining design parameters-->
+        </DesignSpaces>
+\end{lstlisting}
+
+\subparagraph{Note} that the covariate model in the trial design uses 
+the object identifiers, \xatt{oid}, rather then block identifiers, \xatt{blkId}.
+The change was required for the consistency with the use of the former 
+in the scope of the \xelem{TrialDesign} section.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Single subject design without arms} 
+\label{sec:noArms}
+This option is not currently supported in MDL proposal but was requested by 
+the modellers. It can be used 
+\begin{itemize}
+\item 
+in single subject scenarios to shorten the implementation burden 
+as such cases don't require a typical explicit design structure (with arms). 
+\item 
+to support existing simulation tools, such as Simulx.
+\end{itemize}
+It comes with the possibility to define dosing, observations, lookup tables 
+etc. without the need to define the study arms. For consistency, the dosing,
+observations times etc. information will still be encoded in \xelem{TrialDesign} but 
+without placing them within the \xelem{Arms} tags. 
+\begin{example}
+As a simple illustration consider a Simulx example\footnote{\url{http://webpopix.org:8080/dashboard/administration/}} 
+with explicit defined administration 
+\lstset{language=MLX}
+\begin{lstlisting}
+	adm1 <- list(type=1, amount=100, time=seq(0, 84, by=6))
+	adm2 <- list(type=2, amount=50, time=seq(3, 87, by=12), tinf=1)
+\end{lstlisting}
+\lstset{language=MLX}
+and observations\footnote{The original code uses 'length' argument which is currently not 
+supported in the \xelem{Sequence} element.}
+\begin{lstlisting}
+	Cc <- list(name='Cc', time=seq(-5, 100, by=.1))
+\end{lstlisting}
+for a model defined as a combination of PK macros and ODEs (here in MLXTRAN speak):
+\lstset{language=MLX}
+\begin{lstlisting}
+	PK:
+	depot(type=1, target=Ad, p=F)
+	depot(type=2, target=Ac)
+
+	EQUATION:
+	k = Cl/V
+	ddt_Ad = -ka*Ad
+	ddt_Ac =  ka*Ad - k*Ac
+	Cc = Ac/V
+\end{lstlisting}
+The administration related part of the show case can be easily implemented using the 
+\xelem{Administration} element within \xelem{Interventions} tag
+\lstset{language=XML}
+\begin{lstlisting}
+    <TrialDesign>
+        <Interventions>
+            <Administration oid="adm1">
+                <Bolus>
+                    <DoseAmount inputTarget="derivativeVariable">
+                        <ct:SymbRef symbIdRef="Ad"/>
+                        <ct:Assign>
+                            <ct:Real>100</ct:Real>
+                        </ct:Assign>
+                    </DoseAmount>
+                    <DosingTimes>
+                        <ct:Assign>
+                            <ct:Sequence>
+                                <ct:Begin><ct:Real>0</ct:Real></ct:Begin>
+                                <ct:StepSize><ct:Real>6</ct:Real></ct:StepSize>
+                                <ct:End><ct:Real>84</ct:Real></ct:End>
+                            </ct:Sequence>
+                        </ct:Assign>
+                    </DosingTimes>
+                </Bolus>
+            </Administration>
+            <Administration oid="adm2">
+                <Infusion>
+                    <DoseAmount inputTarget="derivativeVariable">
+                        <ct:SymbRef symbIdRef="Ac"/>
+                        <ct:Assign>
+                            <ct:Real>50</ct:Real>
+                        </ct:Assign>
+                    </DoseAmount>
+                    <DosingTimes>
+                        <!-- skipped, as similar to adm1 -->
+                    </DosingTimes>
+                    <Duration>
+                        <ct:Assign>
+                            <ct:Real>1</ct:Real>
+                        </ct:Assign>
+                    </Duration>
+                </Infusion>
+            </Administration>
+        </Interventions>
+\end{lstlisting}
+Finally the observations are implemented as 
+\lstset{language=XML}
+\begin{lstlisting}
+        <Observations>
+            <Observation oid="OBSoid_Cc">
+                <ObservationTimes>
+                    <ct:Assign>
+                        <ct:Sequence>
+                            <ct:Begin><ct:Real>-5</ct:Real></ct:Begin>
+                            <ct:StepSize><ct:Real>.1</ct:Real></ct:StepSize>
+                            <ct:End><ct:Real>100</ct:Real></ct:End>
+                        </ct:Sequence>
+                    </ct:Assign>
+                </ObservationTimes>
+                <Continuous>
+                    <ct:SymbRef symbIdRef="Cc"/>
+                </Continuous>
+            </Observation>
+        </Observations>
+    </TrialDesign>
+\end{lstlisting}
+The \xelem{SimulationStep} will contain the references to the interventions 
+and observations in question as shown in the code snippet  
+\lstset{language=XML}
+\begin{lstlisting}
+    <ModellingSteps xmlns="http://www.pharmml.org/pharmml/0.6/ModellingSteps">
+        
+        <SimulationStep oid="simTask1">
+            <InterventionsReference>
+                <ct:OidRef oidRef="adm1"/>
+                <ct:OidRef oidRef="adm2"/>
+            </InterventionsReference>
+            
+            <ObservationsReference>
+                <ct:OidRef oidRef="OBSoid_Cc"/>
+            </ObservationsReference>
+        </SimulationStep>
+    </ModellingSteps>
+\end{lstlisting}
+Note that the \xelem{InterventionsReference} element is new in this version.
+\end{example}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Design examples implemented}
+The examples listed below coming with the MDL proposal, \cite{CommetsExamples2015},
+have been successfully implemented in PharmML and are provided with the release 
+(in total 16 examples):
+
+\begin{itemize}
+\item 
+example1: Basic PK model with five tasks
 %\begin{itemize}
 %\item 
-%\xelem{MissingData} element with two attributes 
-%\begin{itemize}
-%\item 
-%\xatt{dataCode} -- any symbol used in the referenced dataset
-%\item 
-%\xatt{missingDataType} -- one of \{\emph{NA}, \emph{NaN}, \emph{plusInf}, \emph{minusInf}, 
-%\emph{BLQ}, \emph{ALQ} \}, consistent with elements introduced in the previous section.
+%\emph{example1$\_$task1$\_$onegroup$\_$evaluate.xml}, \emph{example1$\_$task1$\_$twogroups$\_$evaluate.xml}, 
+%\emph{example1$\_$task2$\_$twogroups$\_$optimise.xml}, \emph{example1$\_$task3$\_$onegroup$\_$optimiseFW.xml},
+%\emph{example1$\_$task4$\_$fourgroup$\_$optimisePopED.xml}
 %\end{itemize}
-%\end{itemize}                
-%The dataset used previously, table \ref{tab:uslessDataSet}, is assumed now to be stored
-%externally as \emph{myFile.csv}, see \xelem{path} element below.
-%The missing data codes used in such the dataset are mapped to the allowed types
-%as shown in the following code
-%\lstset{language=XML}
-%\begin{lstlisting}
-%        <ExternalDataSet toolName="NONMEM" oid="NMoid">
-%            <ds:DataSet>
-%                <ds:Definition>
-%                    <ds:Column columnId="ID" columnType="id" valueType="id" columnNum="1"/>
-%                    <ds:Column columnId="TIME" columnType="idv" valueType="real" columnNum="2"/>
-%                    <ds:Column columnId="DV" columnType="dv" valueType="real" columnNum="3"/>
-%                </ds:Definition>
-%                <ds:ExternalFile oid="extFile">
-%                    <ds:path>myFile.csv</ds:path>
-%                    <MissingData dataCode="-99" missingDataType="NA"/>
-%                    <MissingData dataCode="+INF" missingDataType="plusInf"/>
-%                    <MissingData dataCode="L" missingDataType="BLQ"/>
-%                </ds:ExternalFile>
-%            </ds:DataSet>
-%        </ExternalDataSet>
-%\end{lstlisting}
-%It is important to note that mappings within \xelem{MissingData} will vary between datasets
-%coming from different tools and must be supplied each time by the user/tool writing the 
-%PharmML along with the particular dataset.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Dataset headers}
-%\label{sec:headers}
-%Even though headers are currently not used by the main estimation target 
-%tools, Monolix or NONMEM, to carry any information which can directly be interpreted 
-%and used, others, such as Simcyp Simulator, makes frequent use of headers. 
-%
-%Therefore, new \xelem{Header} and \xelem{HeaderRow} elements, placed in the 
-%\xelem{Definition} and \xelem{Table} parts of the dataset, respectively, 
-%are introduced and their use is entirely optional. The header definition comes with 
-%following attributes
-%\begin{description}
-%\item[name] which can be any string, see example below. 
-%\item[headerType] with possible values \{\emph{mainHeader}, \emph{subHeader},
-%\emph{userDefined}\} 
-%\item[rowNumber] specifying the sequence of headers  
-%\end{description}
-%
-%The \xelem{HeaderRow} elements, containing the actual header information, are places
-%at the top of the \xelem{Table}. Their number must be equal the number of
-%\xelem{Header} elements as the defined in the \xelem{Definition}. Their sequence is 
-%indicated with the \xatt{order} attribute and must be in sync with the \xatt{rowNumber}
-%values.
-%\lstset{language=XML}
-%\begin{lstlisting}
-%<IndividualCovariates>
-%    <ColumnMapping>
-%        <ds:ColumnRef columnIdRef="wt"/>
-%        <ct:SymbRef blkIdRef="cm1" symbIdRef="W"/>
-%    </ColumnMapping>
-%    <ds:DataSet>
-%        <ds:Definition>
-%            <ds:Header name="1stheader" headerType="mainHeader" rowNumber="1"/>
-%            <ds:Header name="header" headerType="subHeader" rowNumber="2"/>
-%            <ds:Header name="AddHeader" headerType="userDefined" rowNumber="3"/>
-%            <ds:Column columnId="ID" columnType="id" valueType="string" columnNum="1"/>
-%            <ds:Column columnId="ARM" columnType="arm" valueType="id" columnNum="2"/>
-%            <ds:Column columnId="BSA" columnType="covariate" valueType="real" columnNum="3"/>
-%        </ds:Definition>
-%        <ds:Table>
-%            <ds:HeaderRow order="1">
-%                <ct:String>ID_main</ct:String>
-%                <ct:String>ARM_main_header</ct:String>
-%                <ct:String>BSA_main_header</ct:String>
-%            </ds:HeaderRow>
-%            <ds:HeaderRow order="2">
-%                <ct:String>ID_sub_header</ct:String>
-%                <ct:String>ARM_sub_header</ct:String>
-%                <ct:String>BSA_sub_header</ct:String>
-%            </ds:HeaderRow>
-%            <ds:HeaderRow order="3">
-%                <ct:String>other_info</ct:String>
-%                <ct:String>other_info</ct:String>
-%                <ct:String>other_info</ct:String>
-%            </ds:HeaderRow>
-%            <ds:Row><ct:String>1</ct:String><ct:Id>arm1</ct:Id><ct:NA/></ds:Row>
-%            <ds:Row><ct:String>2</ct:String><ct:Id>arm1</ct:Id><ct:Real>60.0</ct:Real></ds:Row>
-%            <ds:Row><ct:String>3</ct:String><ct:Id>arm1</ct:Id><ct:Real>93.2</ct:Real></ds:Row>
-%            <ds:Row><ct:String>4</ct:String><ct:Id>arm1</ct:Id><ct:Real>85.7</ct:Real></ds:Row>
-%            <ds:Row><ct:String>5</ct:String><ct:Id>arm1</ct:Id><ct:Real>78.3</ct:Real></ds:Row>
-%            <!-- SNIP -->
-%            <ds:Row><ct:String>33</ct:String><ct:Id>arm1</ct:Id><ct:Real>94.1</ct:Real></ds:Row>
-%        </ds:Table>
-%    </ds:DataSet>
-%</IndividualCovariates>
-%\end{lstlisting}
-%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Regressor support}
-%\label{sec:regressors}
-%
-%\subsection{Support in $\leq$ 0.6 versions}
-%Already since version 0.3 (introduced in April 2014), PharmML accounts for 
-%regressors if they are coming from datasets, by means of \xatt{columnType} attribute 
-%which can be specified as \xatt{reg} for regressors (time-varying covariates) 
-%or \xatt{covariate} for time-constant covariates. 
-% 
-%Another type of regressor support has been the \xelem{LookupTable} (also developed 
-%already for 0.3 version), which allows implementation of
+\item 
+example2: PK/PD model with four tasks
 %\begin{itemize}
 %\item 
-%concentration data to be coupled with a PD model. The PK data is 
-%available as a lookup table, i.e. measurement records for which the underlying 
-%PK model is unknown or not essential.
-%\item
-%\emph{minimal model}-type models used frequently in diabetes require the coupling
-%of insulin input as discrete measurements to the glucose/insulin homeostasis model. 
-%Also here the data is coming in form of a lookup table, usually with two columns, one for 
-%time and the other for the dependent variable.
+%\emph{example2$\_$task1.xml}, \emph{example2$\_$task2.xml}, \emph{example2$\_$task3.xml},
+%\emph{example2$\_$task4.xml}
 %\end{itemize}
-%The support comes with an build-in list of interpolation algorithm types (not the algorithms 
-%of course) to choose from such as
+\item 
+example3: PK model with two covariates with three tasks
 %\begin{itemize}
 %\item 
-%\emph{nearest, constant, linear, spline, chip, cubic}
+%\emph{example3$\_$task1.xml}, \emph{example3$\_$task2.xml},\emph{example3$\_$task3.xml}
 %\end{itemize}
-%plus any user-defined algorithms, see \cite{Swat:2014aa} for detailed description
-%and examples. We introduce now one new type, the \emph{last value} used by Monolix.
-%
-%
-%On the other hand, the common \xelem{Variable} type can already (again already since 
-%0.3 version) play a role of a regressor, e.g. one could simply define variable 'C'
-%with interpolation type with respect to a variable of modellers choice, e.g.
-%\lstset{language=XML}
-%\begin{lstlisting}
-%            <ct:Variable symbolType="real" symbId="C">
-%                <ct:Assign>
-%                    <ct:Interpolation>
-%                        <ct:Algorithm>spline</ct:Algorithm>
-%                        <ct:InterpIndepVar>
-%                            <ct:SymbRef symbIdRef="t"/>
-%                        </ct:InterpIndepVar>
-%                    </ct:Interpolation>
-%                </ct:Assign>
-%            </ct:Variable>
-%\end{lstlisting}
-%
-%\subsection{Support in 0.7 version}
-%The issue with the usage of \xelem{Variable} as regressor it that it cannot be 
-%easily recognised as such. Therefore we have introduced an additional and optional 
-%attribute
+\item 
+example4: PK with IOV and treatment covariate (different for each occasion)
 %\begin{itemize}
 %\item 
-%\xatt{regressor} -- with possible values \emph{yes}/\emph{no} 
+%\emph{example4$\_$task1.xml}, \emph{example4$\_$task2.xml}, \emph{example4$\_$task3.xml}
 %\end{itemize}
-%which will give e.g. Monolix the required support. This will also allow models such as 
-%that described in \url{http://simulx.webpopix.org/userguide/function-time-regression}
-%to be implemented in PharmML and run with Simulx .
-%This means support for yet another tool which is a valuable extension from the
-%perspective of the DDMoRe platform. 
-%
-%The PharmML looks then almost identical to the previous case if the source of
-%data for \emph{C} is a data vector in the \xelem{LookupTable}
+\item 
+example5: Combination of two treatments - evaluation and optimisation
+%\begin{itemize}
+%\item 
+%\emph{example5$\_$task1.xml}
+%\end{itemize}
+\end{itemize}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Differences compared to MDL}
+Here a short list of features related to the trial design not yet covered in MDL
+\begin{itemize}	
+\item 
+Conditional distributions, see section \ref{subsec:condDistrib}.
+\item 
+Defining dosing/observations without arm structure, see section \ref{sec:noArms},
+is not yet available in MDL (or just not described in the MDL design spec,
+\cite{Commets2015} ) but is straight forward to achieve.
+\item 
+Encoding of individual observations/administrations/covariates (available in \pml since 
+version 0.2.1).\
+\end{itemize}
+
+
+
+%-- reference to observation data not required
 %\lstset{language=XML}
 %\begin{lstlisting}
-%            <ct:Variable symbolType="real" regressor="yes" symbId="C">
-%                <ct:Assign>
-%                    <!-- details skipped here -->
-%                </ct:Assign>
-%            </ct:Variable>
+%            <ObservationsReference>
+%                <ct:OidRef oidRef="OBSoid"/>
+%            </ObservationsReference>
 %\end{lstlisting}
-%or even as short as
-%\lstset{language=XML}
-%\begin{lstlisting}
-%            <ct:Variable symbolType="real" regressor="yes" symbId="C"/>
-%\end{lstlisting}
-%if the model for \emph{C} comes from an external source.
-%
-%
+%-- old design supported Individual Dosing but now 
+%arm-wise scaling is possible as well \\
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Conditional distributions}
-%\label{sec:condDistros}
-%This structure can be used e.g. in covariate or other models. In this 
-%particular example the body weight, WT, is distributed differently for female and male subjects: 
-%\begin{align}
-%P(WT|SEX) = 
-%\left\{ \begin{array}{rcl}     
-%\mathcal N \big(WT^F_{mean}, WT^F_{variance}\big) & \mbox{for} & SEX == F \\  
-%\mathcal N \big(WT^M_{mean}, WT^M_{variance}\big) & \mbox{for} & SEX == M
-%\end{array}\right. \nonumber
-%\end{align}
-%To encode that first the SEX covariate needs to be defined 
-%\lstset{language=XML}
-%\begin{lstlisting}
-%    <CovariateModel blkId="cm1">
-%        <Covariate symbId="SEX">
-%            <Categorical>
-%                <Category catId="M"/>
-%                <Category catId="F"/>
-%            </Categorical>
-%        </Covariate>
-%\end{lstlisting}
-%and then the WT covariate and its distribution with the piece-wise structure
-%\lstset{language=XML}
-%\begin{lstlisting}
-%        <Covariate symbId="WT">  
-%            <Continuous>
-%                <Distribution>
-%                    <Piecewise>
-%                        <Piece xmlns="http://www.pharmml.org/pharmml/0.6/Maths">
-%                            <ProbOnto name="Normal2">
-%                                <mdef:Parameter name="mean">
-%                                    <ct:Assign>
-%                                        <ct:SymbRef symbIdRef="WT_F_mean"/>
-%                                    </ct:Assign>
-%                                </mdef:Parameter>
-%                                <mdef:Parameter name="var">
-%                                    <ct:Assign>
-%                                        <ct:SymbRef symbIdRef="WT_F_variance"/>
-%                                    </ct:Assign>
-%                                </mdef:Parameter>
-%                            </ProbOnto>
-%                            <Condition>
-%                                <!-- SEX=="F" -->
-%                                <LogicBinop op="eq">
-%                                    <ct:SymbRef blkIdRef="cm1" symbIdRef="SEX"/>
-%                                    <ct:CatRef catIdRef="F"/>
-%                                </LogicBinop>
-%                            </Condition>
-%                        </Piece>
-%                        <Piece xmlns="http://www.pharmml.org/pharmml/0.6/Maths">
-%                            <ProbOnto name="Normal2">
-%                                <mdef:Parameter name="mean">
-%                                    <ct:Assign>
-%                                        <ct:SymbRef symbIdRef="WT_M_mean"/>
-%                                    </ct:Assign>
-%                                </mdef:Parameter>
-%                                <mdef:Parameter name="var">
-%                                    <ct:Assign>
-%                                        <ct:SymbRef symbIdRef="WT_M_variance"/>
-%                                    </ct:Assign>
-%                                </mdef:Parameter>
-%                            </ProbOnto>
-%                            <Condition>
-%                                <!-- SEX=="M" -->
-%                                <LogicBinop op="eq">
-%                                    <ct:SymbRef blkIdRef="cm1" symbIdRef="SEX"/>
-%                                    <ct:CatRef catIdRef="M"/>
-%                                </LogicBinop>
-%                            </Condition>
-%                        </Piece>
-%                    </Piecewise>
-%                </Distribution>
-%            </Continuous>
-%        </Covariate>
-%\end{lstlisting}
-%Note that we use ProbOnto's normal distribution, \xatt{Normal2}, which is parameterised with mean and variance.
+%\section{OTHERS}
 %
+%\begin{itemize}
+%\item
+%NEW StandardAssignType - DISCUSS!!!!
+%\end{itemize}
 %
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Other changes}
+\label{ch:otherChanges}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Box-Cox transformation}
+\label{sec:BoxCoxTrafo}
+The Box-Cox Transformation, \cite{BoxCox:1964}, is used to transform data to an approximate normal distribution
+and reads
+\begin{align}
+h(x) = \left\{ \begin{array}{rcl}  \frac{x^{\lambda} -1}{\lambda} & \mbox{for} & \lambda \neq 0 \\  \log(x) & \mbox{for} & \lambda = 0 \end{array}\right. \nonumber
+\end{align}
+It can be applied to parameters, observations and covariates. 
+A random variable, $X$, is called power-normally distributed if its 
+Box-Cox transformation is normally distributed, $h(x) \sim \mathcal {N} (\mu,\omega^2)$, 
+and truncated so that $h(x) > 0$, \cite{LavielleBook:2014}.
+
+\subsection{Box-Cox in parameter model}
+A parameter to which the Box-Cox transformation is applied 
+\begin{align*}
+        V_{i}^{(\lambda)} = V_{pop}^{(\lambda)} + \eta_V
+\end{align*}
+can be implemented in PharmML as
+\lstset{language=XML}
+\begin{lstlisting}
+        <IndividualParameter symbId="V">
+            <StructuredModel>
+                <Transformation type="BoxCox">
+                    <Parameter>
+                        <ct:Assign>
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
+                        </ct:Assign>
+                    </Parameter>
+                </Transformation>
+                <PopulationValue>
+                    <ct:Assign>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="pop_V"/>
+                    </ct:Assign>
+                </PopulationValue>
+                <RandomEffects>
+                    <ct:SymbRef symbIdRef="eta_V"/>
+                </RandomEffects>
+            </StructuredModel>
+        </IndividualParameter>
+ \end{lstlisting}
+Note the new \xatt{type} attribute value, \emph{BoxCox}, in the \xelem{Transformation} 
+tag and the associated additional element \xelem{Parameter} where the Box-Cox 
+parameter is defined. The rest follows the pattern for the \xelem{StructuredModel}.
+Here the redesigned structure is used of \xelem{StructuredModel} in that the 
+\xelem{PopulationValue} element can act alone without the \xelem{LinearCovariate} 
+parent element, see section \ref{sec:individualParameter}
+for more details.
+
+\subsection{Box-Cox in observation model}
+The following observation model 
+\begin{align*}
+        Cc_{obs}^{(\lambda)} = Cc^{(\lambda)} + a \epsilon, \quad \text{with} \quad \epsilon \sim N(0,1)
+\end{align*}
+is implemented analogously as 
+\lstset{language=XML}
+\begin{lstlisting}
+                <Standard symbId="Cc_obs">
+                    <Transformation type="BoxCox">
+                        <Lambda>
+                            <ct:Assign>
+                                <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
+                            </ct:Assign>
+                        </Lambda>
+                    </Transformation>
+                    <Output>
+                        <ct:SymbRef blkIdRef="sm1" symbIdRef="Cc"/>
+                    </Output>
+                    <ErrorModel>
+                        <ct:Assign>
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="a"/>
+                        </ct:Assign>
+                    </ErrorModel>
+                    <ResidualError>
+                        <ct:SymbRef symbIdRef="epsilon_Cc"/>
+                    </ResidualError>
+                </Standard>
+\end{lstlisting}
+
+
+\subsection{Box-Cox in covariate model}
+The encoding of the Box-Cox transformation is already possible using the
+standard \xelem{FunctionDefinition} element and for now no new structure has been introduced.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Encoding of missing data}
+\label{sec:missingData}
+Following discussion at Pavia meeting November 2013, described in the meeting 
+report \cite{Swat:2013pavia}, and later comments we have extended 
+PharmML both for inline or external storage of data records.  We reuse symbols for special numerical values
+used in R (see \href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/is.finite.html}{is.finite\{base\}}) 
+and SAS (see \href{http://support.sas.com/documentation/cdl/en/imlug/63541/HTML/default/viewer.htm#imlug_r_sect019.htm}{SAS/IML(R) 9.22})\footnote{Other possible codes are \textbf{DEE} or \textbf{-99} (SAS) 
+-- data entry error or \textbf{SRA} or \textbf{-999} (SAS) -- subject refused answer, 
+see \url{http://www.ats.ucla.edu/stat/sas/faq/how_to_code_missing_differently.htm}, 
+but will not be introduced unless required} to provide means to encode missing data.
+
+\subsection{Inline stored datasets}
+When data is stored inline within \pml, few new predefined XML elements are required. Here the 
+list of typical missing data types and corresponding elements introduced in this version:
+\begin{itemize}
+\item
+\textbf{NA} -- not available/missing data, \xelem{NA}
+\item
+\textbf{NaN} -- not a number -- impossible values (e.g., dividing by zero), \xelem{NaN}
+\item
+\textbf{+Inf}/\textbf{-Inf}  -- positive/negative infinity, \xelem{plusInf} and \xelem{minusInf}
+\item
+\textbf{BLQ}/\textbf{ALQ} -- below/above level of quantification\footnote{\textbf{L/H} -- symbols used in dataset in ADAPT5, \cite{DArgenio:2009aa}}, \xelem{BLQ} and \xelem{ALQ}
+\end{itemize}
+The following hypothetical dataset with several missing DV values
+\begin{table}[htdp]
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.1}% 
+\begin{tabular}{rrr}
+\hline
+ID 	& TIME	& DV	 \\ 
+\hline
+1 	& 3.43 		& -99 	\\ 
+1 	& 5.2 		& 48.03 	 \\ 
+1 	& 42.13 		& L	 \\ 
+1 	& 52.63 		& +INF 	 \\ 
+1 	& 57.53 		& 72.3  \\ 
+...	& ...		& ...	\\ 
+\hline
+\end{tabular}
+\end{center}
+\vspace{-1em}\caption{A dataset with examples of missing data.}
+\label{tab:uslessDataSet}
+\end{table}%
+
+can be encoded in PharmML as the following snippet shows
+\lstset{language=XML}
+\begin{lstlisting}
+    <Definition>
+        <Column columnId="ID" columnType="id" valueType="id" columnNum="1"/>
+        <Column columnId="TIME" columnType="idv" valueType="real" columnNum="2"/>
+        <Column columnId="DV" columnType="dv" valueType="real" columnNum="3"/>
+    </Definition>
+    <Table>
+        <!-- SUBJECT 1 -->
+        <Row><ct:Id>i1</ct:Id><ct:Real>3.43</ct:Real><ct:NA/></Row>
+        <Row><ct:Id>i1</ct:Id><ct:Real>5.3</ct:Real><ct:Real>48.03</ct:Real></Row> 
+        <Row><ct:Id>i1</ct:Id><ct:Real>42.13</ct:Real><ct:BLQ/></Row>
+        <Row><ct:Id>i1</ct:Id><ct:Real>52.63</ct:Real><ct:plusInf/></Row>
+        <Row><ct:Id>i1</ct:Id><ct:Real>57.53</ct:Real><ct:Real>72.3</ct:Real></Row>
+\end{lstlisting}
+using the above defined elements.
+
+\paragraph{Note 1} Two of the elements described above, NA and $\infty$, 
+were available before as child elements of \xelem{Constant} -- now merged with 
+other \emph{missing values} for consistency. The current version is simpler 
+as it does allow to specify the missing values directly, without a parent element.  
+\paragraph{Note 2} The missing data encoding capabilities might be also very useful 
+in the SO, which inherits the dataset definition from PharmML. For this to work the SO 
+has to upgraded to be compliant with PharmML 0.7 so that it can make advantage of these features. 
+
+\subsection{External datasets}
+Similar strategy is followed if an external dataset contains \emph{missing data}
+records and this information needs to be passed to the target tool. Following 
+new elements are available 
+\begin{itemize}
+\item 
+\xelem{MissingData} element with two attributes 
+\begin{itemize}
+\item 
+\xatt{dataCode} -- any symbol used in the referenced dataset
+\item 
+\xatt{missingDataType} -- one of \{\emph{NA}, \emph{NaN}, \emph{plusInf}, \emph{minusInf}, 
+\emph{BLQ}, \emph{ALQ} \}, consistent with elements introduced in the previous section.
+\end{itemize}
+\end{itemize}                
+The dataset used previously, table \ref{tab:uslessDataSet}, is assumed now to be stored
+externally as \emph{myFile.csv}, see \xelem{path} element below.
+The missing data codes used in such the dataset are mapped to the allowed types
+as shown in the following code
+\lstset{language=XML}
+\begin{lstlisting}
+        <ExternalDataSet toolName="NONMEM" oid="NMoid">
+            <ds:DataSet>
+                <ds:Definition>
+                    <ds:Column columnId="ID" columnType="id" valueType="id" columnNum="1"/>
+                    <ds:Column columnId="TIME" columnType="idv" valueType="real" columnNum="2"/>
+                    <ds:Column columnId="DV" columnType="dv" valueType="real" columnNum="3"/>
+                </ds:Definition>
+                <ds:ExternalFile oid="extFile">
+                    <ds:path>myFile.csv</ds:path>
+                    <MissingData dataCode="-99" missingDataType="NA"/>
+                    <MissingData dataCode="+INF" missingDataType="plusInf"/>
+                    <MissingData dataCode="L" missingDataType="BLQ"/>
+                </ds:ExternalFile>
+            </ds:DataSet>
+        </ExternalDataSet>
+\end{lstlisting}
+It is important to note that mappings within \xelem{MissingData} will vary between datasets
+coming from different tools and must be supplied each time by the user/tool writing the 
+PharmML along with the particular dataset.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Dataset headers}
+\label{sec:headers}
+Even though headers are currently not used by the main estimation target 
+tools, Monolix or NONMEM, to carry any information which can directly be interpreted 
+and used, others, such as Simcyp Simulator, makes frequent use of headers. 
+
+Therefore, new \xelem{Header} and \xelem{HeaderRow} elements, placed in the 
+\xelem{Definition} and \xelem{Table} parts of the dataset, respectively, 
+are introduced and their use is entirely optional. The header definition comes with 
+following attributes
+\begin{description}
+\item[name] which can be any string, see example below. 
+\item[headerType] with possible values \{\emph{mainHeader}, \emph{subHeader},
+\emph{userDefined}\} 
+\item[rowNumber] specifying the sequence of headers  
+\end{description}
+
+The \xelem{HeaderRow} elements, containing the actual header information, are places
+at the top of the \xelem{Table}. Their number must be equal the number of
+\xelem{Header} elements as the defined in the \xelem{Definition}. Their sequence is 
+indicated with the \xatt{order} attribute and must be in sync with the \xatt{rowNumber}
+values.
+\lstset{language=XML}
+\begin{lstlisting}
+<IndividualCovariates>
+    <ColumnMapping>
+        <ds:ColumnRef columnIdRef="wt"/>
+        <ct:SymbRef blkIdRef="cm1" symbIdRef="W"/>
+    </ColumnMapping>
+    <ds:DataSet>
+        <ds:Definition>
+            <ds:Header name="1stheader" headerType="mainHeader" rowNumber="1"/>
+            <ds:Header name="header" headerType="subHeader" rowNumber="2"/>
+            <ds:Header name="AddHeader" headerType="userDefined" rowNumber="3"/>
+            <ds:Column columnId="ID" columnType="id" valueType="string" columnNum="1"/>
+            <ds:Column columnId="ARM" columnType="arm" valueType="id" columnNum="2"/>
+            <ds:Column columnId="BSA" columnType="covariate" valueType="real" columnNum="3"/>
+        </ds:Definition>
+        <ds:Table>
+            <ds:HeaderRow order="1">
+                <ct:String>ID_main</ct:String>
+                <ct:String>ARM_main_header</ct:String>
+                <ct:String>BSA_main_header</ct:String>
+            </ds:HeaderRow>
+            <ds:HeaderRow order="2">
+                <ct:String>ID_sub_header</ct:String>
+                <ct:String>ARM_sub_header</ct:String>
+                <ct:String>BSA_sub_header</ct:String>
+            </ds:HeaderRow>
+            <ds:HeaderRow order="3">
+                <ct:String>other_info</ct:String>
+                <ct:String>other_info</ct:String>
+                <ct:String>other_info</ct:String>
+            </ds:HeaderRow>
+            <ds:Row><ct:String>1</ct:String><ct:Id>arm1</ct:Id><ct:NA/></ds:Row>
+            <ds:Row><ct:String>2</ct:String><ct:Id>arm1</ct:Id><ct:Real>60.0</ct:Real></ds:Row>
+            <ds:Row><ct:String>3</ct:String><ct:Id>arm1</ct:Id><ct:Real>93.2</ct:Real></ds:Row>
+            <ds:Row><ct:String>4</ct:String><ct:Id>arm1</ct:Id><ct:Real>85.7</ct:Real></ds:Row>
+            <ds:Row><ct:String>5</ct:String><ct:Id>arm1</ct:Id><ct:Real>78.3</ct:Real></ds:Row>
+            <!-- SNIP -->
+            <ds:Row><ct:String>33</ct:String><ct:Id>arm1</ct:Id><ct:Real>94.1</ct:Real></ds:Row>
+        </ds:Table>
+    </ds:DataSet>
+</IndividualCovariates>
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Regressor support}
+\label{sec:regressors}
+
+\subsection{Support in $\leq$ 0.6 versions}
+Already since version 0.3 (introduced in April 2014), PharmML accounts for 
+regressors if they are coming from datasets, by means of \xatt{columnType} attribute 
+which can be specified as \xatt{reg} for regressors (time-varying covariates) 
+or \xatt{covariate} for time-constant covariates. 
+ 
+Another type of regressor support has been the \xelem{LookupTable} (also developed 
+already for 0.3 version), which allows implementation of
+\begin{itemize}
+\item 
+concentration data to be coupled with a PD model. The PK data is 
+available as a lookup table, i.e. measurement records for which the underlying 
+PK model is unknown or not essential.
+\item
+\emph{minimal model}-type models used frequently in diabetes require the coupling
+of insulin input as discrete measurements to the glucose/insulin homeostasis model. 
+Also here the data is coming in form of a lookup table, usually with two columns, one for 
+time and the other for the dependent variable.
+\end{itemize}
+The support comes with an build-in list of interpolation algorithm types (not the algorithms 
+of course) to choose from such as
+\begin{itemize}
+\item 
+\emph{nearest, constant, linear, spline, chip, cubic}
+\end{itemize}
+plus any user-defined algorithms, see \cite{Swat:2014aa} for detailed description
+and examples. We introduce now one new type, the \emph{last value} used by Monolix.
+
+
+On the other hand, the common \xelem{Variable} type can already (again already since 
+0.3 version) play a role of a regressor, e.g. one could simply define variable 'C'
+with interpolation type with respect to a variable of modellers choice, e.g.
+\lstset{language=XML}
+\begin{lstlisting}
+            <ct:Variable symbolType="real" symbId="C">
+                <ct:Assign>
+                    <ct:Interpolation>
+                        <ct:Algorithm>spline</ct:Algorithm>
+                        <ct:InterpIndepVar>
+                            <ct:SymbRef symbIdRef="t"/>
+                        </ct:InterpIndepVar>
+                    </ct:Interpolation>
+                </ct:Assign>
+            </ct:Variable>
+\end{lstlisting}
+
+\subsection{Support in 0.7 version}
+The issue with the usage of \xelem{Variable} as regressor it that it cannot be 
+easily recognised as such. Therefore we have introduced an additional and optional 
+attribute
+\begin{itemize}
+\item 
+\xatt{regressor} -- with possible values \emph{yes}/\emph{no} 
+\end{itemize}
+which will give e.g. Monolix the required support. This will also allow models such as 
+that described in \url{http://simulx.webpopix.org/userguide/function-time-regression}
+to be implemented in PharmML and run with Simulx .
+This means support for yet another tool which is a valuable extension from the
+perspective of the DDMoRe platform. 
+
+The PharmML looks then almost identical to the previous case if the source of
+data for \emph{C} is a data vector in the \xelem{LookupTable}
+\lstset{language=XML}
+\begin{lstlisting}
+            <ct:Variable symbolType="real" regressor="yes" symbId="C">
+                <ct:Assign>
+                    <!-- details skipped here -->
+                </ct:Assign>
+            </ct:Variable>
+\end{lstlisting}
+or even as short as
+\lstset{language=XML}
+\begin{lstlisting}
+            <ct:Variable symbolType="real" regressor="yes" symbId="C"/>
+\end{lstlisting}
+if the model for \emph{C} comes from an external source.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conditional distributions}
+\label{sec:condDistros}
+This structure can be used e.g. in covariate or other models. In this 
+particular example the body weight, WT, is distributed differently for female and male subjects: 
+\begin{align}
+P(WT|SEX) = 
+\left\{ \begin{array}{rcl}     
+\mathcal N \big(WT^F_{mean}, WT^F_{variance}\big) & \mbox{for} & SEX == F \\  
+\mathcal N \big(WT^M_{mean}, WT^M_{variance}\big) & \mbox{for} & SEX == M
+\end{array}\right. \nonumber
+\end{align}
+To encode that first the SEX covariate needs to be defined 
+\lstset{language=XML}
+\begin{lstlisting}
+    <CovariateModel blkId="cm1">
+        <Covariate symbId="SEX">
+            <Categorical>
+                <Category catId="M"/>
+                <Category catId="F"/>
+            </Categorical>
+        </Covariate>
+\end{lstlisting}
+and then the WT covariate and its distribution with the piece-wise structure
+\lstset{language=XML}
+\begin{lstlisting}
+        <Covariate symbId="WT">  
+            <Continuous>
+                <Distribution>
+                    <Piecewise>
+                        <Piece xmlns="http://www.pharmml.org/pharmml/0.6/Maths">
+                            <ProbOnto name="Normal2">
+                                <mdef:Parameter name="mean">
+                                    <ct:Assign>
+                                        <ct:SymbRef symbIdRef="WT_F_mean"/>
+                                    </ct:Assign>
+                                </mdef:Parameter>
+                                <mdef:Parameter name="var">
+                                    <ct:Assign>
+                                        <ct:SymbRef symbIdRef="WT_F_variance"/>
+                                    </ct:Assign>
+                                </mdef:Parameter>
+                            </ProbOnto>
+                            <Condition>
+                                <!-- SEX=="F" -->
+                                <LogicBinop op="eq">
+                                    <ct:SymbRef blkIdRef="cm1" symbIdRef="SEX"/>
+                                    <ct:CatRef catIdRef="F"/>
+                                </LogicBinop>
+                            </Condition>
+                        </Piece>
+                        <Piece xmlns="http://www.pharmml.org/pharmml/0.6/Maths">
+                            <ProbOnto name="Normal2">
+                                <mdef:Parameter name="mean">
+                                    <ct:Assign>
+                                        <ct:SymbRef symbIdRef="WT_M_mean"/>
+                                    </ct:Assign>
+                                </mdef:Parameter>
+                                <mdef:Parameter name="var">
+                                    <ct:Assign>
+                                        <ct:SymbRef symbIdRef="WT_M_variance"/>
+                                    </ct:Assign>
+                                </mdef:Parameter>
+                            </ProbOnto>
+                            <Condition>
+                                <!-- SEX=="M" -->
+                                <LogicBinop op="eq">
+                                    <ct:SymbRef blkIdRef="cm1" symbIdRef="SEX"/>
+                                    <ct:CatRef catIdRef="M"/>
+                                </LogicBinop>
+                            </Condition>
+                        </Piece>
+                    </Piecewise>
+                </Distribution>
+            </Continuous>
+        </Covariate>
+\end{lstlisting}
+Note that we use ProbOnto's normal distribution, \xatt{Normal2}, which is parameterised with mean and variance.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Minor changes/bug fixing}
+\label{sec:minorChanges}
+
+\begin{itemize}
+\item 
+Covariate model, \xelem{CovariateModel}, comes with an explicit assignment option -- any expression 
+can be encoded here providing a missing so far option to define new covariates
+out of existing ones. For example, the definition a new covariate based on exiting ones, 
+such as $C=A+B$ reads in PharmML as follows 
+\lstset{language=XML}
+\begin{lstlisting}
+    <CovariateModel blkId="cm1">
+        <Covariate symbId="A">
+            <!-- detailes skipped here -->
+        </Covariate>
+        <Covariate symbId="B">
+            <!-- detailes skipped here -->
+        </Covariate>
+        <Covariate symbId="C">
+            <Continuous>
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Binop op="plus">
+                            <ct:SymbRef symbIdRef="A"/>
+                            <ct:SymbRef symbIdRef="B"/>
+                        </math:Binop>
+                    </math:Equation>
+                </ct:Assign>
+            </Continuous>
+        </Covariate>
+    </CovariateModel>
+\end{lstlisting}
+\item 
+\xelem{InitialEstimate}, \xelem{LowerBound} and \xelem{UpperBound} definition
+has been extended to allow for initial assignments required for parameters 
+(vectors or matrices) of multivariate distributions, as the following code snippet 
+shows
+\lstset{language=XML}
+\begin{lstlisting}
+        <ParameterEstimation>
+            <ct:SymbRef symbIdRef="SIGMA_POP_P"/>
+            <InitialEstimate>
+                <ct:Matrix matrixType="Any">
+                    <ct:MatrixRow>
+                        <ct:RowIndex><ct:Int>1</ct:Int></ct:RowIndex>
+                        <ct:Real>1</ct:Real>
+                        <ct:Real>0.1</ct:Real>
+                    </ct:MatrixRow>
+                    <ct:MatrixRow>
+                        <ct:RowIndex><ct:Int>2</ct:Int></ct:RowIndex>
+                        <ct:Real>0.1</ct:Real>
+                        <ct:Real>1</ct:Real>
+                    </ct:MatrixRow>
+                </ct:Matrix>
+            </InitialEstimate>
+        </ParameterEstimation>
+\end{lstlisting}
+in which the covariance matrix of a multivariate normal distribution
+is assigned initial values.
+\item 
+\xelem{NumberCounts} element allows to identify the dependent variable 
+in discrete count data models, usually denoted as \emph{k}. This was implemented
+mistakingly with as a parameter in 0.6 examples. These examples have all
+been corrected.
+\item 
+Added several \xatt{columnType} attribute values to be used in SO
+\begin{itemize}
+\item
+\emph{indivParameter} to identify the individual parameters, such as \emph{CL}.
+\item
+\emph{popParameter} to identify the population parameters, such as \emph{POP\_CL}
+\item
+\emph{randEffect} to identify the random effects, such as \emph{ETA\_CL}.
+\item
+\emph{residual} to identify the residuals, such as \emph{CWRES}.
+\item
+\emph{strataVariable} to identify the stratification variables, such as \emph{STRATA\_DOSE}.
+\item
+\emph{statPrecision} to identify the measures and quantities expressing
+statistical precision, such as \emph{SE}, \emph{RSE} or \emph{ETA\_SHRINKAGE\_CL}.
+\item
+\emph{structParameter} to identify structural parameters.
+\item
+\emph{varParameter} to identify variability parameters.
+\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+\item 
+The majority of the PK macro examples, released with the 0.6 spec and schema 
+contained wrong references to structural model within the \xelem{TargetMapping}, e.g.
+\lstset{language=XML}
+\begin{lstlisting}
+            <ColumnMapping>
+                <ds:ColumnRef columnIdRef="ADM"/>
+                <ds:TargetMapping blkIdRef="sm1">
+                    <ds:Map dataSymbol="1" admNumber="1"/>
+                </ds:TargetMapping>
+            </ColumnMapping>
+\end{lstlisting}
+Instead of \xatt{sm1}, it should be the value assigned to \emph{blkIdRef} of the 
+according structural model, e.g. \xatt{sm12} in the \emph{PKmacros\_advan12.xml} 
+example. Thanks to Henrik for spotting that.
+\item
+A number of typos/bugs were found in remaining 0.6 examples, see next section for
+a detailed description.
+\end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Minor changes/bug fixing}
-%\label{sec:minorChanges}
-%
-%\begin{itemize}
-%\item 
-%Covariate model, \xelem{CovariateModel}, comes with an explicit assignment option -- any expression 
-%can be encoded here providing a missing so far option to define new covariates
-%out of existing ones. For example, the definition a new covariate based on exiting ones, 
-%such as $C=A+B$ reads in PharmML as follows 
-%\lstset{language=XML}
-%\begin{lstlisting}
-%    <CovariateModel blkId="cm1">
-%        <Covariate symbId="A">
-%            <!-- detailes skipped here -->
-%        </Covariate>
-%        <Covariate symbId="B">
-%            <!-- detailes skipped here -->
-%        </Covariate>
-%        <Covariate symbId="C">
-%            <Continuous>
-%                <ct:Assign>
-%                    <math:Equation>
-%                        <math:Binop op="plus">
-%                            <ct:SymbRef symbIdRef="A"/>
-%                            <ct:SymbRef symbIdRef="B"/>
-%                        </math:Binop>
-%                    </math:Equation>
-%                </ct:Assign>
-%            </Continuous>
-%        </Covariate>
-%    </CovariateModel>
-%\end{lstlisting}
-%\item 
-%\xelem{InitialEstimate}, \xelem{LowerBound} and \xelem{UpperBound} definition
-%has been extended to allow for initial assignments required for parameters 
-%(vectors or matrices) of multivariate distributions, as the following code snippet 
-%shows
-%\lstset{language=XML}
-%\begin{lstlisting}
-%        <ParameterEstimation>
-%            <ct:SymbRef symbIdRef="SIGMA_POP_P"/>
-%            <InitialEstimate>
-%                <ct:Matrix matrixType="Any">
-%                    <ct:MatrixRow>
-%                        <ct:RowIndex><ct:Int>1</ct:Int></ct:RowIndex>
-%                        <ct:Real>1</ct:Real>
-%                        <ct:Real>0.1</ct:Real>
-%                    </ct:MatrixRow>
-%                    <ct:MatrixRow>
-%                        <ct:RowIndex><ct:Int>2</ct:Int></ct:RowIndex>
-%                        <ct:Real>0.1</ct:Real>
-%                        <ct:Real>1</ct:Real>
-%                    </ct:MatrixRow>
-%                </ct:Matrix>
-%            </InitialEstimate>
-%        </ParameterEstimation>
-%\end{lstlisting}
-%in which the covariance matrix of a multivariate normal distribution
-%is assigned initial values.
-%\item 
-%\xelem{NumberCounts} element allows to identify the dependent variable 
-%in discrete count data models, usually denoted as \emph{k}. This was implemented
-%mistakingly with as a parameter in 0.6 examples. These examples have all
-%been corrected.
-%\item 
-%Added several \xatt{columnType} attribute values to be used in SO
-%\begin{itemize}
-%\item
-%\emph{indivParameter} to identify the individual parameters, such as \emph{CL}.
-%\item
-%\emph{popParameter} to identify the population parameters, such as \emph{POP\_CL}
-%\item
-%\emph{randEffect} to identify the random effects, such as \emph{ETA\_CL}.
-%\item
-%\emph{residual} to identify the residuals, such as \emph{CWRES}.
-%\item
-%\emph{strataVariable} to identify the stratification variables, such as \emph{STRATA\_DOSE}.
-%\item
-%\emph{statPrecision} to identify the measures and quantities expressing
-%statistical precision, such as \emph{SE}, \emph{RSE} or \emph{ETA\_SHRINKAGE\_CL}.
-%\item
-%\emph{structParameter} to identify structural parameters.
-%\item
-%\emph{varParameter} to identify variability parameters.
-%\end{itemize}
-%\end{itemize}
-%
-%\begin{itemize}
-%\item 
-%The majority of the PK macro examples, released with the 0.6 spec and schema 
-%contained wrong references to structural model within the \xelem{TargetMapping}, e.g.
-%\lstset{language=XML}
-%\begin{lstlisting}
-%            <ColumnMapping>
-%                <ds:ColumnRef columnIdRef="ADM"/>
-%                <ds:TargetMapping blkIdRef="sm1">
-%                    <ds:Map dataSymbol="1" admNumber="1"/>
-%                </ds:TargetMapping>
-%            </ColumnMapping>
-%\end{lstlisting}
-%Instead of \xatt{sm1}, it should be the value assigned to \emph{blkIdRef} of the 
-%according structural model, e.g. \xatt{sm12} in the \emph{PKmacros\_advan12.xml} 
-%example. Thanks to Henrik for spotting that.
-%\item
-%A number of typos/bugs were found in remaining 0.6 examples, see next section for
-%a detailed description.
-%\end{itemize}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%\section{Debugging with libPharmML}
-%%
-%%Florent helped to find a large number of typos, missing block references and 
-%%unassigned parameters using the updated libPharmML in the examples released
-%%with 0.6 version.
-%
 %\section{Debugging with libPharmML}
-%The examples used in PharmML 0.6 have been fixed thanks to the validation procedure 
-%of the version 0.4.1 of libPharmML. This last version includes validation of symbol, object 
-%and column references, additionally to dataset validation.  Those examples contained 
-%some unresolved references, sometimes due to a missing \xatt{blkIdRef} attribute value, an 
-%undefined referred parameter or a typo. Some of the dataset rows also used a data 
-%type incompatible with the column definition.
 %
-%The validation can be performed within the non-Java tools using the stand-alone 
-%validator that can be run from the command line. The jar is available on sourceforge: 
-%\url{https://sourceforge.net/projects/libpharmml.ddmore.p/files/Stand-alone%20validator/}. 
-%A new validator version for PharmML 0.7 will be provided soon.
+%Florent helped to find a large number of typos, missing block references and 
+%unassigned parameters using the updated libPharmML in the examples released
+%with 0.6 version.
+
+\section{Debugging with libPharmML}
+The examples used in PharmML 0.6 have been fixed thanks to the validation procedure 
+of the version 0.4.1 of libPharmML. This last version includes validation of symbol, object 
+and column references, additionally to dataset validation.  Those examples contained 
+some unresolved references, sometimes due to a missing \xatt{blkIdRef} attribute value, an 
+undefined referred parameter or a typo. Some of the dataset rows also used a data 
+type incompatible with the column definition.
+
+The validation can be performed within the non-Java tools using the stand-alone 
+validator that can be run from the command line. The jar is available on sourceforge: 
+\url{https://sourceforge.net/projects/libpharmml.ddmore.p/files/Stand-alone%20validator/}. 
+A new validator version for PharmML 0.7 will be provided soon.
 
