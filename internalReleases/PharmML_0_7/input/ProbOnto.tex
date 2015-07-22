@@ -7654,7 +7654,7 @@ Cov([x=i],[x=j]) &= - p_i p_j~~(i\neq j)\end{align*}
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=70mm]{pics/GeneralizedGamma2.pdf}
+  \includegraphics[width=140mm]{pics/GeneralizedGamma2.pdf}
  \caption{GeneralizedGamma2 distribution plotted using the provided R code.}
  \label{fig:GeneralizedGamma2}
 \end{figure}
@@ -7695,8 +7695,12 @@ Cov([x=i],[x=j]) &= - p_i p_j~~(i\neq j)\end{align*}
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{k (x-a)^{kc-1}}{b^{kc}\Gamma(c)}\exp\Big[-\Big(\frac{x-a}{b}\Big)^k\Big]\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
+\begin{verbatim}(k*(x-a)^(k*c-1)) / (b^(k*c)*gamma(c)) * exp( -((x-a)/b)^k )\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+\begin{equation*}\frac{\gamma(c,(\frac{x-a}{b})^k)}{\Gamma(c)}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
+\begin{verbatim}Igamma(c, ((x-a)/b)^k, lower=T) / gamma(c)\end{verbatim}
 \smallskip
 \subsubsection*{Characteristics}
 \smallskip \noindent \hspace{.2cm} \textbf{Mean} 
@@ -7723,7 +7727,7 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=70mm]{pics/GeneralizedPoisson.pdf}
+  \includegraphics[width=140mm]{pics/GeneralizedPoisson.pdf}
  \caption{GeneralizedPoisson distribution plotted using the provided R code.}
  \label{fig:GeneralizedPoisson}
 \end{figure}
@@ -7751,7 +7755,12 @@ $, scalar \\
 \smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
 \begin{verbatim}(lambda*(lambda+k*delta)^(k-1) * exp(-lambda-k*delta)) / factorial(k)\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+\begin{equation*}\Sigma_{i=1}^x f(i), x \in \{0,1,2,...\}
+\text { with f the PMF}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R}  
+\begin{verbatim}
+cumsum(PMF)
+\end{verbatim}
 \smallskip
 \subsubsection*{Characteristics}
 \smallskip \noindent \hspace{.2cm} \textbf{Mean} 
@@ -8000,7 +8009,7 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=70mm]{pics/InverseBinomial.pdf}
+  \includegraphics[width=140mm]{pics/InverseBinomial.pdf}
  \caption{InverseBinomial distribution plotted using the provided R code.}
  \label{fig:InverseBinomial}
 \end{figure}
@@ -8028,7 +8037,13 @@ $, scalar \\
 \smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
 \begin{verbatim}(k * gamma(2*x+k)) / (gamma(x+1) * gamma(x+k+1)) * p^(x+k) * (1-p)^x\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+\begin{equation*}\Sigma_{i=1}^x f(i), x \in \{0,1,2,...\}
+\text { with f the PMF}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R}  
+\begin{verbatim}
+cumsum(PMF)
+\end{verbatim}
+
 \smallskip
 \subsubsection*{Characteristics}
 \smallskip
@@ -8840,7 +8855,7 @@ $, scalar \\
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}f(x; \pi, \theta) = \sum_{i=1}^{K} \pi_{i}\; p_i(x; \theta_i) \text{ where } p_i(x; \theta_i) \text{the PDF of the } i^{th} \text{ component with parameters } \theta_i\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+\begin{equation*}f(x; \pi, \theta) = \sum_{i=1}^{K} \pi_{i}\; p_i(x; \theta_i) \text{ where } p_i(x; \theta_i) \text{the PMF of the } i^{th} \text{ component with parameters } \theta_i\end{equation*}
 \smallskip
 \subsubsection*{Characteristics}
 \smallskip
@@ -10062,9 +10077,13 @@ undefined & \text{else}
 \smallskip
 \subsubsection*{Characteristics}
 \smallskip \noindent \hspace{.2cm} \textbf{Mean} 
-\begin{equation*}mu + ( phi((a-mu)/sigma) - phi((b-mu)/sigma) ) / ( Phi((b-mu)/sigma) - Phi((a-mu)/sigma) ) * sigma\end{equation*}
+\begin{equation*}
+\mu + \frac{ \phi(\frac{a-\mu}{\sigma}) - \phi(\frac{b-\mu}{\sigma}) }{ \Phi(\frac{b-\mu}{\sigma}) - \Phi(\frac{a-\mu}{\sigma}) } \sigma
+\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{Variance} 
-\begin{equation*}sigma^2 * ( 1 + ( (a-mu)/sigma * phi((a-mu)/sigma) - (b-mu)/sigma * phi((b-mu)/sigma) ) / ( Phi((b-mu)/sigma) - Phi((a-mu)/sigma) ) - ( ( phi((a-mu)/sigma) - phi((b-mu)/sigma) ) / ( Phi((b-mu)/sigma) - Phi((a-mu)/sigma) ) )^2 )\end{equation*}
+\begin{equation*}\sigma^2 \Big[ 1 
++ \frac{ \frac{a-\mu}{\sigma}\phi(\frac{a-\mu}{\sigma}) - \frac{b-\mu}{\sigma}\phi(\frac{b-\mu}{\sigma}) }{ \Phi(\frac{b-\mu}{\sigma}) - \Phi(\frac{a-\mu}{\sigma}) } 
+- \Big( \frac{ \phi(\frac{a-\mu}{\sigma}) - \phi(\frac{b-\mu}{\sigma}) }{ \Phi(\frac{b-\mu}{\sigma}) - \Phi(\frac{a-\mu}{\sigma}) } \Big)^2 \Big]\end{equation*}
 \smallskip
 \section*{Uniform} 
 
