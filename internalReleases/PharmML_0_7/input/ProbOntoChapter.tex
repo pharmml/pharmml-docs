@@ -578,6 +578,10 @@ LogNormal4\,(\textit{m}, \textit{cv}) with \emph{median}, $m$, and \emph{coeffic
 LogNormal5\,($\mu$, $\tau$) with \emph{mean}, $\mu$, and \emph{precision}, $\tau$, both on the log-scale.
 \end{itemize}
 
+%LogNormal distribution (two reals numbers): 
+%geometric mean (exponential of the mean in log-space) and geometric standard deviation (exponential, stricly superior to 1, of the standard deviation in log-space). 
+%The variant LogNormal_v takes the variance (in log-space!) instead of the standard deviation as second parameter.
+
 \begin{figure}[htb!]
 \centering
 \begin{tabular}{cc}
@@ -823,6 +827,7 @@ Categorical unordered	& $p_1, \ldots, p_k$	&	y	&	y	& --  &  -- \\
 Generalized Poisson	& $\lambda, \delta$	& --  & --  & --  &  -- \\
 Geometric			& \emph{p}		&	y	& --  & --  &  -- \\
 Hypergeometric		& \emph{N, K, n}	&	y	& --  & --  &  -- \\
+Inverse Binomial 		& $k, p$ 			& --  & --  & --  &  -- \\
 Negative Binomial 1		& \emph{r, p}		&	y	&	y	& --  &  -- \\
 Negative Binomial 2 		& $\lambda, \tau$ 	& --  & --  & --  &  -- \\
 %Negative Binomial 3 		& $\lambda, \theta$ 	& --  & --  & --  &  -- \\
