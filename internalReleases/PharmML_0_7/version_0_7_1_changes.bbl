@@ -5,6 +5,18 @@ Catherine Forbes, Merran Evans, Nicholas Hastings, and Brian Peacock.
 \newblock {\em Statistical Distributions}.
 \newblock Wiley, 4 edition, 2010.
 
+\bibitem{greenwood1920inquiry}
+Major Greenwood and G~Udny Yule.
+\newblock An inquiry into the nature of frequency distributions representative
+  of multiple happenings with particular reference to the occurrence of
+  multiple attacks of disease or of repeated accidents.
+\newblock {\em Journal of the Royal statistical society}, pages 255--279, 1920.
+
+\bibitem{jain1971generalized}
+GC~Jain and PC~Consul.
+\newblock A generalized negative binomial distribution.
+\newblock {\em SIAM Journal on Applied Mathematics}, 21(4):501--513, 1971.
+
 \bibitem{Kooperberg:2013}
 Charles Kooperberg.
 \newblock Logspline: Logspline density estimation routines, 2013.
@@ -20,6 +32,13 @@ David~S LeBauer, Michael~C Dietze, and Benjamin~M Bolker.
 Leemis, M~Lawrence, Mcqueston, and T~Jacquelyn.
 \newblock Univariate distribution relationships.
 \newblock {\em The American Statistician}, 62(1):45--53, 2008.
+
+\bibitem{UUPDE:2013}
+Oleg Marichev and Michael Trott.
+\newblock {The Ultimate Univariate Probability Distribution Explorer}.
+\newblock Avaiable at
+  \url{http://blog.wolfram.com/2013/02/01/the-ultimate-univariate-probability-distribution-explorer/},
+  2013.
 
 \bibitem{noy2009bioportal}
 Natalya~F Noy, Nigam~H Shah, Patricia~L Whetzel, Benjamin Dai, Michael Dorf,
@@ -47,6 +66,12 @@ Wheyming~Tina Song and Yi-Chun Chen.
   a matrix format.
 \newblock {\em Automatic Control, IEEE Transactions on}, 56(8):1979--1984,
   2011.
+
+\bibitem{Swat:2015a}
+Maciej~J Swat, Pierre Grenon, Florent Yvon, Sarala Wimalaratne, and Niels~Rode
+  Kristensen.
+\newblock {Extenstions in PharmML 0.7}.
+\newblock Technical report, EMBL-EBI, July 2015.
 
 \bibitem{Swat:2014bb}
 Maciej~J Swat, Sarala Wimalaratne, and Niels~Rode Kristensen.
@@ -78,5 +103,11 @@ P~Wang, M~L Puterman, I~Cockburn, and N~Le.
 \bibitem{weisstein2007wolfram}
 Eric Weisstein.
 \newblock Wolfram mathworld, 2007.
+
+\bibitem{yanagimoto1989inverse}
+Takemi Yanagimoto.
+\newblock The inverse binomial distribution as a statistical model.
+\newblock {\em Communications in Statistics-Theory and Methods},
+  18(10):3625--3633, 1989.
 
 \end{thebibliography}

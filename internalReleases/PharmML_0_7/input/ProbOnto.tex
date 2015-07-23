@@ -8,8 +8,8 @@
 \label{ch:probontoAppendix}
 
 The full first version of ProbOnto will be released soon. Here we provide 
-a brief overview of a part of its content for the most frequently used distributions 
-and/or alternative parameterisations (38 out of about 55). 
+a quite detailed overview of its content for the currently about 66 distributions
+or alternative parameterisations. 
 
 The according plots have been performed using the R code stored in ProbOnto 
 and provided for each distribution for which it's available.
@@ -7095,7 +7095,7 @@ p for k=1\end{verbatim}
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=70mm]{pics/BirnbaumSaunders.pdf}
+  \includegraphics[width=140mm]{pics/BirnbaumSaunders.pdf}
  \caption{BirnbaumSaunders distribution plotted using the provided R code.}
  \label{fig:BirnbaumSaunders}
 \end{figure}
@@ -7121,10 +7121,16 @@ p for k=1\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
 \begin{equation*}\frac{1}{\sqrt{2\pi}}\exp\Big[-\frac{(\sqrt{x/\beta}-\sqrt{\beta/x})^2}{2\gamma^2}\Big]\Big[\frac{\sqrt{x/\beta}+\sqrt{\beta/x}}{2\gamma x}\Big]\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{verbatim}1/(sqrt(2*pi))* exp( -(sqrt(x/beta) - sqrt(beta/x))^2 / (2*gamma^2) ) * ( sqrt(x/beta) + sqrt(beta/x) ) / (2*gamma*x)
+\begin{verbatim}PDF=1/(sqrt(2*pi))
+*exp(-(sqrt(x/beta)-sqrt(beta/x))^2/(2*gamma^2))*(sqrt(x/beta)+sqrt(beta/x))/(2*gamma*x)
 \end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}-\end{equation*}
+\begin{equation*}\int_0^x f(x),
+\text { with f the PDF}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R}  
+\begin{verbatim}
+cumsum(PDF*rep(stepSize,length(PDF)))
+\end{verbatim}
 \smallskip
 \subsubsection*{Characteristics}
 \smallskip
@@ -8323,6 +8329,65 @@ cumsum(PMF)
 \smallskip \noindent \hspace{.2cm} \textbf{Variance} 
 \begin{equation*}2 / \tau^2\end{equation*}
 \smallskip
+\section*{Logistic} 
+
+  \bigskip 
+
+\begin{tabular}{p{2cm}cl}
+\textbf{name} & & Logistic (ID: 0000268)\\ 
+ 
+\textbf{type} & & continuous \\ 
+
+\textbf{variate} & & $x$, scalar \\ 
+
+\textbf{support} & & $x \in (-\infty,+\infty)$
+\end{tabular}
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/Logistic.pdf}
+ \caption{Logistic distribution plotted using the provided R code.}
+ \label{fig:Logistic}
+\end{figure}
+
+\subsubsection*{Parameter: location}
+
+\noindent\begin{tabular}{p{2cm}cl}
+\textbf{name} & & location \\
+\textbf{type} & & scalar \\
+\textbf{symbol} & & $\mu$  \\
+\textbf{definition} & & $\mu \in R$
+\end{tabular}
+\subsubsection*{Parameter: scale}
+
+\noindent\begin{tabular}{p{2cm}cl}
+\textbf{name} & & scale \\
+\textbf{type} & & scalar \\
+\textbf{symbol} & & $s$  \\
+\textbf{definition} & & $s > 0, s \in R$
+\end{tabular}
+\subsubsection*{Functions}
+
+\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
+\begin{equation*}\frac{e^{-\frac{x-\mu}{s}}} {s\left(1+e^{-\frac{x-\mu}{s}}\right)^2}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
+\begin{verbatim}exp(-(x-mu)/s) / (s*(1+exp(-(x-mu)/s))^2)\end{verbatim}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
+\begin{equation*}\frac{1}{1+e^{-\frac{x-\mu}{s}}}\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
+\begin{verbatim}1/(1+exp(-(x-mu)/s))\end{verbatim}
+\smallskip
+\subsubsection*{Characteristics}
+\smallskip \noindent \hspace{.2cm} \textbf{Mean} 
+\begin{equation*}\mu\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{Median} 
+\begin{equation*}\mu\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{Mode} 
+\begin{equation*}\mu\end{equation*}
+\smallskip \noindent \hspace{.2cm} \textbf{Variance} 
+\begin{equation*}\frac{s^2 \pi^2}{3}\end{equation*}
+\smallskip
+
 \section*{LogLogistic} 
 
   \bigskip 
@@ -8726,7 +8791,7 @@ cumsum(PMF)
 \textbf{name} & & minimum \\
 \textbf{type} & & scalar \\
 \textbf{symbol} & & $min$  \\
-\textbf{definition} & & $m>0$
+\textbf{definition} & & $min>0$
 \end{tabular}
 \subsubsection*{Parameter: maximum}
 
@@ -8748,64 +8813,6 @@ cumsum(PMF)
 \begin{verbatim}(log(x) - log(min)) / (log(max) - log(min))\end{verbatim}
 \smallskip
 \subsubsection*{Characteristics}
-\smallskip
-\section*{Logistic} 
-
-  \bigskip 
-
-\begin{tabular}{p{2cm}cl}
-\textbf{name} & & Logistic (ID: 0000268)\\ 
- 
-\textbf{type} & & continuous \\ 
-
-\textbf{variate} & & $x$, scalar \\ 
-
-\textbf{support} & & $x \in (-\infty,+\infty)$
-\end{tabular}
-
-\begin{figure}[ht!]
-\centering
-  \includegraphics[width=140mm]{pics/Logistic.pdf}
- \caption{Logistic distribution plotted using the provided R code.}
- \label{fig:Logistic}
-\end{figure}
-
-\subsubsection*{Parameter: location}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & location \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $\mu$  \\
-\textbf{definition} & & $\mu \in R$
-\end{tabular}
-\subsubsection*{Parameter: scale}
-
-\noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & scale \\
-\textbf{type} & & scalar \\
-\textbf{symbol} & & $s$  \\
-\textbf{definition} & & $s > 0, s \in R$
-\end{tabular}
-\subsubsection*{Functions}
-
-\smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}\frac{e^{-\frac{x-\mu}{s}}} {s\left(1+e^{-\frac{x-\mu}{s}}\right)^2}\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{PDF in R}  
-\begin{verbatim}exp(-(x-mu)/s) / (s*(1+exp(-(x-mu)/s))^2)\end{verbatim}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}\frac{1}{1+e^{-\frac{x-\mu}{s}}}\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{verbatim}1/(1+exp(-(x-mu)/s))\end{verbatim}
-\smallskip
-\subsubsection*{Characteristics}
-\smallskip \noindent \hspace{.2cm} \textbf{Mean} 
-\begin{equation*}\mu\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{Median} 
-\begin{equation*}\mu\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{Mode} 
-\begin{equation*}\mu\end{equation*}
-\smallskip \noindent \hspace{.2cm} \textbf{Variance} 
-\begin{equation*}\frac{s^2 \pi^2}{3}\end{equation*}
 \smallskip
 \section*{MixtureDistribution} 
 
@@ -8853,9 +8860,9 @@ cumsum(PMF)
 \subsubsection*{Functions}
 
 \smallskip \noindent \hspace{.2cm} \textbf{PDF} 
-\begin{equation*}f(x; \pi, \theta) = \sum_{i=1}^{K} \pi_{i}\; p_i(x; \theta_i) \text{ where } p_i(x; \theta_i) \text{the PDF of the } i^{th} \text{ component with parameters } \theta_i\end{equation*}
+\begin{equation*}f(x; \pi, \theta) = \sum_{i=1}^{K} \pi_{i}\; p_i(x; \theta_i) \text{ where } p_i(x; \theta_i) \text{ the PDF of the } i^{th} \text{ component with parameters } \theta_i\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}f(x; \pi, \theta) = \sum_{i=1}^{K} \pi_{i}\; p_i(x; \theta_i) \text{ where } p_i(x; \theta_i) \text{the PMF of the } i^{th} \text{ component with parameters } \theta_i\end{equation*}
+\begin{equation*}f(x; \pi, \theta) = \sum_{i=1}^{K} \pi_{i}\; p_i(x; \theta_i) \text{ where } p_i(x; \theta_i) \text{ the PMF of the } i^{th} \text{ component with parameters } \theta_i\end{equation*}
 \smallskip
 \subsubsection*{Characteristics}
 \smallskip
@@ -8907,8 +8914,8 @@ cumsum(PMF)
 \smallskip \noindent \hspace{.2cm} \textbf{Mean} 
 \begin{equation*}E\{X_i\} = np_i\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{Variance} 
-\begin{equation*}Var(X_i) = n p_i (1-p_i); 
-Cov(X_i,X_j) = - n p_i p_j~~(i\neq j)\end{equation*}
+\begin{align*}Var(X_i) &= n p_i (1-p_i) \\
+Cov(X_i,X_j) &= - n p_i p_j~~(i\neq j)\end{align*}
 \smallskip
 \section*{MultivariateNormal1} 
 
@@ -10503,10 +10510,10 @@ undefined & \text{else}
  \label{fig:ZeroInflatedNegativeBinomial}
 \end{figure}
 
-\subsubsection*{Parameter: mean}
+\subsubsection*{Parameter: rate}
 
 \noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & mean \\
+\textbf{name} & & rate \\
 \textbf{type} & & scalar \\
 \textbf{symbol} & & $\lambda$  \\
 \textbf{definition} & & $\lambda > 0$

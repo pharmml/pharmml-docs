@@ -48,15 +48,17 @@ or related functions and quantities are defined in the ontology making their ann
 impossible. Other ontologies, we have analysed number of them featured in the 
 BioPortal, \cite{noy2009bioportal}, suffer from equivalent limitations
 as they are designed in a similar way.}.  
-Similarly, the databases of distributions available online come with analog issues\footnote{Distributome, 
+Similarly, the databases of distributions available online come with analog issues. 
+The largest and most comprehensive known to us collection of probability distributions, the 
+UUPDE, \cite{UUPDE:2013}, with up to 60 properties for each of its 
+500 probability distributions is an invaluable resource of parametric distributions. 
+Unfortunately, it comes with univariate cases only, without references or parameter
+names making its use in our context impracticable\footnote{Another case is Distributome, 
 \url{http://www.distributome.org/}, comes with an impressive and well referenced collection
 of 90+ distributions but doesn't contain many of relevant for us types and/or 
-parameterisations and is limited to univariate parametric ones.}. The largest 
-and most comprehensive known to us collection of univariate parametric 
-probability distributions, each with up to "[...] about 60 properties. Multiplied by 
-500 probability distributions, this resulted in more than 30,000 formulas; 31,591 [...]" 
-It turns out that \emph{ProbOnto} can be very helpful in
-designing a flexible alternative for UncertML with many additional features.
+parameterisations and is limited to univariate parametric ones.}. \\
+It turns out that \emph{ProbOnto} can be very helpful in designing a flexible 
+alternative for UncertML with many additional features.
 It can be used e.g. in PharmML or other target tools/languages \emph{both} 
 as ontological resource for annotation purposes and as a knowledge base, 
 see next section for their definitions, to provide the means to specify a wide range 
@@ -833,42 +835,49 @@ Negative Binomial 2 		& $\lambda, \tau$ 	& --  & --  & --  &  -- \\
 %Negative Binomial 3 		& $\lambda, \theta$ 	& --  & --  & --  &  -- \\
 Poisson				& $\lambda$		&	y	&	y	& --  &  -- \\
 Uniform 1 (discrete)		&  \emph{a, b, n}		& --	& --	& -- & --  \\
-Uniform 2 (discrete)		&  0, \emph{n}		& --	& --	& -- & --  \\
-Zero-inflated Poisson	& $\lambda, \pi$	& --  & --  & --  &  -- \\
-%Zero-Inflated Negative Binomial & $\mu, \theta, p$	& --  & --  & --  &  -- \\
+Uniform 2 (discrete)		&  $a=0$, \emph{n}		& --	& --	& -- & --  \\
+Zero-Inflated Negative Binomial & $\lambda, \tau, p0$	& --  & --  & --  &  -- \\
+Zero-Inflated Poisson	& $\lambda, \pi$	& --  & --  & --  &  -- \\
   \hline
   \multicolumn{6}{c}{\textit{Continuous Univariate}}	\\
   \hline
 Beta					& $\alpha, \beta$	&	y	&	y	&	y	&  -- \\
+Birnbaum-Saunders		& $\alpha, \gamma$	&	--	&	--	&	--	&  -- \\
 Cauchy				& $x_0, \gamma$	&	y	& --  & --  &  -- \\
 Chi-squared			& \emph{k}		&	y	&	y	&	y	&  -- \\
 %Dirac Delta			&	&	y	& --  & --  &  -- \\
 Exponential			& $\lambda$		&	y	&	y	&	y	&  -- \\
 F (aka Fisher-Snedecor)	& $d_1, d_2$		&	y	& --  &	y	&  -- \\
 Gamma				& $k, \theta$		&	y	&	y	&	y	&  -- \\
-Generalized Gamma	& \emph{a, d, p}	&	y	& --  & --  & --	  \\
+Generalized Gamma 1	& \emph{a, d, p}	&	--	& --  & --  & --	  \\
+Generalized Gamma 2	& \emph{a, b, c, k}	&	--	& --  & --  & --	  \\
 Gompertz				& $\eta, b$		& --  &	y	& --  & --	  \\
 Gumbel (aka Extreme Value)	& $\mu, \beta$	& --  &	y 	& --  & -- \\ 
 Inverse-Gamma		& $\alpha, \beta$	&	y	& --  & --  &  -- \\
-Laplace 1				& \multirow{2}{*}{$\mu, b$} &	\multirow{2}{*}{y}	&	\multirow{2}{*}{--}	& \multirow{2}{*}{--}  & \multirow{2}{*}{--} \\ [-0.5ex]
-(Double-exponential 1) \\
-Laplace 2				& \multirow{2}{*}{$\mu, \tau$} &	\multirow{2}{*}{--}	&	\multirow{2}{*}{y}	& \multirow{2}{*}{--}  & \multirow{2}{*}{--} \\ [-0.5ex]
-(Double-exponential 2) \\[0.5ex]
-Logistic				& $\mu, s$		&	y	&	y	& --  &  -- \\[0.5ex]
+Inverse-Gaussian (aka Wald)	& $\lambda, \mu$	&	--	& --  & --  &  -- \\
+Laplace 1				& \multirow{2}{*}{$\mu, b$} &	\multirow{2}{*}{y}	&	\multirow{2}{*}{--}	& \multirow{2}{*}{--}  & \multirow{2}{*}{--} \\ 
+(aka Double-exponential) \\
+Laplace 2				& $\mu, \tau$ 		&	--	&	y	& --  & -- \\ 
+Logistic				& $\mu, s$		&	y	&	y	& --  &  -- \\
+Log-Logistic (aka Fisk)	& $\alpha, \beta$		&	y	&	y	& --  &  -- \\
 Log-Normal 1			& $\mu, \sigma$	&	y	&	--	&	y	&  -- \\
 Log-Normal 2			& $\mu$, \textit{v}	&	y	&	--	&	y	&  -- \\
 Log-Normal 3			& \emph{m}, $\sigma$	&	--	&	--	&	--	&  -- \\
 Log-Normal 4			& \emph{m, cv}		& 	--	&	--	&	--	&  -- \\
-Log-Normal 5			& $\mu$, $\tau$	& 	--	&	y	&	--	&  -- \\[0.5ex]
+Log-Normal 5			& $\mu$, $\tau$	& 	--	&	y	&	--	&  -- \\
+Log-Uniform			& $min$, $max$	& 	--	&	--	&	--	&  -- \\
+Nakagami				& $m, \Omega$	&	--	&	--	&	--	&  --  \\
 Normal 1				& $\mu, \sigma$	&	y	&	--	&	y	& y  \\
 Normal 2				& $\mu, v$		&	y	&	--	&	y	&  -- \\
-Normal 3				& $\mu, \tau$		&	--	&	y	&	--	&  -- \\[0.5ex]
+Normal 3				& $\mu, \tau$		&	--	&	y	&	--	&  -- \\
 Normal-inverse-gamma	& $\mu, \lambda, \alpha, \beta$	& y	& --  & --  &  -- \\
 Pareto				& $x_m, \alpha$	& y	& y	& --  &  -- \\
 Rayleigh				& $\sigma$		& --  & --  & y	&  -- \\
 Standard Normal 		& $\mu\!=\!0, \sigma\!=\!1$	& y & -- &	 y & y  \\
 Student's T			& $\nu$			& y	& y	& y	&  -- \\
 Standard Uniform		& $a\!=\!0, b\!=\!1$		& --	& --	& y & y  \\
+Triangular				& $a, b, c$		& -- 	& --	& -- & -- \\
+TruncatedNormal		& $\mu, \sigma, a, b$ & --	& --  & -- & -- \\
 Uniform				&  \emph{a, b}		& y	& y	& y		& --  \\
 Weibull 1				& $\lambda, k$		& y	& --	& y	&  -- \\
 Weibull 2				& $\lambda, v$		& --	& y	& --	&  -- \\
@@ -880,7 +889,6 @@ for the detailed description.}
 \end{longtable}
 \end{center}
 
-\newpage
 
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=.95\textwidth
@@ -902,48 +910,61 @@ Code name		& Symbol & Code name & Symbol & Code name \\
 \xatt{CategoricalOrdered}		& $p_1,\dots,p_k$ 	& \xatt{categoryProb}  	&  --			& -- \\
 \xatt{CategoricalUnordered}	& $p_1,\dots ,p_k$ 	& \xatt{categoryProb}	&  --			& -- \\
 \xatt{GeneralizedPoisson}	& $\lambda$		& \xatt{rate}			& $\delta$		& \xatt{dispersion} \\
-\xatt{Geometric} 			& \emph{p}		& \xatt{probability}		& --			& --	\\[-0.5ex]
+\xatt{Geometric} 			& \emph{p}		& \xatt{probability}		& --			& --	\\
 \xatt{Hypergeometric} 		& \emph{N}		& \xatt{populationSize}	& \emph{K}	& \xatt{numberOfSuccesses} \\[-0.5ex]
-						&				&					&\emph{n}	& \xatt{numberOfTrials} \\[0.5ex]
+						&				&					&\emph{n}	& \xatt{numberOfTrials} \\
+\xatt{InverseBinomial} 		& $k$ 			& \xatt{k}				& $p$		& \xatt{p}	\\
 \xatt{NegativeBinomial1} 		& \emph{r}		& \xatt{numberOfFailures	}&  \emph{p}	& \xatt{probability}	\\
 \xatt{NegativeBinomial2} 		& $\lambda$ 		& \xatt{rate}			& $\tau$		& \xatt{overdispersion}	\\
 \xatt{Poisson} 				& $\lambda$		& \xatt{rate}			& --			& -- 	\\
-\xatt{UniformDiscrete1} 		&  \emph{a}		& \xatt{minimum}		& \emph{b}	& \xatt{maximum}	\\
+\xatt{UniformDiscrete1} 		&  \emph{a}		& \xatt{minimum}		& \emph{b}	& \xatt{maximum}	\\[-0.5ex]
 						&				&					& \emph{n} 	& \xatt{numberOfValues} \\
-\xatt{UniformDiscrete2} 		&  0				& \xatt{minimum}		& \emph{n} 	& \xatt{numberOfValues}	\\
+\xatt{UniformDiscrete2} 		& $a=0$			& \xatt{minimum}		& \emph{n} 	& \xatt{numberOfValues}	\\
+\xatt{ZeroInflatedNegativeBinomial} 	& $\lambda$		& \xatt{rate}			& $\tau$ 		& \xatt{overdispersion}	\\
+						&				&					& $p0$		& \xatt{probabilityOfZero} \\
 \xatt{ZeroInflatedPoisson} 	& $\lambda$		& \xatt{rate}			& $\pi$ 		& \xatt{probabilityOfZero}	\\
   \hline
   \multicolumn{7}{c}{\textit{Continuous Univariate}}	\\
   \hline
 \xatt{Beta} 				& $\alpha$		& \xatt{alpha}			& $\beta$		& \xatt{beta}	\\
+\xatt{BirnbaumSaunders} 		& $\alpha$		& \xatt{scale}			& $\gamma$	& \xatt{shape}	\\
 \xatt{Cauchy} 				& $x_0$			& \xatt{location}		& $\gamma$	& \xatt{scale}	\\
 \xatt{ChiSquared}			& \emph{k}		& \xatt{degreesOfFreedom} & --		&  --		\\
 \xatt{Exponential}			& $\lambda$		& \xatt{rate}			& --			& -- 		\\
 \xatt{F}					& $d_1$			& \xatt{numerator}		& $d_2$		& \xatt{denumerator} \\
-\xatt{Gamma}				& $k$			& \xatt{shape}			& $\theta$	& \xatt{scale} 	\\[0.5ex]
-\xatt{GeneralizedGamma}	& \emph{a}		& \xatt{scale}			& \emph{d}	& \xatt{shape1}		\\
-						&				&					& \emph{p} 	& \xatt{shape2} \\
+\xatt{Gamma}				& $k$			& \xatt{shape}			& $\theta$	& \xatt{scale} 	\\
+\xatt{GeneralizedGamma1}	& \emph{a}		& \xatt{scale}			& \emph{d}	& \xatt{shape1}		\\
+						& 				& 					& \emph{k} 	& \xatt{shape2} \\
+\xatt{GeneralizedGamma2}	& \emph{a}		& \xatt{location}		& \emph{b}	& \xatt{scale}		\\
+						& \emph{c}		& \xatt{shape1} 		& \emph{p} 	& \xatt{shape2} \\
 \xatt{Gompertz}			& $\eta$			& \xatt{shape}			& \emph{b}	& \xatt{scale}		\\
 \xatt{Gumbel} 				& $\mu$			& \xatt{location}		& $\beta$		& \xatt{scale}		\\ 
 \xatt{InverseGamma}		& $\alpha$		& \xatt{shape}			& $\beta$		& \xatt{scale}		\\
+\xatt{InverseGaussian}		& $\lambda$		& \xatt{shape}			& $\mu$		& \xatt{mean}		\\
 \xatt{Laplace1}				& $\mu$ 			& \xatt{location}		& \emph{b}	& \xatt{scale}		\\
 \xatt{Laplace2}				& $\mu$ 			& \xatt{location}		& $\tau$		& \xatt{tau}		\\
 \xatt{Logistic}				& $\mu$			& \xatt{location}		& \emph{s}	& \xatt{scale}		\\
+\xatt{LogLogistic}			& $\alpha$		& \xatt{scale}			& $\beta$		& \xatt{shape}		\\
 \xatt{LogNormal1}			& $\mu$			& \xatt{meanLog}		& $\sigma$ 	& \xatt{stdevLog}	\\
-\xatt{LogNormal2}			& $\mu$			& \xatt{meanLog}		& \textit{v}	& \xatt{varLog}		\\
-\xatt{LogNormal3}			& \emph{m} 		& \xatt{median}		& $\sigma$	& \xatt{stdevLog}	\\
+\xatt{LogNormal2}			& $\mu$			& \xatt{meanLog}		& \textit{v}		& \xatt{varLog}		\\
+\xatt{LogNormal3}			& \emph{m} 		& \xatt{median}			& $\sigma$	& \xatt{stdevLog}	\\
 \xatt{LogNormal4}			& \emph{m}		& \xatt{median}			& \emph{cv}	& \xatt{coefVar	}	\\
 \xatt{LogNormal5}			& $\mu$			& \xatt{meanLog}		& $\tau$		& \xatt{precision}	\\
+\xatt{Nakagami}			& $m$			& \xatt{shape}			& $\Omega$ 	& \xatt{spread}		\\
 \xatt{Normal1}				& $\mu$			& \xatt{mean}			& $\sigma$ 	& \xatt{stdev}		\\
 \xatt{Normal2}				& $\mu$			& \xatt{mean}			& \emph{v}	& \xatt{var}		\\
-\xatt{Normal3}				& $\mu$			& \xatt{mean}			& $\tau$ 		& \xatt{precision} 	\\[0.5ex]
+\xatt{Normal3}				& $\mu$			& \xatt{mean}			& $\tau$ 		& \xatt{precision} 	\\
 \xatt{NormalInverseGamma}	& $\mu$			& \xatt{mean}			& $\lambda$	& \xatt{lambda}		\\[-0.5ex]
-						& $\alpha$ 		& \xatt{alpha}			& $\beta$ 	& \xatt{beta} \\
+						& $\alpha$ 		& \xatt{alpha}			& $\beta$ 		& \xatt{beta} \\
 \xatt{Pareto}				& $x_m$			& \xatt{scale}			& $\alpha$ 	& \xatt{shape} 		\\
 \xatt{Rayleigh}				& $\sigma$		& \xatt{scale}			& --			& -- 			\\
 \xatt{StandardNormal} 		& $\mu\!=\!0$		& \xatt{mean}			& $\sigma\!=\!1$ & \xatt{stdev} 	\\
 \xatt{StudentT}				& $\nu$			& \xatt{degreesOfFreedom} & --		& -- 		\\
 \xatt{StandardUniform}		& $a\!=\!0$		& \xatt{minimum}		& $b\!=\!1$ 	& \xatt{maximum}	\\
+\xatt{Triangular}			& $a$			& \xatt{lowerLimit}		& $b$ 		& \xatt{upperLimit}	\\[-0.5ex]
+						&				&					& $c$		& \xatt{shape} \\
+\xatt{TruncatedNormal}		& $\mu$			& \xatt{mean}			& $\sigma$ 	& \xatt{stdev}	\\[-0.5ex]
+						& $a$			& \xatt{lowerBound}		& $b$		& \xatt{upperBound} \\
 \xatt{Uniform}				& \emph{a}		& \xatt{minimum}		& \emph{b}	& \xatt{maximum}	\\
 \xatt{Weibull1}				& $\lambda$		& \xatt{scale}			& \emph{k}	& \xatt{shape}		\\
 \xatt{Weibull2}				& $\lambda$		& \xatt{lambda}			& \emph{v}	& \xatt{shape}		\\
@@ -955,7 +976,7 @@ distributions supported in ProbOnto.}
 \end{longtable}
 \end{center}
 
-\newpage
+%\newpage
 
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=.95\textwidth
