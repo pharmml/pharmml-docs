@@ -1,40 +1,80 @@
 
 \chapter{Changes in 0.7.1}
-
+\label{ch:071changes}
+The following update version complements the release of PharmML 0.7 by
+few extensions or changes which will make the format more consistent 
+and flexible. 
 
 \section{Separate schema for ProbOnto}
+Chapter \ref{ch:ProbOnto} describes in details ProbOnto and its features 
+which remained unchanged. What changed is the embedding of ProbOnto
+in PharmML. More specifically we have 
+\begin{itemize}
+\item 
+created a separate schema for ProbOnto -- with no impact on the way
+the user will work with it. The schema borrows, similarly to SO schema, concepts
+from PharmML but can be otherwise developed and exteded independently.
+\end{itemize}
+The change means that ProbOnto, with code names hard coded in previous 
+version directly in PharmML schema, is now easier to extend without the need to 
+release new version of PharmML every time new distribution is added 
+to ProbOnto. 
+
+Other changes are, see appendix \ref{ch:probontoAppendix},
+\begin{itemize}
+\item 
+added new distributions or alternative parameterisations to the existing ones -- now 
+totalling to about 64 parametric distributions. This time we have considered number of
+distributions used in Matlab, available in the Statistics Toolbox$^{\text{TM}}$.
+\item 
+fixed bugs and typos in the knowledge base
+\item 
+provided additional R-code which is now available for PDF/PMF and CDF for every 
+univariate distribution, where available.
+\item 
+added according distribution plots.
+\end{itemize}
+
 
 \section{Removing \xelem{Equation} element}
 
-Removing
+The \xelem{Equation} element, although present since the very beginning, 
+has been removed due to its redundancy (used in most cases as child 
+element of \xelem{Assign}) and semantic inconsistency. Its name suggests 
+that it encodes an equation but it was defined with encoding expressions in mind, 
+i.e. syntactic unit of PharmML model the denotes a value. This change, 
+effecting virtually every model, will moreover make reading and writing of 
+models easier.
 
+For example the following equation $X = A + B$ encoded so far
+as 
 \lstset{language=XML}
 \begin{lstlisting}
-<PopulationParameter symbId="CL">
+<PopulationParameter symbId="X">
     <ct:Assign>
         <math:Equation>
             <math:Binop op="plus">
-                <ct:SymbRef symbIdRef="CLrenal"/>
-                <ct:SymbRef symbIdRef="CLother"/>
+                <ct:SymbRef symbIdRef="A"/>
+                <ct:SymbRef symbIdRef="B"/>
             </math:Binop>
         </math:Equation>
     </ct:Assign>
 </PopulationParameter>
 \end{lstlisting}
-
+will become a bit shorter and reads now
 \lstset{language=XML}
 \begin{lstlisting}
-<PopulationParameter symbId="CL">
+<PopulationParameter symbId="X">
     <ct:Assign>
         <math:Binop op="plus">
-            <ct:SymbRef symbIdRef="CLrenal"/>
-            <ct:SymbRef symbIdRef="CLother"/>
+            <ct:SymbRef symbIdRef="A"/>
+            <ct:SymbRef symbIdRef="B"/>
         </math:Binop>
     </ct:Assign>
 </PopulationParameter>
 \end{lstlisting}
-
-Instead
+In case when \xelem{Equation} element was used without the parent \xelem{Assing} element, such as 
+in function definition
 \lstset{language=XML}
 \begin{lstlisting}
     <ct:FunctionDefinition symbolType="real" symbId="proportional">
@@ -50,7 +90,7 @@ Instead
         </ct:Definition>
     </ct:FunctionDefinition>
 \end{lstlisting}
-now
+it is replaced by the latter and reads
 \lstset{language=XML}
 \begin{lstlisting}
     <ct:FunctionDefinition symbolType="real" symbId="proportional">
@@ -68,24 +108,40 @@ now
 \end{lstlisting}
 
 
-\section{Extending \xelem{Sequence} notation}
-A new option has been added to the first two elements, which was
-missing in 0.7, see section \ref{sec:noArms}
+\section{Other changes}
+
+\subsection{\xatt{columnType} in definition of the dataset optional}
+If mapping of a particular column is defined then the \xatt{columnType} attribute is 
+not required, and \emph{vice versa}, unless required by a target tool. This helps avoiding potential 
+redundancies or inconsistencies which we stumbled upon when translating 
+models from MDL to PharmML. 
+
+\subsection{Schema refactoring}
+A number of changes on the schema level has been made, such as 
+removing/replacing redundant types. These changes will have usually non or a minimal 
+impact on the way the users interact with PharmML coded models. 
+
+\subsection{Extending \xelem{Sequence} notation}
+Without adding a new element to the sequence structure, but with changes in its
+underlying type, a new option on the top of the existing two is available for the encoding of 
+numeric sequences, here in Matlab speak
 \begin{description}
 \item[option 1]
 Begin:StepSize:End or
 \item[option 2] 
 Begin:StepSize:StepNumber or
 \item[option 3]
-Begin:StepNumber:End
+{\color{red} \scshape{new}} Begin:StepNumber:End
 \end{description}
-
-With this the original version of the Simulx model is encodable which reads
+Note that the \xelem{Repetitions} element has been renamed to \xelem{StepNumber}
+for consistency with its use and interpretation.
+With this change the original version of the Simulx model, see section \ref{sec:noArms}, 
+is encodable directly without the need of recalculating the given values
 \lstset{language=MLX}
 \begin{lstlisting}
 	Cc <- list(name='Cc', time=seq(-5, 100, length=500))
 \end{lstlisting}
-can be encoded as 
+It can be encoded as the following code snippet shows
 \lstset{language=XML}
 \begin{lstlisting}
 <TrialDesign>
@@ -105,30 +161,6 @@ can be encoded as
             </Bolus>
         </Administration>
 \end{lstlisting}
-
-
-\section{\xatt{columnType} in definition of the dataset optional}
-If mapping of a particular column is defined as well then this 
-attribute it is not required. This helps avoiding redundancies or inconsistencies.
-
-Consider the following case from \emph{count\_PMAKmodel.xml}:
-\lstset{language=XML}
-\begin{lstlisting}
-<ColumnMapping>
-    <ds:ColumnRef columnIdRef="TIME"/>
-    <ct:SymbRef symbIdRef="t"/>
-</ColumnMapping>
-<ColumnMapping>
-    <ds:ColumnRef columnIdRef="Y"/>
-    <ct:SymbRef blkIdRef="om1" symbIdRef="y"/>
-</ColumnMapping>
-<ds:Definition>
-    <ds:Column columnId="ID" columnType="id" valueType="string" columnNum="1"/>
-    <ds:Column columnId="TIME" columnType="time" valueType="real" columnNum="2"/>
-    <ds:Column columnId="Y" columnType="dv" valueType="int" columnNum="3"/>
-</ds:Definition>
-\end{lstlisting}
-
 
 
 

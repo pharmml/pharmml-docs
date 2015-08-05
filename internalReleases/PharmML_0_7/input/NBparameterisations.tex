@@ -1,0 +1,88 @@
+\section{Parameterisations of NB1}
+All the Wikipedia article were accessed on 4th August 2015.
+\subsection*{English Wikipedia}
+Interpretation: distribution of the number of successes, \emph{k}, until \emph{r} failures have occurred.
+\begin{align*}
+P_{N\!B}(k;r,p) = {k + r - 1 \choose k} p^k (1-p)^r, \quad \operatorname E(X\!=\!k)=\frac{rp}{(1-p)}
+\end{align*}
+\begin{itemize}
+\item 
+Support
+\begin{itemize}
+\item 
+$k \in \{ 0, 1, 2, 3, \dots\}$ -- number of \textbf{successes}
+\end{itemize}
+\item 
+Parameters 
+\begin{itemize}
+\item 
+$r > 0$ -- number of \textbf{failures} until the experiment is stopped
+\item 
+$p \in (0,1)$ -- success probability in each experiment
+\end{itemize}
+\end{itemize}
+
+
+\subsection*{French Wikipedia}
+Interpretation: distribution of the number of failures, \emph{k}, before obtaining \emph{n} successes
+\begin{align*}
+P_{N\!B}(k;n,p) = {k + n - 1 \choose k} p^n (1-p)^k, \quad \operatorname E(X\!=\!k)=\frac{r(1-p)}{p}
+\end{align*}
+% This experiment continues until a given number n of success. The random variable representing the number of failures (before obtaining the given number n of success) then follows a negative binomial distribution. Its parameters are n, the number of expected success, and p, the probability of success.
+\begin{itemize}
+\item 
+Support
+\begin{itemize}
+\item 
+$k \in \{ 0, 1, 2, 3, \dots\}$ -- number of \textbf{failures}
+\end{itemize}
+\item 
+Parameters 
+\begin{itemize}
+\item 
+$n > 0$ -- number of \textbf{successes} until the experiment is stopped (fr: \emph{le nombre de succ\`es attendus})
+\item 
+$p \in (0,1)$ -- success probability in each experiment (fr: \emph{la probabilit\`e d'un succ\`es})
+\end{itemize}
+\end{itemize}
+
+\subsection*{German Wikipedia}
+Interpretation: distribution of the number of failures, \emph{k}, before obtaining \emph{r} successes. 
+(ger.: \emph{NB Distribution beschreibt die Anzahl der Versuche, die erforderlich sind, um in einem 
+Bernoulli-Prozess eine vorgegebene Anzahl von Erfolgen zu erzielen.})
+\begin{align*}
+P_{N\!B}(k;r,p) = {k + r - 1 \choose k} p^r (1-p)^k, \quad \operatorname E(X\!=\!k)=\frac{r(1-p)}{p}
+\end{align*}
+\begin{itemize}
+\item 
+Support
+\begin{itemize}
+\item 
+$k \in \{ 0, 1, 2, 3, \dots\}$ -- number of \textbf{failures} (ger: \emph{Anzahl Misserfolge})
+\end{itemize}
+\item 
+Parameters 
+\begin{itemize}
+\item 
+$r > 0$ -- number of \textbf{successes} until the experiment is stopped (ger: \emph{Anzahl Erfolge bis zum Abbruch})
+\item 
+$p \in (0,1)$ -- success probability in each experiment, (ger: \emph{Einzel-Erfolgs-Wahrscheinlichkeit})
+\end{itemize}
+\end{itemize}
+\begin{align*}
+P_{N\!B}(k;r,p) = {k + r - 1 \choose k} p^r (1-p)^k  .
+\end{align*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

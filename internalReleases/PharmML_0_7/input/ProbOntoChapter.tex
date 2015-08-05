@@ -51,9 +51,10 @@ as they are designed in a similar way.}.
 Similarly, the databases of distributions available online come with analog issues. 
 The largest and most comprehensive known to us collection of probability distributions, the 
 UUPDE, \cite{UUPDE:2013}, with up to 60 properties for each of its 
-500 probability distributions is an invaluable resource of parametric distributions. 
-Unfortunately, it comes with univariate cases only, without references or parameter
-names making its use in our context impracticable\footnote{Another case is Distributome, 
+500 probability distributions is an invaluable resource for parametric distributions. 
+Unfortunately, it comes with univariate cases only and lacks number of relevant for us 
+distributions, doesn't provide references or parameter names making its use in our 
+context impracticable\footnote{Another case is Distributome, 
 \url{http://www.distributome.org/}, comes with an impressive and well referenced collection
 of 90+ distributions but doesn't contain many of relevant for us types and/or 
 parameterisations and is limited to univariate parametric ones.}. \\
@@ -874,16 +875,16 @@ Normal-inverse-gamma	& $\mu, \lambda, \alpha, \beta$	& y	& --  & --  &  -- \\
 Pareto				& $x_m, \alpha$	& y	& y	& --  &  -- \\
 Rayleigh				& $\sigma$		& --  & --  & y	&  -- \\
 Standard Normal 		& $\mu\!=\!0, \sigma\!=\!1$	& y & -- &	 y & y  \\
-Student's T			& $\nu$			& y	& y	& y	&  -- \\
 Standard Uniform		& $a\!=\!0, b\!=\!1$		& --	& --	& y & y  \\
+Student's T			& $\nu$			& y	& y	& y	&  -- \\
 Triangular				& $a, b, c$		& -- 	& --	& -- & -- \\
 TruncatedNormal		& $\mu, \sigma, a, b$ & --	& --  & -- & -- \\
 Uniform				&  \emph{a, b}		& y	& y	& y		& --  \\
 Weibull 1				& $\lambda, k$		& y	& --	& y	&  -- \\
 Weibull 2				& $\lambda, v$		& --	& y	& --	&  -- \\
    \hline 
-\caption{Univariate distributions supported in ProbOnto. See Appendix \ref{ch:probontoAppendix} 
-for the detailed description.}
+\caption{{\color{red} \scshape{0.7.1 update}} Univariate distributions supported in ProbOnto with overview of tool support. 
+See Appendix \ref{ch:probontoAppendix} for a detailed description of each distribution.}
 \label{figTable:univariates}
 \vspace{-2.5em}
 \end{longtable}
@@ -905,72 +906,72 @@ Code name		& Symbol & Code name & Symbol & Code name \\
   \hline
   \multicolumn{6}{c}{\textit{Discrete Univariate}}  \\
   \hline
-\xatt{Bernoulli}				& \emph{p}		& \xatt{probability} 		& --			& -- \\
-\xatt{Binomial} 				& \emph{n}		& \xatt{numberOfFailures}& \emph{p}	& \xatt{probability} \\
-\xatt{CategoricalOrdered}		& $p_1,\dots,p_k$ 	& \xatt{categoryProb}  	&  --			& -- \\
-\xatt{CategoricalUnordered}	& $p_1,\dots ,p_k$ 	& \xatt{categoryProb}	&  --			& -- \\
-\xatt{GeneralizedPoisson}	& $\lambda$		& \xatt{rate}			& $\delta$		& \xatt{dispersion} \\
-\xatt{Geometric} 			& \emph{p}		& \xatt{probability}		& --			& --	\\
-\xatt{Hypergeometric} 		& \emph{N}		& \xatt{populationSize}	& \emph{K}	& \xatt{numberOfSuccesses} \\[-0.5ex]
+\xatt{Bernoulli1}			& \emph{p}		& \xatt{probability} 		& --			& -- \\
+\xatt{Binomial1} 			& \emph{n}		& \xatt{numberOfFailures}& \emph{p}	& \xatt{probability} \\
+\xatt{CategoricalOrdered1}	& $p_1,\dots,p_k$ 	& \xatt{categoryProb}  	&  --			& -- \\
+\xatt{CategoricalUnordered1}	& $p_1,\dots ,p_k$ 	& \xatt{categoryProb}	&  --			& -- \\
+\xatt{GeneralizedPoisson1}	& $\lambda$		& \xatt{rate}			& $\delta$		& \xatt{dispersion} \\
+\xatt{Geometric1} 			& \emph{p}		& \xatt{probability}		& --			& --	\\
+\xatt{Hypergeometric1} 		& \emph{N}		& \xatt{populationSize}	& \emph{K}	& \xatt{numberOfSuccesses} \\[-0.5ex]
 						&				&					&\emph{n}	& \xatt{numberOfTrials} \\
-\xatt{InverseBinomial} 		& $k$ 			& \xatt{k}				& $p$		& \xatt{p}	\\
+\xatt{InverseBinomial1} 		& $k$ 			& \xatt{k}				& $p$		& \xatt{p}	\\
 \xatt{NegativeBinomial1} 		& \emph{r}		& \xatt{numberOfFailures	}&  \emph{p}	& \xatt{probability}	\\
 \xatt{NegativeBinomial2} 		& $\lambda$ 		& \xatt{rate}			& $\tau$		& \xatt{overdispersion}	\\
-\xatt{Poisson} 				& $\lambda$		& \xatt{rate}			& --			& -- 	\\
+\xatt{Poisson1}				& $\lambda$		& \xatt{rate}			& --			& -- 	\\
 \xatt{UniformDiscrete1} 		&  \emph{a}		& \xatt{minimum}		& \emph{b}	& \xatt{maximum}	\\[-0.5ex]
 						&				&					& \emph{n} 	& \xatt{numberOfValues} \\
 \xatt{UniformDiscrete2} 		& $a=0$			& \xatt{minimum}		& \emph{n} 	& \xatt{numberOfValues}	\\
-\xatt{ZeroInflatedNegativeBinomial} 	& $\lambda$		& \xatt{rate}			& $\tau$ 		& \xatt{overdispersion}	\\
+\xatt{ZeroInflatedNegativeBinomial1} 	& $\lambda$		& \xatt{rate}			& $\tau$ 		& \xatt{overdispersion}	\\
 						&				&					& $p0$		& \xatt{probabilityOfZero} \\
-\xatt{ZeroInflatedPoisson} 	& $\lambda$		& \xatt{rate}			& $\pi$ 		& \xatt{probabilityOfZero}	\\
+\xatt{ZeroInflatedPoisson1} 	& $\lambda$		& \xatt{rate}			& $\pi$ 		& \xatt{probabilityOfZero}	\\
   \hline
   \multicolumn{7}{c}{\textit{Continuous Univariate}}	\\
   \hline
-\xatt{Beta} 				& $\alpha$		& \xatt{alpha}			& $\beta$		& \xatt{beta}	\\
-\xatt{BirnbaumSaunders} 		& $\alpha$		& \xatt{scale}			& $\gamma$	& \xatt{shape}	\\
-\xatt{Cauchy} 				& $x_0$			& \xatt{location}		& $\gamma$	& \xatt{scale}	\\
-\xatt{ChiSquared}			& \emph{k}		& \xatt{degreesOfFreedom} & --		&  --		\\
-\xatt{Exponential}			& $\lambda$		& \xatt{rate}			& --			& -- 		\\
-\xatt{F}					& $d_1$			& \xatt{numerator}		& $d_2$		& \xatt{denumerator} \\
-\xatt{Gamma}				& $k$			& \xatt{shape}			& $\theta$	& \xatt{scale} 	\\
+\xatt{Beta1} 				& $\alpha$		& \xatt{alpha}			& $\beta$		& \xatt{beta}	\\
+\xatt{BirnbaumSaunders1}	& $\alpha$		& \xatt{scale}			& $\gamma$	& \xatt{shape}	\\
+\xatt{Cauchy1} 				& $x_0$			& \xatt{location}		& $\gamma$	& \xatt{scale}	\\
+\xatt{ChiSquared1}			& \emph{k}		& \xatt{degreesOfFreedom} & --		&  --		\\
+\xatt{Exponential1}			& $\lambda$		& \xatt{rate}			& --			& -- 		\\
+\xatt{F1}					& $d_1$			& \xatt{numerator}		& $d_2$		& \xatt{denominator} \\
+\xatt{Gamma1}				& $k$			& \xatt{shape}			& $\theta$	& \xatt{scale} 	\\
 \xatt{GeneralizedGamma1}	& \emph{a}		& \xatt{scale}			& \emph{d}	& \xatt{shape1}		\\
 						& 				& 					& \emph{k} 	& \xatt{shape2} \\
 \xatt{GeneralizedGamma2}	& \emph{a}		& \xatt{location}		& \emph{b}	& \xatt{scale}		\\
 						& \emph{c}		& \xatt{shape1} 		& \emph{p} 	& \xatt{shape2} \\
-\xatt{Gompertz}			& $\eta$			& \xatt{shape}			& \emph{b}	& \xatt{scale}		\\
-\xatt{Gumbel} 				& $\mu$			& \xatt{location}		& $\beta$		& \xatt{scale}		\\ 
-\xatt{InverseGamma}		& $\alpha$		& \xatt{shape}			& $\beta$		& \xatt{scale}		\\
-\xatt{InverseGaussian}		& $\lambda$		& \xatt{shape}			& $\mu$		& \xatt{mean}		\\
+\xatt{Gompertz1}			& $\eta$			& \xatt{shape}			& \emph{b}	& \xatt{scale}		\\
+\xatt{Gumbel1} 			& $\mu$			& \xatt{location}		& $\beta$		& \xatt{scale}		\\ 
+\xatt{InverseGamma1}		& $\alpha$		& \xatt{shape}			& $\beta$		& \xatt{scale}		\\
+\xatt{InverseGaussian1}		& $\lambda$		& \xatt{shape}			& $\mu$		& \xatt{mean}		\\
 \xatt{Laplace1}				& $\mu$ 			& \xatt{location}		& \emph{b}	& \xatt{scale}		\\
 \xatt{Laplace2}				& $\mu$ 			& \xatt{location}		& $\tau$		& \xatt{tau}		\\
-\xatt{Logistic}				& $\mu$			& \xatt{location}		& \emph{s}	& \xatt{scale}		\\
-\xatt{LogLogistic}			& $\alpha$		& \xatt{scale}			& $\beta$		& \xatt{shape}		\\
+\xatt{Logistic1}				& $\mu$			& \xatt{location}		& \emph{s}	& \xatt{scale}		\\
+\xatt{LogLogistic1}			& $\alpha$		& \xatt{scale}			& $\beta$		& \xatt{shape}		\\
 \xatt{LogNormal1}			& $\mu$			& \xatt{meanLog}		& $\sigma$ 	& \xatt{stdevLog}	\\
 \xatt{LogNormal2}			& $\mu$			& \xatt{meanLog}		& \textit{v}		& \xatt{varLog}		\\
 \xatt{LogNormal3}			& \emph{m} 		& \xatt{median}			& $\sigma$	& \xatt{stdevLog}	\\
 \xatt{LogNormal4}			& \emph{m}		& \xatt{median}			& \emph{cv}	& \xatt{coefVar	}	\\
 \xatt{LogNormal5}			& $\mu$			& \xatt{meanLog}		& $\tau$		& \xatt{precision}	\\
-\xatt{Nakagami}			& $m$			& \xatt{shape}			& $\Omega$ 	& \xatt{spread}		\\
+\xatt{LogUniform}			& $min$			& \xatt{minimum}		& $max$		& \xatt{maximum}	\\
+\xatt{Nakagami1}			& $m$			& \xatt{shape}			& $\Omega$ 	& \xatt{spread}		\\
 \xatt{Normal1}				& $\mu$			& \xatt{mean}			& $\sigma$ 	& \xatt{stdev}		\\
 \xatt{Normal2}				& $\mu$			& \xatt{mean}			& \emph{v}	& \xatt{var}		\\
 \xatt{Normal3}				& $\mu$			& \xatt{mean}			& $\tau$ 		& \xatt{precision} 	\\
-\xatt{NormalInverseGamma}	& $\mu$			& \xatt{mean}			& $\lambda$	& \xatt{lambda}		\\[-0.5ex]
+\xatt{NormalInverseGamma1}	& $\mu$			& \xatt{mean}			& $\lambda$	& \xatt{lambda}		\\[-0.5ex]
 						& $\alpha$ 		& \xatt{alpha}			& $\beta$ 		& \xatt{beta} \\
-\xatt{Pareto}				& $x_m$			& \xatt{scale}			& $\alpha$ 	& \xatt{shape} 		\\
-\xatt{Rayleigh}				& $\sigma$		& \xatt{scale}			& --			& -- 			\\
-\xatt{StandardNormal} 		& $\mu\!=\!0$		& \xatt{mean}			& $\sigma\!=\!1$ & \xatt{stdev} 	\\
-\xatt{StudentT}				& $\nu$			& \xatt{degreesOfFreedom} & --		& -- 		\\
-\xatt{StandardUniform}		& $a\!=\!0$		& \xatt{minimum}		& $b\!=\!1$ 	& \xatt{maximum}	\\
-\xatt{Triangular}			& $a$			& \xatt{lowerLimit}		& $b$ 		& \xatt{upperLimit}	\\[-0.5ex]
+\xatt{Pareto1}				& $x_m$			& \xatt{scale}			& $\alpha$ 	& \xatt{shape} 		\\
+\xatt{Rayleigh1}			& $\sigma$		& \xatt{scale}			& --			& -- 			\\
+\xatt{StandardNormal1} 		& $\mu\!=\!0$		& \xatt{mean}			& $\sigma\!=\!1$ & \xatt{stdev} 	\\
+\xatt{StandardUniform1}		& $a\!=\!0$		& \xatt{minimum}		& $b\!=\!1$ 	& \xatt{maximum}	\\
+\xatt{StudentT1}			& $\nu$			& \xatt{degreesOfFreedom} & --		& -- 		\\
+\xatt{Triangular1}			& $a$			& \xatt{lowerLimit}		& $b$ 		& \xatt{upperLimit}	\\[-0.5ex]
 						&				&					& $c$		& \xatt{shape} \\
-\xatt{TruncatedNormal}		& $\mu$			& \xatt{mean}			& $\sigma$ 	& \xatt{stdev}	\\[-0.5ex]
+\xatt{TruncatedNormal1}		& $\mu$			& \xatt{mean}			& $\sigma$ 	& \xatt{stdev}	\\[-0.5ex]
 						& $a$			& \xatt{lowerBound}		& $b$		& \xatt{upperBound} \\
-\xatt{Uniform}				& \emph{a}		& \xatt{minimum}		& \emph{b}	& \xatt{maximum}	\\
+\xatt{Uniform1}				& \emph{a}		& \xatt{minimum}		& \emph{b}	& \xatt{maximum}	\\
 \xatt{Weibull1}				& $\lambda$		& \xatt{scale}			& \emph{k}	& \xatt{shape}		\\
 \xatt{Weibull2}				& $\lambda$		& \xatt{lambda}			& \emph{v}	& \xatt{shape}		\\
    \hline 
-\caption{Code names for distribution and parameter names of the univariate 
-distributions supported in ProbOnto.}
+\caption{{\color{red} \scshape{0.7.1 update}} Code names for distribution and parameter names of the univariate distributions.}
 \label{figTable:univariatesCodes}
 \vspace{-2.5em}
 \end{longtable}
@@ -1007,8 +1008,7 @@ Wishart 1				& $V, n$					& y	& --	& --	& --  	\\
 Wishart 2				& $R, k$					& --	& y	& --	& -- 	\\
    \hline
 \caption{Multivariate distributions with overview of tool support. See the Appendix \ref{ch:probontoAppendix}
-for the detailed description of the most relevant distributions -- full ProbOnto database 
-will be released soon.}
+for the detailed description of each distribution.}
 \label{figTable:multivariates}
 \vspace{-2.5em}
 \end{longtable}
@@ -1030,12 +1030,12 @@ Code name				& Symbol & Code name 			& Symbol 			& Code name \\
   \hline
   \multicolumn{5}{c}{\textit{Discrete Multivariate}} \\
   \hline
-Multinomial 				& $n$	& \xatt{numberOfTrials} 	& $p_1, \ldots, p_k$	& \xatt{probabilityOfSuccess}   \\
+\xatt{Multinomial1} 			& $n$	& \xatt{numberOfTrials} 	& $p_1, \ldots, p_k$	& \xatt{probabilityOfSuccess}   \\
   \hline
   \multicolumn{5}{c}{\textit{Continuous Multivariate}} \\
   \hline
-\xatt{Dirichlet}				& $\alpha_1, \dots, \alpha_K$	& \xatt{concentration} 	& --		& --  \\
-\xatt{InverseWishart}		& $\Psi$		& \xatt{scaleMatrix}	& $\nu$ 			& \xatt{degreesOfFreedom} \\
+\xatt{Dirichlet1}				& $\alpha_1, \dots, \alpha_K$	& \xatt{concentration} 	& --		& --  \\
+\xatt{InverseWishart1}		& $\Psi$		& \xatt{scaleMatrix}	& $\nu$ 			& \xatt{degreesOfFreedom} \\
 \xatt{MultivariateNormal1}	& ${\mu}$		& \xatt{mean}		& $\Sigma$		& \xatt{covarianceMatrix}  \\
 \xatt{MultivariateNormal2	}	& ${\mu}$		& \xatt{mean}		& $T$ 			& \xatt{precisionMatrix}	 \\ [0.5ex]
 \xatt{MultivariateStudentT1}	& ${\mu}$		& \xatt{mean}		& $\Sigma$		& \xatt{covarianceMatrix} \\[-0.5ex]
@@ -1045,7 +1045,7 @@ Multinomial 				& $n$	& \xatt{numberOfTrials} 	& $p_1, \ldots, p_k$	& \xatt{prob
 \xatt{Wishart1} 				& $V$		& \xatt{scaleMatrix}	& $n$			& \xatt{degreesOfFreedom} \\
 \xatt{Wishart2} 				& $R$		& \xatt{inverseScaleMatrix} & $k$		& \xatt{degreesOfFreedom} \\
    \hline
-\caption{Code names for the multivariate distributions and their parameters.}
+\caption{{\color{red} \scshape{0.7.1 update}} Code names for the multivariate distributions and their parameters.}
 \label{figTable:multivariatesCodes}
 \vspace{-2.5em}
 \end{longtable}
@@ -1065,10 +1065,10 @@ Multinomial 				& $n$	& \xatt{numberOfTrials} 	& $p_1, \ldots, p_k$	& \xatt{prob
 \multicolumn{1}{c}{0.2}				&  Symbol					& Code name 	&  3.0		 \\
   \hline
   \hline
-\xatt{MixtureDistribution} & $\pi_1, \ldots, \pi_k$ & \xatt{weight} &	y \\
+\xatt{MixtureDistribution1} & $\pi_1, \ldots, \pi_k$ & \xatt{weight} &	y \\
   \hline
    \hline
-\caption{Mixture distribution -  so far only for univariate distributions.}
+\caption{{\color{red} \scshape{0.7.1 update}} Mixture distribution -  so far only for univariate distributions.}
 \label{figTable:mixtures}
 \vspace{-2.5em}
 \end{longtable}

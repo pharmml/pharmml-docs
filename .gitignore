@@ -104,3 +104,11 @@ internalReleases/PharmML_0_7/probonto63B.pdf
 internalReleases/PharmML_0_7/probonto63C.pdf
 
 internalReleases/PharmML_0_7/archive/probonto63.pdf
+
+*.bbl
+
+*.out
+
+*.toc
+
+internalReleases/PharmML_0_7/version_0_7_2_changes.pdf

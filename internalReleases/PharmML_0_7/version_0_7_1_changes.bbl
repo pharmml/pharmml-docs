@@ -1,5 +1,41 @@
 \begin{thebibliography}{10}
 
+\bibitem{BoxCox:1964}
+GEP Box and DR~Cox.
+\newblock An analysis of transformations.
+\newblock {\em Journal of the Royal Statistical Society. Series B
+  (Methodological)}, 26(2):211--252, 1964.
+
+\bibitem{CDISC:2011a}
+{CDISC consortium}.
+\newblock {CDISC Study Design Model in XML (SDM-XML), Version 1.0}.
+\newblock Technical report, {Clinical Data Interchange Standards Consortium,
+  Inc}, 2011.
+
+\bibitem{Chiudinelli2015}
+Lorenzo Chiudinelli, Nicola Melillo, Paolo Magni, Enrica Mezzalana, and Lorenzo
+  Pasotti.
+\newblock {Bayesian model requirements for MDL and PharmML. Different
+  situations to be represented and corresponding WinBugs implementation}.
+\newblock Technical report, UNIPV, 2015.
+
+\bibitem{CommetsExamples2015}
+Emmanuelle Comets, Marylore Chenel, and Andrew Hooker.
+\newblock {Modelling Description Language, Design elements - Examples, Draft 1
+  version 2}.
+\newblock Technical report, INSERM, UPD; Servier; Uppsala University, 2015.
+
+\bibitem{Commets2015}
+Emmanuelle Comets, Marylore Chenel, and Andrew Hooker.
+\newblock {Modelling Description Language, Design elements, Draft 1 version 2}.
+\newblock Technical report, INSERM, UPD; Servier; Uppsala University, 2015.
+
+\bibitem{DArgenio:2009aa}
+A.~Schumitzky D'Argenio, D.Z. and X.~Wang.
+\newblock Adapt 5 user's guide: Pharmacokinetic/pharmacodynamic systems
+  analysis software.
+\newblock Technical report, Biomedical Simulations Resource, Los Angeles, 2009.
+
 \bibitem{Forbes:2010jk}
 Catherine Forbes, Merran Evans, Nicholas Hastings, and Brian Peacock.
 \newblock {\em Statistical Distributions}.
@@ -22,6 +58,17 @@ Charles Kooperberg.
 \newblock Logspline: Logspline density estimation routines, 2013.
 \newblock R package version 2.1.5.
 
+\bibitem{LavielleBook:2014}
+Marc Lavielle.
+\newblock {\em Mixed {E}ffects {M}odels for the {P}opulation {A}pproach:
+  {M}odels, {T}asks, {M}ethods and {T}ools}.
+\newblock {Chapman \& Hall/CRC Biostatistics Series}, 2014.
+
+\bibitem{LavielleFourModels:2014}
+Marc Lavielle.
+\newblock Four models.
+\newblock Technical report, {INRIA Saclay}, April 3, 2014.
+
 \bibitem{lebauer2013translating}
 David~S LeBauer, Michael~C Dietze, and Benjamin~M Bolker.
 \newblock Translating probability density functions: From r to bugs and back
@@ -39,6 +86,18 @@ Oleg Marichev and Michael Trott.
 \newblock Avaiable at
   \url{http://blog.wolfram.com/2013/02/01/the-ultimate-univariate-probability-distribution-explorer/},
   2013.
+
+\bibitem{winBUGSvol1}
+{MRC Biostatistics Unit}.
+\newblock {winBUGS Examples - Volume 1}.
+\newblock Available at
+  \url{http://www.mrc-bsu.cam.ac.uk/wp-content/uploads/WinBUGS\_Vol1.pdf}.
+
+\bibitem{winBUGSvol2}
+{MRC Biostatistics Unit}.
+\newblock {winBUGS Examples - Volume 2}.
+\newblock Available at
+  \url{http://www.mrc-bsu.cam.ac.uk/wp-content/uploads/WinBUGS\_Vol2.pdf}.
 
 \bibitem{noy2009bioportal}
 Natalya~F Noy, Nigam~H Shah, Patricia~L Whetzel, Benjamin Dai, Michael Dorf,
@@ -67,11 +126,21 @@ Wheyming~Tina Song and Yi-Chun Chen.
 \newblock {\em Automatic Control, IEEE Transactions on}, 56(8):1979--1984,
   2011.
 
+\bibitem{Swat:2013pavia}
+Maciej~J Swat.
+\newblock {Pavia PharmML workshop, November 2013}.
+\newblock Technical report, {EMBL-EBI}, 2014.
+
 \bibitem{Swat:2015a}
 Maciej~J Swat, Pierre Grenon, Florent Yvon, Sarala Wimalaratne, and Niels~Rode
   Kristensen.
 \newblock {Extenstions in PharmML 0.7}.
 \newblock Technical report, EMBL-EBI, July 2015.
+
+\bibitem{Swat:2014aa}
+Maciej~J Swat, Sarala Wimalaratne, and Niels~Rode Kristensen.
+\newblock {Changes in PharmML 0.3 and 0.3.1}.
+\newblock Technical report, EMBL-EBI, July 2014.
 
 \bibitem{Swat:2014bb}
 Maciej~J Swat, Sarala Wimalaratne, and Niels~Rode Kristensen.
