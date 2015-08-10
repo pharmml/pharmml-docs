@@ -199,7 +199,7 @@ Provides other info about \emph{support/range} and relationships to other distri
 The distribution collection and their features are based on
 probability distribution pages of the english Wikipedia\footnote{See the list of 
 distributions on Wikipedia at \url{https://en.wikipedia.org/wiki/List_of_probability_distributions}}, 
-Forbes et al. 2010 \cite{Forbes:2010jk}, Leemis et al. 2008 \cite{Leemis:2008tg}, 
+Forbes et al. 2011 \cite{forbes2011statistical}, Leemis et al. 2008 \cite{Leemis:2008tg}, 
 Song \& Chen 2011 \cite{song2011eighty}, and 
 Wolfram MathWorld \cite{weisstein2007wolfram}.
 
@@ -831,7 +831,7 @@ Generalized Poisson	& $\lambda, \delta$	& --  & --  & --  &  -- \\
 Geometric			& \emph{p}		&	y	& --  & --  &  -- \\
 Hypergeometric		& \emph{N, K, n}	&	y	& --  & --  &  -- \\
 Inverse Binomial 		& $k, p$ 			& --  & --  & --  &  -- \\
-Negative Binomial 1		& \emph{r, p}		&	y	&	y	& --  &  -- \\
+Negative Binomial 1		& \emph{r, p}		&	y\footnote{Negative Binomial is defined in UncertML but using a different distribution/support interpretation, see section \ref{app:sec:NB1discussion}.}	&	y	& --  &  -- \\
 Negative Binomial 2 		& $\lambda, \tau$ 	& --  & --  & --  &  -- \\
 %Negative Binomial 3 		& $\lambda, \theta$ 	& --  & --  & --  &  -- \\
 Poisson				& $\lambda$		&	y	&	y	& --  &  -- \\
@@ -907,7 +907,7 @@ Code name		& Symbol & Code name & Symbol & Code name \\
   \multicolumn{6}{c}{\textit{Discrete Univariate}}  \\
   \hline
 \xatt{Bernoulli1}			& \emph{p}		& \xatt{probability} 		& --			& -- \\
-\xatt{Binomial1} 			& \emph{n}		& \xatt{numberOfFailures}& \emph{p}	& \xatt{probability} \\
+\xatt{Binomial1} 			& \emph{n}		& \xatt{numberOfTrials}& \emph{p}	& \xatt{probability} \\
 \xatt{CategoricalOrdered1}	& $p_1,\dots,p_k$ 	& \xatt{categoryProb}  	&  --			& -- \\
 \xatt{CategoricalUnordered1}	& $p_1,\dots ,p_k$ 	& \xatt{categoryProb}	&  --			& -- \\
 \xatt{GeneralizedPoisson1}	& $\lambda$		& \xatt{rate}			& $\delta$		& \xatt{dispersion} \\
@@ -915,13 +915,13 @@ Code name		& Symbol & Code name & Symbol & Code name \\
 \xatt{Hypergeometric1} 		& \emph{N}		& \xatt{populationSize}	& \emph{K}	& \xatt{numberOfSuccesses} \\[-0.5ex]
 						&				&					&\emph{n}	& \xatt{numberOfTrials} \\
 \xatt{InverseBinomial1} 		& $k$ 			& \xatt{k}				& $p$		& \xatt{p}	\\
-\xatt{NegativeBinomial1} 		& \emph{r}		& \xatt{numberOfFailures	}&  \emph{p}	& \xatt{probability}	\\
+\xatt{NegativeBinomial1} 		& \emph{r}		& \xatt{numberOfSuccesses}&  \emph{p}	& \xatt{probability}	\\
 \xatt{NegativeBinomial2} 		& $\lambda$ 		& \xatt{rate}			& $\tau$		& \xatt{overdispersion}	\\
 \xatt{Poisson1}				& $\lambda$		& \xatt{rate}			& --			& -- 	\\
 \xatt{UniformDiscrete1} 		&  \emph{a}		& \xatt{minimum}		& \emph{b}	& \xatt{maximum}	\\[-0.5ex]
 						&				&					& \emph{n} 	& \xatt{numberOfValues} \\
 \xatt{UniformDiscrete2} 		& $a=0$			& \xatt{minimum}		& \emph{n} 	& \xatt{numberOfValues}	\\
-\xatt{ZeroInflatedNegativeBinomial1} 	& $\lambda$		& \xatt{rate}			& $\tau$ 		& \xatt{overdispersion}	\\
+\xatt{ZeroInflatedNegativeBinomial1} & $\lambda$	& \xatt{rate}			& $\tau$ 		& \xatt{overdispersion}	\\
 						&				&					& $p0$		& \xatt{probabilityOfZero} \\
 \xatt{ZeroInflatedPoisson1} 	& $\lambda$		& \xatt{rate}			& $\pi$ 		& \xatt{probabilityOfZero}	\\
   \hline

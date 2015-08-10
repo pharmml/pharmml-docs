@@ -18,35 +18,72 @@ the R code stored in ProbOnto and provided for each distribution for which it's 
 Some of the symbols used in definitions of the functions and quantities 
 listed in the subsequent sections are collected here with references
 \begin{itemize}
-\item Beta function, $B$\\
-\url{http://mathworld.wolfram.com/BetaFunction.html}\\
-\url{http://en.wikipedia.org/wiki/Beta_function}
-\item Regularized incomplete Beta function,  $I_p$, $I_{1-p}$\\
-\url{http://mathworld.wolfram.com/RegularizedBetaFunction.html}\\
-\url{http://en.wikipedia.org/wiki/Beta_function#Incomplete_beta_function}
+\item Beta function, $B(x,y)$\\
+\begin{equation*}
+B(x,y) = \frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}
+\end{equation*}
+\url{mathworld.wolfram.com/BetaFunction.html}\\
+\url{en.wikipedia.org/wiki/Beta_function}
+\item Regularized incomplete Beta function,  $I_p(a,b)$, $I_{1-p}(a,b)$\\
+\begin{equation*}
+I_x(a,b) = \frac{B(x;a,b)}{B(a,b)}
+\end{equation*}
+with
+\begin{equation*}
+B(x;a,b) = \int_0^x t^{a-1} (1-t)^{b-1} dt
+\end{equation*}
+then \emph{incomplete beta function}.\\
+\url{mathworld.wolfram.com/RegularizedBetaFunction.html}\\
+\url{en.wikipedia.org/wiki/Beta_function#Incomplete_beta_function}
 \item Error function, $erf$\\
-\url{http://mathworld.wolfram.com/Erf.html}\\
-\url{https://en.wikipedia.org/wiki/Error_function}
-\item Floor function, $\lfloor k \rfloor$\\
-\url{http://mathworld.wolfram.com/FloorFunction.html}\\
-\url{https://en.wikipedia.org/wiki/Floor_and_ceiling_functions}
+\begin{equation*}
+\text{erf}(z) = \frac{2}{\pi}\int_0^z e^{-t^2} dt
+\end{equation*}
+\url{mathworld.wolfram.com/Erf.html}\\
+\url{en.wikipedia.org/wiki/Error_function}
+\item Floor function, $\lfloor x \rfloor$\\
+\begin{equation*}
+\text{floor}(x) = \lfloor x\rfloor \text{ is the largest integer not greater than } x 
+\end{equation*}
+\url{mathworld.wolfram.com/FloorFunction.html}\\
+\url{en.wikipedia.org/wiki/Floor_and_ceiling_functions}
 \item Gamma function, $\Gamma$ \\
-\url{http://mathworld.wolfram.com/GammaFunction.html}\\
-\url{http://en.wikipedia.org/wiki/Gamma_function}
+\begin{equation*}
+\Gamma(n) = (n-1)!, \text{ for } n - \text{ positive integer}
+\end{equation*}
+\url{mathworld.wolfram.com/GammaFunction.html}\\
+\url{en.wikipedia.org/wiki/Gamma_function}
 \item Lower incomplete gamma function, $\gamma$\\
-\url{http://mathworld.wolfram.com/IncompleteGammaFunction.html}\\
-\url{https://en.wikipedia.org/wiki/Incomplete_gamma_function}
+\begin{equation*}
+  \gamma(s,x) = \int_0^x t^{s-1}\,e^{-t}\,{\rm d}t
+\end{equation*}
+\url{mathworld.wolfram.com/IncompleteGammaFunction.html}\\
+\url{en.wikipedia.org/wiki/Incomplete_gamma_function}
 \item Multivariate Gamma function,	$\Gamma_p$\\
-\url{https://en.wikipedia.org/wiki/Multivariate_gamma_function}
+\begin{equation*}
+\Gamma_p(a)= \pi^{p(p-1)/4}\prod_{j=1}^p \Gamma\left[ a+(1-j)/2\right]
+\end{equation*}
+\url{en.wikipedia.org/wiki/Multivariate_gamma_function}
 \item Iverson bracket, $[x=i]$\\ 
-\url{http://mathworld.wolfram.com/IversonBracket.html}\\
-\url{http://en.wikipedia.org/wiki/Iverson_bracket}
-\item Linear span, $span$\\
-\url{http://mathworld.wolfram.com/VectorSpaceSpan.html}\\
-\url{https://en.wikipedia.org/wiki/Linear_span}
-\item (Generalized) Hypergeometric function, ($_pF_q$), $_2F_1$\\
-\url{http://mathworld.wolfram.com/HypergeometricFunction.html}\\
-\url{http://en.wikipedia.org/wiki/Hypergeometric_function}
+\begin{equation*}
+[P] = \begin{cases} 1 & \text{if } P \text{ is true;} \\ 0 & \text{otherwise.} \end{cases}
+\end{equation*}
+\url{mathworld.wolfram.com/IversonBracket.html}\\
+\url{en.wikipedia.org/wiki/Iverson_bracket}
+%\item Linear span, $span$\\
+%\url{mathworld.wolfram.com/VectorSpaceSpan.html}\\
+%\url{en.wikipedia.org/wiki/Linear_span}
+\item Generalized Hypergeometric function, $_pF_q$\\
+\begin{equation*}
+{}_pF_q(a_1,\ldots,a_p;b_1,\ldots,b_q;z) = \sum_{n=0}^\infty \frac{(a_1)_n\dots(a_p)_n}{(b_1)_n\dots(b_q)_n} \, \frac {z^n} {n!}
+\end{equation*}
+\url{en.wikipedia.org/wiki/Generalized_hypergeometric_function}
+\item Hypergeometric function, $_2F_1$\\
+\begin{equation*}
+{}_2F_1(a,b;c;z) = \sum_{n=0}^\infty \frac{(a)_n (b)_n}{(c)_n} \frac{z^n}{n!}.
+\end{equation*}
+\url{mathworld.wolfram.com/HypergeometricFunction.html}\\
+\url{en.wikipedia.org/wiki/Hypergeometric_function}
 \end{itemize}
 
 \section{Distributions and their features}
@@ -2369,10 +2406,10 @@ undefined & \text{else}
  \label{fig:NegativeBinomial1}
 \end{figure}
 
-\subsubsection*{Parameter: numberOfFailures}
+\subsubsection*{Parameter: numberOfSuccesses}
 
 \noindent\begin{tabular}{p{2cm}cl}
-\textbf{name} & & number of failures \\
+\textbf{name} & & number of successes \\
 \textbf{type} & & scalar \\
 \textbf{symbol} & & $r$  \\
 \textbf{definition} & & $r > 0, r \in N$
@@ -2383,18 +2420,18 @@ undefined & \text{else}
 \textbf{name} & & success probability \\
 \textbf{type} & & scalar \\
 \textbf{symbol} & & $p$  \\
-\textbf{definition} & & $p \in [0,1]$
+\textbf{definition} & & $p \in (0,1)$
 \end{tabular}
 \subsubsection*{Functions}
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}\binom {k+r-1}k (1-p)^r p^k\end{equation*}
+\begin{equation*}\binom {k+r-1}k p^r (1-p)^k\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{verbatim}choose(k+r-1,k)*(1-p)^r*p^k\end{verbatim}
+\begin{verbatim}choose(k+r-1,k)*p^r * (1-p)^k\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}1 - I_{p}(k+1, r)\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{verbatim}1 - Rbeta(p, k+1, r)\end{verbatim}
+\begin{verbatim}1 - Rbeta(p, r, k+1,lower = F)\end{verbatim}
 \smallskip
 \subsubsection*{Characteristics}
 \smallskip \noindent \hspace{.2cm} \textbf{Mean} 

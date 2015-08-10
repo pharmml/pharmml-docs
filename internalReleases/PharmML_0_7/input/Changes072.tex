@@ -5,7 +5,29 @@ The following update version complements the releases of PharmML 0.7 \& 0.7.1
 by few extensions or changes which will make the format more consistent 
 and flexible. 
 
-\section{}
+
+\section{Design evaluation and optimisation tasks}
+
+\section{Minor changes}
+\begin{itemize}
+\item 
+Vector can be empty with elements defend using the \xatt{default}
+attribute, similarly to what is possible when defining matrices. With this
+feature a \emph{null} vector, one whose all elements are zero.
+\item
+new \xatt{determinant} matrix operator has been defined.
+\end{itemize}
+
+
+\section{Changes and bug fixes in ProbOnto}
+\begin{itemize}
+\item 
+Binomial distribution -- \xatt{numberOfTrials} instead of \xatt{numberOfFailures}
+\item 
+Negative binomial -- changed formulation/paramaterisation for the NB1, 
+see discussion in section \ref{app:sec:NB1discussion}
+\end{itemize}
+
 
 
 
