@@ -148,28 +148,38 @@ Statistical Mathematics in Tokyo.
 \section{Parameterisations of NB1}
 \label{app:sec:NB1discussion}
 
-There are essentially three ways to formulate and interpret an experiment for 
+There are at least three ways to formulate and interpret an experiment for 
 the independent Bernoulli trials with a fixed number of outcomes (successes or
 failures). The NB model which formalises this experiment is formulated using two 
 out of three following parameters dependent on the formulation: 
-number of trials (i.e. total number successes or failures), number of successes, 
-number of failures. 
-
-Below we list the formulations of the experimental goal: the estimation of the 
-probability distribution in a series of Bernoulli trials for
 \begin{itemize}
 \item 
+number of trials (i.e. total number successes or failures) % -- usually denoted with \emph{n} or \emph{x}
+\item
+number of successes % -- usually denoted with \emph{n}, \emph{r} or \emph{k}
+\item
+number of failures % -- usually denoted with \emph{r} or \emph{k}.
+\end{itemize} 
+Below we list the possible formulations for the experiment which goals is the 
+estimation of the probability distribution in a series of Bernoulli trials for
+\begin{description}
+\item[option 1]
 observing k failures before obtaining the r$^{th}$ success (most common)
-\item 
-obtaining r successes until r$^{th}$ failures have occurred
-\item 
-number of trials, $n$, required to before the r$^{th}$ success occurs 
-\end{itemize}
-The first one is most common with the last two options encountered
-only in very few cases.
+\item[option 2]
+obtaining r successes until k$^{th}$ failures have occurred
+\item[option 3]
+number of trials (successes or failures), $n$, required before the r$^{th}$ success occurs 
+\end{description}
+As one can see from the table \ref{figTable:NB1forms} below, the first one is most 
+common with the last two options encountered only in very few cases in the 
+reference sources.
 
 The UncertML, based on the english version of Wikipedia, uses the second 
-interpretation of this distribution. In the current version of ProbOnto we have 
+interpretation of this distribution\footnote{This was not always the case as the change from the 
+standard formulation to the current one happened around 2010. The majority of users who
+commented on this change are unhappy about it. But because there
+is no agreement to reverse these changes, which would require significant effort, 
+the page remains as is for the time being.}. In the current version of ProbOnto we have 
 reformulated it to align with the vast majority of sources. 
 Otherwise, mistake are likely as the target tools e.g. Matlab, R and 
 winBUGS, to mention here only few, use the most common form.
