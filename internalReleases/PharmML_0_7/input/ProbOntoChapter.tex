@@ -113,6 +113,12 @@ but with no solution for now.
 UncertML is a reference resource for distributions but does not provide 
 mechanisms to retrieve programmatically related functions and
 quantities.  
+\item
+Negative binomial comes with different formulation and interpretation 
+(as opposed to just different parameterisation), as explained in appendix, 
+section \ref{app:sec:NB1discussion}. UncertML features an option which is 
+rarely seen in the literature (and different compared to R, Matlab and winBUGS) 
+and might be misleading or remain unnoticed to the unexperienced user.
 \end{itemize}
 Other minor issues:
 \begin{itemize}
@@ -479,29 +485,36 @@ distributions. (See also a discussion on parameters difference between BUGS
 and R, \cite{lebauer2013translating}). A few typical examples are given in next sections.
 
 \subsection{Negative binomial distribution} 
-The available parameterisations, among others, are
+The available parameterisations are
 \begin{itemize}
 \item
-NegativeBinomial1\,($r$, $p$) with r -- \emph{number of failures} and p -- \emph{success probability},
+Negative Binomial 1\,($r$, $p$) with r -- \emph{number of successes} and p -- \emph{success probability}
 \begin{align}
-P(y=k;r,p) = \binom {k+r-1}k (1-p)^r p^k \nonumber
+P(y=k;r,p) = \binom {k+r-1}k p^r (1-p)^k, \quad k\in \{0,1,2,\dots \} \text{ number of failures} \nonumber
 \end{align}
+
 \item
-NegativeBinomial2\,($\lambda$, $\tau$) with $\lambda$ -- \emph{Poisson intensity} and $\tau$ -- \emph{over-dispersion},
+Negative Binomial 4\,($r$, $p$) with r -- \emph{number of failures} and p -- \emph{success probability}
 \begin{align}
-P(y=k;\lambda,\tau) = \frac{\Gamma(k + \frac{1}{\tau})}{k!\; \Gamma(\frac{1}{\tau})} \Big(\frac{1}{1+\tau \lambda} \Big)^{\frac{1}{\tau}} 
-\Big(\frac{\lambda}{\frac{1}{\tau} + \lambda} \Big)^{k} \nonumber
+P(y=k;r,p) = \binom {k+r-1}k (1-p)^r p^k, \quad k\in \{0,1,2,\dots \} \text{ number of successes} \nonumber
 \end{align}
-%\item
-%NegativeBinomial3\,($\lambda$, $\theta$) with $\lambda$ -- \emph{Poisson intensity} and $\theta$,
-%\begin{align}
-%\frac{\Gamma(\theta + y)}{\Gamma(a)\Gamma(y+1)} \Big(\frac{\theta}{\theta + \mu} \Big)^{\theta} 
-%\Big(\frac{\mu}{\theta + \mu} \Big)^{y} \nonumber
-%\end{align}
+
+\item
+Negative Binomial 2\,($\lambda$, $\tau$) with $\lambda$ -- \emph{Poisson intensity} and $\tau$ -- \emph{over-dispersion},
+\begin{align}
+P(y=k;\lambda,\tau) = \frac{\Gamma(k+\frac{1}{\tau})}{k!\; \Gamma(\frac{1}{\tau})} \Big(\frac{1}{1+\tau \lambda} \Big)^{\frac{1}{\tau}} \Big(\frac{\lambda}{\frac{1}{\tau} + \lambda} \Big)^{k} \nonumber
+\end{align}
+
+\item
+Negative Binomial 3\,($\mu$, $k$) %with $\lambda$ -- \emph{Poisson intensity} and $\tau$ -- \emph{over-dispersion},
+\begin{align}
+P(y=k;\lambda,\tau) = \binom {y+k-1}y \Big(\frac{\mu}{\mu + k} \Big)^{y} \Big(\frac{k}{k + \mu} \Big)^{k} \nonumber
+\end{align}
 \end{itemize}
-with the latter being used in typical pharmacometric discrete data models, \cite{Plan:2009fk, Troconiz:2009fv}.
-See the Wikipedia article\footnote{\url{en.wikipedia.org/wiki/Negative_binomial_distribution}, 
-section 'Alternative formulations'}, explaining the reasons behind the various representations.
+with NB2 being used in typical pharmacometric discrete data models, \cite{Plan:2009fk, Troconiz:2009fv}.
+See section \ref{app:sec:NB1discussion} in the appendix for a detailed discussion on the possible formulations. 
+%The Wikipedia article\footnote{\url{en.wikipedia.org/wiki/Negative_binomial_distribution}, 
+%section 'Alternative formulations'}, explains the reasons behind the various representations.
 
 \subsection{Normal distribution}
 Available parameterisations (see also Table \ref{figTable:logNormalParameterisations} 
@@ -551,7 +564,7 @@ $\mu \rightarrow \mu; \quad \tau \rightarrow v=1/\tau$
 \centering
 \begin{tabular}{cc}
 % \includegraphics[width=140mm]{pics/CDF_17Dec} \\
- \includegraphics[width=160mm]{pics/normalAndLogDomain_schema}
+ \includegraphics[width=160mm]{pics/LogNormalNormalSchema}
 \end{tabular}
 \caption{Schematic representation of the lognormaly distributed data on the natural (left) 
 and logarithmic scale (right), see Figure \ref{fig:insulinData} for real-life data example. 
@@ -579,16 +592,25 @@ LogNormal3\,(\textit{m}, $\sigma$)  with \emph{median}, $m$, on the natural scal
 LogNormal4\,(\textit{m}, \textit{cv}) with \emph{median}, $m$, and \emph{coefficient of variation}, $cv$, both on the natural scale, 
 \item
 LogNormal5\,($\mu$, $\tau$) with \emph{mean}, $\mu$, and \emph{precision}, $\tau$, both on the log-scale.
+\item
+LogNormal6\,(\textit{m}, $\sigma_g$)  with \emph{median}, $m$, and \emph{geometric standard deviation}, $\sigma_g$, both on the natural scale.
 \end{itemize}
 
-%LogNormal distribution (two reals numbers): 
-%geometric mean (exponential of the mean in log-space) and geometric standard deviation (exponential, stricly superior to 1, of the standard deviation in log-space). 
+%http://www.ineris.fr/toxi/activites/toxicologie_quantitative/mcsim/mcsim_distrib/manmcsim_5.php
+%LogNormalRandom(mean, sd): returns a lognormally distributed variate with 
+%- geometric mean mean and geometric standard deviation sd (i.e., the log of the returned variate is normally distributed with mean
+% LogNormalRandom(mean, sd): returns a lognormally distributed variate with 
+% - geometric mean mean and geometric standard deviation sd 
+% (i.e., the log of the returned variate is normally distributed with mean log(mean) and standard deviation log(sd));
+ 
+% geometric mean (exponential of the mean in log-space) and 
+% geometric standard deviation (exponential, stricly superior to 1, of the standard deviation in log-space). 
 %The variant LogNormal_v takes the variance (in log-space!) instead of the standard deviation as second parameter.
 
 \begin{figure}[htb!]
 \centering
 \begin{tabular}{cc}
- \includegraphics[width=160mm]{pics/normalAndLogDomain}
+ \includegraphics[width=140mm]{pics/Rudenski_LogNormalNormal}
 \end{tabular}
 \caption{Representation of the lognormaly distributed basal insulin data in diabetic patients 
 \cite{Rudenski:1991aa} on the natural scale (left) and on the logarithmic scale after 
@@ -645,13 +667,22 @@ $\mu \rightarrow \mu; \quad \tau \rightarrow \sigma=1/\sqrt{\tau}$
 
 \item 
 \begin{description}
+\item[LN1($\mu$, $\sigma$) $\rightarrow$ LN6($m$, $\sigma_g$)]:
+$\mu \rightarrow m=\exp(\mu); \quad \sigma \rightarrow \sigma_g=\exp(\sigma)$
+
+\item[LN6($m$, $\sigma_g$) $\rightarrow$ LN1($\mu$, $\sigma$)]:
+$m \rightarrow \mu=\log(m); \quad \sigma_g \rightarrow \sigma=\log(\sigma_g)$
+\end{description}
+
+
+\item 
+\begin{description}
 \item[LN2($\mu$, $v$) $\rightarrow$ LN3($m$, $\sigma$)]:
 $\mu \rightarrow m=\exp(\mu); \quad v \rightarrow \sigma=\sqrt{v}$
 
 \item[LN3($m$, $\sigma$) $\rightarrow$ LN2($\mu$, $v$)]:
 $m \rightarrow \mu=\log(m); \quad \sigma \rightarrow v=\sigma^2$
 \end{description}
-
 
 \item 
 \begin{description}
@@ -707,7 +738,7 @@ proof starts with the known relationships for the mean, $mean$, and variance, $v
 scale, collected in table \ref{figTable:logNormalParameterisations}. 
 Then the square of the coefficient of variation, $cv$, on the natural scale reads
 \begin{align}
-	cv^2 &= \frac{var}{mean^2} = \frac{(e^{\sigma^2}-1)\; e^{2\mu + \sigma^2}}{(e^{(\mu + 1/2\sigma^2)})^2}
+	cv^2 &= \frac{var}{mean^2} = \frac{(e^{\sigma^2}-1)\; e^{2\mu + \sigma^2}}{[e^{(\mu + 1/2\sigma^2)}]^2}
 	= (e^{\sigma^2}-1) \Leftrightarrow cv = \sqrt{e^{\sigma^2}-1} \;\;\; \& \;\;\; \sigma=\sqrt{\log(cv^2 + 1)}. \nonumber
 %	\frac{\cancel{a= b+c}}{\cancel{f} & = b-c
 \end{align}
@@ -720,7 +751,7 @@ Then the square of the coefficient of variation, $cv$, on the natural scale read
 
 
 
-\cleardoublepage
+%\cleardoublepage
 \setlength{\tabcolsep}{2em}
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=.95\textwidth
@@ -780,25 +811,28 @@ $m\,cv \sqrt{(cv^2+1)}$					& Standard  deviation		& $\sqrt{\log(cv^2 + 1)}$	\\ 
   \hline
   \multicolumn{3}{c}{$LN5: P(x;\boldsymbol\mu,\boldsymbol \tau)=\Gape[.5cm][.3cm]{} \sqrt{\frac{\tau}{2 \pi}} \frac{1}{x} \exp\Big[ {-\frac{\tau}{2}(\log x-\mu)^2} \Big] $ }\\
    \hline
- $e^{\mu + \frac{1}{2\tau}}$				& \Gape[.4cm][0cm]{}Mean  	& $\boldsymbol\mu$ \\ [.25ex]
- $e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]$ & Variance 			& $1/\tau$	\\ [.25ex]
-$e^{\mu + \frac{1}{2} \frac{1}{\tau}}\sqrt{e^{\frac{1}{\tau}}-1}$ 	& Standard deviation & $\sqrt{1/\tau}$	\\ [.25ex]
+ $e^{\mu + \frac{1}{2\tau}}$				& \Gape[.4cm][0cm]{}Mean  	& $\boldsymbol\mu$ \\ [0ex]
+ $e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]$ & Variance 			& $1/\tau$	\\ [0ex]
+$e^{\mu + \frac{1}{2} \frac{1}{\tau}}\sqrt{e^{\frac{1}{\tau}}-1}$ 	& Standard deviation & $\sqrt{1/\tau}$	\\ [0ex]
 %									& deviation  				& 	\\ [.25ex]
- $e^{\mu - \frac{1}{\tau}}$					& Mode 					& $\mu$	\\ [.25ex]
- $e^\mu$								& Median					& $\mu$ \\ [.25ex]
+ $e^{\mu - \frac{1}{\tau}}$					& Mode 					& $\mu$	\\ [0ex]
+ $e^\mu$								& Median					& $\mu$ \\ [0ex]
 %									&						& \\[.25ex]
-$\sqrt{e^{\frac{1}{\tau}}-1}$				& Coefficient of variation		& $\sqrt{1/\tau} / \mu$ \\ [.25EX]
+$\sqrt{e^{\frac{1}{\tau}}-1}$				& Coefficient of variation		& $\sqrt{1/\tau} / \mu$ \\ [0EX]
 %									& of variation				& \\
-  $1/\big(e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]\big)$ & Precision				& $\boldsymbol\tau$ \\ [.5ex]
+  $1/\big(e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]\big)$ & Precision				& $\boldsymbol\tau$ \\ [0ex]
    \hline
 \caption{The available parameterisations for the log-normal distribution and their characterising 
 quantities as functions of the respective parameters. With $\boldsymbol m$ -- median (NS), 
 $\boldsymbol {cv}$ -- coefficient of variation (NS), $\boldsymbol \mu$ -- mean (LS), 
-$\boldsymbol \sigma$ -- standard deviation (LS), $\boldsymbol v$ -- variance (LS), 
+$\boldsymbol \sigma$ -- standard deviation (LS), $\boldsymbol \sigma_g$ -- geometric standard 
+deviation (NS), $\boldsymbol v$ -- variance (LS), 
 $\boldsymbol \tau$ -- precision (LS). See Figure \ref{fig:schematicLogNormal} and 
-section \ref{subsec:logNormalForms} for the meaning of the symbols.\\ \small Small print: 
-The re-parameterisation formulas, page \pageref{subsubsec:formulas}, and expressions in this table are partially from 
-literature, partially self calculated (by MJS), use them on your own risk.}
+section \ref{subsec:logNormalForms} for the meaning of the symbols.
+%\\ \small Small print: 
+%The re-parameterisation formulas, page \pageref{subsubsec:formulas}, and expressions in this table are partially from 
+%literature, partially self calculated (by MJS), use them on your own risk.
+}
 \label{figTable:logNormalParameterisations}
 \vspace{-3.5em}
 \end{longtable}
@@ -831,12 +865,13 @@ Generalized Poisson	& $\lambda, \delta$	& --  & --  & --  &  -- \\
 Geometric			& \emph{p}		&	y	& --  & --  &  -- \\
 Hypergeometric		& \emph{N, K, n}	&	y	& --  & --  &  -- \\
 Inverse Binomial 		& $k, p$ 			& --  & --  & --  &  -- \\
-Negative Binomial 1		& \emph{r, p}		&	y\footnote{Negative Binomial is defined in UncertML but using a different distribution/support interpretation, see section \ref{app:sec:NB1discussion}.}	&	y	& --  &  -- \\
+Negative Binomial 1		& \emph{r, p}		& --	& y	& --  &  -- \\
 Negative Binomial 2 		& $\lambda, \tau$ 	& --  & --  & --  &  -- \\
-%Negative Binomial 3 		& $\lambda, \theta$ 	& --  & --  & --  &  -- \\
+Negative Binomial 3 		& $\mu, k$ 		& --  & --  & --  &  -- \\
+Negative Binomial 4 		& $r,p$ 			& y  & --  & --  &  -- \\
 Poisson				& $\lambda$		&	y	&	y	& --  &  -- \\
-Uniform 1 (discrete)		&  \emph{a, b, n}		& --	& --	& -- & --  \\
-Uniform 2 (discrete)		&  $a=0$, \emph{n}		& --	& --	& -- & --  \\
+Uniform 1 			&  \emph{a, b, n}		& --	& --	& -- & --  \\
+Uniform 2 			&  $a=0$, \emph{n}		& --	& --	& -- & --  \\
 Zero-Inflated Negative Binomial & $\lambda, \tau, p0$	& --  & --  & --  &  -- \\
 Zero-Inflated Poisson	& $\lambda, \pi$	& --  & --  & --  &  -- \\
   \hline
@@ -883,7 +918,7 @@ Uniform				&  \emph{a, b}		& y	& y	& y		& --  \\
 Weibull 1				& $\lambda, k$		& y	& --	& y	&  -- \\
 Weibull 2				& $\lambda, v$		& --	& y	& --	&  -- \\
    \hline 
-\caption{{\color{red} \scshape{0.7.1 update}} Univariate distributions supported in ProbOnto with overview of tool support. 
+\caption{{\color{red} \scshape{update}} Univariate distributions supported in ProbOnto with overview of tool support. 
 See Appendix \ref{ch:probontoAppendix} for a detailed description of each distribution.}
 \label{figTable:univariates}
 \vspace{-2.5em}
@@ -914,9 +949,11 @@ Code name		& Symbol & Code name & Symbol & Code name \\
 \xatt{Geometric1} 			& \emph{p}		& \xatt{probability}		& --			& --	\\
 \xatt{Hypergeometric1} 		& \emph{N}		& \xatt{populationSize}	& \emph{K}	& \xatt{numberOfSuccesses} \\[-0.5ex]
 						&				&					&\emph{n}	& \xatt{numberOfTrials} \\
-\xatt{InverseBinomial1} 		& $k$ 			& \xatt{k}				& $p$		& \xatt{p}	\\
+\xatt{InverseBinomial1} 		& $k$ 			& \xatt{index}			& $p$		& \xatt{probability}	\\
 \xatt{NegativeBinomial1} 		& \emph{r}		& \xatt{numberOfSuccesses}&  \emph{p}	& \xatt{probability}	\\
 \xatt{NegativeBinomial2} 		& $\lambda$ 		& \xatt{rate}			& $\tau$		& \xatt{overdispersion}	\\
+\xatt{NegativeBinomial3} 		& $\mu$ 			& \xatt{mean}			& $k$		& \xatt{index}	\\
+\xatt{NegativeBinomial4} 		& $r$ 			& \xatt{numberOfFailures}& $p$		& \xatt{probability}	\\
 \xatt{Poisson1}				& $\lambda$		& \xatt{rate}			& --			& -- 	\\
 \xatt{UniformDiscrete1} 		&  \emph{a}		& \xatt{minimum}		& \emph{b}	& \xatt{maximum}	\\[-0.5ex]
 						&				&					& \emph{n} 	& \xatt{numberOfValues} \\
@@ -971,7 +1008,7 @@ Code name		& Symbol & Code name & Symbol & Code name \\
 \xatt{Weibull1}				& $\lambda$		& \xatt{scale}			& \emph{k}	& \xatt{shape}		\\
 \xatt{Weibull2}				& $\lambda$		& \xatt{lambda}			& \emph{v}	& \xatt{shape}		\\
    \hline 
-\caption{{\color{red} \scshape{0.7.1 update}} Code names for distribution and parameter names of the univariate distributions.}
+\caption{{\color{red} \scshape{update}} Code names for distribution and parameter names of the univariate distributions.}
 \label{figTable:univariatesCodes}
 \vspace{-2.5em}
 \end{longtable}
@@ -1045,7 +1082,7 @@ Code name				& Symbol & Code name 			& Symbol 			& Code name \\
 \xatt{Wishart1} 				& $V$		& \xatt{scaleMatrix}	& $n$			& \xatt{degreesOfFreedom} \\
 \xatt{Wishart2} 				& $R$		& \xatt{inverseScaleMatrix} & $k$		& \xatt{degreesOfFreedom} \\
    \hline
-\caption{{\color{red} \scshape{0.7.1 update}} Code names for the multivariate distributions and their parameters.}
+\caption{{\color{red} \scshape{update}} Code names for the multivariate distributions and their parameters.}
 \label{figTable:multivariatesCodes}
 \vspace{-2.5em}
 \end{longtable}
@@ -1068,7 +1105,7 @@ Code name				& Symbol & Code name 			& Symbol 			& Code name \\
 \xatt{MixtureDistribution1} & $\pi_1, \ldots, \pi_k$ & \xatt{weight} &	y \\
   \hline
    \hline
-\caption{{\color{red} \scshape{0.7.1 update}} Mixture distribution -  so far only for univariate distributions.}
+\caption{{\color{red} \scshape{update}} Mixture distribution -  so far only for univariate distributions.}
 \label{figTable:mixtures}
 \vspace{-2.5em}
 \end{longtable}
@@ -1357,7 +1394,7 @@ can be used as the following code shows
 The \xelem{MixtureComponent} elements hold the mixtures in question, here
 Poisson with $\lambda_1$ and Poisson $\lambda_2$, and 
 \xelem{Parameter}, $\pi$, the mixture probability or \emph{weight}. The solution has the advantage 
-to be extendable to any number of mixing components, $m$, \cite{Forbes:2010jk}. 
+to be extendable to any number of mixing components, $m$, \cite{forbes2011statistical}. 
 The parameter $\pi$ becomes a vector, $\pi_i \text{ with } \pi_i \in [0,1], i=1,\dots,m$, 
 and can be encoded as such using the \xelem{Vector} element.
 \paragraph{Discussion}

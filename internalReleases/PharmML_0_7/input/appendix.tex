@@ -4,7 +4,7 @@
 The \emph{negative binomial} distribution, NB, was first proposed almost 
 100 years ago in 1920 by Greenwood \& Woods, \cite{greenwood1920inquiry}, 
 but its generalisation for both \emph{binomial} and NB distributions called the 
-\emph{generalised negative binomial distribution}, GNB, was discovered 
+\emph{generalised negative binomial distribution}, GNB, was found 
 more then 50 years later by Jain \& Consul (1971), \cite{jain1971generalized}. 
 The PMF of the GNB is defined for $0<\alpha<1$ and $|\alpha \beta| < 1$ 
 and reads in Jain \& Consul paper
@@ -28,7 +28,7 @@ which will be shown in the following sections.
 \begin{figure}[ht!]
 \centering
   \includegraphics[width=120mm]{pics/GNBspecialCases.pdf}
- \caption{GNB and its family.}
+ \caption{GNB and its family, see also \cite{Consul:2006qf}.}
  \label{fig:GNBspecialCases}
 \end{figure}
 
@@ -145,12 +145,13 @@ Statistical Mathematics in Tokyo.
 \end{itemize}
 
 \newpage
-\section{Parameterisations of NB1}
+\section{Parameterisations of the negative binomial.}
 \label{app:sec:NB1discussion}
 
 There are at least three ways to formulate and interpret an experiment for 
-the independent Bernoulli trials with a fixed number of outcomes (successes or
-failures). The NB model which formalises this experiment is formulated using two 
+the independent Bernoulli trials with a fixed number of outcomes (successes,
+failures or both) with the goal to estimate its probability distribution. 
+The NB model which formalises this experiment is formulated using two 
 out of three following parameters dependent on the formulation: 
 \begin{itemize}
 \item 
@@ -160,36 +161,84 @@ number of successes % -- usually denoted with \emph{n}, \emph{r} or \emph{k}
 \item
 number of failures % -- usually denoted with \emph{r} or \emph{k}.
 \end{itemize} 
-Below we list the possible formulations for the experiment which goals is the 
-estimation of the probability distribution in a series of Bernoulli trials for
+The possible formulations for such experiment are 
 \begin{description}
-\item[option 1]
+\item[Option 1]
 observing k failures before obtaining the r$^{th}$ success (most common)
-\item[option 2]
+\item[Option 2]
 obtaining r successes until k$^{th}$ failures have occurred
-\item[option 3]
-number of trials (successes or failures), $n$, required before the r$^{th}$ success occurs 
+\item[Option 3]
+number of trials (successes or failures), $n$, required before the r$^{th}$ success occurs.
 \end{description}
-As one can see from the table \ref{figTable:NB1forms} below, the first one is most 
-common with the last two options encountered only in very few cases in the 
-reference sources.
+As one can see from the table \ref{figTable:NB1forms} below, the first formulation
+is the most common in the literature while the remaining two options are encountered 
+only in very few cases.
 
 The UncertML, based on the english version of Wikipedia, uses the second 
-interpretation of this distribution\footnote{This was not always the case as the change from the 
-standard formulation to the current one happened around 2010. The majority of users who
-commented on this change are unhappy about it. But because there
-is no agreement to reverse these changes, which would require significant effort, 
-the page remains as is for the time being.}. In the current version of ProbOnto we have 
-reformulated it to align with the vast majority of sources. 
+interpretation of this distribution\footnote{This was not always the case as the change 
+from the standard formulation to the current one happened around 2010. The majority 
+of users who commented on this change are unhappy about it, see the English and French 
+Wikipedia Talk/Discussion pages. 
+Because there is no agreement to reverse these changes, which would require 
+significant effort, the page remains as is for the time being.}. In the current version 
+of ProbOnto we have reformulated it to align with the vast majority of sources. 
 Otherwise, mistake are likely as the target tools e.g. Matlab, R and 
-winBUGS, to mention here only few, use the most common form.
+winBUGS, to mention here only few, use the most common form, see figure 
+\ref{fig:testNB}.
 
-See Table \ref{figTable:NB1forms} below for the overview with references of the used definitions and 
-the implementations of NB in target tools and references.
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=130mm]{pics/testNB.pdf}
+ \caption{Plots of the negative binomial distribution functions, 
+ PMF and CDF, for the different formulations, here \emph{Option 1}
+ and  \emph{Option 2} compared. In (blue) the functions
+ for the UncertML formulation, in red as implemented in R for parameters 
+ $r=n=3$ and $p=.2$. See table \ref{figTable:UncertMLversusR} for the 
+ according PMFs and parameter definitions.}
+ \label{fig:testNB}
+\vspace{-1.5em}
+\end{figure}
+
+\captionsetup[longtable]{skip=1em}
+\LTcapwidth=.95\textwidth
+\begin{center}
+\setlength{\tabcolsep}{7pt}
+%\small
+\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{lcc}
+  \hline
+  \hline
+  %header
+   		&	UncertML								& R \\ [-0.5ex]
+  \hline
+  \hline
+%  \multicolumn{5}{c}{\textit{Option 1}}  \\
+\Gape[.4cm][0cm]{}PMF		& $f(x;r,p) = {x + r - 1 \choose x} p^x (1-p)^r$		& $f(x;n,p) = {x + n - 1 \choose x} p^n (1-p)^x$ \\
+\Gape[.4cm][0cm]{}Support		& $x \in 0,1,2,...$ number of \textbf{successes} 	& $x \in 0,1,2,...$ number of \textbf{failures} \\
+\Gape[.4cm][0cm]{}Parameters 	& $p \in [0,1]$ -- probability of success 			& $p \in (0,1]$ -- probability of success\\
+			& $r$ -- number of \textbf{failures}				& $n$ -- number of \textbf{successes} \\
+  \hline
+\caption{UncertML versus R: comparison of the model formulation, parameter used
+and the support variable. The mathematical formulation of the two models 
+is identical, but because of the differences in support variable interpretation and 
+meaning of the parameters, the resulting models provide very different results, 
+see figure \ref{fig:testNB}.}
+\label{figTable:UncertMLversusR}
+\vspace{-2.5em}
+\end{longtable}
+\end{center}
 
 
-\subsection*{English Wikipedia}
-\textbf{Interpretation}: distribution of the number of successes, \emph{k}, until \emph{r} failures have occurred.
+
+
+\subsection*{Differences explained}
+The above mentioned formulation options, see also table \ref{figTable:UncertMLversusR}, 
+are better understood if one compares different language version for the articles on negative 
+binomial distribution in Wikipedia, \cite{enWikipedia:2015}, \cite{frWikipedia:2015} and  \cite{gerWikipedia:2015}.
+All articles were accessed on 4th August 2015.
+
+\subsubsection*{English Wikipedia version -- option 2 -- supported in UncertML}
+\textit{Interpretation}: distribution of the number of successes, \emph{k}, until \emph{r} failures have occurred.
 \begin{align*}
 P_{N\!B}(k;r,p) = {k + r - 1 \choose k} p^k (1-p)^r, \quad \operatorname E(X\!=\!k)=\frac{rp}{(1-p)}
 \end{align*}
@@ -210,9 +259,8 @@ $p \in (0,1)$ -- success probability in each experiment
 \end{itemize}
 \end{itemize}
 
-
-\subsection*{French Wikipedia}
-\textbf{Interpretation}: distribution of the number of failures, \emph{k}, before obtaining \emph{n} successes
+\subsubsection*{French Wikipedia version -- option 2}
+\textit{Interpretation}: distribution of the number of failures, \emph{k}, before obtaining \emph{n} successes
 \begin{align*}
 P_{N\!B}(k;n,p) = {k + n - 1 \choose k} p^n (1-p)^k, \quad \operatorname E(X\!=\!k)=\frac{n(1-p)}{p}
 \end{align*}
@@ -234,11 +282,11 @@ $p \in (0,1)$ -- success probability in each experiment (fr: \emph{la probabilit
 \end{itemize}
 \end{itemize}
 
-\subsection*{German Wikipedia}
+\subsubsection*{German Wikipedia version -- option 2}
 The german Wiki page describes two alternative representations and interpolations
 of this distribution. We present here there one which is presented in the overview 
 box on the right-hand side, denoted as the alternative representation.\\
-\textbf{Interpretation}: distribution of the number of failures, \emph{k}, before obtaining \emph{r} successes. 
+\textit{Interpretation}: distribution of the number of failures, \emph{k}, before obtaining \emph{r} successes. 
 (ger.: \emph{NB Distribution beschreibt die Anzahl, k, der Misserfolge bis zum Eintreten des r-ten Erfolgs.})
 \begin{align*}
 P_{N\!B}(k;r,p) = {k + r - 1 \choose k} p^r (1-p)^k, \quad \operatorname E(X\!=\!k)=\frac{r(1-p)}{p}
@@ -263,12 +311,11 @@ $p \in (0,1)$ -- success probability in each experiment, (ger: \emph{Einzel-Erfo
 P_{N\!B}(k;r,p) = {k + r - 1 \choose k} p^r (1-p)^k  .
 \end{align*}
 
-All the Wikipedia article were accessed on 4th August 2015.
-
-\subsection{Implementation in software tools and reference sources}
+\subsection{Comparison of formulation support}
 \label{subsec:NB1implementations}
-
-\captionsetup[longtable]{skip=1em}
+The following table gives an overview of supported NB formulation options 
+across 25 reference sources and specialised software tools. 
+\captionsetup[longtable]{skip=.5em}
 \LTcapwidth=.95\textwidth
 \begin{center}
 \setlength{\tabcolsep}{7pt}
@@ -279,70 +326,86 @@ All the Wikipedia article were accessed on 4th August 2015.
   \hline
   %header
   Source 		& PMF	& Parameter 	& Support & Support variable \\ [-0.5ex]
-  			&		&			&		& interpretation \\
   \hline
   \hline
-  \multicolumn{5}{c}{\textit{Type 1}}  \\
+  \multicolumn{5}{c}{\textit{Option 1}}  \\
   \multicolumn{5}{c}{\textit{probability of observing a fixed number of failures before certain number of success}}  \\
   \hline
   \hline
-   \Gape[.4cm][0cm]{}Hilbe (2007), \cite{hilbe2011negative}	& ${y+r-1 \choose y} p^r (1-p)^\textbf{y} $ & $0 < p < 1$ & $0 \leq y < \infty$ & number of failures\\[0.5ex]
+   \Gape[.4cm][0cm]{}Hilbe \cite{hilbe2011negative}	& ${y+r-1 \choose y} p^r (1-p)^\textbf{y} $ & $0 < p < 1$ & $0 \leq y < \infty$ & number of failures\\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}Forbes et al. (2011), \cite{forbes2011statistical} 	& ${x+r-1 \choose x} p^r (1-p)^\textbf{x} $ & $0 < p < 1$ & $0 \leq x < \infty$ & number of failures\\[0.5ex]
+  \Gape[.4cm][0cm]{}Forbes et al. \cite{forbes2011statistical} 	& ${x+r-1 \choose x} p^r (1-p)^\textbf{x} $ & $0 < p < 1$ & $0 \leq x < \infty$ & number of failures\\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}Leemis (2008), \cite{Leemis:2008tg}		& ${x+r-1 \choose x} p^r (1-p)^\textbf{x}$ & $0 < p < 1$ & $0 \leq x < \infty$ & --\\[0.5ex]
+  \Gape[.4cm][0cm]{}Leemis \cite{Leemis:2008tg}		& ${x+r-1 \choose x} p^r (1-p)^\textbf{x}$ & $0 < p < 1$ & $0 \leq x < \infty$ & --\\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}R -- \emph{stats} package & $\frac{\Gamma(x+n)}{\Gamma(n)  x!} p^n (1-p)^\textbf{x}$ & $0 < p \leq 1$ & $x \in 0,1,...$ & number of failures \\[0.5ex]
+  \Gape[.4cm][0cm]{}Devroye \cite{Devroye:1986nx}	& ${x+n-1 \choose x} p^n (1-p)^\textbf{x}$ & $p \in (0,1)$ & $x \geq 0$ & number of failures \\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}Matlab -- Stats Toolbox 	& ${x+r-1 \choose x} p^r (1-p)^\textbf{x}$ & $0 < p < 1$ & $0 \leq x < \infty$ & number of failures \\[0.5ex]
+  \Gape[.4cm][0cm]{}Dobson \cite{Dobson:2002uq} 	& ${y+r-1 \choose y} p^r (1-p)^\textbf{y}$ & -- & -- & --\\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}Devroye (1986),\cite{Devroye:1986nx}	& ${x+n-1 \choose x} p^n (1-p)^\textbf{x}$ & $p \in (0,1)$ & $x \geq 0$ & number of failures \\[0.5ex]
+  \Gape[.4cm][0cm]{}Bonate \cite{Bonate:2011fk} 	& $\frac{\Gamma(y+k)}{\Gamma(k) y! } p^k (1-p)^\textbf{y}$ & -- & $y \geq 0$ & --\\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}Dobson (2002) 			& ${y+r-1 \choose y} p^r (1-p)^\textbf{y}$ & -- & -- & --\\[0.5ex]
+  \Gape[.4cm][0cm]{}Matlab, Stats Toolbox 	& ${x+r-1 \choose x} p^r (1-p)^\textbf{x}$ & $0 < p < 1$ & $0 \leq x < \infty$ & number of failures \\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}VGAM 			& ${y+k-1 \choose y} p^k (1-p)^\textbf{y}$ & $0 < p < 1$ & $x \in 0,1,2,...$ & -- \\[0.5ex]
+  \Gape[.4cm][0cm]{}R \emph{stats} package \cite{RCoreTeam} & $\frac{\Gamma(x+n)}{\Gamma(n)  x!} p^n (1-p)^\textbf{x}$ & $0 < p \leq 1$ & $x \in 0,1,...$ & number of failures \\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}winBUGS 			& ${x+r-1 \choose x} p^r (1-p)^\textbf{x}$ & -- & $0 \leq x < \infty$ & -- \\[0.5ex]
+  \Gape[.4cm][0cm]{}R \emph{VGAM} package \cite{Yee:2008fk,VGAMurl:2015} 	& ${y+k-1 \choose y} p^k (1-p)^\textbf{y}$ & $0 < p < 1$ & $y \in 0,1,2,...$ & -- \\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}UUPDE 			& ${m+n-1 \choose n-1} p^n (1-p)^\textbf{m}$ & $0 < p \leq 1$ & $m \in 0,1,2,...$ & -- \\[0.5ex]
+  \Gape[.4cm][0cm]{}winBUGS \cite{Lunn:2002aa} & ${x+r-1 \choose x} p^r (1-p)^\textbf{x}$ & -- & $0 \leq x < \infty$ & -- \\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}VoseSoftware 		& ${s+x-1 \choose x} p^s (1-p)^\textbf{x}$ & $0 < p \leq 1$ & $x \in 0,1,...$ & number of failures \\[0.5ex]
+  \Gape[.4cm][0cm]{}JAGS \cite{JAGS:2003aa}	& ${x+r-1 \choose x} p^r (1-p)^\textbf{x}$ & $0 < p \geq 1$ & $x \geq 0$ & -- \\[0.5ex]
+  \hline
+  \Gape[.4cm][0cm]{}UUPDE \cite{UUPDE:2013} 	& ${m+n-1 \choose n-1} p^n (1-p)^\textbf{m}$ & $0 < p \leq 1$ & $m \in 0,1,2,...$ & -- \\[0.5ex]
+  \hline
+  \Gape[.4cm][0cm]{}VoseSoftware.com 		& ${s+x-1 \choose x} p^s (1-p)^\textbf{x}$ & $0 < p \leq 1$ & $x \in 0,1,...$ & number of failures \\[0.5ex]
   \hline
   \Gape[.4cm][0cm]{}boost.org 			& ${x+r-1 \choose x} p^r (1-p)^\textbf{x}$ & -- & -- & number of failures \\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}Mathwave 		& ${x+n-1 \choose x} p^n (1-p)^\textbf{x}$ & $0 < p < 1$ & $x \in 0,1,...$ & -- \\[0.5ex]
+  \Gape[.4cm][0cm]{}Mathwave.com		& ${x+n-1 \choose x} p^n (1-p)^\textbf{x}$ & $0 < p < 1$ & $x \in 0,1,...$ & -- \\[0.5ex]
   \hline
   \Gape[.4cm][0cm]{}Wolfram 			& ${x+r-1 \choose x} p^r (1-p)^\textbf{x}$ & -- & -- & number of failures \\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}French Wikipedia 	& ${k+r-1 \choose k} p^r (1-p)^\textbf{k}$ & $p \in (0,1)$ & $k \in 0,1,2,3,...$& number of failures \\[0.5ex]
+  \Gape[.4cm][0cm]{}Wikipedia (French) 	& ${k+r-1 \choose k} p^r (1-p)^\textbf{k}$ & $p \in (0,1)$ & $k \in 0,1,2,3,...$& number of failures \\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}German Wikipedia 	& ${k+r-1 \choose k} p^r (1-p)^\textbf{k}$ & $p \in (0,1)$ & $k \in 0,1,2,3,...$ & number of failures \\[0.5ex]
+  \Gape[.4cm][0cm]{}Wikipedia (German)	& ${k+r-1 \choose k} p^r (1-p)^\textbf{k}$ & $p \in (0,1)$ & $k \in 0,1,2,3,...$ & number of failures \\[0.5ex]
   \hline
   \hline
-  \multicolumn{5}{c}{\textit{Type 2}}	\\
+  \multicolumn{5}{c}{\textit{Option 2}}	\\
   \multicolumn{5}{c}{\textit{probability of observing a fixed number of successes before certain number of failures}}	\\
   \hline
-  \Gape[.4cm][0cm]{}Agresti (2013),\cite{Agresti:2013pd} 		& ${y+k-1 \choose y} (1-p)^k p^\textbf{y}$ & -- & $y \in 0,1,2,...$ & number of successes \\[0.5ex]
+  \Gape[.4cm][0cm]{}Agresti \cite{Agresti:2013pd} 	& ${y+k-1 \choose y} (1-p)^k p^\textbf{y}$ & -- & $y \in 0,1,2,...$ & number of successes \\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}English Wikipedia 	& ${k+r-1 \choose k} (1-p)^r p^\textbf{k}$ & $p \in (0,1)$ & $k \in 0,1,2,3,...$ & number of successes \\[0.5ex]
+  \Gape[.4cm][0cm]{}UncertML \cite{uncertml3:2014}	& ${x+r-1 \choose x} (1-p)^r p^\textbf{x}$ & $p \in [0,1]$ & $x \in 0,1,2,3,...$ & number of successes \\[0.5ex]
+  \hline
+  \Gape[.4cm][0cm]{}Wikipedia (English) 	& ${k+r-1 \choose k} (1-p)^r p^\textbf{k}$ & $p \in (0,1)$ & $k \in 0,1,2,3,...$ & number of successes \\[0.5ex]
+  \hline
+   \Gape[.4cm][0cm]{}Consul \& Famoye \cite{Consul:2006qf}	& ${x+n-1 \choose x} (1-p)^\textbf{n} p^x $ & $0 < p < 1$ & $x=0,1,2,3,...$ & -- \\[0.5ex]
   \hline
   \hline
-  \multicolumn{5}{c}{\textit{Type 3}}	\\
-  \multicolumn{5}{c}{\textit{probability of number of trials required to achieve certain number of success}}	\\
+  \multicolumn{5}{c}{\textit{Option 3}}	\\
+  \multicolumn{5}{c}{\textit{probability of number of trials required to achieve certain number of successes}}	\\
   \hline
-  \Gape[.4cm][0cm]{}Distributome 		& ${x-1 \choose k-1} p^k (1-p)^{\textbf{x}-k}$ & -- & $x \in k,k+1,...$ & number of trials \\[0.5ex]
+  \Gape[.4cm][0cm]{}Distributome \cite{dinov2015probability}	& ${x-1 \choose k-1} p^k (1-p)^{\textbf{x}-k}$ & -- & $x \in k,k+1,...$ & number of trials \\[0.5ex]
   \hline
-  \Gape[.4cm][0cm]{}Song, Chen (2011)	& ${x-1 \choose k-1} p^k (1-p)^{\textbf{x}-k}$ & $0 \leq p \leq 1$ & $x \in k,k+1,...$ & -- \\[0.5ex]
+  \Gape[.4cm][0cm]{}Song \& Chen \cite{song2011eighty}	& ${x-1 \choose k-1} p^k (1-p)^{\textbf{x}-k}$ & $0 \leq p \leq 1$ & $x \in k,k+1,...$ & -- \\[0.5ex]
    \hline 
   \Gape[.4cm][0cm]{}massmatics.de		& ${n-1 \choose r-1} p^r (1-p)^{\textbf{n}-r}$ & $0 \leq p \leq 1$ & $n \in N, n \geq r$ & number of trials \\[0.5ex]
    \hline 
-\caption{NB formulation overview}
+\caption{Overview of different formulation types of the negative binomial described 
+or supported in reference sources and specialised software tools.
+Note that \emph{Option 1} and \emph{Option 2} are parameterised with the 
+number of success or failures, respectively, and the probability of success while \emph{Option 3} 
+formulation is parameterised with the total number of success and failures and the 
+probability of success.}
 \label{figTable:NB1forms}
 \vspace{-2.5em}
 \end{longtable}
 \end{center}
-
-
+Note, the first term of the PMF, in Type 1 \& 2, can be formulated in various ways 
+and the following equation shows their equivalent forms
+\begin{align}
+{x + z -1 \choose x} &={x + z -1 \choose z - 1} = \frac{(x+z-1)!}{x!\;(z-1)!} = \frac{\Gamma(x+z)}{x! \; \Gamma(z)}. \nonumber
+ \end{align} 
+Both, the UncertML and R version are stored in ProbOnto, as NB1 and NB4, respectively.
 
 
 
