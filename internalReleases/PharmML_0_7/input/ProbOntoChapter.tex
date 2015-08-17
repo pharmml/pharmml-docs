@@ -502,13 +502,13 @@ P(y=k;r,p) = \binom {k+r-1}k (1-p)^r p^k, \quad k\in \{0,1,2,\dots \} \text{ num
 \item
 Negative Binomial 2\,($\lambda$, $\tau$) with $\lambda$ -- \emph{Poisson intensity} and $\tau$ -- \emph{over-dispersion},
 \begin{align}
-P(y=k;\lambda,\tau) = \frac{\Gamma(k+\frac{1}{\tau})}{k!\; \Gamma(\frac{1}{\tau})} \Big(\frac{1}{1+\tau \lambda} \Big)^{\frac{1}{\tau}} \Big(\frac{\lambda}{\frac{1}{\tau} + \lambda} \Big)^{k} \nonumber
+P(y=k;\lambda,\tau) = \frac{\Gamma(k+\frac{1}{\tau})}{k!\; \Gamma(\frac{1}{\tau})} \Big(\frac{1}{1+\tau \lambda} \Big)^{\frac{1}{\tau}} \Big(\frac{\lambda}{\frac{1}{\tau} + \lambda} \Big)^{k},\quad k\in \{0,1,2,\dots \}  \nonumber
 \end{align}
 
 \item
 Negative Binomial 3\,($\mu$, $k$) %with $\lambda$ -- \emph{Poisson intensity} and $\tau$ -- \emph{over-dispersion},
 \begin{align}
-P(y=k;\lambda,\tau) = \binom {y+k-1}y \Big(\frac{\mu}{\mu + k} \Big)^{y} \Big(\frac{k}{k + \mu} \Big)^{k} \nonumber
+P(y=k;\lambda,\tau) = \binom {y+k-1}y \Big(\frac{\mu}{\mu + k} \Big)^{y} \Big(\frac{k}{k + \mu} \Big)^{k},\quad y\in \{0,1,2,\dots \}  \nonumber
 \end{align}
 \end{itemize}
 with NB2 being used in typical pharmacometric discrete data models, \cite{Plan:2009fk, Troconiz:2009fv}.
@@ -584,16 +584,34 @@ with indication about their coverage in target tools) are
 \begin{itemize}
 \item
 LogNormal1\,($\mu$, $\sigma$) with \emph{mean}, $\mu$, and \emph{standard deviation}, $\sigma$, both on the log-scale, 
+\begin{align*}
+P(x;\boldsymbol\mu,\boldsymbol\sigma)= \frac{1}{x \sigma \sqrt{2 \pi}} \exp\Big[ \frac{-(\log x - \mu)^2}{2\sigma^2}\Big]
+\end{align*}
 \item
 LogNormal2\,($\mu$, \textit{v}) with \emph{mean}, $\mu$, and \emph{variance}, $v$, both on the log-scale, 
+\begin{align*}
+P(x;\boldsymbol\mu,\boldsymbol {v})=\Gape[.5cm][.3cm]{} \frac{1}{x \sqrt{v} \sqrt{2 \pi}} \exp\Big[ \frac{-(\log x - \mu)^2}{2 v}\Big]
+\end{align*}
 \item
 LogNormal3\,(\textit{m}, $\sigma$)  with \emph{median}, $m$, on the natural scale and \emph{standard deviation}, $\sigma$, on the log-scale, 
+\begin{align*}
+P(x;\boldsymbol m,\boldsymbol \sigma) =\Gape[.5cm][.3cm]{} \frac{1}{x \sigma \sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2\sigma^2}\Big]
+\end{align*}
 \item
 LogNormal4\,(\textit{m}, \textit{cv}) with \emph{median}, $m$, and \emph{coefficient of variation}, $cv$, both on the natural scale, 
+\begin{align*}
+P(x;\boldsymbol m,\boldsymbol {cv})=\Gape[.5cm][.3cm]{} \frac{1}{x \sqrt{\log(cv^2+1)} \sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2\log(cv^2+1)}\Big]
+\end{align*}
 \item
 LogNormal5\,($\mu$, $\tau$) with \emph{mean}, $\mu$, and \emph{precision}, $\tau$, both on the log-scale.
+\begin{align*}
+P(x;\boldsymbol\mu,\boldsymbol \tau)=\Gape[.5cm][.3cm]{} \sqrt{\frac{\tau}{2 \pi}} \frac{1}{x} \exp\Big[ {-\frac{\tau}{2}(\log x-\mu)^2} \Big] 
+\end{align*}
 \item
 LogNormal6\,(\textit{m}, $\sigma_g$)  with \emph{median}, $m$, and \emph{geometric standard deviation}, $\sigma_g$, both on the natural scale.
+\begin{align*}
+P(x;\boldsymbol m,\boldsymbol {\sigma_g})=\Gape[.5cm][.3cm]{} \frac{1}{x \log(\sigma_g)\sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2 \log^2(\sigma_g)}\Big]
+\end{align*}
 \end{itemize}
 
 %http://www.ineris.fr/toxi/activites/toxicologie_quantitative/mcsim/mcsim_distrib/manmcsim_5.php
@@ -629,6 +647,11 @@ between target tools. For example when translating a model implemented
 for Monolix/NONMEM, which use either LN1 or LN2, with winBUGS as the 
 target tool, which uses only LN5.\\
 \begin{itemize}
+%LN1
+\item 
+LN1 relationships
+\begin{itemize}
+%LN1
 \item 
 \begin{description}
 \item[LN1($\mu$, $\sigma$) $\rightarrow$ LN2($\mu$, $v$)]:
@@ -673,8 +696,12 @@ $\mu \rightarrow m=\exp(\mu); \quad \sigma \rightarrow \sigma_g=\exp(\sigma)$
 \item[LN6($m$, $\sigma_g$) $\rightarrow$ LN1($\mu$, $\sigma$)]:
 $m \rightarrow \mu=\log(m); \quad \sigma_g \rightarrow \sigma=\log(\sigma_g)$
 \end{description}
+\end{itemize}
 
-
+%LN2
+\item 
+remaining LN2 relationships
+\begin{itemize}
 \item 
 \begin{description}
 \item[LN2($\mu$, $v$) $\rightarrow$ LN3($m$, $\sigma$)]:
@@ -704,6 +731,20 @@ $\mu \rightarrow \mu; \quad \tau \rightarrow v=1/\tau$
 
 \item 
 \begin{description}
+\item[LN2($\mu$, $v$) $\rightarrow$ LN6($m$, $\sigma_g$)]:
+$\mu \rightarrow m=\exp(\mu); \quad v \rightarrow \sigma_g=\exp(\sqrt{v})$
+
+\item[LN6($m$, $\sigma_g$) $\rightarrow$ LN2($\mu$, $v$)]:
+$m \rightarrow \mu=\log(m); \quad \sigma_g \rightarrow v=\log(\sigma_g^2)$
+\end{description}
+\end{itemize}
+
+%LN3
+\item 
+remaining LN3 relationships
+\begin{itemize}
+\item 
+\begin{description}
 \item[LN3($m$, $\sigma$) $\rightarrow$ LN4($m$, $cv$)]:
 $m \rightarrow m; \quad \sigma \rightarrow cv=\sqrt{\exp(\sigma^2)-1}$
 
@@ -722,12 +763,50 @@ $\mu \rightarrow m=\exp(\mu); \quad \tau \rightarrow \sigma=1/\sqrt{\tau}$
 
 \item 
 \begin{description}
+\item[LN3($m$, $\sigma$) $\rightarrow$ LN6($m$, $\sigma_g$)]:
+$m \rightarrow m; \quad \sigma \rightarrow \sigma_g=\exp(\sigma)$
+
+\item[LN6($m$, $\sigma_g$) $\rightarrow$ LN3($m$, $\sigma$)]:
+$m \rightarrow m; \quad \sigma_g \rightarrow \sigma=\log(\sigma)$
+\end{description}
+\end{itemize}
+
+%LN4
+\item 
+remaining LN4 relationships
+\begin{itemize}
+\item 
+\begin{description}
 \item[LN4($m$, $cv$) $\rightarrow$ LN5($\mu$, $\tau$)]:
 $m \rightarrow \mu=\log(m); \quad cv \rightarrow \tau=1/\log(cv^2+1)$
 
 \item[LN5($\mu$, $\tau$) $\rightarrow$ LN4($m$, $cv$)]:
 $\mu \rightarrow m = \exp(\mu); \quad \tau \rightarrow cv=\sqrt{\exp(1/\tau)-1}$
 \end{description}
+
+\item 
+\begin{description}
+\item[LN4($m$, $cv$) $\rightarrow$ LN6($m$, $\sigma_g$)]:
+$m \rightarrow m; \quad cv \rightarrow \sigma_g=\exp\Big(\sqrt{\log(cv^2+1)}\Big) $%\sqrt{cv+1}$
+
+\item[LN6($m$, $\sigma_g$) $\rightarrow$ LN4($m$, $cv$)]:
+$m \rightarrow m; \quad \sigma_g \rightarrow cv=\sqrt{\exp\big(\log^2(\sigma_g)\big) -1}$ %\sigma_g^2-1$
+\end{description}
+\end{itemize}
+
+%LN5
+\item 
+remaining LN5 relationship
+\begin{itemize}\item 
+\begin{description}
+\item[LN5($\mu$, $\tau$) $\rightarrow$ LN6($m$, $\sigma_g$)]:
+$\mu \rightarrow m=\exp(\mu); \quad \tau \rightarrow \sigma_g= \exp(1/\sqrt{\tau})$
+
+\item[LN6($m$, $\sigma_g$) $\rightarrow$ LN5($\mu$, $\tau$)]:
+$m \rightarrow \mu=\log(m); \quad \sigma_g \rightarrow \tau= 1/\log^2 (\sigma_g)$
+\end{description}
+\end{itemize}
+
 \end{itemize}
 
 The proof of the majority of the formulas is straightforward taking into account the definition
@@ -749,10 +828,10 @@ Then the square of the coefficient of variation, $cv$, on the natural scale read
 %	\frac{\cancel{a= b+c}}{\cancel{f} & = b-c
 %\end{align}
 
-
+\subsubsection{Overview table}
 
 %\cleardoublepage
-\setlength{\tabcolsep}{2em}
+\setlength{\tabcolsep}{1.5em}
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=.95\textwidth
 \begin{center}
@@ -765,7 +844,8 @@ Then the square of the coefficient of variation, $cv$, on the natural scale read
 \multicolumn{1}{c}{on the natural scale (NS)} 	&						& \multicolumn{1}{c}{log-transformed scale (LS)} \\
    \hline
   \hline
-  \multicolumn{3}{c}{$LN1: P(x;\boldsymbol\mu,\boldsymbol\sigma)=\Gape[.5cm][.3cm]{} \frac{1}{x \sigma \sqrt{2 \pi}} \exp\Big[ \frac{-(\log x - \mu)^2}{2\sigma^2}\Big] $ }\\
+  \multicolumn{3}{c}{\Gape[.4cm][.2cm]{}$LN(\boldsymbol\mu,\boldsymbol\sigma)$} \\
+%  =\Gape[.5cm][.3cm]{} \frac{1}{x \sigma \sqrt{2 \pi}} \exp\Big[ \frac{-(\log x - \mu)^2}{2\sigma^2}\Big] $ }\\
    \hline
 $e^{\mu + \frac{1}{2}\sigma^2}$			& \Gape[.4cm][0cm]{}Mean  	& $\boldsymbol\mu$ \\ [.25ex]
 $e^{2\mu + \sigma^2}[e^{\sigma^2}-1]$		& Variance 				& $\sigma^2$	\\ [.25ex]
@@ -776,7 +856,8 @@ $e^\mu$								& Median					& $\mu$ \\ [.25ex]
 $\sqrt{e^{\sigma^2}-1}$					& Coefficient of variation		& $\sigma/\mu$ \\ [.5EX]
 %									& of variation				& \\
   \hline
-  \multicolumn{3}{c}{$LN2: P(x;\boldsymbol\mu,\boldsymbol {v})=\Gape[.5cm][.3cm]{} \frac{1}{x \sqrt{v} \sqrt{2 \pi}} \exp\Big[ \frac{-(\log x - \mu)^2}{2 v}\Big] $ }\\
+  \multicolumn{3}{c}{\Gape[.4cm][.2cm]{}$LN2(\boldsymbol\mu,\boldsymbol {v})$} \\
+%  \Gape[.5cm][.3cm]{} \frac{1}{x \sqrt{v} \sqrt{2 \pi}} \exp\Big[ \frac{-(\log x - \mu)^2}{2 v}\Big] $ }\\
    \hline
 $e^{\mu + \frac{1}{2}v}$					& \Gape[.4cm][0cm]{}Mean  	& $\boldsymbol\mu$ \\ [.25ex]
 $e^{2\mu + v}[e^{v}-1]$					& Variance 				& $\boldsymbol v$	\\ [.25ex]
@@ -787,7 +868,8 @@ $e^\mu$								& Median					& $\mu$ \\ [.25ex]
 $\sqrt{e^{v}-1}$						& Coefficient of variation		& ${\sqrt{v}} /\mu$ \\ [.5EX]
 %									& of variation				& \\
   \hline
-  \multicolumn{3}{c}{$LN3: P(x;\boldsymbol m,\boldsymbol \sigma) =\Gape[.5cm][.3cm]{} \frac{1}{x \sigma \sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2\sigma^2}\Big] $ }\\ %[1.5EX]
+  \multicolumn{3}{c}{\Gape[.4cm][.2cm]{}$LN3P(\boldsymbol m,\boldsymbol \sigma)$}\\ 
+%  =\Gape[.5cm][.3cm]{} \frac{1}{x \sigma \sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2\sigma^2}\Big] $ }\\ %[1.5EX]
    \hline
  $m\, e^{\frac{1}{2}\sigma^2}$				& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
  $m^2 e^{\sigma^2} [e^{\sigma^2}-1]$		& Variance 				& $\sigma^2$	\\ [.25ex]
@@ -798,7 +880,8 @@ $m\sqrt{e^{\sigma^2} (e^{\sigma^2}-1)}$		& Standard deviation	  	& $\boldsymbol\
 $\sqrt{e^{\sigma^2}-1}$					& Coefficient of variation		& $\sigma/\log( m)$ \\ [.5EX]
 % 									&  of variation				&  \\
   \hline
-   \multicolumn{3}{c}{$LN4: P(x;\boldsymbol m,\boldsymbol {cv})=\Gape[.5cm][.3cm]{} \frac{1}{x \sqrt{\log(cv^2+1)} \sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2\log(cv^2+1)}\Big] $} 	\\
+   \multicolumn{3}{c}{\Gape[.4cm][.2cm]{}$LN4(\boldsymbol m,\boldsymbol {cv})$} \\
+%   =\Gape[.5cm][.3cm]{} \frac{1}{x \sqrt{\log(cv^2+1)} \sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2\log(cv^2+1)}\Big] $} 	\\
    \hline
  $m \sqrt{cv^2 + 1}$						& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
  $m^2 \,(cv^2+1)\,cv^2$					& Variance 				& $\log(cv^2 + 1)$	\\ [.25ex]
@@ -807,20 +890,31 @@ $m\,cv \sqrt{(cv^2+1)}$					& Standard  deviation		& $\sqrt{\log(cv^2 + 1)}$	\\ 
  $m / (cv^2 + 1)$	 					& Mode 					& $\log( m)$	\\ [.25ex]
  $\boldsymbol m$						& Median 					& $\log( m)$	\\ [.25ex]
  ${\boldsymbol {cv}}$					& Coefficient of variation		& $\sqrt{\log(cv^2 + 1)}/\log( m)$ \\ [.5EX]
-% 									& of variation				&  \\
   \hline
-  \multicolumn{3}{c}{$LN5: P(x;\boldsymbol\mu,\boldsymbol \tau)=\Gape[.5cm][.3cm]{} \sqrt{\frac{\tau}{2 \pi}} \frac{1}{x} \exp\Big[ {-\frac{\tau}{2}(\log x-\mu)^2} \Big] $ }\\
+  \multicolumn{3}{c}{\Gape[.4cm][.2cm]{}$LN5(\boldsymbol\mu,\boldsymbol \tau)$}\\
+%  =\Gape[.5cm][.3cm]{} \sqrt{\frac{\tau}{2 \pi}} \frac{1}{x} \exp\Big[ {-\frac{\tau}{2}(\log x-\mu)^2} \Big] $ }\\
    \hline
  $e^{\mu + \frac{1}{2\tau}}$				& \Gape[.4cm][0cm]{}Mean  	& $\boldsymbol\mu$ \\ [0ex]
  $e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]$ & Variance 			& $1/\tau$	\\ [0ex]
 $e^{\mu + \frac{1}{2} \frac{1}{\tau}}\sqrt{e^{\frac{1}{\tau}}-1}$ 	& Standard deviation & $\sqrt{1/\tau}$	\\ [0ex]
-%									& deviation  				& 	\\ [.25ex]
  $e^{\mu - \frac{1}{\tau}}$					& Mode 					& $\mu$	\\ [0ex]
  $e^\mu$								& Median					& $\mu$ \\ [0ex]
-%									&						& \\[.25ex]
 $\sqrt{e^{\frac{1}{\tau}}-1}$				& Coefficient of variation		& $\sqrt{1/\tau} / \mu$ \\ [0EX]
-%									& of variation				& \\
   $1/\big(e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]\big)$ & Precision				& $\boldsymbol\tau$ \\ [0ex]
+  \hline
+  \multicolumn{3}{c}{\Gape[.4cm][.2cm]{}$LN6(\boldsymbol m,\boldsymbol {\sigma_g})$}\\
+%  =\Gape[.5cm][.3cm]{} \frac{1}{x \log(\sigma_g)\sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2 \log^2(\sigma_g)}\Big] $ }\\
+   \hline
+% $m \exp(\frac{1}{2} \log^2(\sigma_g))$		& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
+ $m e^{\frac{1}{2} \log^2(\sigma_g)}$		& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
+% $m^2 \exp(\log^2(\sigma_g))[\exp(\log^2(\sigma_g))-1]$	& Variance 				& $\log(\sigma_g^2)$	\\ [.25ex]
+ $m^2 e^{\log^2(\sigma_g)}[e^{\log^2(\sigma_g)}-1]$	& Variance 				& $\log(\sigma_g^2)$	\\ [.25ex]
+%$\sqrt{m^2 \exp(\log^2(\sigma_g))[\exp(\log^2(\sigma_g))-1]}$ 	& Standard  deviation		& $\log(\sigma_g)$	\\ [.25ex]
+$\sqrt{m^2 e^{\log^2(\sigma_g)}[e^{\log^2(\sigma_g)}-1]}$ 	& Standard  deviation		& $\log(\sigma_g)$	\\ [.25ex]
+ $m / \exp(\log^2(\sigma_g))$	 			& Mode 					& $\log( m)$	\\ [.25ex]
+ $m / e^{\log^2(\sigma_g)}$	 			& Mode 					& $\log( m)$	\\ [.25ex]
+ $\boldsymbol m$						& Median 					& $\log( m)$	\\ [.25ex]
+ $\sqrt{\exp(\log^2(\sigma_g))-1}$			& Coefficient of variation		& $-$ \\ [.5EX]
    \hline
 \caption{The available parameterisations for the log-normal distribution and their characterising 
 quantities as functions of the respective parameters. With $\boldsymbol m$ -- median (NS), 
@@ -834,13 +928,15 @@ section \ref{subsec:logNormalForms} for the meaning of the symbols.
 %literature, partially self calculated (by MJS), use them on your own risk.
 }
 \label{figTable:logNormalParameterisations}
-\vspace{-3.5em}
+\vspace{-0.5em}
 \end{longtable}
 \end{center}
 
 \setlength{\tabcolsep}{1em}
 
-\newpage 
+%\newpage 
+\section{Distributions in ProbOnto}
+\subsection{Univariates -- tool coverage}
 
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=.95\textwidth
@@ -901,6 +997,7 @@ Log-Normal 2			& $\mu$, \textit{v}	&	y	&	--	&	y	&  -- \\
 Log-Normal 3			& \emph{m}, $\sigma$	&	--	&	--	&	--	&  -- \\
 Log-Normal 4			& \emph{m, cv}		& 	--	&	--	&	--	&  -- \\
 Log-Normal 5			& $\mu$, $\tau$	& 	--	&	y	&	--	&  -- \\
+Log-Normal 6			& $m$, $\sigma_g$	& 	--	&	--	&	--	&  -- \\
 Log-Uniform			& $min$, $max$	& 	--	&	--	&	--	&  -- \\
 Nakagami				& $m, \Omega$	&	--	&	--	&	--	&  --  \\
 Normal 1				& $\mu, \sigma$	&	y	&	--	&	y	& y  \\
@@ -925,7 +1022,7 @@ See Appendix \ref{ch:probontoAppendix} for a detailed description of each distri
 \end{longtable}
 \end{center}
 
-
+\subsection{Univariates -- code names}
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=.95\textwidth
 \begin{center}
@@ -1015,6 +1112,7 @@ Code name		& Symbol & Code name & Symbol & Code name \\
 \end{center}
 
 %\newpage
+\subsection{Multivariates -- tool coverage}
 
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=.95\textwidth
@@ -1051,6 +1149,7 @@ for the detailed description of each distribution.}
 \end{longtable}
 \end{center}
 
+\subsection{Multivariates -- code names}
 
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=.95\textwidth
@@ -1088,6 +1187,7 @@ Code name				& Symbol & Code name 			& Symbol 			& Code name \\
 \end{longtable}
 \end{center}
 
+\subsection{Mixtures}
 
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=.95\textwidth
