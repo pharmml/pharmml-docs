@@ -608,7 +608,7 @@ LogNormal5\,($\mu$, $\tau$) with \emph{mean}, $\mu$, and \emph{precision}, $\tau
 P(x;\boldsymbol\mu,\boldsymbol \tau)=\Gape[.5cm][.3cm]{} \sqrt{\frac{\tau}{2 \pi}} \frac{1}{x} \exp\Big[ {-\frac{\tau}{2}(\log x-\mu)^2} \Big] 
 \end{align*}
 \item
-LogNormal6\,(\textit{m}, $\sigma_g$)  with \emph{median}, $m$, and \emph{geometric standard deviation}, $\sigma_g$, both on the natural scale.
+LogNormal6\,(\textit{m}, $\sigma_g$)  with \emph{median}, $m$, and \emph{geometric st. deviation}, $\sigma_g$, both on the natural scale, \cite{limpert2001log}.
 \begin{align*}
 P(x;\boldsymbol m,\boldsymbol {\sigma_g})=\Gape[.5cm][.3cm]{} \frac{1}{x \log(\sigma_g)\sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2 \log^2(\sigma_g)}\Big]
 \end{align*}
@@ -787,10 +787,10 @@ $\mu \rightarrow m = \exp(\mu); \quad \tau \rightarrow cv=\sqrt{\exp(1/\tau)-1}$
 \item 
 \begin{description}
 \item[LN4($m$, $cv$) $\rightarrow$ LN6($m$, $\sigma_g$)]:
-$m \rightarrow m; \quad cv \rightarrow \sigma_g=\exp\Big(\sqrt{\log(cv^2+1)}\Big) $%\sqrt{cv+1}$
+$m \rightarrow m; \quad cv \rightarrow \sigma_g=\exp\!\big(\sqrt{\log(cv^2+1)}\big) $%\sqrt{cv+1}$
 
 \item[LN6($m$, $\sigma_g$) $\rightarrow$ LN4($m$, $cv$)]:
-$m \rightarrow m; \quad \sigma_g \rightarrow cv=\sqrt{\exp\big(\log^2(\sigma_g)\big) -1}$ %\sigma_g^2-1$
+$m \rightarrow m; \quad \sigma_g \rightarrow cv=\sqrt{\exp\!\big(\log^2(\sigma_g)\big) -1}$ %\sigma_g^2-1$
 \end{description}
 \end{itemize}
 
@@ -894,27 +894,28 @@ $m\,cv \sqrt{(cv^2+1)}$					& Standard  deviation		& $\sqrt{\log(cv^2 + 1)}$	\\ 
   \multicolumn{3}{c}{\Gape[.4cm][.2cm]{}$LN5(\boldsymbol\mu,\boldsymbol \tau)$}\\
 %  =\Gape[.5cm][.3cm]{} \sqrt{\frac{\tau}{2 \pi}} \frac{1}{x} \exp\Big[ {-\frac{\tau}{2}(\log x-\mu)^2} \Big] $ }\\
    \hline
- $e^{\mu + \frac{1}{2\tau}}$				& \Gape[.4cm][0cm]{}Mean  	& $\boldsymbol\mu$ \\ [0ex]
- $e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]$ & Variance 			& $1/\tau$	\\ [0ex]
-$e^{\mu + \frac{1}{2} \frac{1}{\tau}}\sqrt{e^{\frac{1}{\tau}}-1}$ 	& Standard deviation & $\sqrt{1/\tau}$	\\ [0ex]
- $e^{\mu - \frac{1}{\tau}}$					& Mode 					& $\mu$	\\ [0ex]
- $e^\mu$								& Median					& $\mu$ \\ [0ex]
-$\sqrt{e^{\frac{1}{\tau}}-1}$				& Coefficient of variation		& $\sqrt{1/\tau} / \mu$ \\ [0EX]
-  $1/\big(e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]\big)$ & Precision				& $\boldsymbol\tau$ \\ [0ex]
+ $e^{\mu + \frac{1}{2\tau}}$							& \Gape[.4cm][0cm]{}Mean  	& $\boldsymbol\mu$ \\ [0ex]
+ $e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]$ 			& Variance 				& $1/\tau$	\\ [0ex]
+$e^{\mu + \frac{1}{2} \frac{1}{\tau}}\sqrt{e^{\frac{1}{\tau}}-1}$ 	& Standard deviation 		& $\sqrt{1/\tau}$	\\ [0ex]
+ $e^{\mu - \frac{1}{\tau}}$								& Mode 					& $\mu$	\\ [0ex]
+ $e^\mu$											& Median					& $\mu$ \\ [0ex]
+$\sqrt{e^{\frac{1}{\tau}}-1}$							& Coefficient of variation		& $\sqrt{1/\tau} / \mu$ \\ [0EX]
+  $1/\big(e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]\big)$ 	& Precision				& $\boldsymbol\tau$ \\ [0ex]
   \hline
   \multicolumn{3}{c}{\Gape[.4cm][.2cm]{}$LN6(\boldsymbol m,\boldsymbol {\sigma_g})$}\\
 %  =\Gape[.5cm][.3cm]{} \frac{1}{x \log(\sigma_g)\sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2 \log^2(\sigma_g)}\Big] $ }\\
    \hline
-% $m \exp(\frac{1}{2} \log^2(\sigma_g))$		& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
- $m e^{\frac{1}{2} \log^2(\sigma_g)}$		& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
-% $m^2 \exp(\log^2(\sigma_g))[\exp(\log^2(\sigma_g))-1]$	& Variance 				& $\log(\sigma_g^2)$	\\ [.25ex]
- $m^2 e^{\log^2(\sigma_g)}[e^{\log^2(\sigma_g)}-1]$	& Variance 				& $\log(\sigma_g^2)$	\\ [.25ex]
+% $m \exp(\frac{1}{2} \log^2(\sigma_g))$						& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
+ $m\,e^{\frac{1}{2} \log^2(\sigma_g)}$						& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
+% $m^2 \exp(\log^2(\sigma_g))[\exp(\log^2(\sigma_g))-1]$		& Variance 				& $\log(\sigma_g^2)$	\\ [.25ex]
+ $\sigma_g^2$											& Variance 				& $\log^2(\sigma_g)$	\\ [.25ex]
 %$\sqrt{m^2 \exp(\log^2(\sigma_g))[\exp(\log^2(\sigma_g))-1]}$ 	& Standard  deviation		& $\log(\sigma_g)$	\\ [.25ex]
-$\sqrt{m^2 e^{\log^2(\sigma_g)}[e^{\log^2(\sigma_g)}-1]}$ 	& Standard  deviation		& $\log(\sigma_g)$	\\ [.25ex]
- $m / \exp(\log^2(\sigma_g))$	 			& Mode 					& $\log( m)$	\\ [.25ex]
- $m / e^{\log^2(\sigma_g)}$	 			& Mode 					& $\log( m)$	\\ [.25ex]
- $\boldsymbol m$						& Median 					& $\log( m)$	\\ [.25ex]
- $\sqrt{\exp(\log^2(\sigma_g))-1}$			& Coefficient of variation		& $-$ \\ [.5EX]
+$\boldsymbol {\sigma_g}$ 								& Standard  deviation		& $\log(\sigma_g)$	\\ [.25ex]
+% $m / \exp(\log^2(\sigma_g))$	 						& Mode 					& $\log( m)$	\\ [.25ex]
+ $m / e^{\log^2(\sigma_g)}$	 							& Mode 					& $\log( m)$	\\ [.25ex]
+ $\boldsymbol m$										& Median 					& $\log( m)$	\\ [.25ex]
+% $\sqrt{\exp(\log^2(\sigma_g))-1}$							& Coefficient of variation		& $-$ \\ [.5EX]
+ $\sigma_g / (m\, e^{\frac{1}{2} \log^2(\sigma_g)})$				& Coefficient of variation		& $\log(\sigma_g)/\log( m)$ \\ [.5EX]
    \hline
 \caption{The available parameterisations for the log-normal distribution and their characterising 
 quantities as functions of the respective parameters. With $\boldsymbol m$ -- median (NS), 
@@ -1085,6 +1086,7 @@ Code name		& Symbol & Code name & Symbol & Code name \\
 \xatt{LogNormal3}			& \emph{m} 		& \xatt{median}			& $\sigma$	& \xatt{stdevLog}	\\
 \xatt{LogNormal4}			& \emph{m}		& \xatt{median}			& \emph{cv}	& \xatt{coefVar	}	\\
 \xatt{LogNormal5}			& $\mu$			& \xatt{meanLog}		& $\tau$		& \xatt{precision}	\\
+\xatt{LogNormal6}			& $m$			& \xatt{median}			& $\sigma_g$	& \xatt{geomStdev}	\\
 \xatt{LogUniform}			& $min$			& \xatt{minimum}		& $max$		& \xatt{maximum}	\\
 \xatt{Nakagami1}			& $m$			& \xatt{shape}			& $\Omega$ 	& \xatt{spread}		\\
 \xatt{Normal1}				& $\mu$			& \xatt{mean}			& $\sigma$ 	& \xatt{stdev}		\\
