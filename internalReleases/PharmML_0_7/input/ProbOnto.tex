@@ -919,7 +919,7 @@ $, scalar \\
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=140mm]{pics/GeneralizedPoisson.pdf}
+  \includegraphics[width=140mm]{pics/GeneralizedPoisson1.pdf}
  \caption{GeneralizedPoisson distribution plotted using the provided R code.}
  \label{fig:GeneralizedPoisson}
 \end{figure}
@@ -929,8 +929,8 @@ $, scalar \\
 \noindent\begin{tabular}{p{2cm}cl}
 \textbf{name} & & Poisson intensity \\
 \textbf{type} & & scalar \\
-\textbf{symbol} & & $\lambda$  \\
-\textbf{definition} & & $\lambda \in R, \lambda > 0$
+\textbf{symbol} & & $\theta$  \\
+\textbf{definition} & & $\theta \in R, \theta > 0$
 \end{tabular}
 \subsubsection*{Parameter: dispersion}
 
@@ -938,14 +938,14 @@ $, scalar \\
 \textbf{name} & & dispersion \\
 \textbf{type} & & scalar \\
 \textbf{symbol} & & $\delta$  \\
-\textbf{definition} & & $\max(-1,-\lambda/4) < \delta < 1$
+\textbf{definition} & & $\max(-1,-\theta/4) < \delta < 1$
 \end{tabular}
 \subsubsection*{Functions}
 
 \smallskip \noindent \hspace{.2cm} \textbf{PMF} 
-\begin{equation*}\frac{\lambda (\lambda+k\delta)^{k-1}\times e^{-\lambda - k \delta}}{k!}\end{equation*}
+\begin{equation*}\frac{\theta (\theta+k\delta)^{k-1}\times e^{-\theta - k \delta}}{k!}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
-\begin{verbatim}(lambda*(lambda+k*delta)^(k-1) * exp(-lambda-k*delta)) / factorial(k)\end{verbatim}
+\begin{verbatim}(theta*(theta+k*delta)^(k-1) * exp(-theta-k*delta)) / factorial(k)\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
 \begin{equation*}\Sigma_{i=1}^x f(i), x \in \{0,1,2,...\}
 \text { with f the PMF}\end{equation*}
@@ -956,9 +956,9 @@ cumsum(PMF)
 \smallskip
 \subsubsection*{Characteristics}
 \smallskip \noindent \hspace{.2cm} \textbf{Mean} 
-\begin{equation*}\frac{\lambda}{1 -\delta}\end{equation*}
+\begin{equation*}\frac{\theta}{1 -\delta}\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{Variance} 
-\begin{equation*}\frac{\lambda}{(1 -\delta)^3}\end{equation*}
+\begin{equation*}\frac{\theta}{(1 -\delta)^3}\end{equation*}
 \smallskip
 \section*{Geometric1} 
 

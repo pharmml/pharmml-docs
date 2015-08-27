@@ -6,6 +6,51 @@ by few extensions or changes which will make the format more consistent
 and flexible. 
 
 
+
+\section{Extensions/changes in ProbOnto}
+\begin{itemize}
+\item 
+few new distributions have been added, see table \ref{figTable:univariates}, 
+for example additional parameterisations of generalised Poisson, negative 
+binomial and log-normal distributions.
+\item 
+Negative binomial -- changes in formulation/parameterisation for the NB1
+have been introduced to account for the most common form. 
+See a detailed discussion in appendix \ref{app:sec:NB1discussion}
+\item 
+more then 50 properties added, such as: linear combination, convolution, 
+scaling, product, inverse, minimum, maximum, forgetfullness, residual, 
+variate generation. See the excellent Leemis paper, \cite{Leemis:2008tg}, 
+for definitions of these properties.
+\item 
+about 30 relationships between various distributions, most of them as 
+described in Leemis, \cite{Leemis:2008tg}, see figure \ref{fig:POdiagram}.
+\item 
+about 35 reparameterisations between the members of normal, log-normal, 
+negative binomial and generalised Poisson distributions families. Also indicated
+in the figure \ref{fig:POdiagram}.
+\end{itemize}
+
+
+\begin{figure}[htb!]
+\centering
+\begin{tabular}{cc}
+ \includegraphics[width=140mm]{pics/POdiagram}
+\end{tabular}
+\caption{ProbOnto relationships diagram.}
+\label{fig:POdiagram}
+\end{figure}
+
+
+\subsection{Changes and bug fixes in ProbOnto}
+\begin{itemize}
+\item 
+Binomial distribution -- \xatt{numberOfTrials} instead of \xatt{numberOfFailures}
+\end{itemize}
+
+
+\section{New design tasks}
+
 <ModellingSteps xmlns="http://www.pharmml.org/pharmml/0.7/ModellingSteps">
 
 Target Tool with Target Tool Name
@@ -128,7 +173,7 @@ Property, e.g. RtolEq, AtolEq, graph.logical, log.logical, graph.only, y.range
 
 %</OptimalDesignStep>
 
-\section{Design evaluation and optimisation tasks}
+\subsection{Implementation of evaluation and optimisation tasks}
 
 The following listing exemplifies the available options in specifying an optimal 
 design task. Covered are both sub-types
@@ -355,6 +400,28 @@ with previously supported \emph{Simulation} and \emph{Estimation} tasks.
 \end{lstlisting}
 
 
+
+\section{Time-to-Event modeling}
+
+Hazard/survival function added to mode common models
+\begin{itemize}
+\item 
+Weibull
+\item 
+Exponential
+\item 
+Rayleigh
+\item 
+Gompertz 
+\item 
+Lognormal
+\end{itemize}
+
+
+\section{Removing redundant elements}
+Removing parameter elements -- not used and not required
+IntensityParameter
+
         
 \section{Minor changes}
 \begin{itemize}
@@ -364,16 +431,6 @@ attribute, similarly to what is possible when defining matrices. With this
 feature a \emph{null} vector, one whose all elements are zero.
 \item
 new \xatt{determinant} matrix operator has been defined.
-\end{itemize}
-
-
-\section{Changes and bug fixes in ProbOnto}
-\begin{itemize}
-\item 
-Binomial distribution -- \xatt{numberOfTrials} instead of \xatt{numberOfFailures}
-\item 
-Negative binomial -- changed formulation/paramaterisation for the NB1, 
-see discussion in section \ref{app:sec:NB1discussion}
 \end{itemize}
 
 

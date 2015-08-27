@@ -403,7 +403,7 @@ development path for PharmML and its implementation of ProbOnto.
 
 \begin{figure}[htb!]
 \centering
-  \includegraphics[width=120mm]{pics/Poisson.pdf}
+  \includegraphics[width=140mm]{pics/Poisson.pdf}
  \caption{PMF and CDF of the Poisson distribution plotted using the R-code
  stored in ProbOnto.}
  \label{fig:PoissonExample}
@@ -434,21 +434,63 @@ P(k;r,p) = \binom {k+r-1}k (1-p)^r p^k, \quad k\in \{0,1,2,\dots \} \text{ numbe
 \end{align}
 
 \item
-Negative Binomial 2\,($\lambda$, $\tau$) with $\lambda$ -- \emph{Poisson intensity} and $\tau$ -- \emph{over-dispersion},
+Negative Binomial 2\,($\mu$, $\tau$), \cite{Plan:2009fk}, with $\mu$ -- \emph{mean} and $\tau$ -- \emph{over-dispersion},
 \begin{align}
-P(k;\lambda,\tau) = \frac{\Gamma(k+\frac{1}{\tau})}{k!\; \Gamma(\frac{1}{\tau})} \Big(\frac{1}{1+\tau \lambda} \Big)^{\frac{1}{\tau}} \Big(\frac{\lambda}{\frac{1}{\tau} + \lambda} \Big)^{k},\quad k\in \{0,1,2,\dots \}  \nonumber
+P(k;\mu,\tau) = \frac{\Gamma(k+\frac{1}{\tau})}{k!\; \Gamma(\frac{1}{\tau})} \Big(\frac{1}{1+\tau \mu} \Big)^{\frac{1}{\tau}} \Big(\frac{\mu}{\frac{1}{\tau} + \mu} \Big)^{k},\quad k\in \{0,1,2,\dots \}  \nonumber
 \end{align}
 
 \item
-Negative Binomial 3\,($\mu$, $k$) %with $\lambda$ -- \emph{Poisson intensity} and $\tau$ -- \emph{over-dispersion},
+Negative Binomial 3\,($\mu$, $\phi$), \cite{stan-manual:2015}, %with $\lambda$ -- \emph{Poisson intensity} and $\tau$ -- \emph{over-dispersion},
 \begin{align}
-P(k;\mu,\phi) = \binom {k+r-1}k \Big(\frac{\mu}{\mu + r} \Big)^{r} \Big(\frac{r}{\mu + r} \Big)^{k},\quad k\in \{0,1,2,\dots \}  \nonumber
+P(k;\mu,\phi) = \binom {k+\phi-1}k \Big(\frac{\phi}{\mu + \phi} \Big)^{\phi} \Big(\frac{\mu}{\mu + \phi} \Big)^{k},\quad k\in \{0,1,2,\dots \}  \nonumber
 \end{align}
 \end{itemize}
 with NB2 being used in typical pharmacometric discrete data models, \cite{Plan:2009fk, Troconiz:2009fv}.
-See section \ref{app:sec:NB1discussion} in the appendix for a detailed discussion on the possible formulations. 
+See appendix \ref{app:sec:NB1discussion} for a detailed discussion on the possible formulations. 
 %The Wikipedia article\footnote{\url{en.wikipedia.org/wiki/Negative_binomial_distribution}, 
 %section 'Alternative formulations'}, explains the reasons behind the various representations.
+
+\subsubsection{Re-parameterisation formulas}
+In this case the recalculation between the representations are very simple
+but are given here for the completeness.
+\begin{itemize}
+\item 
+\begin{description}
+\item[NB1($r$, $p$) $\rightarrow$ NB2($\mu$, $\tau$)]:
+$r \rightarrow \tau = 1/r; \quad p \rightarrow \mu = \frac{1-p}{p\tau}$
+
+\item[NB2($\mu$, $\tau$) $\rightarrow$ NB1($r$, $p$)]:
+$\tau \rightarrow r=1/\tau; \quad \mu \rightarrow p = \frac{1}{1+\tau \mu}$
+\end{description}
+
+\item 
+\begin{description}
+\item[NB1($r$, $p$) $\rightarrow$ NB3($\mu$, $\phi$)]:
+$r \rightarrow \phi=r; \quad p \rightarrow \mu=\frac{r (1-p)}{p}$
+
+\item[NB3($\mu$, $\phi$) $\rightarrow$ NB1($r$, $p$)]:
+$\phi \rightarrow r=\phi; \quad \mu \rightarrow p=\frac{r}{\mu+r}$
+\end{description}
+
+\item 
+\begin{description}
+\item[NB2($\mu$, $\tau$) $\rightarrow$ NB3($\mu$, $\phi$)]:
+$\mu \rightarrow \mu; \quad \tau \rightarrow \phi=1/\tau$
+
+\item[NB3($\mu$, $\phi$) $\rightarrow$ NB2($\mu$, $\tau$)]:
+$\mu \rightarrow \mu; \quad \phi \rightarrow \tau=1/\phi$
+\end{description}
+
+\item 
+\begin{description}
+\item[NB4($r$, $p$)] -- any re-parameterisations including this distribution 
+would require reformulation of the support variable and the parameters,
+see detailed explanation in the appendix \ref{app:sec:NB1discussion}. 
+\end{description}
+
+\end{itemize}
+
+
 
 \subsection{Normal distribution}
 Available parameterisations (see also Table \ref{figTable:logNormalParameterisations} 
@@ -467,13 +509,13 @@ P(x;\boldsymbol\mu,\boldsymbol v)= \frac{1}{\sqrt{v} \sqrt{2 \pi}}\exp\Big[-\fra
 \item
 Normal3\,($\mu$, $\tau$) with $\mu$ -- \emph{mean} and $\tau$ -- \emph{precision} ($\tau=1/\sigma^2$)
 \begin{align*}
-P(x;\boldsymbol\mu,\boldsymbol\tau)= \sqrt{\frac{\tau}{2 \pi}} \Big[-\frac{\tau}{2}(x-\mu)^2\Big]
+P(x;\boldsymbol\mu,\boldsymbol\tau)= \sqrt{\frac{\tau}{2 \pi}} \Big[-\frac{\tau}{2}(x-\mu)^2\Big].
 \end{align*}
 \end{itemize}
 
 \subsubsection{Re-parameterisation formulas}
 In this case the recalculation between the representations are very simple
-but are given here for the completeness.
+but are given here for the completeness
 \begin{itemize}
 \item 
 \begin{description}
@@ -499,7 +541,7 @@ $\mu \rightarrow \mu; \quad \tau \rightarrow \sigma=1/\sqrt{\tau}$
 $\mu \rightarrow \mu; \quad v \rightarrow \tau=1/v$
 
 \item[N3($\mu$, $\tau$) $\rightarrow$ N2($\mu$, $v$)]:
-$\mu \rightarrow \mu; \quad \tau \rightarrow v=1/\tau$
+$\mu \rightarrow \mu; \quad \tau \rightarrow v=1/\tau$.
 \end{description}
 \end{itemize}
 
@@ -788,8 +830,7 @@ table \ref{figTable:logNormalParameterisations} and we get the results
 \multicolumn{1}{c}{on the natural scale (NS)} 	&						& \multicolumn{1}{c}{log-transformed scale (LS)} \\
    \hline
   \hline
-  \multicolumn{3}{c}{\Gape[.3cm][.1cm]{}$LN1(\boldsymbol\mu,\boldsymbol\sigma)$} \\
-%  =\Gape[.5cm][.3cm]{} \frac{1}{x \sigma \sqrt{2 \pi}} \exp\Big[ \frac{-(\log x - \mu)^2}{2\sigma^2}\Big] $ }\\
+  \multicolumn{3}{c}{\Gape[.3cm][.1cm]{}$LN1(\boldsymbol\mu,\boldsymbol\sigma) =\frac{1}{x \sigma \sqrt{2 \pi}} \exp\Big[ \frac{-(\log x - \mu)^2}{2\sigma^2}\Big] $ }\\
    \hline
 $e^{\mu + \frac{1}{2}\sigma^2}$			& \Gape[.4cm][0cm]{}Mean  	& $\boldsymbol\mu$ \\ [.25ex]
 $e^{2\mu + \sigma^2}[e^{\sigma^2}-1]$		& Variance 				& $\sigma^2$	\\ [.25ex]
@@ -800,8 +841,7 @@ $e^\mu$								& Median					& $\mu$ \\ [.25ex]
 $\sqrt{e^{\sigma^2}-1}$					& Coefficient of variation		& $\sigma/\mu$ \\ [.5EX]
 %									& of variation				& \\
   \hline
-  \multicolumn{3}{c}{\Gape[.3cm][.1cm]{}$LN2(\boldsymbol\mu,\boldsymbol {v})$} \\
-%  \Gape[.5cm][.3cm]{} \frac{1}{x \sqrt{v} \sqrt{2 \pi}} \exp\Big[ \frac{-(\log x - \mu)^2}{2 v}\Big] $ }\\
+  \multicolumn{3}{c}{\Gape[.3cm][.1cm]{}$LN2(\boldsymbol\mu,\boldsymbol {v}) = \frac{1}{x \sqrt{v} \sqrt{2 \pi}} \exp\Big[ \frac{-(\log x - \mu)^2}{2 v}\Big] $ }\\
    \hline
 $e^{\mu + \frac{1}{2}v}$					& \Gape[.4cm][0cm]{}Mean  	& $\boldsymbol\mu$ \\ [.25ex]
 $e^{2\mu + v}[e^{v}-1]$					& Variance 				& $\boldsymbol v$	\\ [.25ex]
@@ -812,8 +852,7 @@ $e^\mu$								& Median					& $\mu$ \\ [.25ex]
 $\sqrt{e^{v}-1}$						& Coefficient of variation		& ${\sqrt{v}} /\mu$ \\ [.5EX]
 %									& of variation				& \\
   \hline
-  \multicolumn{3}{c}{\Gape[.3cm][.1cm]{}$LN3P(\boldsymbol m,\boldsymbol \sigma)$}\\ 
-%  =\Gape[.5cm][.3cm]{} \frac{1}{x \sigma \sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2\sigma^2}\Big] $ }\\ %[1.5EX]
+  \multicolumn{3}{c}{\Gape[.3cm][.1cm]{}$LN3P(\boldsymbol m,\boldsymbol \sigma)=	 \frac{1}{x \sigma \sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2\sigma^2}\Big] $ }\\ %[1.5EX]
    \hline
  $m\, e^{\frac{1}{2}\sigma^2}$				& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
  $m^2 e^{\sigma^2} [e^{\sigma^2}-1]$		& Variance 				& $\sigma^2$	\\ [.25ex]
@@ -824,8 +863,7 @@ $m\sqrt{e^{\sigma^2} (e^{\sigma^2}-1)}$		& Standard deviation	  	& $\boldsymbol\
 $\sqrt{e^{\sigma^2}-1}$					& Coefficient of variation		& $\sigma/\log( m)$ \\ [.5EX]
 % 									&  of variation				&  \\
   \hline
-   \multicolumn{3}{c}{\Gape[.3cm][.1cm]{}$LN4(\boldsymbol m,\boldsymbol {cv})$} \\
-%   =\Gape[.5cm][.3cm]{} \frac{1}{x \sqrt{\log(cv^2+1)} \sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2\log(cv^2+1)}\Big] $} 	\\
+   \multicolumn{3}{c}{\Gape[.3cm][.1cm]{}$LN4(\boldsymbol m,\boldsymbol {cv})= \frac{1}{x \sqrt{\log(cv^2+1)} \sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2\log(cv^2+1)}\Big] $} 	\\
    \hline
  $m \sqrt{cv^2 + 1}$						& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
  $m^2 \,(cv^2+1)\,cv^2$					& Variance 				& $\log(cv^2 + 1)$	\\ [.25ex]
@@ -835,8 +873,7 @@ $m\,cv \sqrt{(cv^2+1)}$					& Standard  deviation		& $\sqrt{\log(cv^2 + 1)}$	\\ 
  $\boldsymbol m$						& Median 					& $\log( m)$	\\ [.25ex]
  ${\boldsymbol {cv}}$					& Coefficient of variation		& $\sqrt{\log(cv^2 + 1)}/\log( m)$ \\ [.5EX]
   \hline
-  \multicolumn{3}{c}{\Gape[.3cm][.1cm]{}$LN5(\boldsymbol\mu,\boldsymbol \tau)$}\\
-%  =\Gape[.5cm][.3cm]{} \sqrt{\frac{\tau}{2 \pi}} \frac{1}{x} \exp\Big[ {-\frac{\tau}{2}(\log x-\mu)^2} \Big] $ }\\
+  \multicolumn{3}{c}{\Gape[.3cm][.1cm]{}$LN5(\boldsymbol\mu,\boldsymbol \tau)= \sqrt{\frac{\tau}{2 \pi}} \frac{1}{x} \exp\Big[ {-\frac{\tau}{2}(\log x-\mu)^2} \Big] $ }\\
    \hline
  $e^{\mu + \frac{1}{2\tau}}$							& \Gape[.4cm][0cm]{}Mean  	& $\boldsymbol\mu$ \\ [0ex]
  $e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]$ 			& Variance 				& $1/\tau$	\\ [0ex]
@@ -846,8 +883,7 @@ $e^{\mu + \frac{1}{2} \frac{1}{\tau}}\sqrt{e^{\frac{1}{\tau}}-1}$ 	& Standard de
 $\sqrt{e^{\frac{1}{\tau}}-1}$							& Coefficient of variation		& $\sqrt{1/\tau} / \mu$ \\ [0EX]
   $1/\big(e^{2\mu + \frac{1}{\tau}}[e^{\frac{1}{\tau}}-1]\big)$ 	& Precision				& $\boldsymbol\tau$ \\ [0ex]
   \hline
-  \multicolumn{3}{c}{\Gape[.3cm][.1cm]{}$LN6(\boldsymbol m,\boldsymbol {\sigma_g})$}\\
-%  =\Gape[.5cm][.3cm]{} \frac{1}{x \log(\sigma_g)\sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2 \log^2(\sigma_g)}\Big] $ }\\
+  \multicolumn{3}{c}{\Gape[.3cm][.1cm]{}$LN6(\boldsymbol m,\boldsymbol {\sigma_g})= \frac{1}{x \log(\sigma_g)\sqrt{2 \pi}} \exp\Big[ \frac{-[\log(x/m)]^2}{2 \log^2(\sigma_g)}\Big] $ }\\
    \hline
 % $m \exp(\frac{1}{2} \log^2(\sigma_g))$						& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
  $m\,e^{\frac{1}{2} \log^2(\sigma_g)}$						& \Gape[.4cm][0cm]{}Mean  	& $\log( m)$ \\ [.25ex]
@@ -871,7 +907,8 @@ section \ref{subsec:logNormalForms} for the meaning of the symbols.
 %\\ \small Small print: 
 %The re-parameterisation formulas, page \pageref{subsubsec:formulas}, and expressions in this table are partially from 
 %literature, partially self calculated (by MJS), use them on your own risk.
-}
+Results for LN2 on the left identical with those on Vose's page.
+Madian and variance for LN3 on the left identical to Leemis.}
 \label{figTable:logNormalParameterisations}
 \vspace{-0.5em}
 \end{longtable}
@@ -896,40 +933,42 @@ section \ref{subsec:logNormalForms} for the meaning of the symbols.
   \hline
   \multicolumn{6}{c}{\textit{Discrete Univariate}}  \\
   \hline
-Bernoulli				& \emph{p}		&	y	&	y	& --  &  -- \\
-Binomial				& \emph{n, p}		&	y	&	y	& --  &  -- \\
-Categorical ordered		& $p_1, \ldots, p_k$	& y	&	y	& --  &  -- \\
-Categorical unordered	& $p_1, \ldots, p_k$	&	y	&	y	& --  &  -- \\
-Generalized Poisson	& $\lambda, \delta$	& --  & --  & --  &  -- \\
-Geometric			& \emph{p}		&	y	& --  & --  &  -- \\
-Hypergeometric		& \emph{N, K, n}	&	y	& --  & --  &  -- \\
-Inverse Binomial 		& $k, p$ 			& --  & --  & --  &  -- \\
+Bernoulli				& \emph{p}		& y	& y	& --  &  -- \\
+Binomial				& \emph{n, p}		& y	& y	& --  &  -- \\
+Categorical ordered		& $p_1, \ldots, p_k$	& y	& y	& --  &  -- \\
+Categorical unordered	& $p_1, \ldots, p_k$	& y	& y	& --  &  -- \\
+Generalized Poisson 1	& $\theta, \delta$	& --  	& --  & --  &  -- \\
+Generalized Poisson 2	& $\mu, \delta$		& --  	& --  & --  &  -- \\
+Generalized Poisson 3	& $\mu, \alpha$	& --  	& --  & --  &  -- \\
+Geometric			& \emph{p}		& y	& --  & --  &  -- \\
+Hypergeometric		& \emph{N, K, n}	& y	& --  & --  &  -- \\
+Inverse Binomial 		& $k, p$ 			& --  	& --  & --  &  -- \\
 Negative Binomial 1		& \emph{r, p}		& --	& y	& --  &  -- \\
-Negative Binomial 2 		& $\lambda, \tau$ 	& --  & --  & --  &  -- \\
-Negative Binomial 3 		& $\mu, k$ 		& --  & --  & --  &  -- \\
-Negative Binomial 4 		& $r,p$ 			& y  & --  & --  &  -- \\
-Poisson				& $\lambda$		&	y	&	y	& --  &  -- \\
-Uniform 1 			&  \emph{a, b, n}		& --	& --	& -- & --  \\
-Uniform 2 			&  $a=0$, \emph{n}		& --	& --	& -- & --  \\
+Negative Binomial 2 		& $\lambda, \tau$ 	& --  	& --  & --  &  -- \\
+Negative Binomial 3 		& $\mu, k$ 		& --  	& --  & --  &  -- \\
+Negative Binomial 4 		& $r,p$ 			& y  	& --  & --  &  -- \\
+Poisson				& $\lambda$		& y	& y	& --  &  -- \\
+Uniform 1 			&  \emph{a, b, n}	& --	& --	& -- & --  \\
+Uniform 2 			&  $a=0$, \emph{n}	& --	& --	& -- & --  \\
 Zero-Inflated Negative Binomial & $\lambda, \tau, p0$	& --  & --  & --  &  -- \\
 Zero-Inflated Poisson	& $\lambda, \pi$	& --  & --  & --  &  -- \\
   \hline
   \multicolumn{6}{c}{\textit{Continuous Univariate}}	\\
   \hline
-Beta					& $\alpha, \beta$	&	y	&	y	&	y	&  -- \\
-Birnbaum-Saunders		& $\alpha, \gamma$	&	--	&	--	&	--	&  -- \\
-Cauchy				& $x_0, \gamma$	&	y	& --  & --  &  -- \\
-Chi-squared			& \emph{k}		&	y	&	y	&	y	&  -- \\
+Beta					& $\alpha, \beta$	& y	& y	& y	&  -- \\
+Birnbaum-Saunders		& $\alpha, \gamma$	& --	& --	& --	&  -- \\
+Cauchy				& $x_0, \gamma$	& y	& --  & --  &  -- \\
+Chi-squared			& \emph{k}		& y	& y	& y	&  -- \\
 %Dirac Delta			&	&	y	& --  & --  &  -- \\
-Exponential			& $\lambda$		&	y	&	y	&	y	&  -- \\
-F (aka Fisher-Snedecor)	& $d_1, d_2$		&	y	& --  &	y	&  -- \\
-Gamma				& $k, \theta$		&	y	&	y	&	y	&  -- \\
-Generalized Gamma 1	& \emph{a, d, p}	&	--	& --  & --  & --	  \\
-Generalized Gamma 2	& \emph{a, b, c, k}	&	--	& --  & --  & --	  \\
-Gompertz				& $\eta, b$		& --  &	y	& --  & --	  \\
-Gumbel (aka Extreme Value)	& $\mu, \beta$	& --  &	y 	& --  & -- \\ 
-Inverse-Gamma		& $\alpha, \beta$	&	y	& --  & --  &  -- \\
-Inverse-Gaussian (aka Wald)	& $\lambda, \mu$	&	--	& --  & --  &  -- \\
+Exponential			& $\lambda$		& y	& y	& y	&  -- \\
+F (aka Fisher-Snedecor)	& $d_1, d_2$		& y	& --  & y	&  -- \\
+Gamma				& $k, \theta$		& y	& y	& y	&  -- \\
+Generalized Gamma 1	& \emph{a, d, p}	& --	& --  & --  & --  \\
+Generalized Gamma 2	& \emph{a, b, c, k}	& --	& --  & --  & --  \\
+Gompertz				& $\eta, b$		& --  & y	& --  & --  \\
+Gumbel (aka Extreme Value)	& $\mu, \beta$	& --  & y 	& --  & -- \\ 
+Inverse-Gamma		& $\alpha, \beta$	& y	& --  & --  &  -- \\
+Inverse-Gaussian (aka Wald)	& $\lambda, \mu$	& --	& --  & --  &  -- \\
 Laplace 1				& \multirow{2}{*}{$\mu, b$} &	\multirow{2}{*}{y}	&	\multirow{2}{*}{--}	& \multirow{2}{*}{--}  & \multirow{2}{*}{--} \\ 
 (aka Double-exponential) \\
 Laplace 2				& $\mu, \tau$ 		&	--	&	y	& --  & -- \\ 
@@ -985,7 +1024,9 @@ Code name		& Symbol & Code name & Symbol & Code name \\
 \xatt{Binomial1} 			& \emph{n}		& \xatt{numberOfTrials}& \emph{p}	& \xatt{probability} \\
 \xatt{CategoricalOrdered1}	& $p_1,\dots,p_k$ 	& \xatt{categoryProb}  	&  --			& -- \\
 \xatt{CategoricalUnordered1}	& $p_1,\dots ,p_k$ 	& \xatt{categoryProb}	&  --			& -- \\
-\xatt{GeneralizedPoisson1}	& $\lambda$		& \xatt{rate}			& $\delta$		& \xatt{dispersion} \\
+\xatt{GeneralizedPoisson1}	& $\theta$			& \xatt{rate}			& $\delta$		& \xatt{dispersion} \\
+\xatt{GeneralizedPoisson2}	& $\mu$			& \xatt{mean}			& $\delta$		& \xatt{dispersion} \\
+\xatt{GeneralizedPoisson3}	& $\mu$			& \xatt{mean}			& $\alpha$	& \xatt{dispersion} \\
 \xatt{Geometric1} 			& \emph{p}		& \xatt{probability}		& --			& --	\\
 \xatt{Hypergeometric1} 		& \emph{N}		& \xatt{populationSize}	& \emph{K}	& \xatt{numberOfSuccesses} \\[-0.5ex]
 						&				&					&\emph{n}	& \xatt{numberOfTrials} \\
@@ -1004,17 +1045,17 @@ Code name		& Symbol & Code name & Symbol & Code name \\
   \hline
   \multicolumn{7}{c}{\textit{Continuous Univariate}}	\\
   \hline
-\xatt{Beta1} 				& $\alpha$		& \xatt{alpha}			& $\beta$		& \xatt{beta}	\\
-\xatt{BirnbaumSaunders1}	& $\alpha$		& \xatt{scale}			& $\gamma$	& \xatt{shape}	\\
-\xatt{Cauchy1} 				& $x_0$			& \xatt{location}		& $\gamma$	& \xatt{scale}	\\
-\xatt{ChiSquared1}			& \emph{k}		& \xatt{degreesOfFreedom} & --		&  --		\\
-\xatt{Exponential1}			& $\lambda$		& \xatt{rate}			& --			& -- 		\\
+\xatt{Beta1} 				& $\alpha$		& \xatt{alpha}			& $\beta$		& \xatt{beta}		\\
+\xatt{BirnbaumSaunders1}	& $\alpha$		& \xatt{scale}			& $\gamma$	& \xatt{shape}		\\
+\xatt{Cauchy1} 				& $x_0$			& \xatt{location}		& $\gamma$	& \xatt{scale}		\\
+\xatt{ChiSquared1}			& \emph{k}		& \xatt{degreesOfFreedom} & --		&  --				\\
+\xatt{Exponential1}			& $\lambda$		& \xatt{rate}			& --			& -- 				\\
 \xatt{F1}					& $d_1$			& \xatt{numerator}		& $d_2$		& \xatt{denominator} \\
-\xatt{Gamma1}				& $k$			& \xatt{shape}			& $\theta$	& \xatt{scale} 	\\
+\xatt{Gamma1}				& $k$			& \xatt{shape}			& $\theta$	& \xatt{scale} 			\\
 \xatt{GeneralizedGamma1}	& \emph{a}		& \xatt{scale}			& \emph{d}	& \xatt{shape1}		\\
-						& 				& 					& \emph{k} 	& \xatt{shape2} \\
+						& 				& 					& \emph{k} 	& \xatt{shape2} 	\\
 \xatt{GeneralizedGamma2}	& \emph{a}		& \xatt{location}		& \emph{b}	& \xatt{scale}		\\
-						& \emph{c}		& \xatt{shape1} 		& \emph{p} 	& \xatt{shape2} \\
+						& \emph{c}		& \xatt{shape1} 		& \emph{p} 	& \xatt{shape2} 	\\
 \xatt{Gompertz1}			& $\eta$			& \xatt{shape}			& \emph{b}	& \xatt{scale}		\\
 \xatt{Gumbel1} 			& $\mu$			& \xatt{location}		& $\beta$		& \xatt{scale}		\\ 
 \xatt{InverseGamma1}		& $\alpha$		& \xatt{shape}			& $\beta$		& \xatt{scale}		\\
@@ -1035,15 +1076,15 @@ Code name		& Symbol & Code name & Symbol & Code name \\
 \xatt{Normal2}				& $\mu$			& \xatt{mean}			& \emph{v}	& \xatt{var}		\\
 \xatt{Normal3}				& $\mu$			& \xatt{mean}			& $\tau$ 		& \xatt{precision} 	\\
 \xatt{NormalInverseGamma1}	& $\mu$			& \xatt{mean}			& $\lambda$	& \xatt{lambda}		\\[-0.5ex]
-						& $\alpha$ 		& \xatt{alpha}			& $\beta$ 		& \xatt{beta} \\
+						& $\alpha$ 		& \xatt{alpha}			& $\beta$ 		& \xatt{beta} 		\\
 \xatt{Pareto1}				& $x_m$			& \xatt{scale}			& $\alpha$ 	& \xatt{shape} 		\\
-\xatt{Rayleigh1}			& $\sigma$		& \xatt{scale}			& --			& -- 			\\
-\xatt{StandardNormal1} 		& $\mu\!=\!0$		& \xatt{mean}			& $\sigma\!=\!1$ & \xatt{stdev} 	\\
+\xatt{Rayleigh1}			& $\sigma$		& \xatt{scale}			& --			& -- 				\\
+\xatt{StandardNormal1} 		& $\mu\!=\!0$		& \xatt{mean}			& $\sigma\!=\!1$ & \xatt{stdev} 		\\
 \xatt{StandardUniform1}		& $a\!=\!0$		& \xatt{minimum}		& $b\!=\!1$ 	& \xatt{maximum}	\\
-\xatt{StudentT1}			& $\nu$			& \xatt{degreesOfFreedom} & --		& -- 		\\
+\xatt{StudentT1}			& $\nu$			& \xatt{degreesOfFreedom} & --		& -- 				\\
 \xatt{Triangular1}			& $a$			& \xatt{lowerLimit}		& $b$ 		& \xatt{upperLimit}	\\[-0.5ex]
-						&				&					& $c$		& \xatt{shape} \\
-\xatt{TruncatedNormal1}		& $\mu$			& \xatt{mean}			& $\sigma$ 	& \xatt{stdev}	\\[-0.5ex]
+						&				&					& $c$		& \xatt{shape} 		\\
+\xatt{TruncatedNormal1}		& $\mu$			& \xatt{mean}			& $\sigma$ 	& \xatt{stdev}		\\[-0.5ex]
 						& $a$			& \xatt{lowerBound}		& $b$		& \xatt{upperBound} \\
 \xatt{Uniform1}				& \emph{a}		& \xatt{minimum}		& \emph{b}	& \xatt{maximum}	\\
 \xatt{Weibull1}				& $\lambda$		& \xatt{scale}			& \emph{k}	& \xatt{shape}		\\
@@ -1299,23 +1340,21 @@ So far unavailable distributions such as Generalized Poisson (GP),
 Zero-inflated Poisson (ZIP) and others frequently used in pharmacometrics,
 \cite{Plan:2009fk, Troconiz:2009fv}, are now much more easy to encode. The following example illustrates that.
 
-The essential elements of the model is the following PMF
+The essential elements of the model are the following PMF
 \[
 \begin{cases}
   \log(P(Y=k)) = \log(1-p0) - \lambda + k\log(\lambda) - \text{factln}(k) 	& \text{if } k > 0 \\
   \log(P(Y=k)) = \log(p0 + (1-p0)\exp(-\lambda)) 					& \text{otherwise}
 \end{cases}
 \]
-and the definition of model parameters, the Poisson intensity, $\lambda$,
+and the definition of model parameters:	 the Poisson intensity, $\lambda$,
 and the probability of extra zeros, $p0$. In the case of explicitly encoded PMF
 the model becomes lengthly. This comes always with a risk of encoding bugs/typos.  
 
-\paragraph{Explicitly encoded ZIP model}
-The following explicit encoding of the Zero-inflated Poisson model was the only 
-possibility in PharmML $\leq$ 0.6. Although the use of the model specific parameter 
-elements, here \xelem{IntensityParameter} and \xelem{ZeroProbabilityParameter} is not 
-mandatory, the complex conditional definition of this model within the \xelem{PMF} 
-element, is still required, and reads
+\paragraph{Explicitly encoded PMF}
+The explicit encoding of the Zero-inflated Poisson model was the only 
+possibility in PharmML $\leq$ 0.6. The complex conditional definition of this model within the \xelem{PMF} 
+element reads
 \lstset{language=XML}
 \begin{lstlisting}
 <ObservationModel blkId="om1">
@@ -1323,18 +1362,6 @@ element, is still required, and reads
         <CountData>
             <CountVariable symbId="y"/>
             <NumberCounts symbId="k"/>
-            
-            <IntensityParameter symbId="Lambda">
-                <ct:Assign>
-                    <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
-                </ct:Assign>
-            </IntensityParameter>
-            
-            <ZeroProbabilityParameter symbId="P0">
-                <ct:Assign>
-                    <ct:SymbRef blkIdRef="pm1" symbIdRef="p0"/>
-                </ct:Assign>
-            </ZeroProbabilityParameter>
             
             <PMF linkFunction="log">
                 <math:LogicBinop op="eq">
@@ -1359,10 +1386,10 @@ element, is still required, and reads
 Note that \marginpar{\HandCuffLeft} the explicit encoding of PMF's remains
 as an option in PharmML for user-defined or other distributions not covered by ProbOnto.
         
-\paragraph{ZIP model encode using ProbOnto}
+\paragraph{Model encoded using ProbOnto}
 In contrast to the first option, encoding of models supported by ProbOnto
 becomes very easy as only the code names for the distribution and its parameters 
-need to be specified as the following code snippet shows
+need to be specified as the following code shows
 
 \lstset{language=XML}
 \begin{lstlisting}
