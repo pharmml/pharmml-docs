@@ -8,7 +8,7 @@
 \label{ch:probontoAppendix}
 
 The full first version of ProbOnto will be released soon. Here we provide 
-a quite detailed overview of its content for the currently about 66 distributions
+a quite detailed overview of its content for about 60+ distributions
 or alternative parameterisations. The according plots have been performed using 
 the R code stored in ProbOnto and provided for each distribution for which it's available.
 
@@ -2400,9 +2400,9 @@ undefined & \text{else}
 \smallskip \noindent \hspace{.2cm} \textbf{PMF in R}  
 \begin{verbatim}choose(k+r-1,k)*p^r * (1-p)^k\end{verbatim}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF} 
-\begin{equation*}1 - I_{p}(k+1, r)\end{equation*}
+\begin{equation*}1 - I_{1-p}(k+1,r)\end{equation*}
 \smallskip \noindent \hspace{.2cm} \textbf{CDF in R} 
-\begin{verbatim}1 - Rbeta(p, r, k+1,lower = F)\end{verbatim}
+\begin{verbatim}1 - Rbeta(1-p, k+1, r, lower = T)\end{verbatim}
 \smallskip
 \subsubsection*{Characteristics}
 \smallskip \noindent \hspace{.2cm} \textbf{Mean} 

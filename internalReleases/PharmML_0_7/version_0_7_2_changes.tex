@@ -372,10 +372,9 @@ Vectors, section \ref{sec:otherChanges072} & mandatory elements & Can be empty a
 Matrix operators			& Available \xatt{inverse}, \xatt{trace}& {\color{red} \scshape{new}}  \xatt{determinant} added \\
 section \ref{sec:otherChanges072} &						& \\
 \hline
-Dataset's \xatt{columnType}	& Number of values allowed		& {\color{red} \scshape{new}} \emph{randEffect\_stdev}, \emph{randEffect\_var}, \\
-section \ref{sec:otherChanges072}	&						& \emph{randEffect\_cov} and \emph{randEffect\_corr} \\
-						&							& to support identification of random effects \\
-						&							& stored in SO tables\\
+Dataset's \xatt{columnType}	& Number of values allowed since 0.7 & {\color{red} \scshape{new}} \emph{varParameter\_var}, \emph{varParameter\_stdev},  \\
+section \ref{sec:otherChanges072}	& for SO 					& \emph{varParameter\_cov}, \emph{varParameter\_corr} \\
+						&							& to be used in SO tables\\
 \hline
 Dosing target type			& \xatt{inputTarget} mandatory 	& \xatt{inputTarget} attribute is optional \\
 specification				&							& \\

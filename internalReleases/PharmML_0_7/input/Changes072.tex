@@ -561,7 +561,7 @@ in the figure \ref{fig:POdiagram}.
 \begin{figure}[htb!]
 \centering
 \begin{tabular}{cc}
- \includegraphics[width=160mm]{pics/POdiagram}
+ \includegraphics[width=170mm]{pics/POdiagram}
 \end{tabular}
 \caption{ProbOnto relationships diagram with selected distributions. 
 Current ProbOnto version contains 70 relationships/re-parameterisations and 
@@ -716,14 +716,9 @@ to define the FIM function
                 </FIMfunction>
 \end{lstlisting}
 \item
-Added several \xatt{columnType} attribute values to be used in SO for
-the various scale of random effects, such as
-\begin{itemize}
-\item
-\emph{randEffect\_stdev}, \emph{randEffect\_var}, \emph{randEffect\_cov}, 
-\emph{randEffect\_corr} to account for various scales the random effects 
-can be define on. 
-\end{itemize}
+Added several \xatt{columnType} attribute values to be used in SO such as
+\emph{varParameter\_var}, \emph{varParameter\_stdev}, \emph{varParameter\_cov}, 
+\emph{varParameter\_corr} required in SO.
 \item
 \xatt{inputTarget} attribute is now optional. This attribute functioned so far 
 merely as an annotation in the dosing model and was not used by any target tool. 
