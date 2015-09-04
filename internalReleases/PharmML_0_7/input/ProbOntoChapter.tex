@@ -114,11 +114,11 @@ UncertML is a reference resource for distributions but does not provide
 mechanisms to retrieve programmatically related functions and
 quantities.  
 \item
-Negative binomial comes with different formulation and interpretation 
-(as opposed to just different parameterisation), as explained in appendix, 
-section \ref{app:sec:NB1discussion}. UncertML features an option which is 
+Negative Binomial comes with different formulation and interpretation 
+(as opposed to just different parameterisation). UncertML features an option which is 
 rarely seen in the literature (and different compared to R, Matlab and winBUGS) 
-and might be misleading or remain unnoticed to the unexperienced user.
+which might remain unnoticed to the unexperienced user leading to false results.
+A detailed discussion can be found in the appendix \ref{app:sec:NB1discussion}.
 \end{itemize}
 Other minor issues:
 \begin{itemize}
@@ -144,7 +144,7 @@ is not updated and 3.0 documentation is not available.
 but to do so, it would mean to introduce major extensions and changes to its 
 current XML schema. Only the support of the most important missing features would 
 de facto require to rewrite the entire standard, as UncertML doesn't possess the 
-structure to encode even basic expressions. And because it would most 
+structure to encode even basic algebraic expressions. And because it would most 
 certainly result in a different, compared to PharmML, mathematical notation we would 
 be faced with inconsistent, layered and/or overlapping schemas difficult to handle and 
 to process.
@@ -161,7 +161,7 @@ and other languages/tools within DDMoRe and beyond.
 General 
 \begin{itemize}
 \item
-Covers more then 50 distributions and alternative parameterisations.
+Covers more then 70 distributions and alternative parameterisations (as of 3$^{rd}$ Sept 2015).
 \item
 Supports encoding of univariate mixture distributions and truncation bounds (open/closed).
 \item
@@ -232,26 +232,25 @@ The subsequent chapters come with a number of examples of ProbOnto use
 but it is worth to point out two basic implementation rules 
 \begin{itemize}
 \item 
-The name of a distribution, encoded in the \xelem{DistributionName} tag, 
-must be one of the 'Code names' assigned to each distribution in ProbOnto
-using the \xatt{name} attribute. 
+The name of a distribution, encoded in the \xelem{ProbOnto name="..."} tag, 
+where instead of the dots one of the 'Code names' assigned to each distribution in ProbOnto
+must be used. 
 \item
-The same holds of the parameters of a distribution, encoded in the \xelem{Parameter} tag.
-The parameter 'Code names' are specified using also a \xatt{name} attribute. 
-The order of parameters doesn't matter. 
+The same holds for the parameters of a distribution, encoded in the \xelem{Parameter name="..."} tag. 
+Note that the order of parameters doesn't matter. 
 \end{itemize}
 %We have found in the literature many instances of different names being used 
 %for parameters a given distributions. 
 To remain consistent with the nomenclature used so far in PharmML and MDL (which
-was based on UncertML vocabulary) the majority of parameter names is identical 
-to those used in UncertML. For new distributions and their parameters we have 
+was based on UncertML vocabulary) the majority of parameter's \emph{code names} is 
+identical to those used in UncertML. For new distributions and their parameters we have 
 defined the most common names used in the literature. 
-In tables \ref{figTable:univariatesCodes}, \ref{figTable:multivariatesCodes} 
-and \ref{figTable:mixtures} we have compiled the \emph{code names}. 
+The  \emph{code names} are collected in the tables \ref{figTable:univariatesCodes}, 
+\ref{figTable:multivariatesCodes} and \ref{figTable:mixtures}. 
 
 \begin{example}
-The implementation of the negative binomial model illustrates how this works. There are two 
-parametrisations for this distribution but the version with Poisson intensity, $\lambda$, 
+The implementation of the negative binomial model illustrates how this works. There are many 
+parameterisations for this distribution but the version with Poisson intensity, $\lambda$, 
 and over-dispersion, $\tau$, as parameters, with the code name, \emph{NegativeBinomial2}, 
 is frequently used in discrete data models.
 \lstset{language=XML}
@@ -411,14 +410,26 @@ development path for PharmML and its implementation of ProbOnto.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Alternative parameterisations -- examples}
-Providing alternative parameterisations is required for number of reasons, such as
-model type, application area, available data and target tool -- e.g. BUGS using 
-precision, $\tau$, rather then standard deviation or variance for a number of 
-distributions. (See also a discussion on parameters difference between BUGS
-and R, \cite{lebauer2013translating}). A few typical examples are given in next sections.
+\section{Alternative parameterisations -- examples {\color{red} \scshape{updated}}}
+\label{sec:altParams}
+The existence of alternative parameterisations is apparent for number of reasons, 
+such as model type, application area, available data and/or target tool -- e.g. BUGS using 
+precision, $\tau$, rather then standard deviation or variance for a normal/log-normal
+and a number of other distributions. Moreover, ProbOnto contains, wherever available, 
+re-parameterisations formulas of distributions coming in different forms. 
+This can be seen as an improvement of the inter-operability support between target 
+tools supporting different parameter sets for a given probability density/mass function.
+
+The needs for the support of re-parameterisation, e.g. between BUGS and R has been 
+discussed before, \cite{lebauer2013translating}. The authors state that "[...] R and BUGS 
+languages use different representations of common probability density 
+functions, creating a potential for errors to occur in the implementation 
+or interpretation of analyses that use both languages"). 
+
+A few typical examples for alternative parameterisations are given in next sections.
 
 \subsection{Negative binomial distribution} 
+\label{subsec:altNB}
 The available parameterisations are
 \begin{itemize}
 \item
@@ -803,14 +814,22 @@ Then the square of the coefficient of variation, $cv$, on the natural scale read
 	= (e^{\sigma^2}-1) \Leftrightarrow cv = \sqrt{e^{\sigma^2}-1} \;\;\; \& \;\;\; \sigma=\sqrt{\log(cv^2 + 1)}. \nonumber
 %	\frac{\cancel{a= b+c}}{\cancel{f} & = b-c
 \end{align}
-To see then the slightly complicated relationships between $cv$ and $\sigma_g$
-on the natural scale one has to recall the formula $\sigma_g = exp(\sigma)$, see the 
+To see then the relationships between $cv$ and $\sigma_g$ on the natural scale 
+one has to recall the formula $\sigma_g = exp(\sigma)$, see the 
 table \ref{figTable:logNormalParameterisations} and we get the results
 \begin{align}
 	cv=\sqrt{\exp\!\big(\log^2(\sigma_g)\big) -1} \;\;\; \& \;\;\; \sigma_g=\exp\!\big(\sqrt{\log(cv^2+1)}\big) .\nonumber
 %	\frac{\cancel{a= b+c}}{\cancel{f} & = b-c
 \end{align}
 
+\begin{figure}[htb!]
+\centering
+ \includegraphics[width=145mm]{pics/LNreparams}
+\caption{Re-parameterisation relationships implemented in ProbOnto and their support 
+in target (black edges) and few selected other tools. * Indication of the 
+planned support for the according parameterisations in MCL.}
+\label{fig:LNreparams}
+\end{figure}
 
 %\footnote{Based on a Stack Overflow discussion \url{tinyurl.com/qavgvln}}
 %\newpage
@@ -821,7 +840,7 @@ table \ref{figTable:logNormalParameterisations} and we get the results
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=.95\textwidth
 \begin{center}
-%\small
+\small
 \renewcommand{\arraystretch}{1}%
 \begin{longtable}{ccc}
  \hline
@@ -910,14 +929,13 @@ section \ref{subsec:logNormalForms} for the meaning of the symbols.
 Results for LN2 on the left identical with those on Vose's page.
 Madian and variance for LN3 on the left identical to Leemis.}
 \label{figTable:logNormalParameterisations}
-\vspace{-0.5em}
+\vspace{-2.5em}
 \end{longtable}
 \end{center}
 
 %\newpage 
 \section{Distributions in ProbOnto}
-\subsection{Univariates -- tool coverage}
-
+\subsection{Univariates -- ProbOnto and tool coverage}
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=.95\textwidth
 \begin{center}
@@ -927,8 +945,8 @@ Madian and variance for LN3 on the left identical to Leemis.}
 \begin{longtable}{l | lcccc}
   \hline
   \hline
-\multicolumn{1}{c}{\textbf{ProbOnto}}& Parameters 	& \textbf{UncertML} 	& \textbf{WinBUGS}	& \textbf{Monolix} & \textbf{NONMEM} \\
-\multicolumn{1}{c}{0.2}			&		&  3.0			& 1.4		& 4.3	& 7.3 \\
+\multicolumn{1}{c}{\textbf{ProbOnto}}& Parameters 	& \textbf{UncertML} 	& \textbf{WinBUGS}	& \textbf{Monolix} 	& \textbf{NONMEM} \\
+\multicolumn{1}{c}{0.3}			&			&  3.0			& 1.4			& 4.3			& 7.3 \\
   \hline
   \hline
   \multicolumn{6}{c}{\textit{Discrete Univariate}}  \\
@@ -937,6 +955,7 @@ Bernoulli				& \emph{p}		& y	& y	& --  &  -- \\
 Binomial				& \emph{n, p}		& y	& y	& --  &  -- \\
 Categorical ordered		& $p_1, \ldots, p_k$	& y	& y	& --  &  -- \\
 Categorical unordered	& $p_1, \ldots, p_k$	& y	& y	& --  &  -- \\
+DoublePoisson1		& $\mu, \phi$		& --	& --	& --  &  -- \\
 Generalized Poisson 1	& $\theta, \delta$	& --  	& --  & --  &  -- \\
 Generalized Poisson 2	& $\mu, \delta$		& --  	& --  & --  &  -- \\
 Generalized Poisson 3	& $\mu, \alpha$	& --  	& --  & --  &  -- \\
@@ -948,8 +967,8 @@ Negative Binomial 2 		& $\lambda, \tau$ 	& --  	& --  & --  &  -- \\
 Negative Binomial 3 		& $\mu, k$ 		& --  	& --  & --  &  -- \\
 Negative Binomial 4 		& $r,p$ 			& y  	& --  & --  &  -- \\
 Poisson				& $\lambda$		& y	& y	& --  &  -- \\
-Uniform 1 			&  \emph{a, b, n}	& --	& --	& -- & --  \\
-Uniform 2 			&  $a=0$, \emph{n}	& --	& --	& -- & --  \\
+Uniform Discrete 1 		&  \emph{a, b, n}	& --	& --	& -- & --  \\
+Uniform Discrete 2 		&  $a=0$, \emph{n}	& --	& --	& -- & --  \\
 Zero-Inflated Negative Binomial & $\lambda, \tau, p0$	& --  & --  & --  &  -- \\
 Zero-Inflated Poisson	& $\lambda, \pi$	& --  & --  & --  &  -- \\
   \hline
@@ -997,7 +1016,7 @@ Uniform				&  \emph{a, b}		& y	& y	& y		& --  \\
 Weibull 1				& $\lambda, k$		& y	& --	& y	&  -- \\
 Weibull 2				& $\lambda, v$		& --	& y	& --	&  -- \\
    \hline 
-\caption{{\color{red} \scshape{update}} Univariate distributions supported in ProbOnto with overview of tool support. 
+\caption{{\color{red} \scshape{updated}} Univariate distributions supported in ProbOnto with overview of tool support. 
 See Appendix \ref{ch:probontoAppendix} for a detailed description of each distribution.}
 \label{figTable:univariates}
 \vspace{-2.5em}
@@ -1024,6 +1043,7 @@ Code name		& Symbol & Code name & Symbol & Code name \\
 \xatt{Binomial1} 			& \emph{n}		& \xatt{numberOfTrials}& \emph{p}	& \xatt{probability} \\
 \xatt{CategoricalOrdered1}	& $p_1,\dots,p_k$ 	& \xatt{categoryProb}  	&  --			& -- \\
 \xatt{CategoricalUnordered1}	& $p_1,\dots ,p_k$ 	& \xatt{categoryProb}	&  --			& -- \\
+\xatt{DoublePoisson1}		& $\mu$			& \xatt{rate}			& $\phi$		& \xatt{dispersion} \\
 \xatt{GeneralizedPoisson1}	& $\theta$			& \xatt{rate}			& $\delta$		& \xatt{dispersion} \\
 \xatt{GeneralizedPoisson2}	& $\mu$			& \xatt{mean}			& $\delta$		& \xatt{dispersion} \\
 \xatt{GeneralizedPoisson3}	& $\mu$			& \xatt{mean}			& $\alpha$	& \xatt{dispersion} \\
@@ -1070,7 +1090,7 @@ Code name		& Symbol & Code name & Symbol & Code name \\
 \xatt{LogNormal4}			& \emph{m}		& \xatt{median}			& \emph{cv}	& \xatt{coefVar	}	\\
 \xatt{LogNormal5}			& $\mu$			& \xatt{meanLog}		& $\tau$		& \xatt{precision}	\\
 \xatt{LogNormal6}			& $m$			& \xatt{median}			& $\sigma_g$	& \xatt{geomStdev}	\\
-\xatt{LogUniform}			& $min$			& \xatt{minimum}		& $max$		& \xatt{maximum}	\\
+\xatt{LogUniform1}			& $min$			& \xatt{minimum}		& $max$		& \xatt{maximum}	\\
 \xatt{Nakagami1}			& $m$			& \xatt{shape}			& $\Omega$ 	& \xatt{spread}		\\
 \xatt{Normal1}				& $\mu$			& \xatt{mean}			& $\sigma$ 	& \xatt{stdev}		\\
 \xatt{Normal2}				& $\mu$			& \xatt{mean}			& \emph{v}	& \xatt{var}		\\
@@ -1090,14 +1110,14 @@ Code name		& Symbol & Code name & Symbol & Code name \\
 \xatt{Weibull1}				& $\lambda$		& \xatt{scale}			& \emph{k}	& \xatt{shape}		\\
 \xatt{Weibull2}				& $\lambda$		& \xatt{lambda}			& \emph{v}	& \xatt{shape}		\\
    \hline 
-\caption{{\color{red} \scshape{update}} Code names for distribution and parameter names of the univariate distributions.}
+\caption{{\color{red} \scshape{updated}} Code names for distribution and parameter names of the univariate distributions.}
 \label{figTable:univariatesCodes}
 \vspace{-2.5em}
 \end{longtable}
 \end{center}
 
 %\newpage
-\subsection{Multivariates -- tool coverage}
+\subsection{Multivariates -- ProbOnto and tool coverage}
 
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=.95\textwidth
@@ -1109,7 +1129,7 @@ Code name		& Symbol & Code name & Symbol & Code name \\
   \hline
   \hline
 \multicolumn{1}{c}{\textbf{ProbOnto}} & Parameters & \textbf{UncertML} & \textbf{WinBUGS} & \textbf{Monolix} & \textbf{NONMEM}\\
-\multicolumn{1}{c}{0.2}			& 			&  3.0			& 1.4 			& 4.3  		    &	7.3 \\
+\multicolumn{1}{c}{0.3}			& 			&  3.0			& 1.4 			& 4.3  		    &	7.3 \\
   \hline
   \hline
   \multicolumn{6}{c}{\textit{Discrete Multivariate}} \\
@@ -1166,13 +1186,15 @@ Code name				& Symbol & Code name 			& Symbol 			& Code name \\
 \xatt{Wishart1} 				& $V$		& \xatt{scaleMatrix}	& $n$			& \xatt{degreesOfFreedom} \\
 \xatt{Wishart2} 				& $R$		& \xatt{inverseScaleMatrix} & $k$		& \xatt{degreesOfFreedom} \\
    \hline
-\caption{{\color{red} \scshape{update}} Code names for the multivariate distributions and their parameters.}
+\caption{Code names for the multivariate distributions and their parameters.}
 \label{figTable:multivariatesCodes}
 \vspace{-2.5em}
 \end{longtable}
 \end{center}
 
-\subsection{Mixtures}
+\subsection{Mixture distribution}
+Because only the mixture distribution for univariate distributions is supported,
+we skip one table. Apart from Pronto, the mixture distribution is supported only by UncertML. 
 
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=.95\textwidth
@@ -1184,13 +1206,13 @@ Code name				& Symbol & Code name 			& Symbol 			& Code name \\
   \hline
   \hline
 \multicolumn{1}{c}{\textbf{ProbOnto}}	&   \multicolumn{2}{c}{Parameters} 	& \textbf{UncertML}  \\
-\multicolumn{1}{c}{0.2}				&  Symbol					& Code name 	&  3.0		 \\
+\multicolumn{1}{c}{0.3}				&  Symbol					& Code name 	&  3.0		 \\
   \hline
   \hline
 \xatt{MixtureDistribution1} & $\pi_1, \ldots, \pi_k$ & \xatt{weight} &	y \\
   \hline
    \hline
-\caption{{\color{red} \scshape{update}} Mixture distribution -  so far only for univariate distributions.}
+\caption{Mixture distribution -  so far only for univariate distributions.}
 \label{figTable:mixtures}
 \vspace{-2.5em}
 \end{longtable}
@@ -1202,18 +1224,11 @@ Code name				& Symbol & Code name 			& Symbol 			& Code name \\
 
 \subsection{Categorical data models}
 \label{sec:ProbOntoAndDiscrete}
-For categorical models we always first list in PharmML all categories 
-\lstset{language=XML}
-\begin{lstlisting}
-    <ListOfCategories> 
-        <Category symbId="cat1"/>
-        <Category symbId="cat2"/>
-        <Category symbId="cat3"/>
-    </ListOfCategories>                    
-\end{lstlisting}
-which informs the user/target tool about the number and identifiers of
-the categories in question. The probabilities vector $p_i, i=1,\dots,k$ is the only 
-parameter and the user has two options. One can declare either
+For categorical models we always first list in PharmML all categories, see below element
+\xelem{ListOfCategories}... \xelem{/ListOfCategories} which informs the user/target tool 
+about the number and identifiers of the categories in question. The probabilities 
+vector $p_i, i=1,\dots,k$ is the only parameter and the user has two options. 
+One can declare either
 \begin{itemize}
 \item 
 explicitly the probabilities for all $k$ categories or
@@ -1222,7 +1237,7 @@ the $k\!-\!1$ probabilities, with the last probability, $p_k$, known assuming $\
 \end{itemize}
 Note that the order of the categories in \xelem{ListOfCategories} and 
 the \xelem{Parameter} (where the probability vector, $p_i$, is encoded) elements, 
-must be preserved.
+must be preserved.\marginpar{\HandCuffLeft}
 
  
 \subsubsection{Example: Nominal categorical model}
@@ -1240,8 +1255,8 @@ Set of categories: $\{1,2,3\}$
 \item
 Probabilities for category '1' and '2'
 \begin{eqnarray}
-&& p2 := P(y=1) = a1/(a1+a2+a3)  \nonumber \\
-&& p1 := P(y=2) = a2/(a1+a2+a3)  \nonumber 
+&& p1 := P(y=1) = a1/(a1+a2+a3)  \nonumber \\
+&& p2 := P(y=2) = a2/(a1+a2+a3)  \nonumber 
 \end{eqnarray}
 \end{itemize}
 The following code shows how to implement the model 
@@ -1257,34 +1272,12 @@ for the probabilities
     
     <PopulationParameter symbId="p1">
         <ct:Assign>
-            <math:Equation>
-                <math:Binop op="divide">
-                    <ct:SymbRef symbIdRef="a1"/>
-                    <math:Binop op="plus">
-                        <ct:SymbRef symbIdRef="a1"/>
-                        <math:Binop op="plus">
-                            <ct:SymbRef symbIdRef="a2"/>
-                            <ct:SymbRef symbIdRef="a3"/>
-                        </math:Binop>
-                    </math:Binop>
-                </math:Binop>
-            </math:Equation>
+           <!-- omitted formula p1 = a1/(a1+a2+a3) -->	
         </ct:Assign>
     </PopulationParameter>
     <PopulationParameter symbId="p2">
         <ct:Assign>
-            <math:Equation>
-                <math:Binop op="divide">
-                    <ct:SymbRef symbIdRef="a2"/>
-                    <math:Binop op="plus">
-                        <ct:SymbRef symbIdRef="a1"/>
-                        <math:Binop op="plus">
-                            <ct:SymbRef symbIdRef="a2"/>
-                            <ct:SymbRef symbIdRef="a3"/>
-                        </math:Binop>
-                    </math:Binop>
-                </math:Binop>
-            </math:Equation>
+           <!-- omitted formula p2 = a2/(a1+a2+a3) -->	
         </ct:Assign>
     </PopulationParameter>
 \end{lstlisting}
@@ -1424,12 +1417,12 @@ need to be specified as the following code shows
 </ObservationModel>\end{lstlisting}
 
 \subsubsection{Poisson with mixtures -- PMIX}
-Rather then creating specific types for Poisson, or other models, with mixture distributions for 
-individual observations (PMIX), described in the PharmML 0.6 spec, \cite{Pharmml_06},
+Rather then creating specific model types for e.g. mixture of Poisson models, 
+we use a generic mixture model. For example for the mixture of two Poisson models
 \begin{eqnarray}
 P(y_{ij} = k;\pi,\lambda_1,\lambda_2) &=& \pi \frac{e^{-\lambda_1} \lambda_1^k}{k!} + (1-\pi) \frac{e^{-\lambda_2} \lambda_2^k}{k!} \nonumber
 \end{eqnarray}
-with $\lambda_1, \lambda_2 > 0$ and $\pi \in [0,1]$, the generic \emph{MixtureDistribution} 
+with $\lambda_1, \lambda_2 > 0$ and $\pi \in [0,1]$, the \emph{MixtureDistribution} 
 can be used as the following code shows
 \lstset{language=XML}
 \begin{lstlisting}
@@ -1542,7 +1535,9 @@ were performed using the \emph{truncnorm} function of the \emph{dtruncnorm} R-pa
 \section{Independency of ProbOnto}
 \label{sec:ProbOntoIndependent}
 It is worth to stress that ProbOnto ontology and knowledge base are fully 
-independent from PharmML. ProbOnto doesn't enforce a certain way to implement it from
-a tool designer which allows it to be used across the DDMoRe target tools, languages
+independent from PharmML. The provided schema is  tailored towards
+the needs of PharmML and is otherwise entirely optional. 
+ProbOnto doesn't enforce a certain way to implement it from
+a tool designer -- this allows it to be used across the DDMoRe target tools, languages
 and beyond. 
 
