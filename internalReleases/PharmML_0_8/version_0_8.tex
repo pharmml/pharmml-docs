@@ -10,12 +10,12 @@
 \usepackage{amssymb}
 \usepackage{xspace}
 \pagestyle{headings}
-%\usepackage[margin=1.2in]{geometry}
-\usepackage[left=2cm, right=2cm, top=2.5cm, bottom=2cm]{geometry}
+\usepackage[total={6.5in,10.0in}, top=1in, left=.8in, includefoot]{geometry}
 \usepackage{float}
 \restylefloat{table}
 \usepackage{listings}
 \usepackage{color}
+\definecolor{red}{rgb}{1,0,0}
 \definecolor{gray}{rgb}{0.4,0.4,0.4}
 \definecolor{darkblue}{rgb}{0.0,0.0,0.58}
 \definecolor{attributeColor}{rgb}{0.96,0.517,0.29}
@@ -23,41 +23,53 @@
 \definecolor{stringColor}{rgb}{0.6,0.2,0}
 \usepackage{array,multirow}
 \usepackage{longtable}
+\LTcapwidth=\textwidth
 \usepackage{cleveref}
 \usepackage{bbding}
 \crefname{section}{¤}{¤¤}
 \Crefname{section}{¤}{¤¤}
 \usepackage[utf8]{inputenc}
 \usepackage{tablefootnote}
-\usepackage{algorithmic}
+\usepackage{algorithmicx}
 \usepackage[modulo, pagewise]{lineno}
-%\nolinenumbers
+\nolinenumbers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[RO]{PharmML 0.8}
+\fancyhead[RE]{\itshape\nouppercase{\leftmark}}
+\usepackage{booktabs}
+\usepackage{fixltx2e}
+\usepackage{array,arydshln}
+\usepackage{wrapfig}
+\usepackage{makeidx}
+\usepackage{varwidth}
+\usepackage{lipsum}
+\usepackage{blkarray}
+
 \usepackage{makecell}
 \usepackage{multicol}
 \usepackage{url}
 \usepackage{verbatimbox}
 \usepackage{xcolor}
 \usepackage{cancel}
+\usepackage{algpseudocode}
+
+\setlength{\tabcolsep}{5pt}
 
 \usepackage{caption} 
 \captionsetup[table]{skip=5pt}
 \captionsetup[longtable]{skip=5pt}
 \captionsetup[figure]{skip=1pt}
 
-\usepackage{titlesec}
-\titlespacing*{\subsection}{0pt}{1.5\baselineskip}{\baselineskip}
+\def\bmp{\begin{minipage}{0.48\linewidth}\small} 
+\def\emp{\end{minipage}\smallskip}
 
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
- 
-\newcounter{example}[section]
-\newenvironment{example}[1][]{\refstepcounter{example}\par\medskip
-   \textbf{Example~\theexample. #1} \rmfamily}{\medskip}
-   
-\newcounter{note}[section]
-\newenvironment{note}[1][]{\refstepcounter{note}\par\medskip
-   \textbf{Note~\thenote. #1} \rmfamily}{\medskip}
-   
+\setlength\dashlinedash{0.4pt}
+\setlength\dashlinegap{1pt}
+\setlength\arrayrulewidth{0.5pt}
+
+\hypersetup{pageanchor=false}
+
 \newcommand{\myStartLine}{\par
   \kern8pt % space above the rules
   \hrule height 0.5pt
@@ -67,6 +79,25 @@
   \kern3pt % space above the rules
   \hrule height 1.5pt
   \kern12pt % space below the rules
+}
+
+% Colours stolen from SBML pkg spec class
+\definecolor{lightblue}{rgb}{0.07, 0.50, 0.78}
+\definecolor{mediumgreen}{rgb}{0.1, 0.6, 0.3}
+
+\definecolor{hellgelb}{rgb}{1,1,0.9}
+\definecolor{colKeys}{rgb}{0,0,1}
+\definecolor{colIdentifier}{rgb}{0,0,0}
+\definecolor{colComments}{rgb}{1,0,0}
+\definecolor{colString}{rgb}{0,0.5,0}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+%  numbers=left,
+%  stepnumber=5
 }
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
@@ -95,12 +126,12 @@
   dataSymbol,modelSymbol,ordered,compartmentNo,compNo,ordered,linkFunction,varId,
   censoringType,dataSymbol,modelSymbol,MarkovOrder,deviationMatrixType,implementedBy,
   argument,admNumber,transformId,transformIdRef,catIdRef,headerType,rowNumber,
-  toolName,dataCode,missingDataType,regressor,fixed} % list your attributes here
+  toolName,dataCode,missingDataType,regressor,fixed,transformation,transform,symbol} % list your attributes here
 }
 
 \lstdefinelanguage{MLX} 
 {
-  basicstyle=\ttfamily\footnotesize,
+  basicstyle=\ttfamily\small,
   morestring=[b]",
   morestring=[s]{>}{<},
   moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
@@ -146,6 +177,17 @@
 \newcommand{\pharmml}{PharmML\xspace}
 \newcommand{\xelem}[1]{\texttt{<#1>}\index{XML Element!\texttt{<#1>}}}
 \newcommand{\xatt}[1]{\texttt{#1}\index{XML Attribute!\texttt{#1}}}
+\newcommand{\var}[1]{\ensuremath{\mathit{#1}}\index{Symbol!\ensuremath{\mathit{#1}}}}
+\newcommand{\dscol}[1]{\texttt{#1}}
+\newcommand{\attval}[1]{``\texttt{#1}''}
+
+%Counter for examples chap
+\newcounter{examples}
+\newcommand{\eglabel}[1]{\refstepcounter{examples}\label{egsec:#1}}
+\newcommand{\egref}[1]{\ref{egsec:#1}}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
 
 \begin{document}
 
@@ -161,7 +203,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Overview}
 
-This document describes extensions and changes in \pml compared to version 0.7.2
+This document describes extensions and changes in \pml compared to version 0.7.3
 released in September 2015.
 
 
@@ -176,16 +218,31 @@ Please, note that this list is not exhaustive.
 \begin{longtable}{lll}
 \hline
 \hline
-\pml element 				&  version $\le$ 0.7.2 			& version 0.8 \\
-or modelling aspect 			& 							& \\
+\pml element 				&  version $\le$ 0.7.3 	& version 0.8 \\
+or modelling aspect 			& 					& \\
 \hline
+Assignment statements		& not supported		& can be used in covariate, parameter,  \\
+Section \ref{sec:assignments}	&					& structural and observation models \\
 \hline
-  \multicolumn{3}{c}{\textit{BIG TOPIC}}		\\
+%\hline
+%\hline
+%  \multicolumn{3}{c}{\textit{Bayesian}}		\\
+%\hline
+%\hline
+Nonparametric distribution	& not supported		& available now in ProbOnto \\ 
+Section \ref{sec:nonParamDistribs}	& 				& new \xelem{RandomSample}, \xelem{SystematicSample}	\\
+						&					& \xelem{UnknownSample} \\
 \hline
+Random realisations			& not supported		& available now in ProbOnto \\
+Section \ref{sec:randRealisations}	 &				& as \xelem{Realisation} \\
 \hline
-Section					& 							&	\\
+Conditional statements		& not supported		& \\
+Section \ref{sec:conditionalStatements} &				& \\
 \hline
-\caption{Overview of major differences between versions 0.8 and 0.7.2.}
+Section \ref{}				& 					&	\\
+\hline
+Dataset declarations 		& single values allowed	& multiple attribute values allowed \\ 
+\caption{Overview of major differences between versions 0.8 and 0.7.3}
 \label{figTable:overviewTable}
 \vspace{-2em}
 \end{longtable}
@@ -196,8 +253,11 @@ Section					& 							&	\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \input{input/mainChanges08}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/newApplications08}
 
-%\appendix
+
+\appendix
 
 
 %\paragraph{Covariate model}
@@ -219,7 +279,8 @@ Section					& 							&	\\
 %-- selection/exclusion criteria missing \\
 
 
-\bibliographystyle{plain}
+%\bibliographystyle{plain}
+\bibliographystyle{apalike}
 \bibliography{pharmml-specification}
 \end{document}
 
