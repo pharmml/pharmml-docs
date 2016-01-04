@@ -118,7 +118,7 @@ Negative Binomial comes with different formulation and interpretation
 (as opposed to just different parameterisation). UncertML features an option which is 
 rarely seen in the literature (and different compared to R, Matlab and winBUGS) 
 which might remain unnoticed to the unexperienced user leading to false results.
-A detailed discussion can be found in the appendix \ref{app:sec:NB1discussion}.
+A detailed discussion can be found in the separate ProbOnto report \cite{ProbOnto:2015a}.
 \end{itemize}
 Other minor issues:
 \begin{itemize}
@@ -173,7 +173,7 @@ Doesn't enforce specific implementation in target tools.
 In PharmML only few extensions were required to provide flexible encoding support
 for all distributions and their features, see section \ref{sec:workingProbOnto}.
 \item
-Collection of supported distributions, see appendix \ref{ch:probontoAppendix} for 
+Collection of supported distributions, see the ProbOnto report \cite{ProbOnto:2015a} for 
 some selected types and their essential features, is easily extendable 
 without non or limited impact on the PharmML structure.
 \item
@@ -410,7 +410,7 @@ development path for PharmML and its implementation of ProbOnto.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Alternative parameterisations -- examples {\color{red} \scshape{updated}}}
+\section{Alternative parameterisations -- examples}
 \label{sec:altParams}
 The existence of alternative parameterisations is apparent for number of reasons, 
 such as model type, application area, available data and/or target tool -- e.g. BUGS using 
@@ -457,7 +457,7 @@ P(k;\mu,\phi) = \binom {k+\phi-1}k \Big(\frac{\phi}{\mu + \phi} \Big)^{\phi} \Bi
 \end{align}
 \end{itemize}
 with NB2 being used in typical pharmacometric discrete data models, \cite{Plan:2009fk, Troconiz:2009fv}.
-See appendix \ref{app:sec:NB1discussion} for a detailed discussion on the possible formulations. 
+See ProbOnto report \cite{ProbOnto:2015a} for a detailed discussion on the possible formulations. 
 %The Wikipedia article\footnote{\url{en.wikipedia.org/wiki/Negative_binomial_distribution}, 
 %section 'Alternative formulations'}, explains the reasons behind the various representations.
 
@@ -495,7 +495,7 @@ $\mu \rightarrow \mu; \quad \phi \rightarrow \tau=1/\phi$
 \begin{description}
 \item[NB4($r$, $p$)] -- any re-parameterisations including this distribution 
 would require reformulation of the support variable and the parameters,
-see detailed explanation in the appendix \ref{app:sec:NB1discussion}. 
+see detailed explanation in the ProbOnto report \cite{ProbOnto:2015a}. 
 \end{description}
 
 \end{itemize}
@@ -1017,7 +1017,7 @@ Weibull 1				& $\lambda, k$		& y	& --	& y	&  -- \\
 Weibull 2				& $\lambda, v$		& --	& y	& --	&  -- \\
    \hline 
 \caption{{\color{red} \scshape{updated}} Univariate distributions supported in ProbOnto with overview of tool support. 
-See Appendix \ref{ch:probontoAppendix} for a detailed description of each distribution.}
+See ProbOnto report \cite{ProbOnto:2015a} for a detailed description of each distribution.}
 \label{figTable:univariates}
 \vspace{-2.5em}
 \end{longtable}
@@ -1147,7 +1147,7 @@ Multivariate (Student) T 2& $\mu, T, k$ 				& --	& y	& --	& -- 	\\[0.5ex]
 Wishart 1				& $V, n$					& y	& --	& --	& --  	\\
 Wishart 2				& $R, k$					& --	& y	& --	& -- 	\\
    \hline
-\caption{Multivariate distributions with overview of tool support. See the Appendix \ref{ch:probontoAppendix}
+\caption{Multivariate distributions with overview of tool support. See the ProbOnto report \cite{ProbOnto:2015a}
 for the detailed description of each distribution.}
 \label{figTable:multivariates}
 \vspace{-2.5em}

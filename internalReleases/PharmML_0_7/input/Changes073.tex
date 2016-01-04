@@ -1,0 +1,134 @@
+
+\chapter{Changes in 0.7.3}
+\label{ch:073changes}
+
+\section{Commenting out of dataset records}
+\label{sec:ignore}
+Upon request within IOG, this version has been extended 
+to support filtering out of rows in a datasets by allowing defining 
+'ignore line' characters. For example $\#$ is often used for such 
+purpose in NONMEM and Monolix-type datasets. 
+
+These character(s) can contain up to three arbitrary characters 
+without white spaces. The following snippet shows two such specifications, 
+where the various symbols are defined, using <IgnoreLine> element, 
+within the definition of the dataset, to identify rows to be omitted
+
+\lstset{language=XML}
+\begin{lstlisting}
+    <DataSet xmlns="http://www.pharmml.org/pharmml/0.7/Dataset">
+        <Definition>
+            <Column columnId="TIME" columnType="idv" valueType="real" columnNum="1"/>
+            <!-- skipped columns -->
+            <Column columnId="MDV" columnType="mdv" valueType="int" columnNum="5"/>
+            <IgnoreLine symbol="$10"/>
+            <IgnoreLine symbol="#"/>
+        </Definition>
+        <ExternalFile oid="datasetID">
+            <path>dataset.csv</path>
+        </ExternalFile>
+    </DataSet>
+\end{lstlisting}
+Any number of such 'ignore line' characters can be defined.
+
+\section{\xatt{linkFunction} in discrete data models}
+\label{sec:link}
+
+The \xatt{linkFunction} attribute has been renamed to the (optional) \xatt{transform}
+in the \xelem{PMF} element of the count data block. It was erroneously associated
+with the probability mass function. Instead the transformation can be used to 
+indicate that a transformed PMF has been encoded to be passed in such form to
+a target tool, if supported. 
+
+\paragraph{Example}
+The common Poisson model can be implemented in its 
+\begin{itemize}
+\item 
+default, untransformed form
+\lstset{language=XML}
+\begin{lstlisting}
+<ObservationModel blkId="om1">
+    <Discrete>
+        <CountData>
+            <CountVariable symbId="Y"/>
+            <NumberCounts symbId="k"/>
+            
+	    <!-- P(Y=k) = (Lambda^k * exp(-Lambda) / k! -->
+            <PMF>
+                <math:LogicBinop op="eq">
+                    <ct:SymbRef symbIdRef="Y"/>
+                    <ct:SymbRef symbIdRef="k"/>
+                </math:LogicBinop>
+                <Distribution>
+                    <po:ProbOnto name="Poisson1">
+                        <po:Parameter name="rate">
+                            <ct:Assign>
+                                <ct:SymbRef symbIdRef="lambda"/>
+                            </ct:Assign>
+                        </po:Parameter>
+                    </po:ProbOnto>
+                </Distribution>
+            </PMF>
+\end{lstlisting}
+
+\item 
+in a log-transformed form
+\lstset{language=XML}
+\begin{lstlisting}
+            <!-- log(P(Y=k)) = -Lambda+k*log(Lambda)-log(k!) -->
+            <PMF transform="log">
+                <math:LogicBinop op="eq">
+                    <ct:SymbRef symbIdRef="Y"/>
+                    <ct:SymbRef symbIdRef="k"/>
+                </math:LogicBinop>
+                <Distribution>
+                    <po:ProbOnto name="Poisson1">
+                        <po:Parameter name="rate">
+                            <ct:Assign>
+                                <ct:SymbRef symbIdRef="lambda"/>
+                            </ct:Assign>
+                        </po:Parameter>
+                    </po:ProbOnto>
+                </Distribution>
+            </PMF>
+\end{lstlisting}
+
+\item 
+or in log-transformed explicit form
+\lstset{language=XML}
+\begin{lstlisting}
+            <!-- explicit log(PMF) -->
+            <!-- log(P(Y=k)) = -Lambda+k*log(Lambda)-log(k!) -->
+            <PMF transform="log">
+                <math:LogicBinop op="eq">
+                    <ct:SymbRef symbIdRef="Y"/>
+                    <ct:SymbRef symbIdRef="k"/>
+                </math:LogicBinop>
+                <ct:Assign>
+                    <math:Binop op="minus">
+                        <math:Binop op="plus">
+                            <math:Uniop op="minus">
+                                <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
+                            </math:Uniop>
+                            <math:Binop op="times">
+                                <ct:SymbRef symbIdRef="k"/>
+                                <math:Uniop op="log">
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
+                                </math:Uniop>
+                            </math:Binop>
+                        </math:Binop>
+                        <math:Uniop op="factln">
+                            <ct:SymbRef symbIdRef="k"/>
+                        </math:Uniop>
+                    </math:Binop>
+                </ct:Assign>
+            </PMF>
+        </CountData>
+    </Discrete>
+</ObservationModel>
+\end{lstlisting}
+\end{itemize}
+Note, that the last implementation should be used only if a certain 
+distribution is not covered by ProbOnto/UncertML. It is the option allowing
+the implementation of an arbitrary user-defined distributions.
+
