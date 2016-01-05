@@ -221,14 +221,22 @@ Please, note that this list is not exhaustive.
 \pml element 				&  version $\le$ 0.7.3 	& version 0.8 \\
 or modelling aspect 			& 					& \\
 \hline
+\hline
+  \multicolumn{3}{c}{\textit{Model Definition}}		\\
+\hline
+\hline
 Assignment statements		& not supported		& can be used in covariate, parameter,  \\
 Section \ref{sec:assignments}	&					& structural and observation models \\
 \hline
-%\hline
-%\hline
-%  \multicolumn{3}{c}{\textit{Bayesian}}		\\
-%\hline
-%\hline
+Conditional statements		& not supported		& \\
+Section \ref{sec:conditionalStatements} &				& \\
+\hline
+Nested piecewise			& not supported		& \\
+Section \ref{sec:nestedPiecewise}	&				& \\
+\hline
+Probability functions			& not supported		& \\
+Section \ref{sec:probabFunctions}	&				& \\
+\hline
 Nonparametric distribution	& not supported		& available now in ProbOnto \\ 
 Section \ref{sec:nonParamDistribs}	& 				& new \xelem{RandomSample}, \xelem{SystematicSample}	\\
 						&					& \xelem{UnknownSample} \\
@@ -236,10 +244,21 @@ Section \ref{sec:nonParamDistribs}	& 				& new \xelem{RandomSample}, \xelem{Syst
 Random realisations			& not supported		& available now in ProbOnto \\
 Section \ref{sec:randRealisations}	 &				& as \xelem{Realisation} \\
 \hline
-Conditional statements		& not supported		& \\
-Section \ref{sec:conditionalStatements} &				& \\
+Markov models				& only pair-wise transition	& NEW Transition Matrix, left, right or \\
+Section \ref{sec:MM}		& probabilities 			& doubly stochastic \\
 \hline
-Section \ref{}				& 					&	\\
+N-ary operators			& not supported		& \\
+Section \ref{sec:NaryOps}	&					& \\
+\hline
+Statistical operators			& not supported		& \\
+Section \ref{sec:statsOps}	&					& \\
+\hline
+Covariate Model			& not supported		& NEW attribute \xatt{type} with values \\	
+Section \ref{sec:covVsRegs}	&					& \emph{occasionDependent}, \emph{timeDependent}, \\
+						&					& \emph{constant}\\
+Categorical covariate Model	& using \xelem{Probability} & -- full support via ProbOnto \\
+Section \ref{sec:catCovModel}	&					& -- covariates declaration/assignment \\
+						&					& -- conditional distributions allowed \\
 \hline
 Dataset declarations 		& single values allowed	& multiple attribute values allowed \\ 
 \caption{Overview of major differences between versions 0.8 and 0.7.3}
