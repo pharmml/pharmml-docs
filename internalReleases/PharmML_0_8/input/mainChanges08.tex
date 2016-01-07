@@ -1,7 +1,10 @@
 
 \chapter{Changes in 0.8}
 \label{ch:08changes}
-The 0.8 version...
+
+\section{Backwards compatibility with 0.7.3}
+The 0.8 version is backwards compatible with 0.7.3 as tested on 
+all the 80+ examples provided with the release.
 
 
 \section{Assignment statements}
@@ -84,42 +87,6 @@ piecewise statements, they are an entirely independent structure.
 
 Target tool vary in the support and scope of the conditional assignments, 
 which is summarised below. 
-
-%\subsection{Background and introduction}
-%
-%Order matters -- examples
-%\begin{itemize}
-%\item 
-%column mapping
-%\lstset{language=XML}
-%\begin{lstlisting}
-%           <ColumnMapping>
-%                <ds:ColumnRef columnIdRef="SEX"/>
-%                <ct:SymbRef blkIdRef="cm1" symbIdRef="Sex"/>
-%                <ds:CategoryMapping>
-%                    <ds:Map dataSymbol="0" modelSymbol="M"/>
-%                    <ds:Map dataSymbol="1" modelSymbol="F"/>
-%                </ds:CategoryMapping>
-%            </ColumnMapping>
-%\end{lstlisting}
-%\item 
-%binary operator - e.g. 'divide'
-%\lstset{language=XML}
-%\begin{lstlisting}
-%                    <math:Binop op="divide">
-%                        <ct:SymbRef symbIdRef="A"/>
-%                        <ct:SymbRef symbIdRef="B"/>
-%                    </math:Binop>
-%\end{lstlisting}
-%\item 
-%assignment of probabilities in categorical distributions, see for instance
-%\cite{Swat:2015b} where an example explains that the order categories in 
-%\xelem{ListOfCategories} and probability parameters in \xelem{Parameter} 
-%must be preserved.
-%
-%\end{itemize}
-%
-%If we follow the rules -- it works.
 
 \subsection{Tool coverage -- capabilities and restrictions}
 
@@ -299,8 +266,8 @@ but a subsequent assignment requires the \xatt{symbIdRef} attribute
 
 \item
 Parameters or variables assigned within the conditional statement 
-cannot be assigned elsewhere unless the assignment 
-happens at the same time with the declaration, e.g.
+cannot be assigned elsewhere unless such assignment is coupled 
+with its declaration, e.g.
 \lstset{language=XML}
 \begin{lstlisting}
             <PopulationParameter symbId="k">
@@ -309,8 +276,8 @@ happens at the same time with the declaration, e.g.
                 </ct:Assign>
             </PopulationParameter>
 \end{lstlisting}
-If another assignment is defined in a conditional statement elsewhere in the model 
-it has precedence over this assignment.
+The assignment of a parameter or variable within a conditional statement 
+has precedence over the assignment coupled with its declaration. 
 \item 
 Neither PharmML nor libPharmML don't process the conditional statements
 in any way -- the order of statements encoded in PharmML will be 
@@ -914,18 +881,12 @@ NMTRAN from the supplementary material of the paper.
 	ENDIF
 \end{lstlisting}
 While the first couple of lines are standard and will be omitted
-here, the encoding of the essential line with PHI function 
-\lstset{language=NM}
-\begin{lstlisting}
-		Y=PHI((LLOQ-F)/SD)
-\end{lstlisting}
-is shown in the following snippet
-\marginpar{FINISH}
+here, the encoding of the essential line with PHI function, 
+Y=PHI((LLOQ-F)/SD), is shown in the following snippet
 \lstset{language=XML}
 \begin{lstlisting}
         <ObservationModel blkId="om4">
             <ContinuousData>
-	        <!-- ... -->
 	        <!-- Y=PHI((LLOQ-F)/SD) -->
                 <General symbId="Y">
                     <ct:Assign>
@@ -950,6 +911,39 @@ is shown in the following snippet
 \end{lstlisting}
 As before, the encoding of the CDF of the standard normal doesn't
 require the specification of default, $mean\!=\!0$ and $stdev\!=\!1$, parameters. 
+
+\subsection{Example 3 -- TTE model}
+\label{subsec:TTEmodel}
+The probability functions turn out to be very useful in encoding 
+of time-to-event data. While so far encoding of hazard or survival functions
+formulas was the only option, they offer a quick and safe way to encode often complex 
+function of interest as the following example demonstrates 
+\lstset{language=XML}
+\begin{lstlisting}
+            <HazardFunction symbId="h2">
+                <ct:Assign>
+                    <math:HF>
+                        <math:Distribution>
+                            <ProbOnto xmlns="http://www.pharmml.org/probonto/ProbOnto" name="Weibull1">
+                                <Parameter name="scale">
+                                    <ct:Assign>
+                                        <ct:SymbRef blkIdRef="pm1" symbIdRef="beta"/>
+                                    </ct:Assign>
+                                </Parameter>
+                                <Parameter name="shape">
+                                    <ct:Assign>
+                                        <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
+                                    </ct:Assign>
+                                </Parameter>
+                            </ProbOnto>
+                        </math:Distribution>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="t"/>
+                        </ct:Assign>
+                    </math:HF>
+                </ct:Assign>   
+            </HazardFunction>
+\end{lstlisting}
 
 %\begin{figure}[ht!]
 %\centering
@@ -1014,10 +1008,10 @@ Both encoding result in exact the same model. In both cases the mapping
 between data column and parameters is essential to make sure proper 
 definition. 
 \newpage
-\begin{longtable}{cc}
+\begin{longtable}{c}
 \hline
 \hline
-  \multicolumn{2}{c}{Option 1: Data stored together with parameter} \\
+Option 1: Data stored together with parameter \\
 \hline
 \lstset{language=XML}
 \begin{lstlisting}
@@ -1059,7 +1053,7 @@ definition.
 \end{lstlisting}
 \\
 \hline
-  \multicolumn{2}{c}{Option 2: Data stored in \xelem{TrialDesign}} 
+Option 2: Data stored in \xelem{TrialDesign} 
 \\
 \hline
 \lstset{language=XML}

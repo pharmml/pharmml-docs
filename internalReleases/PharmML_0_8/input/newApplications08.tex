@@ -804,14 +804,20 @@ Note, that the probability is assigned a symbol identifier \xatt{symbId="pHS"}
 which is then used to express the condition $p\_{SD}<0.9$
 
 \subsection*{Out of scope}
-Compared to the original description not covered is the specification of 
+Compared to the original description there are model elements which 
+definition will differ between the proposed models formulation and their  
+PharmML implementation such as
 \begin{itemize}
 \item 
-Simulation execution, here from the original description: \emph{ [...] each time 
+Definition of the simulation execution, here from the original description: \emph{ [...] each time 
 step we want Age of each individual to increase by 1 before any transitions 
 are executed: Age $\leftarrow$ Age + 1: This is executed for living individuals only}
+
+Although it is not possible to define such simulation steps explicitly, it
+is possible to encode them implicitly using covariate/regressors via lookup 
+tables or other elements available in the \xelem{TrialDesign}. 
 \item 
-Output, here from the original description: \emph{[...] number of people in each 
+Output definition, here from the original description: \emph{[...] number of people in each 
 state each year total and stratified by age groups above and below 50, and Male.} \\
 Such analysis is assumed to be carried out by a downstream tool as it was 
 not in the scope and requirements for PharmML.
