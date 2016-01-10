@@ -5,30 +5,35 @@
 \section{Baseline models}
 \label{sec:baselineMapping}
 
-Hansson model \cite{Hansson:2013yq} is complex model
-interesting from the interoperability perspective. It contains number of
-component, both continuous and discrete, such as 
+Hansson model \cite{Hansson:2013yq} is a complex model
+and particularly interesting from the interoperability perspective. 
+It contains number of component, both continuous and discrete, such as 
 \begin{itemize}
 \item 
 Biomarker model -- ODEs and algebraic equations 
 \item
 Model for tumor growth inhibition -- ODEs and algebraic equations 
-including a baseline model, \cite{dansirikul2008approaches}
+including a baseline model, based on \cite{dansirikul2008approaches}
 \item
 Dropout model -- logistic regression model (simulation only)
 \item
 Survival model -- time-to-event data model 
 \end{itemize}
-\bigskip
-The NMTRAN code for the baseline model elements read
+Here we discuss the baseline model because of its structure not
+discussed so far in any of the use cases. It requires the implementation of
+mapping of the dependent variable at time t=0.
+The NMTRAN code for the baseline model elements reads
 \lstset{language=NM}
 \begin{lstlisting}
 	 IF(TIME.EQ.0.AND.FLAG.EQ.4)THEN
 	   OBASE  =    DV                        		; observed tumor size at baseline (T= 0)
 	 ENDIF
-
+	
 	 W1       =    THETA(4)*OBASE
 	 IBASE    =    OBASE+ETA(5)*W1		; observed tumor size at baseline acknowledging residual error
+	 ...
+	 A_0(4) = IBASE                            ; TUMOR
+	 
 \end{lstlisting}
 PharmML implementation of the baseline is done in two steps, first
 by declaring the variable (could also be declared as covariate), i.e.
@@ -36,8 +41,8 @@ by declaring the variable (could also be declared as covariate), i.e.
 \begin{lstlisting}
             <ct:Variable symbolType="real" symbId="OBASE"/>
 \end{lstlisting}
-which then can be mapped to the dependent variable, $\boldsymbol DV$, column in the
-dataset conditional on \(TIME==0\) as the following snippet shows
+which then can be mapped to the dependent variable, DV, column in the
+dataset conditional on TIME==0 as the following snippet shows
 \lstset{language=XML}
 \begin{lstlisting}
     <ColumnMapping>
@@ -55,12 +60,12 @@ dataset conditional on \(TIME==0\) as the following snippet shows
         </Piecewise>
     </ColumnMapping>
 \end{lstlisting}
-Once this is done, the variable \emph{OBASE} can be used to define the 
+Once this is done, the variable OBASE can be used to define the 
 initial condition for the tumor growth variable defined by an ODE, $A4$,
 \begin{align}
 \frac{A4}{dt} &= \mbox{KG} \mbox{A4}-[\mbox{AUC1}+(-\mbox{SKIT})+(-\mbox{VEG3})] \exp(-(\mbox{LAMBDA}\times \mbox{T}))\mbox{A4} \nonumber \\
-A4(t=0)	& = \mbox{IBASE} + \mbox{W1}\times \eta_5 \nonumber \\
-\mbox{with} \quad W1 & = \mbox{THETA4} \times \mbox{OBASE} \nonumber
+A4(t=0)	& = \mbox{IBASE} = \mbox{OBASE}+\mbox{ETA(5)}*\mbox{W1} \nonumber % + \mbox{W1}\times \eta_5 \nonumber \\
+% \mbox{with} \quad W1 & = \mbox{THETA4} \times \mbox{OBASE} \nonumber
 \end{align}
 
 
@@ -76,7 +81,7 @@ A4(t=0)	& = \mbox{IBASE} + \mbox{W1}\times \eta_5 \nonumber \\
     </ct:Variable>
     
     <!-- initial condition value, IBASE -->
-    <!-- IBASE = A4_0 = A4(t=0) = OBASE+ETA(5)*W1 -->
+    <!-- IBASE = A4(t=0) = OBASE+ETA(5)*W1 -->
     <ct:Variable symbolType="real" symbId="IBASE">
         <ct:Assign>
             <math:Binop op="plus">
@@ -134,12 +139,29 @@ A4(t=0)	& = \mbox{IBASE} + \mbox{W1}\times \eta_5 \nonumber \\
 
 \section{Markov models}
 \label{sec:markovModels}
-Stimulated by the discussion on the DDMoRE forum, a number of Markov models
-was considered. The description and implementation details are given in the following 
-sections. 
+Stimulated by the recent discussion on the DDMoRe forum around Markov models
+two examples are discussed with a detailed description and implementation. \marginpar{ADD URL}
 
-\subsection{Example 1 -- Simple Markov Model}
+It turns out that they have, beyond for example disease modelling demonstrated 
+in 2nd example, other quite unexpected yet relevant application such as zombie 
+attack modelling. These attacks have been documented in well-known movies 
+such as \emph{Shaun of the Dead} although there many who see this as pure science
+fiction. It is regardless an educational use case described in the first example.
+
+\subsection{Example 1 -- Zombie attack}
 \label{subsec:exp1}
+This basic zombie attack model is based on lecture notes on Markov 
+Models\footnote{http://www.poritz.net/jonathan/matvec/markov.html}.
+More advanced models are available as well, e.g. \cite{munz2009zombies}, 
+\cite{witkowski2013bayesian}, \cite{woolley2014long}.
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=120mm]{pics/MarkovZombie.pdf}
+ \caption{Basic Markov model for zombie attack.}
+ \label{fig:MarkovZombie}
+\end{figure}
+
 
 \subsection*{Model definition}
 \subsubsection*{Observation model}
@@ -152,19 +174,37 @@ Category variable: $Y$
 \item
 Initial state variable: $Y_{init}$
 \item
-Set of categories: $\{\mbox{Alive}, \mbox{Dead}\}$
+Set of categories: $\{\mbox{Human}, \mbox{Zombie}\}$
 \item
-Transition probability
+Transition probabilities
+\begin{itemize}
+\item
+as pairwise conditional transition probabilities
 \begin{align}
-& P(\mbox{Alive} \rightarrow \mbox{Dead}) = 0.05 \nonumber
+& P(\mbox{Human} \rightarrow \mbox{Zombie}) = 0.8 \nonumber \\
+& P(\mbox{Zombie} \rightarrow \mbox{Human}) = 0.01 \nonumber \\
+& P(\mbox{Human} \rightarrow \mbox{Human}) = 0.2 \nonumber \\
+& P(\mbox{Zombie} \rightarrow \mbox{Zombie}) = 0.99 \nonumber
 \end{align}
+\item
+or as transition (aka stochastic) matrix
+\[
+\begin{blockarray}{ccc}
+& H & Z \\
+\begin{block}{c[cc]}
+H &    0.1 & 0.8  \\
+Z &    0.01 & 0.99  \\
+\end{block}
+\end{blockarray}
+\]
+\end{itemize}
 \end{itemize}
 
 \subsection*{Trial Design}
 
 \begin{itemize}
 \item
-Observations: Y at t=1,...,10.
+Observations: Y at t=1,...,12 (months).
 \end{itemize}
 
 
@@ -179,67 +219,87 @@ Initial states
 \end{itemize}
 
 
-\subsection*{PharmML implementation}
+\subsubsection*{PharmML implementation}
 
 \lstset{language=XML}
 \begin{lstlisting}
-    <ModelDefinition>
+    <ModelDefinition xmlns="http://www.pharmml.org/pharmml/0.8/ModelDefinition">
         <!-- OBSERVATIONS -->
         <ObservationModel blkId="om1">
             <Discrete>
                 <CategoricalData>
                     
                     <ListOfCategories> 
-                        <Category symbId="Alive"/>
-                        <Category symbId="Dead"/>
+                        <Category symbId="Human"/>
+                        <Category symbId="Zombie"/>
                     </ListOfCategories>
                     
                     <CategoryVariable symbId="Y"/>
-
-		    <!-- 100 people - see ModellingSteps/SimulationStep -->
-                    <InitialStateVariable symbId="Yinit"/>
+                    <InitialStateVariable symbId="Yinit"/> 
                     <PreviousStateVariable symbId="Yp"/>
-                    
                     <Dependance type="discreteMarkov"/>
                     
-                    <!-- P(Y=Dead|Yp=Alive)=0.05 -->
+                    <TransitionMatrix type="leftStochastic">
+                        <ct:Matrix matrixType="Any">
+                            <ct:RowNames>
+                                <ct:SymbRef symbIdRef="Human"/><ct:SymbRef symbIdRef="Zombie"/>
+                            </ct:RowNames>
+                            <ct:MatrixRow>
+                                <ct:Real>0.2</ct:Real><ct:Real>0.8</ct:Real>
+                            </ct:MatrixRow>
+                            <ct:MatrixRow>
+                                <ct:Real>0.01</ct:Real><ct:Real>0.99</ct:Real>
+                            </ct:MatrixRow>
+                        </ct:Matrix>
+                    </TransitionMatrix>
+                    
+                    <!-- ALTERNATIVELY usign Pairwise probabilities -->
+                    <!-- P(Y=Zombie|Yp=Human)=0.8 -->
                     <ProbabilityAssignment>
                         <Probability symbId="p1">
                             <CurrentState>
                                 <math:LogicBinop op="eq">
                                     <ct:SymbRef symbIdRef="Y"/>
-                                    <ct:SymbRef symbIdRef="Dead"/>
+                                    <ct:SymbRef symbIdRef="Zombie"/>
                                 </math:LogicBinop>
                             </CurrentState>
                             <PreviousState>
                                 <math:LogicBinop op="eq">
                                     <ct:SymbRef symbIdRef="Yp"/>
-                                    <ct:SymbRef symbIdRef="Alive"/>
+                                    <ct:SymbRef symbIdRef="Human"/>
                                 </math:LogicBinop>
                             </PreviousState>
                         </Probability>
                         <ct:Assign>
-                            <ct:Real>0.05</ct:Real>
+                            <ct:Real>0.8</ct:Real>
                         </ct:Assign>
                     </ProbabilityAssignment>
+                    <!-- other probabilities analog - skipped here -->
                     
                 </CategoricalData>
             </Discrete>
         </ObservationModel>
     </ModelDefinition>
 \end{lstlisting}
-Trial design: output of variable $Y$ at t=1,...,10.
+Trial design: output of variable $Y$ at t=1,...,12 (months).
 \lstset{language=XML}
 \begin{lstlisting}
-    <TrialDesign>
+    <!-- OBSERVATION DEFINITION: Number of humans/zombies for months 1-12 -->
+    <TrialDesign xmlns="http://www.pharmml.org/pharmml/0.8/TrialDesign">
         <Observations>
             <Observation oid="obsOid">
                 <ObservationTimes>
                     <ct:Assign>
                         <ct:Sequence>
-                            <ct:Begin><ct:Real>1</ct:Real></ct:Begin>
-                            <ct:StepSize><ct:Real>1</ct:Real></ct:StepSize>
-                            <ct:End><ct:Real>10</ct:Real></ct:End>
+                            <ct:Begin>
+                                <ct:Real>1</ct:Real>
+                            </ct:Begin>
+                            <ct:StepSize>
+                                <ct:Real>1</ct:Real>
+                            </ct:StepSize>
+                            <ct:End>
+                                <ct:Real>12</ct:Real>
+                            </ct:End>
                         </ct:Sequence>
                     </ct:Assign>
                 </ObservationTimes>
@@ -271,119 +331,149 @@ Modelling step definition and initial assignments, $Y_{init} = (100, 0)$
                     </ct:Vector>
                 </ct:Assign>
             </ct:VariableAssignment>
+            
+            <mstep:Operation order="1" opType="Number of humans/zombies for months 1-12"/>
+        </mstep:SimulationStep>
+    </mstep:ModellingSteps>
 \end{lstlisting}
 
 
+\subsubsection{Scientific background}
+Tara Smith, an infectious disease professor at the University of Iowa, uses the 
+paper, \cite{munz2009zombies}, to show how math models can predict the 
+effects of quarantines, vaccines and other public health measures.
+\begin{quotation}
+The zombie model's methods have already proved useful in at least one real-life 
+analysis. While working on a model of HPV (human papillomavirus), Robert Smith's 
+team noted that transmission via both gay and straight sex introduced two 
+nonlinear variables to the equation. Fortunately, the zombie model had already 
+blazed this path, demonstrating how to handle multiple nonlinear factors.
+\end{quotation}
+More on: \url{http://www.livescience.com/38527-surviving-a-zombie-apocalypse-math.html}
 
-\subsection{Example 2 -- Three State Markov Model}
-\label{subsec:exp2}
 
-The next example is build around a Markov chain for three states/categories
-which is shown in the figure \ref{fig:example2} and expressed by a set
-of pair-wise transition probabilities or a so-called \textbf{left} transition 
-(aka stochastic) matrix, on the right in the figure.
+
+
+%\subsection{Example 2 -- Three State Markov Model}
+%\label{subsec:exp2}
+%
+%The next example is build around a Markov chain for three states/categories
+%which is shown in the figure \ref{fig:example2} and expressed by a set
+%of pair-wise transition probabilities or a so-called \textbf{left} transition 
+%(aka stochastic) matrix, on the right in the figure.
+%\begin{figure}[ht!]
+%\centering
+%  \includegraphics[width=120mm]{pics/example2.pdf}
+% \caption{Example 2 can be expressed by the basic Markov chain with the
+% transition probabilities given below or the transition matrix (right).}
+% \label{fig:example2}
+%\end{figure}
+%
+%
+%\subsection*{Model definition}
+%\subsubsection*{Observation model}
+%
+%\begin{itemize}
+%\item
+%Type of observed variable -- discrete / categorical
+%\item
+%Category variable: $Y$
+%\item
+%Initial state variable: $Y_{init}$
+%\item
+%Set of categories: $\{\mbox{Healthy}, \mbox{Sick}, \mbox{Dead}\}$
+%\item
+%Transition probabilities
+%\begin{itemize}
+%\item
+%as pairwise conditional transition probabilities
+%\begin{align}
+%& P(\mbox{Healthy} \rightarrow \mbox{Dead}) = 0.1 \nonumber \\
+%& P(\mbox{Healthy} \rightarrow \mbox{Sick}) = 0.2 \nonumber \\
+%& P(\mbox{Sick} \rightarrow \mbox{Healthy}) = 0.1 \nonumber \\
+%& P(\mbox{Sick} \rightarrow \mbox{Dead}) = 0.3 \nonumber
+%\end{align}
+%\item
+%or as transition (aka stochastic) matrix
+%%\[
+%%\begin{bmatrix}
+%%    1-0.2-0.1 & 0.2 & 0.01  \\
+%%    0.1 & 1-0.1-0.3 & 0.03  \\
+%%    0 & 0 & 1  \\
+%%\end{bmatrix}
+%%\]
+%\[
+%\begin{blockarray}{cccc}
+%& H & S & D \\
+%\begin{block}{c[ccc]}
+%H &    1-0.2-0.1 & 0.2 & 0.1  \\
+%S &    0.1 & 1-0.1-0.3 & 0.3  \\
+%D &    0 & 0 & 1  \\
+%\end{block}
+%\end{blockarray}
+%\]
+%
+%\end{itemize}
+%\end{itemize}
+%
+%
+%\subsection*{Trial Design}
+%
+%\begin{itemize}
+%\item
+%Observations: Y at t=1,...,10.
+%\end{itemize}
+%
+%
+%\subsection*{Modelling steps}
+%
+%\begin{itemize}
+%\item
+%Initial states
+%\begin{align}
+%& Y_{init} = \left( \begin{array}{c} 100 \\ 0 \\ 0 \end{array} \right) \nonumber
+%\end{align}
+%\end{itemize}
+%
+%
+%
+%\subsection*{PharmML implementation}
+%The model is a straightforward extension of example 1 for three categories and should
+%not be shown here except the transition matrix which can be used instead of
+%the transition probabilities 
+%\lstset{language=XML}
+%\begin{lstlisting}
+%<TransitionMatrix>
+%    <ct:Matrix matrixType="Any">
+%        <ct:ColumnNames>
+%            <ct:SymbRef symbIdRef="Healthy"/>
+%            <ct:SymbRef symbIdRef="Sick"/>
+%            <ct:SymbRef symbIdRef="Dead"/>
+%        </ct:ColumnNames>
+%        <ct:MatrixRow>
+%            <ct:Real>0.7</ct:Real><ct:Real>0.2</ct:Real><ct:Real>0.1</ct:Real>
+%        </ct:MatrixRow>
+%        <ct:MatrixRow>
+%            <ct:Real>0.1</ct:Real><ct:Real>0.6</ct:Real><ct:Real>0.3</ct:Real>
+%        </ct:MatrixRow>
+%        <ct:MatrixRow>
+%            <ct:Real>0</ct:Real><ct:Real>0</ct:Real><ct:Real>0.1</ct:Real>
+%        </ct:MatrixRow>
+%    </ct:Matrix>
+%</TransitionMatrix>
+%\end{lstlisting}
+%
+
+\subsection{Example 2 - HIV model}
+\label{subsec:exp3}
+\cite{Lee:2014kq}
+
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=120mm]{pics/example2.pdf}
- \caption{Example 2 can be expressed by the basic Markov chain with the
- transition probabilities given below or the transition matrix (right).}
- \label{fig:example2}
+  \includegraphics[width=120mm]{pics/Markov_HIV.pdf}
+ \caption{Markov model HIV.}
+ \label{fig:Markov_HIV}
 \end{figure}
-
-
-\subsection*{Model definition}
-\subsubsection*{Observation model}
-
-\begin{itemize}
-\item
-Type of observed variable -- discrete / categorical
-\item
-Category variable: $Y$
-\item
-Initial state variable: $Y_{init}$
-\item
-Set of categories: $\{\mbox{Healthy}, \mbox{Sick}, \mbox{Dead}\}$
-\item
-Transition probabilities
-\begin{itemize}
-\item
-as pairwise conditional transition probabilities
-\begin{align}
-& P(\mbox{Healthy} \rightarrow \mbox{Dead}) = 0.1 \nonumber \\
-& P(\mbox{Healthy} \rightarrow \mbox{Sick}) = 0.2 \nonumber \\
-& P(\mbox{Sick} \rightarrow \mbox{Healthy}) = 0.1 \nonumber \\
-& P(\mbox{Sick} \rightarrow \mbox{Dead}) = 0.3 \nonumber
-\end{align}
-\item
-or as transition (aka stochastic) matrix
-%\[
-%\begin{bmatrix}
-%    1-0.2-0.1 & 0.2 & 0.01  \\
-%    0.1 & 1-0.1-0.3 & 0.03  \\
-%    0 & 0 & 1  \\
-%\end{bmatrix}
-%\]
-\[
-\begin{blockarray}{cccc}
-& H & S & D \\
-\begin{block}{c[ccc]}
-H &    1-0.2-0.1 & 0.2 & 0.1  \\
-S &    0.1 & 1-0.1-0.3 & 0.3  \\
-D &    0 & 0 & 1  \\
-\end{block}
-\end{blockarray}
-\]
-
-\end{itemize}
-\end{itemize}
-
-
-\subsection*{Trial Design}
-
-\begin{itemize}
-\item
-Observations: Y at t=1,...,10.
-\end{itemize}
-
-
-\subsection*{Modelling steps}
-
-\begin{itemize}
-\item
-Initial states
-\begin{align}
-& Y_{init} = \left( \begin{array}{c} 100 \\ 0 \\ 0 \end{array} \right) \nonumber
-\end{align}
-\end{itemize}
-
-
-
-\subsection*{PharmML implementation}
-The model is a straightforward extension of example 1 for three categories and should
-not be shown here except the transition matrix which can be used instead of
-the transition probabilities 
-\lstset{language=XML}
-\begin{lstlisting}
-<TransitionMatrix>
-    <ct:Matrix matrixType="Any">
-        <ct:ColumnNames>
-            <ct:SymbRef symbIdRef="Healthy"/>
-            <ct:SymbRef symbIdRef="Sick"/>
-            <ct:SymbRef symbIdRef="Dead"/>
-        </ct:ColumnNames>
-        <ct:MatrixRow>
-            <ct:Real>0.7</ct:Real><ct:Real>0.2</ct:Real><ct:Real>0.1</ct:Real>
-        </ct:MatrixRow>
-        <ct:MatrixRow>
-            <ct:Real>0.1</ct:Real><ct:Real>0.6</ct:Real><ct:Real>0.3</ct:Real>
-        </ct:MatrixRow>
-        <ct:MatrixRow>
-            <ct:Real>0</ct:Real><ct:Real>0</ct:Real><ct:Real>0.1</ct:Real>
-        </ct:MatrixRow>
-    </ct:Matrix>
-</TransitionMatrix>
-\end{lstlisting}
-
 
 \subsection{Example 3 -- Stratified Markov Model}
 \label{subsec:exp3}
@@ -405,9 +495,7 @@ for the Markov chain network and transition matrix for this model.
 \subsubsection*{Covariate model}
 \begin{itemize}
 \item
-Age -- continuous covariate
-\item
-Sex = \{F, M\} -- categorical covariate
+Race = \{African Americans, Caucasians\} -- categorical covariate
 \end{itemize}
 
 \subsubsection*{Observation model}

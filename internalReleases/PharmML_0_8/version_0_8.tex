@@ -204,12 +204,18 @@
 \chapter{Overview}
 
 This document describes extensions and changes in \pml compared to version 0.7.3
-released in September 2015.
+released in September 2015. The changes so far are visualised in Figure \ref{fig:history}.
 
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=160mm]{pics/Timeline08.pdf}
+ \caption{Release history.}
+ \label{fig:history}
+\end{figure}
 
 \section*{Major changes/extensions in version 0.8}
 The following table summarises the major changes described in detail in following chapters. 
-Please, note that this list is not exhaustive.
+\marginpar{FINISH \\FINISH \\FINISH}
 
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=\textwidth
@@ -220,47 +226,60 @@ Please, note that this list is not exhaustive.
 \hline
 \pml element 				&  version $\le$ 0.7.3 	& version 0.8 \\
 or modelling aspect 			& 					& \\
+%\hline
+%\hline
+%  \multicolumn{3}{c}{\textit{Model Definition}}		\\
+%\hline
 \hline
+Assignment statements		& not supported		& {\color{red} \scshape{new}} \xelem{AssignStatement} element available \\
+Section \ref{sec:assignments}	& 					& in covariate, parameter, structural and \\
+						&					& observation models \\
 \hline
-  \multicolumn{3}{c}{\textit{Model Definition}}		\\
+Conditional statements		& not supported		& {\color{red} \scshape{new}} \xelem{ConditionalStatement} element with \\
+Section \ref{sec:conditionalStatements} &				& child elements \xelem{If}, \xelem{ElseIf} and \xelem{Else} \\
 \hline
-\hline
-Assignment statements		& not supported		& can be used in covariate, parameter,  \\
-Section \ref{sec:assignments}	&					& structural and observation models \\
-\hline
-Conditional statements		& not supported		& \\
-Section \ref{sec:conditionalStatements} &				& \\
-\hline
-Nested piecewise			& not supported		& \\
+Nested piecewise			& not supported		& supported \\
 Section \ref{sec:nestedPiecewise}	&				& \\
 \hline
-Probability functions			& not supported		& \\
-Section \ref{sec:probabFunctions}	&				& \\
+Probability functions			& not supported		& {\color{red} \scshape{new}} \xelem{PDF}, \xelem{CDF}, \xelem{HF}, \xelem{SF} elements \\
+Section \ref{sec:probabFunctions}	&				& for every continuous distribution available in \\
+						&					& ProbOnto \\
 \hline
-Nonparametric distribution	& not supported		& available now in ProbOnto \\ 
-Section \ref{sec:nonParamDistribs}	& 				& new \xelem{RandomSample}, \xelem{SystematicSample}	\\
-						&					& \xelem{UnknownSample} \\
+Time-to-event data models	& explicit hazard/survival	& encodable using \xelem{HF}/\xelem{SF} (see above)\\
+Section \ref{subsec:TTEmodel} & formulas required	& \\
+\hline
+Nonparametric distribution	& not supported		&  accessible via ProbOnto with {\color{red} \scshape{new}} \\ 
+Section \ref{sec:nonParamDistribs}	& 				& \xatt{RandomSample}, \xatt{SystematicSample}	\\
+						&					& \xatt{UnknownSample} and \xatt{weight} parameter \\
 \hline
 Random realisations			& not supported		& available now in ProbOnto \\
-Section \ref{sec:randRealisations}	 &				& as \xelem{Realisation} \\
+Section \ref{sec:randRealisations}	 &				& as \xelem{Realisation} {\color{red} \scshape{new}} \\
 \hline
-Markov models				& only pair-wise transition	& NEW Transition Matrix, left, right or \\
-Section \ref{sec:MM}		& probabilities 			& doubly stochastic \\
+Markov models				& only pair-wise transition	& {\color{red} \scshape{new}} \xelem{TransitionMatrix} element with  \\
+Section \ref{sec:MM}		& probabilities			& \xatt{type} attribute: \emph{leftStochastic}, \emph{rightStochastic} \\
+						&  					& and \emph{doublyStochastic} \\
 \hline
-N-ary operators			& not supported		& \\
+N-ary operators			& not supported		& {\color{red} \scshape{new}} \xatt{plus}, \xatt{times}, \xatt{min}, \xatt{max}, \xatt{gcd}, \xatt{lcm}\\
 Section \ref{sec:NaryOps}	&					& \\
 \hline
-Statistical operators			& not supported		& \\
-Section \ref{sec:statsOps}	&					& \\
+Statistical operators			& not supported		& {\color{red} \scshape{new}} \xatt{centredMoment}, \xatt{coefficientOfVariation},\\
+Section \ref{sec:statsOps}	&					& \xatt{correlation}, \xatt{decile}, \xatt{geometricMean}, \xatt{kurtosis}, \\
+						&					& \xatt{mean}, \xatt{median}, \xatt{mode}, \xatt{moment}, \xatt{percentile}, \xatt{quantile} \\
+						&					& \xatt{quartile}, \xatt{range}, \xatt{skewness}, \xatt{standardDeviation}, \\
+						&					& \xatt{variance}\\
 \hline
-Covariate Model			& not supported		& NEW attribute \xatt{type} with values \\	
-Section \ref{sec:covVsRegs}	&					& \emph{occasionDependent}, \emph{timeDependent}, \\
+Covariate model			& covariate type not 		& {\color{red} \scshape{new}} attribute \xatt{type} with values \\	
+Section \ref{sec:covVsRegs}	& annotated			& \emph{occasionDependent}, \emph{timeDependent}, \\
 						&					& \emph{constant}\\
-Categorical covariate Model	& using \xelem{Probability} & -- full support via ProbOnto \\
-Section \ref{sec:catCovModel}	&					& -- covariates declaration/assignment \\
-						&					& -- conditional distributions allowed \\
+Categorical covariate model	& defining distribution only & -- full distribution support via ProbOnto \\
+Section \ref{sec:catCovModel}	& with \xelem{Probability}	& \\
+						& element				& \\
+						& 				 	& -- covariates declaration/assignment \\
+						& 					& -- conditional distributions allowed \\
 \hline
-Dataset declarations 		& single values allowed	& multiple attribute values allowed \\ 
+Dataset  					& single ignore character	& conditional ignoring statements supported \\
+						& declaration only		&  \\
+\hline
 \caption{Overview of major differences between versions 0.8 and 0.7.3}
 \label{figTable:overviewTable}
 \vspace{-2em}
