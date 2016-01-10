@@ -6,11 +6,13 @@
 The 0.8 version is backwards compatible with 0.7.3 as tested on 
 \begin{itemize}
 \item 
-more then 80 examples provided with the release and
+more then 80 examples provided with each release and
 \item 
-14 IOG use cases\footnote{\url{http://sourceforge.net/projects/ddmore/files/install/SEE/Demonstrator-1.2.0/resources/converter-systemtest-1.3.0-results.zip/download}} publicly released with the Product 4.1.
+new 14 IOG use cases\footnote{\url{http://sourceforge.net/projects/ddmore/files/install/SEE/Demonstrator-1.2.0/resources/converter-systemtest-1.3.0-results.zip/download}} publicly released with the Product 4.1.
 \end{itemize}
-
+This means that no elements/attributes have been removed, 
+renamed or otherwise modified in a way which would make 0.7.3 models 
+invalid with respect to the new schema and specification.
 
 \section{Assignment statements}
 \label{sec:assignments}
@@ -80,6 +82,27 @@ Only one assignment of each parameter or variable is allowed within a model,
 unless used in a conditional statement, see section \ref{subset:rulesCS}.
 \end{itemize}
 
+\subsection{New opportunities}
+\label{subsec:greco}
+The introduction of assignment statements opens few new opportunities 
+to encode models relevant for studying of drug-drug interaction models.
+While the majority of such models was implementable in previous versions,
+the so-called \emph{Greco-model}, \cite{Greco:1990qv}, \cite{kabera2010d},
+shown below is treatable in PharmML only thanks to this extension 
+\begin{align}
+\frac{d_1}{\mu_1 \big[\frac{E}{E_c - E} \big]^{1/m_1}} + \frac{d_2}{\mu_2 \big[\frac{E}{E_c - E} \big]^{1/m_2}} + 
+\frac{\alpha d_1d_2}{\mu_1 \mu_2 \big[\frac{E}{E_c - E} \big]^{(1/2m_1+1/2m_2)}} = 1
+\nonumber
+\end{align}
+This is a pharmacodynamic model for a combined effect, $E$, a function of two drug 
+doses, $d_1$ and $d_2$, which does not have a \emph{closed} form. In other words 
+the effect cannot be expressed directly in terms of $d_1$ and $d_2$, i.e. there is no
+such function with $E = f(d_1,d_2,\dots)$. The full PharmML code for this model
+is provided with this release in the example folder \emph{others}.
+
+It is also for another reason an interesting model. It is one which requires the 
+declaration of two independent variables, $d_1$ and $d_2$. Thus the limitation
+to only one \xelem{IndependentVariable} has been removed.
 
 \section{Conditional statements}
 \label{sec:conditionalStatements}
@@ -87,17 +110,18 @@ unless used in a conditional statement, see section \ref{subset:rulesCS}.
 Conditional assignments are new in this version and provide additional
 flexibility to the language. So far only piecewise statement were supported
 which have the drawback that only single variables are assigned per statement.
+
 Conditional assignments don't \marginpar{\HandCuffLeft} replace the existing 
 piecewise statements, they are an entirely independent structure. 
 
-Target tool vary in the support and scope of the conditional assignments, 
-which is summarised below. 
-
 \subsection{Tool coverage -- capabilities and restrictions}
+The extend to which various target tool cover conditional assignments differ
+which is an objective issue for the interoperability. Below we summarise
+the support and scope of these assignments in the major target tools. 
 
 \begin{itemize}
 \item 
-MLXTRAN, supports nested conditional \xatt{if-elseif-else-end} statements, e.g.
+\xatt{MLXTRAN}, supports nested conditional \xatt{if-elseif-else-end} statements, e.g.
 \lstset{language=MLX}
 \begin{lstlisting}
 	if (TIME  <=10 && ID == 1)
@@ -115,7 +139,7 @@ MLXTRAN, supports nested conditional \xatt{if-elseif-else-end} statements, e.g.
 %	else
 %		f= A*exp(-k*(t-T0))
 %	end
-with following features,  \cite{MLXTRANforMonolix:2014}, 
+with following features as listed in the language manual,  \cite{MLXTRANforMonolix:2014}, 
 \begin{itemize}
 \item 
 Several \xatt{elseif} keywords can be chained, and the conditions are 
@@ -146,8 +170,8 @@ is a valid MLXTRAN code
 \end{lstlisting}
 \end{itemize}
 \item 
-NMTRAN, \cite{NONMEM:2009}, allows nested conditional statements
-with only few restrictions, the most important being
+\xatt{NMTRAN}, \cite{NONMEM:2009}, allows nested conditional statements
+with the only restriction known to us
 \begin{itemize}
 \item 
 NMTRAN doesn't accept nested conditional statements including 
@@ -156,9 +180,8 @@ page 79, NONMEM 7.2.
 %This relevant discussion will be familiar to you
 %\url{https://www.mail-archive.com/nmusers%40globomaxnm.com/msg04626.html}
 \end{itemize}
-
 \item 
-winBUGS, \cite{Lunn:2009fk}
+\xatt{winBUGS}, \cite{Lunn:2009fk}
 \begin{itemize}
 \item 
 supports only a step function of the form
@@ -169,16 +192,19 @@ supports only a step function of the form
 where 'e' any expression
 \item
 Note however, that according to the winBUGS 
-translation team in principle, thanks the Pascal language interface, almost 
-any nested conditional statement can be implemented in WinBUGS. More
-precisely single assignments are allowed only, see rule 2 in section \ref{subset:rulesCS}. 
+translation team, in principle, thanks to the Pascal language interface, almost 
+virtually any nested conditional statement can be implemented in WinBUGS. 
+%More precisely single assignments are allowed only, see rule 2 in section \ref{subset:rulesCS}. 
 \end{itemize}
 \item
-Common Converter, provided by Gareth Smith, Cyprotex is able to handle 
+Common Converter, provided by Gareth Smith (Cyprotex) is able to handle 
 (nested) conditional statements. 
+\item
+\xatt{STAN}, \cite{stan-manual:2015b}, the potential future target tool for the DDmoRe
+interoperability platform offers unrestricted support for the conditional statements.
 \end{itemize}
 
-\subsection{Formulation}
+\subsection{Definition}
 The general form of the (nested) conditional statement looks as follows. 
 \bigskip
 \begin{algorithmic}
@@ -193,8 +219,8 @@ The general form of the (nested) conditional statement looks as follows.
 	\EndIf
 \end{algorithmic}
 \bigskip
-The following definition of the conditional statement is based to large extend 
-on the STAN specification, \cite{stan-manual:2015b}. \\
+The following definition of the conditional statement have been adapted from the 
+STAN specification, \cite{stan-manual:2015b}: \\
 There must be a single leading \xatt{if} clause, which may be followed by any number of
 \xatt{else if} clauses, all of which may be optionally followed by an \xatt{else} clause. Each
 condition must be a TRUE or FALSE value. Nested \xatt{if-then-else} as part of each 
@@ -232,7 +258,8 @@ Parameters, variables assigned and/or referred to in a conditional
 statement must be declared outside the conditional in the first level of the according model block.
 \item
 Parameters or variables assigned within the conditional statement 
-have to be referred to using the attribute \xatt{symbIdRef}. \\
+have to be referred to using the attribute \xatt{symbIdRef} (new in this version, not available 
+for parameters or variables so far). \\
 In the following example the attribute \xatt{symbId} is used for the 
 declaration of an population parameter
 \lstset{language=XML}
@@ -241,7 +268,6 @@ declaration of an population parameter
             <PopulationParameter symbId="k"/>
 \end{lstlisting}
 but a subsequent assignment requires the \xatt{symbIdRef} attribute 
-(new in this version, not available for parameters or variables so far)
 \lstset{language=XML}
 \begin{lstlisting}
             <!-- 2. ASSIGN 'k' using symbIdRef -->
@@ -282,15 +308,15 @@ with its declaration, e.g.
             </PopulationParameter>
 \end{lstlisting}
 The assignment of a parameter or variable within a conditional statement 
-has precedence over the assignment coupled with its declaration. 
+has precedence over an assignment coupled with a declaration. 
 \item 
-Neither PharmML nor libPharmML don't process the conditional statements
-in any way -- the order of statements encoded in PharmML will be 
+Neither PharmML nor libPharmML do process the conditional statements
+in any way. The order of statements encoded in PharmML will be 
 preserved when translating to a target tool.
 \item 
 libPharmML doesn't have the capability to evaluate conditional 
-statements --  it is the responsibility of the user to define meaningful
-and unambiguous way.
+statements --  it is the responsibility of the user to define them in a meaningful
+and unambiguous way (the condition domains defined should be mutually exclusive).
 %setting variables/parameters to zero if not assigned.  For example
 %\lstset{language=NM}
 %\begin{lstlisting}
@@ -304,7 +330,7 @@ and unambiguous way.
 %ENDIF
 %\end{lstlisting}
 \end{enumerate}
-The use of the rules and principles is shown in the following example section. 
+The application of these rules is shown in the following example section. 
 
 \subsection{Examples}
 \label{subsec:examplesConditionals}
@@ -312,7 +338,7 @@ The use of the rules and principles is shown in the following example section.
 
 \subsubsection*{Example 1}
 The first example underlines how important is to analyse the conditions and 
-to make sure that they are mutually exclusive. Consider the following 
+to make sure that they are mutually exclusive. Consider the following example
 \bigskip
 %RF=if (CLCR>0) then CLCR/6
 %     elseif (AGE<=20) then 1
@@ -336,7 +362,7 @@ The sequence of the first two conditions determines the value assigned
 to variable $RF$ (consider for example CLCR=3 and AGE=10).
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=90mm]{pics/CLCR_AGE.pdf}
+  \includegraphics[width=140mm]{pics/CLCR_AGE.pdf}
  \caption{Domains for the conditions should be disjoint to avoid ambiguous
  assignments or the assignments have to be identical if domains overlap. 
  For example for CLCR=3 and AGE=10 the assignment of RF depends on the sequence 
@@ -362,7 +388,7 @@ The following conditional assignment
 	    \State $ALAG1 = 0$
 	\EndIf
 \end{algorithmic}
-is assuming that $ka$ and $ALAG1$ are declared first, i.e.
+assumes that $ka$ and $ALAG1$ are declared first, i.e.
 \lstset{language=XML}
 \begin{lstlisting}
             <!-- declaration -->
@@ -435,7 +461,7 @@ Declare first the covariate, Sex
             </Covariate>
 \end{lstlisting}
 and condition on it the assignment of the individual parameter, V. Note that 
-parameter V need to be declared first.
+parameter V needs to be declared first.
 \lstset{language=XML}
 \begin{lstlisting}
         <ParameterModel blkId="pm1">
@@ -443,7 +469,10 @@ parameter V need to be declared first.
 
             <PopulationParameter symbId="theta1"/>
             <PopulationParameter symbId="theta2"/>
-
+\end{lstlisting}
+followed by the conditional assignments 
+\lstset{language=XML}
+\begin{lstlisting}
             <RandomVariable symbId="eta1">
                 <ct:VariabilityReference>
                     <ct:SymbRef symbIdRef="indiv"/>
@@ -489,7 +518,8 @@ parameter V need to be declared first.
             ...
         </ParameterModel>
 \end{lstlisting}
-
+Note the attribute \xatt{symbIdRef}, used to reference the individual parameters
+in each statement, which was not available for parameters or variables previously.
 
 %\subsubsection*{Example 4}
 %
@@ -525,7 +555,7 @@ parameter V need to be declared first.
 %\end{lstlisting}
 
 
-\subsubsection*{Example 4 -- Three Compartment Infusion, Coefficient and Exponents }
+\subsubsection*{Example 4 -- 'Three Compartment Infusion, Coefficient and Exponents'}
 
 Source: Fisher/Shafer NONMEM course, \cite{fisher2007shafer}. The NMTRAN code for the 
 structural and observation model reads
@@ -761,25 +791,21 @@ specification of the distribution of interest and
 \item 
 (optional) function argument, x, which can be any expression.
 \end{enumerate}
-The introduction of these generic elements allow to use any of the 
+The introduction of these generic elements allows to use any of the 
 ProbOnto univariate continuos distributions, \cite{ProbOnto:2015a}.
 Consider for example the cumulative distribution
 function, \emph{PHI}, of the standard normal distribution with mean 0
 and standard deviation 1 which the two basic function read
 \begin{align*}
 \mbox{PDF}:  \quad f(x) &= \frac{e^{-\frac{1}{2} x^2}}{\sqrt{2\pi}} \nonumber \\
-\mbox{CDF}:  \quad F(x) &= \frac12\left[1 + \text{erf}\left( \frac{x}{\sqrt{2}}\right)\right] \nonumber
+\mbox{CDF}:  \quad F(x) &= \frac12\left[1 + \text{erf}\left( \frac{x}{\sqrt{2}}\right)\right]  \quad \mbox{with} \quad \text{erf}(z) = \frac{2}{\pi}\int_0^z e^{-t^2} dt\nonumber
 \end{align*}
-with \emph{erf}\footnote{Error function, $erf$, \url{mathworld.wolfram.com/Erf.html}}
-defined as
-\begin{equation*}
-\text{erf}(z) = \frac{2}{\pi}\int_0^z e^{-t^2} dt
-\end{equation*}
+with \emph{erf} the error function\footnote{\url{mathworld.wolfram.com/Erf.html}}.
 
 \bigskip
-The abbreviated XML code explains its encoding which reduces to the 
-specification of the distribution name, \emph{StandardNormal1} and the 
-argument
+The abbreviated XML code explains its encoding reduced to the 
+specification of the distribution function, the code name, \emph{StandardNormal1}, 
+and the optional argument
 \lstset{language=XML}
 \begin{lstlisting}
     <ct:Variable symbolType="real" symbId="PHI">
@@ -798,9 +824,9 @@ argument
 Note, that CDF of the standard normal is straightforward as it doesn't
 requiere specification of parameters, which are by default 
 $mean\!=\!0$ and $stdev\!=\!1$. 
-The use of probability functions is explained in the following example 
-in the context of a model proposed for handling data below the level 
-of quantification, BLQ, \cite{Beal:2001}.
+The use of probability functions is explained in the following examples. 
+%in the context of a model proposed for handling data below the level 
+%of quantification, BLQ, \cite{Beal:2001}.
 
 
 \subsection{Example 1 -- basic example}
@@ -914,12 +940,12 @@ Y=PHI((LLOQ-F)/SD), is shown in the following snippet
             </ContinuousData>
         </ObservationModel>
 \end{lstlisting}
-As before, the encoding of the CDF of the standard normal doesn't
+As noted before, the encoding of the CDF of the standard normal doesn't
 require the specification of default, $mean\!=\!0$ and $stdev\!=\!1$, parameters. 
 
 \subsection{Example 3 -- TTE model}
 \label{subsec:TTEmodel}
-The probability functions turn out to be very useful in encoding 
+The probability functions turn out to be very useful also in encoding 
 of time-to-event data. While so far encoding of hazard or survival functions
 formulas was the only option to defined such models, they offer a quick 
 and safe way to encode often complex function of interest as the following 
@@ -962,16 +988,17 @@ example demonstrates for a Weibull model
 % \label{fig:BLQmapping}
 %\end{figure}
 
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=100mm]{pics/ProbOnto_tree}
-% \caption{ProbOnto\_tree.}
-% \label{fig:ProbOnto_tree}
-%\end{figure}
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=140mm]{pics/ProbOnto_tree}
+ \caption{ProbOnto tree -- showing the current structure. For brevity only few 
+ distributions per category are listed.}
+ \label{fig:ProbOnto_tree}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Samples -- nonparametric distributions support}
+\section{Samples -- empirical distributions support}
 \label{sec:nonParamDistribs}
 
 %ADD FIGURE \\
@@ -981,12 +1008,13 @@ example demonstrates for a Weibull model
 %and explanation about sample encoding, place where its encoded and its mapping
 
 When formulating models it is often not possible to specify a probability 
-distribution using a parametric distribution because its defining
-functions are not known. Instead, a set of values can be considered 
-as constituting a distribution model.
+distribution using a parametric one because its defining
+function is not known. Instead, a set of values can be considered 
+as constituting a distribution model. According extensions were required
+in ProbOnto and PharmML.
 
 \emph{Samples} are sets of realisations obtained from a known or unknown 
-distribution and following UncertML \cite{uncertml3:2014} we distinguish between 
+distribution. Following UncertML \cite{uncertml3:2014} we distinguish between 
 \begin{itemize}
 \item 
 Random sample, \xelem{RandomSample}
@@ -995,7 +1023,7 @@ Systematic sample, \xelem{SystematicSample}
 \item 
 Unknown sample, \xelem{UnknownSample}
 \end{itemize}
-The only (optional) parameter which can be used is  
+The only (optional) parameter is 
 \begin{itemize}
 \item 
 \xatt{weight} -- to encode weighting given to each realisation.
@@ -1020,13 +1048,14 @@ Option 1: Data stored together with the corresponding parameter
 Option 2: Data stored in \xelem{TrialDesign}
 \end{itemize}
 Both encoding result in exact the same model. In both cases the mapping 
-between data column and parameters is essential to make sure proper 
-definition. 
+between data columns and parameters is essential to assure complete model 
+definition (if only one column is given, mapping is optional, see Table \ref{tab:twoOptionsForSamples}
+alternative \textbf{Option 1} version). 
 \newpage
 \begin{longtable}{c}
 \hline
 \hline
-Option 1: Data stored together with parameter \\
+\textbf{Option 1}: Data stored together with parameter \\
 \hline
 \lstset{language=XML}
 \begin{lstlisting}
@@ -1044,7 +1073,7 @@ Option 1: Data stored together with parameter \\
                         </ds:Definition>
                         <ds:Table>
                             <ds:Row><ct:Real>0.10</ct:Real></ds:Row>
-                            <!-- values omitted -->
+                            <!-- other values omitted -->
                         </ds:Table>
                     </ds:DataSet>
                 </po:ProbOnto>
@@ -1058,7 +1087,7 @@ Option 1: Data stored together with parameter \\
                     <ds:DataSet>
                         <ds:Table>
                             <ds:Row><ct:Real>0.10</ct:Real></ds:Row>
-                            <!-- values omitted -->
+                            <!-- other values omitted -->
                         </ds:Table>
                     </ds:DataSet>
                 </po:ProbOnto>
@@ -1068,7 +1097,7 @@ Option 1: Data stored together with parameter \\
 \end{lstlisting}
 \\
 \hline
-Option 2: Data stored in \xelem{TrialDesign} 
+\textbf{Option 2}: Data stored in \xelem{TrialDesign} 
 \\
 \hline
 \lstset{language=XML}
@@ -1095,7 +1124,7 @@ Option 2: Data stored in \xelem{TrialDesign}
             </ds:Definition>
             <ds:Table>
                 <ds:Row><ct:Real>0.10</ct:Real></ds:Row>
-                <!-- values omitted -->
+                <!-- other values omitted -->
             </ds:Table>
         </ds:DataSet>
     </ExternalDataSet>
@@ -1104,10 +1133,11 @@ Option 2: Data stored in \xelem{TrialDesign}
 \\
 \hline
 \caption{Two way to encode samples. 
-Option 1: data stored together with parameter declaration in \xelem{ModelDefinition}.
+\textbf{Option 1}: data stored together with parameter declaration in \xelem{ModelDefinition}.
 Two version are shown: (top) with full data/model mapping and dataset column 
 declaration, (bottom) short form when only one dataset is required - mapping and 
-column declaration are redundant. Option 2: data stored in the \xelem{TrialDesign}.}
+column declaration are redundant. \textbf{Option 2}: data stored in the \xelem{TrialDesign} --
+mapping is mandatory even for single column.}
 \label{tab:twoOptionsForSamples}
 \end{longtable}%
 
@@ -1161,6 +1191,8 @@ column declaration are redundant. Option 2: data stored in the \xelem{TrialDesig
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Option 1}
 \label{subsec:exp2}
+(See the use case \emph{bayesianHierarchical/example3423.xml} using this option.)\\
+
 Sometimes the \xatt{weight} parameter is not defined and the assumption 
 is that all values are equally probable with $p=1/n$ where
 $n$ equal the row numbers, see Table \ref{tab:randomSample_withoutWeight}.
@@ -1230,6 +1262,7 @@ column declaration are required.
 
 \subsubsection*{Option 1}
 \label{subsec:exp2}
+(See the use case \emph{bayesianHierarchical/example3423.xml} using this option.)\\
 
 In the case when single variables are defined with \xatt{weight} parameter, $p$.
 \begin{longtable}{cc}
@@ -1398,12 +1431,18 @@ with the proper column mapping.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Mapping using vectors}
 \label{subsec:exp3}
+(See the use case \emph{bayesianHierarchical/example3421dep\_NM.xml} using this option.)\\
 
-In the case the modeller wants to encode a parameter in vector form, here $POP\_K$ 
-and $POP\_V$ as $POP\_K\_V$ vector using samples. Once $POP\_K\_V$ is declared, 
-the single parameters are defined using assignments such as $POP\_K = POP\_K\_V[1]$ 
-and $POP\_V = POP\_K\_V[2]$ -- this part is skipped, 
-\marginpar{FINISH}
+In the case the modeller wants to encode a parameter in vector form, 
+here $POP\_K$ and $POP\_V$ as vector elements  of $POP\_K\_V$ (see use cases 
+in the \emph{bayesianHierarchical} example folder) there exist a possibility 
+to map the vector to sample elements, see Figure 
+\ref{fig:Mapping_multiParamsVectorised_withWeights} for a graphical 
+explanation or the code snippet below.
+% a declared of a vector is required first, e.g. $POP\_K\_V$ with subsequent declarations of 
+%the single parameters defined using assignments such as $POP\_K = POP\_K\_V[1]$ 
+%and $POP\_V = POP\_K\_V[2]$ -- this part is now shown in the PharmML code., 
+%\marginpar{FINISH}
 %The following series of code snippets shows how this 
 %is done. First the declaration of $p\_POP\_K\_V$ and $POP\_K\_V$ is made
 %\lstset{language=XML}
@@ -1442,8 +1481,13 @@ and $POP\_V = POP\_K\_V[2]$ -- this part is skipped,
 %            </PopulationParameter>
 %\end{lstlisting}
 %and analog for $POP\_V = POP\_K\_V[2]$ (not shown here).
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=180mm]{pics/Mapping_multiParamsVectorised_withWeights.pdf}
+ \caption{Mapping of samples with vectors and weights -- explained graphically.}
+ \label{fig:Mapping_multiParamsVectorised_withWeights}
+\end{figure}
 
-\bigskip
 $POP\_K\_V$ is stored in dataset as $bins\_POP\_K$ in \xelem{TrialDesign} section and mapping between 
 columns and model elements is performed using \xelem{ColumnMapping}
 \lstset{language=XML}
@@ -1490,14 +1534,7 @@ columns and model elements is performed using \xelem{ColumnMapping}
         </Table>
     </DataSet>
 </ExternalDataSet>
-
 \end{lstlisting}
-\begin{figure}[ht!]
-\centering
-  \includegraphics[width=180mm]{pics/Mapping_multiParamsVectorised_withWeights.pdf}
- \caption{Mapping of samples with vectors and weights -- explained graphically.}
- \label{fig:Mapping_multiParamsVectorised_withWeights}
-\end{figure}
 
 What is new in this version is the ability to map a particular vector element. Here the essential 
 part is repeated to underline how the map of column \emph{bins\_POP\_V} and vector element
@@ -1534,9 +1571,9 @@ Here the values for three estimated parameters are encoded inline.
             <po:ProbOnto name="RandomSample">
                 <ds:DataSet>
                     <ds:Definition>
-                        <ds:Column columnId="K" columnType="structParameter" valueType="real" columnNum="1"/>
-                        <ds:Column columnId="V" columnType="structParameter" valueType="real" columnNum="2"/>
-                        <ds:Column columnId="CL" columnType="structParameter" valueType="real" columnNum="3"/>
+                        <ds:Column columnId="K" columnType="popParameter" valueType="real" columnNum="1"/>
+                        <ds:Column columnId="V" columnType="popParameter" valueType="real" columnNum="2"/>
+                        <ds:Column columnId="CL" columnType="popParameter" valueType="real" columnNum="3"/>
                     </ds:Definition>
                     <ds:Table>
                         <ds:Row><ct:Real>2.006510</ct:Real><ct:Real>5.050013</ct:Real><ct:Real>0.033333</ct:Real></ds:Row>
@@ -1556,12 +1593,15 @@ Here the values for three estimated parameters are encoded inline.
         </Distribution>
     </PosteriorDistribution>
  \end{lstlisting}
-The alternative using external datasets is commented out.
+The alternative using external datasets is commented out. Note also that no mapping 
+is required in this case, the symbol assigned to the attribute \xatt{columnId} 
+identifies the parameter.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Random realisations}
 \label{sec:randRealisations}
-Another new feature in version 0.8 is the possibility to specify a realisation from any
+Another new feature in version 0.8 is the possibility to specify a single realisation from any
 univariate distribution and is based on analogue featured in UncertML, 
 \cite{uncertml3:2014}. The definition reads:
 \begin{description}
@@ -1570,14 +1610,13 @@ to imply an observed value, or, as more widely used, a single draw, $x_i$, from 
 probability distribution, $p(x)$.
 \end{description}
 
-A new element \xelem{Realisation} has been introduced which child elements
-is the familiar \xelem{ProbOnto} within which the name and parameters
-of the distribution of interest is specified as the following example shows.
+A new element \xelem{Realisation} has been introduced referring to ProbOnto 
+with the specification of the code name of the distribution of interest and its parameters 
+as the following example shows.
 
-\subsection{Example}
-\cite{MLXTRANforSimulator:2014}
-Categorical covariates can be defined as a discrete transformation
-of continuous random variables. Consider for instance the following 
+\subsubsection*{Example}
+Source \cite{MLXTRANforSimulator:2014}. Categorical covariates can be defined 
+as a discrete transformation of continuous random variables. Consider for instance the following 
 model encoded in MLXTRAN.
  
 \lstset{language=MLX}
@@ -1595,7 +1634,7 @@ model encoded in MLXTRAN.
 	c=cz
 \end{lstlisting}
 Note, that \xatt{z=\{distribution=normal,...\}} in the \xatt{DEFINITION} block is a sampling
-assignment for which the element \xelem{Realisation} is used.
+assignment which is encoded in the element \xelem{Realisation}.
 \lstset{language=MLX}
 \begin{lstlisting}
         <CovariateModel blkId="cm2">
@@ -1644,8 +1683,9 @@ on the sampled value \emph{z}
 New element -- transition aka stochastic matrix -- has been introduced to simplify encoding of Markov models. 
 \subsection{Transition matrix}
 \label{sec:transitionMatrix}
-Stochastic (aka transition matrix) is a matrix used to describe the transitions of a Markov chain.
-A stochastic matrix can be 
+Stochastic (aka transition matrix) is a matrix used to describe the transitions in a Markov 
+chain\footnote{\url{https://en.wikipedia.org/wiki/Stochastic_matrix}}. A stochastic matrix can be 
+characterised further by the optional attribute 
 \begin{itemize}
 \item
 Left stochastic (default), \xatt{type="leftStochastic"}, a real square matrix, with each row summing to 1.
@@ -1654,8 +1694,8 @@ Right stochastic, \xatt{type="rightStochastic"},  a real square matrix, with eac
 \item
 Doubly stochastic, \xatt{type="doubleStochastic"},  both columns and rows are summing to 1.
 \end{itemize}
-Figure \ref{fig:transitionMatrix} visualises a basic example of a Markov model
-and the XML code shows how it is implemented 
+Figure \ref{fig:transitionMatrix} visualises a basic Markov model with the according transition 
+matrix and the XML code shows how it is implemented 
 \begin{figure}[ht!]
 \centering
   \includegraphics[width=120mm]{pics/transitionMatrix.pdf}
@@ -1675,13 +1715,19 @@ and the XML code shows how it is implemented
                     <ct:SymbRef symbIdRef="cat3"/>
                 </ct:ColumnNames>
                 <ct:MatrixRow>
-                    <ct:SymbRef symbIdRef="p11"/><ct:SymbRef symbIdRef="p12"/><ct:SymbRef symbIdRef="p13"/>
+                    <ct:SymbRef symbIdRef="p11"/>
+                    <ct:SymbRef symbIdRef="p12"/>
+                    <ct:SymbRef symbIdRef="p13"/>
                 </ct:MatrixRow>
                 <ct:MatrixRow>
-                    <ct:SymbRef symbIdRef="p21"/><ct:Real>0</ct:Real><ct:SymbRef symbIdRef="p23"/>
+                    <ct:SymbRef symbIdRef="p21"/>
+                    <ct:Real>0</ct:Real>
+                    <ct:SymbRef symbIdRef="p23"/>
                 </ct:MatrixRow>
                 <ct:MatrixRow>
-                    <ct:SymbRef symbIdRef="p31"/><ct:Real>0</ct:Real><ct:SymbRef symbIdRef="p33"/>
+                    <ct:SymbRef symbIdRef="p31"/>
+                    <ct:Real>0</ct:Real>
+                    <ct:SymbRef symbIdRef="p33"/>
                 </ct:MatrixRow>
             </ct:Matrix>
         </TransitionMatrix>
@@ -1690,8 +1736,9 @@ If the \xatt{type} attribute is not used, the default is the \xatt{leftStochasti
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=120mm]{pics/markovMatrixCond.pdf}
- \caption{An example of a conditional transition matrix.}
+  \includegraphics[width=125mm]{pics/markovMatrixCond.pdf}
+ \caption{An example of a conditional Markov model with the according transition matrix.
+ It is a left stochastic matrix with probabilities in each raw summing up to 1.}
  \label{fig:markovMatrixCond}
 \end{figure}
 
@@ -1704,8 +1751,8 @@ Conditional transition probabilities can be implemented pairwise, e.g.
 & P(\mbox{Cat1} \rightarrow \mbox{Cat2} | \; \mbox{COLOR}==\mbox{RED}) = p12_{RED} \nonumber \\
 & \mbox{other probabilities omitted...} \nonumber
 \end{align}
-or using a conditional transition matrix, Figure \ref{fig:markovMatrixCond}.
-See also section \ref{sec:markovModels} for use examples.
+or with a conditional transition matrix using piecewise statements were required, 
+Figure \ref{fig:markovMatrixCond}. See also section \ref{sec:markovModels} for use examples.
 
 
 %\subsection{Encoding Markov models -- question}
@@ -1753,7 +1800,7 @@ Least common multiple		& \xatt{lcm}		& \xatt{X}, ..., \xatt{X}	& \xatt{Real} \\
 
 \begin{itemize}
 \item 
-\xatt{X} can be either a variable reference, real vector, vector/matrix (if a column is
+\xatt{X} can be either a variable reference, real vector, vector/matrix (if a raw/column is
 required) selector or sequence.
 \item
 when more then one argument is required \xelem{Vector} with \xelem{VectorElements} has to be used.
@@ -1762,12 +1809,10 @@ when more then one argument is required \xelem{Vector} with \xelem{VectorElement
 %\end{itemize}
 \end{itemize}
 
-\subsubsection*{Examples}
-
+\subsubsection*{Example}
 An example of the use of N-ary operators is shown below using the
-\xatt{max} operator to find the maximum value in a vector of numbers
-and symbol references to assign it to a new parameter, e.g. 
-Amax = max(1, a2, 3, a4, fifthElement, $\dots$).
+\xatt{max} operator applied to a vector of numbers
+and symbol references, e.g. Amax = max(1, a2, 3, a4, fifthElement, $\dots$).
 \lstset{language=XML}
 \begin{lstlisting}
             <IndividualParameter symbId="Amax">
@@ -1876,8 +1921,7 @@ which a histogram and a box plot has been plotted in Figure \ref{fig:quantiles}.
  for a given dataset or random variable using either the statistical or n-ary operators.}
  \label{fig:quantiles}
 \end{figure}
-The dataset \xatt{scores = [78, 84, 83, 80, 94, 90, 81, 79, ..., 88, 80, 82, 81, 92, 89]} 
-can be imagined being mapped from an external file or 
+The dataset \xatt{scores = [78, 84, 83, ..., 81, 92, 89]}\footnote{The whole set is: [78, 84, 83, 80, 94, 90, 81, 79, 79, 81, 85, 87, 86, 89, 92, 78, 74, 83, 80, 74, 80, 82, 89, 89, 73, 75, 87, 76, 79, 84, 78, 76, 75, 85, 79, 82, 87, 84, 94, 88, 80, 82, 81, 92, 89]} can be imagined being mapped from an external file or 
 a non-parametric distribution using the sample concept, see section \ref{sec:nonParamDistribs},
 here with inline encoded data 
 \lstset{language=XML}
@@ -1887,7 +1931,7 @@ here with inline encoded data
                     <po:ProbOnto name="RandomSample">
                         <ds:DataSet>
                             <ds:Table>
-                                <!-- 78, 84, 83, 80, 94, 90, 81, 79, ... 88, 80, 82, 81, 92, 89 -->
+                                <!-- 78, 84, 83, ..., 81, 92, 89 -->
                                 <ds:Row>
                                     <ct:Real>78</ct:Real><ct:Real>84</ct:Real><ct:Real>83</ct:Real>
                                     <!-- omitted values -->
@@ -1968,8 +2012,9 @@ D5 -- 4$^{th}$ decile (gray)
 
 \section{Covariates versus regressors}
 \label{sec:covVsRegs}
-There are different types of covariates and we distinguish between
-following types
+There is no unified naming convention for covariates and regressors
+and we assume the following classification based on the DDMoRe discussions and
+target tool related literature, \cite{NONMEM:2009} and \cite{LavielleBook:2014},
 \begin{itemize}
 \item 
 constant covariates
@@ -1978,32 +2023,34 @@ occasion dependent covariates
 \item 
 time dependent covariates -- \emph{aka} regressors 
 \end{itemize}
-Due to the various interpretation and naming conventions for covariates
-and regressors there is a need to identify those and this can be done 
-also in the \xelem{CovariateModel} by assigning an optional attribute
+Due to the various interpretation and nomenclature there is a need to identify 
+those and this can be done also in the \xelem{CovariateModel} by assigning an optional attribute
 \xatt{type} with values \emph{occasionDependent}, \emph{timeDependent}, 
 \emph{constant}. The following snippet shows how this is done for 
-a time dependent covariate 
+a occasion dependent covariate 
 
 \lstset{language=XML}
 \begin{lstlisting}
         <CovariateModel blkId="cm1">
-            <Covariate type="timeDependent" symbId="CovariateX">
+            <Covariate type="occasionDependent" symbId="CovariateX">
                 <!-- ... -->
             </Covariate>
         </CovariateModel>
 \end{lstlisting}
-For more on regressors support in PharmML, see Section "6.4 Regressor support"
+For more on regressor support in PharmML, see Section "6.4 Regressor support"
 in v0.7 spec \cite{Swat:2015b}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Extension in categorical covariates model}
+\section{Extension in categorical covariate model}
 \label{sec:catCovModel}
+Until now the only option for categorical covariates was to declare them
+with their categories and (if required) associated probabilities. Version 0.8
+comes few a number of extensions.
 
 \subsection{Covariate declaration/assignment}
-Declaration and assignment of new categorical covariates is now possible.  
-Here a simple example of a conditional definition from one of the IOG use cases
+Declaration of new categorical covariates, based on existing ones,
+is now possible. Here a simple example of a conditional definition from one of the IOG use cases
 \lstset{language=NM}
 \begin{lstlisting}
             DDU = if (DDUR > 2) then 1 # duration > 1 month
@@ -2038,12 +2085,12 @@ which implementation in XML using the piecewise structure reads
 \end{lstlisting}
 
 
-\subsection{Distribution of categorical covariates}
+\subsection{Flexible distribution definition}
 
-The possibility to define distribution of categorical covariates was possible 
+The possibility to define distribution of categorical covariates was given 
 before but was inconsistent with the way continuous covariates are handled.
 While the previous option (using \xelem{Probability} for each category is still
-supported), the \xelem{Distribution} element with child \xelem{ProbOnto} 
+supported), the \xelem{Distribution} element referring to any ProbOnto distribution 
 can be used now as well.
 
 \begin{longtable}{cc}
@@ -2094,22 +2141,23 @@ option supported in $\le$ 0.7.3 & new option in version 0.8 \\
 \end{lstlisting}
 \\
 \hline
-\caption{Distribution of categorical covariates using \xelem{Distribution} and 
-\xelem{ProbOnto} elements.}
+\caption{Declaration of categorical covariates distribution using \xelem{Distribution} and 
+\xelem{ProbOnto} elements in now supported (right).}
+\label{tab:catCovDistrib}
 \end{longtable}%
 
-\subsection{Conditional distribution of categorical covariates}
-Also new is the possibility to define a distribution conditional on other covariates, 
-e.g. the previous example is extended in that the SEX distribution varies between
-studies, with probabilities given by the two following vectors $\boldsymbol p1 = 
-\{p1_{S1},p2_{S1}\}$ or $\boldsymbol p2 = \{p1_{S2},p2_{S2}\}$.
+\subsection{Conditional distributions}
+Also new is the possibility to define a conditional covariate distribution.
+E.g. the previous example in Table \ref{tab:catCovDistrib} is extended in that the 
+SEX distribution varies between studies, with probabilities given by the two following 
+vectors $\boldsymbol {p_{S1}} = \{p1_{S1},p2_{S1}\}$ or $\boldsymbol {p_{S2}} = \{p1_{S2},p2_{S2}\}$.
 Such model reads then 
 \bigskip
 \begin{algorithmic}
 	\If {$STUDY == S1$}
-	    \State SEX $\sim$ Categorical($\boldsymbol p1$)
+	    \State SEX $\sim$ Categorical($\boldsymbol {p_{S1}}$)
 	\ElsIf{$STUDY == S2$} 
-	    \State SEX $\sim$ Categorical($\boldsymbol p2$)
+	    \State SEX $\sim$ Categorical($\boldsymbol {p_{S2}}$)
 	\EndIf
 \end{algorithmic}
 \bigskip
@@ -2269,10 +2317,9 @@ would be implemented as
             </ds:DataSet>
         </ExternalDataSet>
 \end{lstlisting}
-Note, that MDV0 and STAGE have to be defined as covariates (or regressors)
-in the according in covariate model. The default option, without conditioning, is unchanged, e.g.
+Note, that the default option, works without conditioning and is available unchanged, e.g.
 \lstset{language=XML}
 \begin{lstlisting}
         <ds:IgnoreLine symbol="@"/>
 \end{lstlisting}
-
+See for more details the 0.7.3 specification \cite{Swat:2015c}.
