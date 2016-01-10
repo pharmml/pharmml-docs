@@ -1698,7 +1698,7 @@ Figure \ref{fig:transitionMatrix} visualises a basic Markov model with the accor
 matrix and the XML code shows how it is implemented 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=120mm]{pics/transitionMatrix.pdf}
+  \includegraphics[width=125mm]{pics/transitionMatrix.pdf}
  \caption{An example for a transition matrix for a Markov chain. 
  (Left) the state transition diagram with three possible 
  states cat1, cat2, and cat3. (Right) the \textbf{left} transition matrix.}
@@ -1736,7 +1736,7 @@ If the \xatt{type} attribute is not used, the default is the \xatt{leftStochasti
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=125mm]{pics/markovMatrixCond.pdf}
+  \includegraphics[width=120mm]{pics/markovMatrixCond.pdf}
  \caption{An example of a conditional Markov model with the according transition matrix.
  It is a left stochastic matrix with probabilities in each raw summing up to 1.}
  \label{fig:markovMatrixCond}
@@ -1846,25 +1846,25 @@ the meaning of the argument.
 \begin{longtable}{llccc}
 \hline
 \hline
-\textbf{Statistic}			& \textbf{Name}			& \textbf{1$^{st}$argument} 	& \textbf{2$^{nd}$argument} 	& \textbf{Return type}\\
+\textbf{Statistic}		& \textbf{Name}			& \textbf{1$^{st}$argument} 	& \textbf{2$^{nd}$argument} 	& \textbf{Return type}\\
 \hline
-Centred moment		& \xatt{centredMoment}		& \xatt{X}		& \xatt{order} $\in \mathbb N$	& \xatt{Real} \\
-Coeff.	 of variation	& \xatt{coefficientOfVariation}	& \xatt{X} 		& -- 						& \xatt{Real} \\
-Correlation			& \xatt{correlation}			& \xatt{X} 		& \xatt{Y}  				& \xatt{Real} \\
-Decile				& \xatt{decile}				& \xatt{X} 		& \xatt{level} $\in \{1,..., 9\}$ 	& \xatt{Real} \\
-Geometric mean		& \xatt{geometricMean}		& \xatt{X} 		& -- 						& \xatt{Real} \\
-Kurtosis				& \xatt{kurtosis}			& \xatt{X} 		& -- 						& \xatt{Real} \\
-Mean				& \xatt{mean}				& \xatt{X} 		& -- 						& \xatt{Real} \\
-Median				& \xatt{median}				& \xatt{X} 		& -- 						& \xatt{Real} \\
-Mode				& \xatt{mode}				& \xatt{X} 		& -- 						& \xatt{Real} \\
-Moment				& \xatt{moment}			& \xatt{X} 		& \xatt{order} $\in \mathbb N$ 	& \xatt{Real} \\
-Percentile				& \xatt{percentile}			& \xatt{X} 		& \xatt{level} $\in$ [0, 100]	& \xatt{Real} \\
-Quantile				& \xatt{quantile}			& \xatt{X} 		& \xatt{level} $\in$ [0, 1] 		& \xatt{Real} \\
-Quartile				& \xatt{quartile}				& \xatt{X} 		& \xatt{level} $\in \{0.25, 0.5, 0.75, 1\}$ 	& \xatt{Real} \\
-Range				& \xatt{range}				& \xatt{X} 		& -- 						& \xatt{Real} \\
-Skewness				& \xatt{skewness}			& \xatt{X} 		& -- 						& \xatt{Real} \\
-St. deviation		& \xatt{standardDeviation}	& \xatt{X} 		& -- 						& \xatt{Real} \\
-Variance				& \xatt{variance}			& \xatt{X} 		& -- 						& \xatt{Real} \\
+Centred moment	& \xatt{centredMoment}		& \xatt{X}		& \xatt{order} $\in \mathbb N$	& \xatt{Real} \\
+Coeff. of variation	& \xatt{coefficientOfVariation}	& \xatt{X} 		& -- 						& \xatt{Real} \\
+Correlation		& \xatt{correlation}			& \xatt{X} 		& \xatt{Y}  				& \xatt{Real} \\
+Decile			& \xatt{decile}				& \xatt{X} 		& \xatt{level} $\in \{1,..., 9\}$ 	& \xatt{Real} \\
+Geometric mean	& \xatt{geometricMean}		& \xatt{X} 		& -- 						& \xatt{Real} \\
+Kurtosis			& \xatt{kurtosis}			& \xatt{X} 		& -- 						& \xatt{Real} \\
+Mean			& \xatt{mean}				& \xatt{X} 		& -- 						& \xatt{Real} \\
+Median			& \xatt{median}				& \xatt{X} 		& -- 						& \xatt{Real} \\
+Mode			& \xatt{mode}				& \xatt{X} 		& -- 						& \xatt{Real} \\
+Moment			& \xatt{moment}			& \xatt{X} 		& \xatt{order} $\in \mathbb N$ 	& \xatt{Real} \\
+Percentile			& \xatt{percentile}			& \xatt{X} 		& \xatt{level} $\in$ [0, 100]	& \xatt{Real} \\
+Quantile			& \xatt{quantile}			& \xatt{X} 		& \xatt{level} $\in$ [0, 1] 		& \xatt{Real} \\
+Quartile			& \xatt{quartile}				& \xatt{X} 		& \xatt{level} $\in \{0.25, 0.5, 0.75, 1\}$ 	& \xatt{Real} \\
+Range			& \xatt{range}				& \xatt{X} 		& -- 						& \xatt{Real} \\
+Skewness			& \xatt{skewness}			& \xatt{X} 		& -- 						& \xatt{Real} \\
+Stand. deviation	& \xatt{standardDeviation}	& \xatt{X} 		& -- 						& \xatt{Real} \\
+Variance			& \xatt{variance}			& \xatt{X} 		& -- 						& \xatt{Real} \\
 \hline
 \caption{Statistics supported in v0.8. The type of the arguments \xatt{X} and \xatt{Y} 
 can be either variable references or real vectors. Multiple values 
@@ -2233,11 +2233,15 @@ distribution defined in ProbOnto
 \section{The return of the simple parameter}
 \label{sec:simpleParameter}
 \marginpar{\textcolor{red}{FINISH \\FINISH \\FINISH}}
-\xelem{SimpleParameter} available from the very beginning until version 0.6
-was replaced in 0.7.3 version by the \xelem{PopulationParameter}. It turned
-out that in QSP and SB modelling the 
+\xelem{SimpleParameter} available from the very beginning until version 0.6,
+replaced in 0.7.3 version by the \xelem{PopulationParameter}, has been now
+restored. It turned out that it is useful in QSP and SB modelling where distinction
+between individual or population parameters is not possible or required.
 
-Overview of parameters in
+Because version 0.7.3 was not in use so far neither in the IOG use case nor 
+tool converters, the restoration of the \xelem{SimpleParameter} shouldn't 
+cause any confusions. Below we provide a short overview of parameters in
+last three versions
 \begin{itemize}
 \item 
 version 0.6.1
@@ -2266,9 +2270,10 @@ version 0.8
 \xelem{PopulationParameter}
 \end{itemize}
 \end{itemize}
-
-See for application examples of the restored \xelem{SimpleParameter} models 
-on drug-drug interaction, \emph{../others/GrecoTung\_drugDrugInteraction.xml},
+In the majority of cashes the \xelem{SimpleParameter} has been replaced 
+by \xelem{PopulationParameter} except models where \xelem{SimpleParameter}
+is better suited. See for application examples such as models on drug-drug 
+interaction, \emph{../others/GrecoTung\_drugDrugInteraction.xml},
 and a PBPK model, \emph{../others/BradshawPierce\_2007.xml}.
 
 
