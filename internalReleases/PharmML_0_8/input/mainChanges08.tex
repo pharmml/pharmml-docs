@@ -91,7 +91,7 @@ the so-called \emph{Greco-model}, \cite{Greco:1990qv}, \cite{kabera2010d},
 shown below is treatable in PharmML only thanks to this extension 
 \begin{align}
 \frac{d_1}{\mu_1 \big[\frac{E}{E_c - E} \big]^{1/m_1}} + \frac{d_2}{\mu_2 \big[\frac{E}{E_c - E} \big]^{1/m_2}} + 
-\frac{\alpha d_1d_2}{\mu_1 \mu_2 \big[\frac{E}{E_c - E} \big]^{(1/2m_1+1/2m_2)}} = 1
+\frac{\alpha\,d_1d_2}{\mu_1 \mu_2 \big[\frac{E}{E_c - E} \big]^{(1/2m_1+1/2m_2)}} = 1
 \nonumber
 \end{align}
 This is a pharmacodynamic model for a combined effect, $E$, a function of two drug 
@@ -800,7 +800,7 @@ and standard deviation 1 which the two basic function read
 \mbox{PDF}:  \quad f(x) &= \frac{e^{-\frac{1}{2} x^2}}{\sqrt{2\pi}} \nonumber \\
 \mbox{CDF}:  \quad F(x) &= \frac12\left[1 + \text{erf}\left( \frac{x}{\sqrt{2}}\right)\right]  \quad \mbox{with} \quad \text{erf}(z) = \frac{2}{\pi}\int_0^z e^{-t^2} dt\nonumber
 \end{align*}
-with \emph{erf} the error function\footnote{\url{mathworld.wolfram.com/Erf.html}}.
+where \emph{erf} is the error function\footnote{\url{mathworld.wolfram.com/Erf.html}}.
 
 \bigskip
 The abbreviated XML code explains its encoding reduced to the 
@@ -2085,7 +2085,7 @@ which implementation in XML using the piecewise structure reads
 \end{lstlisting}
 
 
-\subsection{Flexible distribution definition}
+\subsection{Unified distribution definition}
 
 The possibility to define distribution of categorical covariates was given 
 before but was inconsistent with the way continuous covariates are handled.
@@ -2232,8 +2232,44 @@ distribution defined in ProbOnto
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The return of the simple parameter}
 \label{sec:simpleParameter}
-\marginpar{FiNISH}
+\marginpar{\textcolor{red}{FINISH \\FINISH \\FINISH}}
+\xelem{SimpleParameter} available from the very beginning until version 0.6
+was replaced in 0.7.3 version by the \xelem{PopulationParameter}. It turned
+out that in QSP and SB modelling the 
 
+Overview of parameters in
+\begin{itemize}
+\item 
+version 0.6.1
+\begin{itemize}
+\item 
+\xelem{IndividualParameter}
+\item 
+\xelem{SimpleParameter}
+\end{itemize}
+\item 
+version 0.7.3
+\begin{itemize}
+\item 
+\xelem{IndividualParameter}
+\item 
+\xelem{PopulationParameter}
+\end{itemize}
+\item 
+version 0.8
+\begin{itemize}
+\item 
+\xelem{SimpleParameter}
+\item 
+\xelem{IndividualParameter}
+\item 
+\xelem{PopulationParameter}
+\end{itemize}
+\end{itemize}
+
+See for application examples of the restored \xelem{SimpleParameter} models 
+on drug-drug interaction, \emph{../others/GrecoTung\_drugDrugInteraction.xml},
+and a PBPK model, \emph{../others/BradshawPierce\_2007.xml}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -139,20 +139,22 @@ A4(t=0)	& = \mbox{IBASE} = \mbox{OBASE}+\mbox{ETA(5)}*\mbox{W1} \nonumber % + \m
 
 \section{Markov models}
 \label{sec:markovModels}
-Stimulated by the recent discussion on the DDMoRe forum around Markov models
-two examples are discussed with a detailed description and implementation. \marginpar{ADD URL}
+Stimulated by the recent discussion on the DDMoRe forum around Markov 
+models\footnote{http://www.ddmore.eu/forum/pharmml-and-sbml}
+two examples are discussed with a detailed description and implementation.
 
-It turns out that they have, beyond for example disease modelling demonstrated 
-in 2nd example, other quite unexpected yet relevant application such as zombie 
+It turns out that Markov models, beyond for example disease modelling demonstrated 
+in the 2$^{nd}$ example, have other quite unexpected yet relevant application such as zombie 
 attack modelling. These attacks have been documented in well-known movies 
 such as \emph{Shaun of the Dead} although there many who see this as pure science
-fiction. It is regardless an educational use case described in the first example.
+fiction. Nevertheless it is a very educational use case described in the first example.
 
 \subsection{Example 1 -- Zombie attack}
 \label{subsec:exp1}
-This basic zombie attack model is based on lecture notes on Markov 
-Models\footnote{http://www.poritz.net/jonathan/matvec/markov.html}.
-More advanced models are available as well, e.g. \cite{munz2009zombies}, 
+The following basic zombie attack model is based on an example in lecture 
+notes on Markov Models\footnote{http://www.poritz.net/jonathan/matvec/markov.html}.
+Its extension to that shown on the front page of this specification is straightforward.
+Other more advanced models are available as well, e.g. \cite{munz2009zombies}, 
 \cite{witkowski2013bayesian}, \cite{woolley2014long}.
 
 \begin{figure}[ht!]
@@ -338,164 +340,43 @@ Modelling step definition and initial assignments, $Y_{init} = (100, 0)$
 \end{lstlisting}
 
 
-\subsubsection{Scientific background}
-Tara Smith, an infectious disease professor at the University of Iowa, uses the 
-paper, \cite{munz2009zombies}, to show how math models can predict the 
-effects of quarantines, vaccines and other public health measures.
-\begin{quotation}
-The zombie model's methods have already proved useful in at least one real-life 
-analysis. While working on a model of HPV (human papillomavirus), Robert Smith's 
-team noted that transmission via both gay and straight sex introduced two 
-nonlinear variables to the equation. Fortunately, the zombie model had already 
-blazed this path, demonstrating how to handle multiple nonlinear factors.
-\end{quotation}
-More on: \url{http://www.livescience.com/38527-surviving-a-zombie-apocalypse-math.html}
+\subsubsection{Zombies and epidemiology}
+Zombies attack modelling is more then just fun application of mathematics and
+has close parallels to epidemiological modelling -- the zombies are walking 
+representations of a contagion. 
+See for more on: \url{http://www.livescience.com/38527-surviving-a-zombie-apocalypse-math.html}
 
 
-
-
-%\subsection{Example 2 -- Three State Markov Model}
-%\label{subsec:exp2}
-%
-%The next example is build around a Markov chain for three states/categories
-%which is shown in the figure \ref{fig:example2} and expressed by a set
-%of pair-wise transition probabilities or a so-called \textbf{left} transition 
-%(aka stochastic) matrix, on the right in the figure.
-%\begin{figure}[ht!]
-%\centering
-%  \includegraphics[width=120mm]{pics/example2.pdf}
-% \caption{Example 2 can be expressed by the basic Markov chain with the
-% transition probabilities given below or the transition matrix (right).}
-% \label{fig:example2}
-%\end{figure}
-%
-%
-%\subsection*{Model definition}
-%\subsubsection*{Observation model}
-%
-%\begin{itemize}
-%\item
-%Type of observed variable -- discrete / categorical
-%\item
-%Category variable: $Y$
-%\item
-%Initial state variable: $Y_{init}$
-%\item
-%Set of categories: $\{\mbox{Healthy}, \mbox{Sick}, \mbox{Dead}\}$
-%\item
-%Transition probabilities
-%\begin{itemize}
-%\item
-%as pairwise conditional transition probabilities
-%\begin{align}
-%& P(\mbox{Healthy} \rightarrow \mbox{Dead}) = 0.1 \nonumber \\
-%& P(\mbox{Healthy} \rightarrow \mbox{Sick}) = 0.2 \nonumber \\
-%& P(\mbox{Sick} \rightarrow \mbox{Healthy}) = 0.1 \nonumber \\
-%& P(\mbox{Sick} \rightarrow \mbox{Dead}) = 0.3 \nonumber
-%\end{align}
-%\item
-%or as transition (aka stochastic) matrix
-%%\[
-%%\begin{bmatrix}
-%%    1-0.2-0.1 & 0.2 & 0.01  \\
-%%    0.1 & 1-0.1-0.3 & 0.03  \\
-%%    0 & 0 & 1  \\
-%%\end{bmatrix}
-%%\]
-%\[
-%\begin{blockarray}{cccc}
-%& H & S & D \\
-%\begin{block}{c[ccc]}
-%H &    1-0.2-0.1 & 0.2 & 0.1  \\
-%S &    0.1 & 1-0.1-0.3 & 0.3  \\
-%D &    0 & 0 & 1  \\
-%\end{block}
-%\end{blockarray}
-%\]
-%
-%\end{itemize}
-%\end{itemize}
-%
-%
-%\subsection*{Trial Design}
-%
-%\begin{itemize}
-%\item
-%Observations: Y at t=1,...,10.
-%\end{itemize}
-%
-%
-%\subsection*{Modelling steps}
-%
-%\begin{itemize}
-%\item
-%Initial states
-%\begin{align}
-%& Y_{init} = \left( \begin{array}{c} 100 \\ 0 \\ 0 \end{array} \right) \nonumber
-%\end{align}
-%\end{itemize}
-%
-%
-%
-%\subsection*{PharmML implementation}
-%The model is a straightforward extension of example 1 for three categories and should
-%not be shown here except the transition matrix which can be used instead of
-%the transition probabilities 
-%\lstset{language=XML}
-%\begin{lstlisting}
-%<TransitionMatrix>
-%    <ct:Matrix matrixType="Any">
-%        <ct:ColumnNames>
-%            <ct:SymbRef symbIdRef="Healthy"/>
-%            <ct:SymbRef symbIdRef="Sick"/>
-%            <ct:SymbRef symbIdRef="Dead"/>
-%        </ct:ColumnNames>
-%        <ct:MatrixRow>
-%            <ct:Real>0.7</ct:Real><ct:Real>0.2</ct:Real><ct:Real>0.1</ct:Real>
-%        </ct:MatrixRow>
-%        <ct:MatrixRow>
-%            <ct:Real>0.1</ct:Real><ct:Real>0.6</ct:Real><ct:Real>0.3</ct:Real>
-%        </ct:MatrixRow>
-%        <ct:MatrixRow>
-%            <ct:Real>0</ct:Real><ct:Real>0</ct:Real><ct:Real>0.1</ct:Real>
-%        </ct:MatrixRow>
-%    </ct:Matrix>
-%</TransitionMatrix>
-%\end{lstlisting}
-%
-
-\subsection{Example 2 - HIV model}
+\subsection{Example 2 -- HIV model}
 \label{subsec:exp3}
-\cite{Lee:2014kq}
+The second example is based on the published model \cite{Lee:2014kq}
+and describes Markov chain modelling analysis of HIV/AIDS progression.
+Figure \ref{fig:Markov_HIV} shows the four states  
+\begin{itemize}
+\item 
+S1 -- vulnerable
+\item 
+S2 -- HIV infective
+\item 
+S3 -- clinical AIDS persons
+\item 
+S4 -- death
+\end{itemize}
+model and the according transition matrix which is \emph{Race} dependent.
 
 \begin{figure}[ht!]
 \centering
   \includegraphics[width=140mm]{pics/Markov_HIV.pdf}
- \caption{Markov model HIV.}
+ \caption{Markov model of HIV/AIDS progression.}
  \label{fig:Markov_HIV}
 \end{figure}
 
-\subsection{Example 3 -- Stratified Markov Model}
-\label{subsec:exp3}
-
-The transition probabilities vary now conditional on the sex of 
-the subjects. For example the probability for a healthy female to 
-get sick is lower, 0.1, then for a male, 0.2. See Figure \ref{fig:markovMatrixCond}
-for the Markov chain network and transition matrix for this model.
-
-\begin{figure}[ht!]
-\centering
-  \includegraphics[width=120mm]{pics/markovMatrixCond.pdf}
- \caption{Example 3 -- a transition matrix defined conditional on sex of the subjects.}
- \label{fig:markovMatrixCond}
-\end{figure}
-
 \subsection*{Model definition}
 
 \subsubsection*{Covariate model}
 \begin{itemize}
 \item
-Race = \{African Americans, Caucasians\} -- categorical covariate
+Race = \{African Americans (AA), Caucasians (C)\} -- categorical covariate
 \end{itemize}
 
 \subsubsection*{Observation model}
@@ -508,34 +389,24 @@ Category variable: $Y$
 \item
 Initial state variable: $Y_{init}$
 \item
-Set of categories: $\{\mbox{Healthy}, \mbox{Sick}, \mbox{Dead}\}$
+Set of categories: $\{\mbox{S1}, \mbox{S2}, \mbox{S3}, \mbox{S4}\}$
 \item
 Transition probabilities
 \begin{itemize}
 \item
 as pairwise conditional transition probabilities
 \begin{align}
-& P(\mbox{Healthy} \rightarrow \mbox{Sick} | \; SEX==F) = 0.1 \nonumber \\
-& P(\mbox{Healthy} \rightarrow \mbox{Sick} | \; SEX==M) = 0.2 \nonumber \\
-& P(\mbox{Sick} \rightarrow \mbox{Healthy}) = 0.1 \nonumber \\
-& P(\mbox{Sick} \rightarrow \mbox{Dead}) = 0.3 \nonumber \\
+& P(\mbox{S1} \rightarrow \mbox{S1} | \; Race==AA) = 0.99893 \nonumber \\
+& P(\mbox{S1} \rightarrow \mbox{S1} | \; Race==C) = 0.9998787 \nonumber \\
+& P(\mbox{S1} \rightarrow \mbox{S2} | \; Race==AA) = 0.00066 \nonumber \\
+& P(\mbox{S1} \rightarrow \mbox{S2} | \; Race==C) = 0.000073 \nonumber \\
+& P(\mbox{S1} \rightarrow \mbox{S3} | \; Race==AA) = 0.00041 \nonumber \\
+& P(\mbox{S1} \rightarrow \mbox{S3} | \; Race==C) = 0.000048 \nonumber \\
+& P(\mbox{S1} \rightarrow \mbox{S4}) = 0 \nonumber \\
 & \mbox{other probabilities follow from the property 'left stochastic matrix'} \nonumber
 \end{align}
 \item
-or as transition (aka stochastic) matrix
-\[
-\begin{blockarray}{cccc}
-& H & S & D \\
-\begin{block}{c[ccc]}
-H &	0.7 & \left\{\begin{array}{ll}
-      	0.1 & SEX== F \\
-      	0.2 & SEX== M \\
-\end{array}\right. & 0.1  \\\\
-S &    0.1 & 0.6 & 0.3  \\\\
-D &    0 & 0 & 1  \\
-\end{block}
-\end{blockarray}
-\]
+or as transition (aka stochastic) matrix -- see Figure \ref{fig:Markov_HIV} (right)
 \end{itemize}
 \end{itemize}
 
@@ -544,6 +415,8 @@ D &    0 & 0 & 1  \\
 \begin{itemize}
 \item
 Observations: Y at t=1,...,10.
+\item
+Covariates: Race={AA, C, AA, C, \dots, AA, C}.
 \end{itemize}
 
 \subsection*{Modelling steps}
@@ -552,344 +425,187 @@ Observations: Y at t=1,...,10.
 \item
 Initial states
 \begin{align}
-& Y_{init} = \left( \begin{array}{c} 100 \\ 0 \\ 0 \end{array} \right) \nonumber
+& Y_{init} = \left( \begin{array}{c} 100 \\ 0 \\ 0 \\ 0 \end{array} \right) \nonumber
 \end{align}
 \end{itemize}
 
-\subsection*{PharmML implementation}
-Most of the model elements is identical to that of example in section \ref{subsec:exp2}
-except the conditional transition probabilities, which XML encoding will be shown
-here only.  The probabilities can be expresses pairwise or a transition matrix as the following 
-code snippet show.
+\subsubsection*{PharmML implementation}
 
 \begin{itemize}
 \item
-Pairwise probabilities (only the conditional ones are shown for brevity)
-
+Covariate Model 
 \lstset{language=XML}
 \begin{lstlisting}
-        <!-- P(Yp=Healthy -> Y=Sick | SEX=F)=0.1 -->
-        <ProbabilityAssignment>
-            <Probability>
-                <CurrentState>
-                    <math:LogicBinop op="eq">
-                        <ct:SymbRef symbIdRef="Y"/>
-                        <ct:SymbRef symbIdRef="Dead"/>
-                    </math:LogicBinop>
-                </CurrentState>
-                <PreviousState>
-                    <math:LogicBinop op="eq">
-                        <ct:SymbRef symbIdRef="Yp"/>
-                        <ct:SymbRef symbIdRef="Sick"/>
-                    </math:LogicBinop>
-                </PreviousState>
-                <Condition>
-                    <math:LogicBinop op="eq">
-                        <ct:SymbRef symbIdRef="SEX"/>
-                        <ct:CatRef catIdRef="F"/>
-                    </math:LogicBinop>
-                </Condition>
-            </Probability>
-            <ct:Assign>
-                <ct:Real>0.1</ct:Real>
-            </ct:Assign>
-        </ProbabilityAssignment>
+<ModelDefinition xmlns="http://www.pharmml.org/pharmml/0.8/ModelDefinition">
+    
+    <!-- Covariate Model -->
+    <CovariateModel blkId="cm1">
+        <Covariate symbId="RACE">
+            <Categorical>
+                <Category catId="AA"/>
+                <Category catId="C"/>
+            </Categorical>
+        </Covariate>
+    </CovariateModel>
+\end{lstlisting}
+
+\item
+Observation Model with transition matrix -- we use the fact that a matrix element 
+can contain an arbitrary expression, also a piecewise function used here for the 
+transition probability from the \emph{S1} to \emph{S1}, \emph{S2}, \dots, 
+\emph{S4} states conditioned on the covariate \emph{Race}. 
+\lstset{language=XML}
+\begin{lstlisting}    
+    <!-- Observation Model -->
+    <ObservationModel blkId="om1">
+        <Discrete>
+            <CategoricalData>
+                
+                <ListOfCategories> 
+                    <Category symbId="S1"/>
+                    <Category symbId="S2"/>
+                    <Category symbId="S3"/>
+                    <Category symbId="S4"/>
+                </ListOfCategories>
+                
+                <CategoryVariable symbId="Y"/>
+                
+                <InitialStateVariable symbId="Yinit"/> 
+                <PreviousStateVariable symbId="Yp"/>
+                
+                <Dependance type="discreteMarkov"/>
+                
+                <TransitionMatrix type="leftStochastic">
+                    <ct:Matrix matrixType="Any">
+                        <ct:RowNames>
+                            <ct:SymbRef symbIdRef="S1"/>
+                            <ct:SymbRef symbIdRef="S2"/>
+                            <ct:SymbRef symbIdRef="S3"/>
+                            <ct:SymbRef symbIdRef="S4"/>
+                        </ct:RowNames>
+                        <ct:MatrixRow>
+                            <ct:Assign>
+                                <ct:Piecewise>
+                                    <math:Piece>
+                                        <ct:Real>0.99893</ct:Real>
+                                        <math:Condition>
+                                            <math:LogicBinop op="eq">
+                                                <ct:SymbRef symbIdRef="RACE"/>
+                                                <ct:CatRef catIdRef="AA"/>
+                                            </math:LogicBinop>
+                                        </math:Condition>
+                                    </math:Piece>
+                                    <math:Piece>
+                                        <ct:Real>0.9998787</ct:Real>
+                                        <math:Condition>
+                                            <math:LogicBinop op="eq">
+                                                <ct:SymbRef symbIdRef="RACE"/>
+                                                <ct:CatRef catIdRef="C"/>
+                                            </math:LogicBinop>
+                                        </math:Condition>
+                                    </math:Piece>
+                                </ct:Piecewise>
+                            </ct:Assign>
+                            <ct:Assign>
+                                <ct:Piecewise>
+                                    <math:Piece>
+                                        <ct:Real>0.00066</ct:Real>
+                                        <math:Condition>
+                                            <math:LogicBinop op="eq">
+                                                <ct:SymbRef symbIdRef="RACE"/>
+                                                <ct:CatRef catIdRef="AA"/>
+                                            </math:LogicBinop>
+                                        </math:Condition>
+                                    </math:Piece>
+                                    <math:Piece>
+                                        <ct:Real>0.000073</ct:Real>
+                                        <math:Condition>
+                                            <math:LogicBinop op="eq">
+                                                <ct:SymbRef symbIdRef="RACE"/>
+                                                <ct:CatRef catIdRef="C"/>
+                                            </math:LogicBinop>
+                                        </math:Condition>
+                                    </math:Piece>
+                                </ct:Piecewise>
+                            </ct:Assign>
+                            <ct:Assign>
+                                <ct:Piecewise>
+                                    <math:Piece>
+                                        <ct:Real>0.00041</ct:Real>
+                                        <math:Condition>
+                                            <math:LogicBinop op="eq">
+                                                <ct:SymbRef symbIdRef="RACE"/>
+                                                <ct:CatRef catIdRef="AA"/>
+                                            </math:LogicBinop>
+                                        </math:Condition>
+                                    </math:Piece>
+                                    <math:Piece>
+                                        <ct:Real>0.000048</ct:Real>
+                                        <math:Condition>
+                                            <math:LogicBinop op="eq">
+                                                <ct:SymbRef symbIdRef="RACE"/>
+                                                <ct:CatRef catIdRef="C"/>
+                                            </math:LogicBinop>
+                                        </math:Condition>
+                                    </math:Piece>
+                                </ct:Piecewise>
+                            </ct:Assign>
+                            <ct:Real>0</ct:Real>
+                        </ct:MatrixRow>
+                        <ct:MatrixRow>
+                            <!-- 2nd row skipped -->
+                        </ct:MatrixRow>
+                        <ct:MatrixRow>
+                            <!-- 3rd row skipped -->
+                        </ct:MatrixRow>
+                        <ct:MatrixRow>
+                            <ct:Real>0</ct:Real><ct:Real>0</ct:Real><ct:Real>0</ct:Real><ct:Real>1</ct:Real>
+                        </ct:MatrixRow>
+                    </ct:Matrix>
+                </TransitionMatrix>
+\end{lstlisting}
+\item
+Trial design
+\begin{itemize}
+\item 
+Output of variable $Y$ at t=1,...,12 (months).
+\item 
+Covariates: Race={AA, C, AA, C, \dots, AA, C}.
+\end{itemize}
+\lstset{language=XML}
+\begin{lstlisting}
+    <TrialDesign xmlns="http://www.pharmml.org/pharmml/0.8/TrialDesign">
+
+	<!-- <Observations> skipped as identical to that in previous example -->
         
-        <!-- P(Yp=Healthy -> Y=Sick | SEX=M)=0.1 -->
-        <ProbabilityAssignment>
-            <Probability>
-                <CurrentState>
-                    <math:LogicBinop op="eq">
-                        <ct:SymbRef symbIdRef="Y"/>
-                        <ct:SymbRef symbIdRef="Sick"/>
-                    </math:LogicBinop>
-                </CurrentState>
-                <PreviousState>
-                    <math:LogicBinop op="eq">
-                        <ct:SymbRef symbIdRef="Yp"/>
-                        <ct:SymbRef symbIdRef="Healthy"/>
-                    </math:LogicBinop>
-                </PreviousState>
-                <Condition>
-                    <math:LogicBinop op="eq">
-                        <ct:SymbRef symbIdRef="SEX"/>
-                        <ct:CatRef catIdRef="M"/>
-                    </math:LogicBinop>
-                </Condition>
-            </Probability>
-            <ct:Assign>
-                <ct:Real>0.2</ct:Real>
-            </ct:Assign>
-        </ProbabilityAssignment>
-\end{lstlisting}
-
-\item
-Transition matrix -- we use the fact that a matrix element can contain an arbitrary expression,
-also a piecewise function used here for the transition probability from the \emph{Healthy} to 
-\emph{Sick} state conditioned on the covariate \emph{Sex}. 
-\lstset{language=XML}
-\begin{lstlisting}
-        <TransitionMatrix symbId="T1">
-            <ct:Matrix matrixType="Any">
-                <ct:ColumnNames>
-                    <ct:SymbRef symbIdRef="Healthy"/>
-                    <ct:SymbRef symbIdRef="Sick"/>
-                    <ct:SymbRef symbIdRef="Dead"/>
-                </ct:ColumnNames>
-                <ct:MatrixRow>
-                    <ct:Real>0.7</ct:Real>
-                    <ct:Assign>
-                        <ct:Piecewise>
-                            <math:Piece>
-                                <ct:Real>0.8</ct:Real>
-                                <math:Condition>
-                                    <math:LogicBinop op="eq">
-                                        <ct:SymbRef symbIdRef="Sex"/>
-                                        <ct:CatRef catIdRef="F"/>
-                                    </math:LogicBinop>
-                                </math:Condition>
-                            </math:Piece>
-                            <math:Piece>
-                                <ct:Real>0.7</ct:Real>
-                                <math:Condition>
-                                    <math:LogicBinop op="eq">
-                                        <ct:SymbRef symbIdRef="Sex"/>
-                                        <ct:CatRef catIdRef="M"/>
-                                    </math:LogicBinop>
-                                </math:Condition>
-                            </math:Piece>
-                        </ct:Piecewise>
-                    </ct:Assign>
-                    <ct:Real>0.1</ct:Real>
-                </ct:MatrixRow>
-                <ct:MatrixRow>
-                    <ct:Real>0.1</ct:Real><ct:Real>0.6</ct:Real><ct:Real>0.3</ct:Real>
-                </ct:MatrixRow>
-                <ct:MatrixRow>
-                    <ct:Real>0</ct:Real><ct:Real>0</ct:Real><ct:Real>0.1</ct:Real>
-                </ct:MatrixRow>
-            </ct:Matrix>
-        </TransitionMatrix>
-\end{lstlisting}
-\end{itemize}
-Note, that the order of probabilities is defined by the order of categories/states names in the \xelem{ColumnNames}.
-Because the transition matrix is symmetric specifying only the column names is sufficient. 
-
-\subsection{Example 4 -- Micro Simulation Model}
-\label{subsec:exp4}
-
-\subsection*{Model definition}
-
-\subsubsection*{Covariate model}
-\begin{itemize}
-\item
-Age -- continuous covariate
-\item
-Sex = \{F, M\} -- categorical covariate
-\end{itemize}
-Individual covariates are stored in the trial design, see below.
-
-\subsubsection*{Observation model}
-
-\begin{itemize}
-\item
-Type of observed variable -- discrete / categorical
-\item
-Category variable: $Y$
-\item
-Initial state variable: $Y_{init}$
-\item
-Set of categories: $\{\mbox{Healthy}, \mbox{Sick}, \mbox{Dead}\}$
-\item
-Transition probabilities
-\begin{itemize}
-\item
-as pairwise conditional transition probabilities
-%
-%Healthy to Dead: Age/1000\\
-%Healthy to Sick: 0.1* (1 + Male) + 0.01*Age and never more than 0.8\\
-%Sick to Healthy 0.1\\
-%Sick to Dead:  0.01*Age+0.2*Male and never more than 0.9
-\begin{align}
-& P(\mbox{Healthy} \rightarrow \mbox{Dead}) = \mbox{Age}/100 \nonumber \\
-p_{HS} := \quad & P(\mbox{Healthy} \rightarrow \mbox{Sick} | \; p_{HS} < 0.8) = 0.1(1 + \mbox{Male}) + 0.01\times\mbox{Age} \nonumber \\
-& P(\mbox{Sick} \rightarrow \mbox{Healthy}) = 0.1 \nonumber \\
-p_{SD} := \quad & P(\mbox{Sick} \rightarrow \mbox{Dead} | \; p_{SD} < 0.9) = 0.01\times\mbox{Age}+0.2\times\mbox{Male} \nonumber
-\end{align}
-\item
-Transition matrix becomes complex with the additional boundaries
-on the probabilities and it's probably a better to encode it pairwise
-as above.
-%\[
-%T1 = 
-%\begin{blockarray}{cccc}
-%& \mbox{H} & \mbox{S} & \mbox{D} \\
-%\begin{block}{c[ccc]}
-%\mbox{H} & 0.7 	& 0.1(1 + \mbox{Male}) + 0.01\times\mbox{Age } \& \;p_{HS} < 0.8 & 0.1  \\\\
-%\mbox{S} 	& 0.1 	& 0.6 & 0.01\times\mbox{Age}+0.2\times\mbox{Male } \& \;p_{SD} < 0.9  \\\\
-%\mbox{D} 	& 0 		& 0 & 1  \\
-%\end{block}
-%\end{blockarray}
-%%
-%%\begin{bmatrix}
-%%    0.7 & 0.2 & 0.01  \\
-%%    0.1 & 0.6 & 0.03  \\
-%%    0 & 0 & 1  \\
-%%\end{bmatrix}
-%\]
-\end{itemize}
-\end{itemize}
-
-
-
-\subsection*{Trial Design}
-
-\begin{itemize}
-\item
-Observations: Y at t=1,...,10.
-\item
-Covariates
-\begin{itemize}
-\item
-continuous: Age = 1, 2, 3, 4, ..., 100
-
-\item
-categorical: Sex = \{F, M\} with Male = 0,1,0,1 .... (100 times)
-\end{itemize}
-\end{itemize}
-
-
-
-\subsection*{Modelling steps}
-
-\begin{itemize}
-\item
-Initial states
-\begin{align}
-& Y_{init} = \left( \begin{array}{c} 100 \\ 0 \\ 0 \end{array} \right) \nonumber
-\end{align}
-\end{itemize}
-
-\subsection*{PharmML implementation}
-The covariates are coming here as individual values, meaning that they
-have to be provided as a table. This is when the \xelem{TrialDesign} is
-very helpful as it is equipped with the required structure.
-It is sufficient to declare the covariates in the \xelem{CovariateModel} within 
-\xelem{ModelDefinition} as the following snippet shows
-\lstset{language=XML}
-\begin{lstlisting}
-        <CovariateModel blkId="cm1">
-            <Covariate symbId="AGE">
-                <Continuous/>
-            </Covariate>
-            
-            <Covariate symbId="MALE">
-                <Categorical>
-                    <Category catId="F"/>
-                    <Category catId="M"/>
-                </Categorical>
-            </Covariate>
-        </CovariateModel>
-\end{lstlisting}
-the proper values are stored then in the \xelem{IndividualCovariates} in 
-\xelem{TrialDesign}
-\lstset{language=XML}
-\begin{lstlisting}
         <Covariates>
-            <!--    Male = 0,1,0,1 .... (100 times)
-                    Age = 1,2,3,4,...100-->
             <IndividualCovariates>
                 <ColumnMapping>
-                    <ds:ColumnRef columnIdRef="SEX"/>
-                    <ct:SymbRef blkIdRef="cm1" symbIdRef="Sex"/>
-                    <ds:CategoryMapping>
-                        <ds:Map dataSymbol="1" modelSymbol="F"/>
-                        <ds:Map dataSymbol="0" modelSymbol="M"/>
-                    </ds:CategoryMapping>
-                </ColumnMapping>
-                <ColumnMapping>
-                    <ds:ColumnRef columnIdRef="AGE"/>
-                    <ct:SymbRef blkIdRef="cm1" symbIdRef="Age"/>
+                    <ds:ColumnRef columnIdRef="race"/>
+                    <ct:SymbRef blkIdRef="cm1" symbIdRef="RACE"/>
                 </ColumnMapping>
                 <ds:DataSet>
                     <ds:Definition>
-                        <ds:Column columnId="ID" columnType="id" valueType="id" columnNum="1"/>
-                        <ds:Column columnId="SEX" columnType="covariate" valueType="real" columnNum="2"/>
-                        <ds:Column columnId="AGE" columnType="covariate" valueType="real" columnNum="3"/>
+                        <ds:Column columnId="ID" valueType="string" columnNum="1"/>
+                        <ds:Column columnId="race" valueType="string" columnNum="2"/>
                     </ds:Definition>
                     <ds:Table>
-                        <ds:Row>
-                            <ct:Id>i1</ct:Id><ct:Real>0</ct:Real><ct:Real>1</ct:Real>
-                        </ds:Row>
-                        <ds:Row>
-                            <ct:Id>i1</ct:Id><ct:Real>1</ct:Real><ct:Real>2</ct:Real>
-                        </ds:Row>
-                        <ds:Row>
-                            <ct:Id>i1</ct:Id><ct:Real>0</ct:Real><ct:Real>3</ct:Real>
-                        </ds:Row>
-                        <ds:Row>
-                            <ct:Id>i1</ct:Id><ct:Real>1</ct:Real><ct:Real>4</ct:Real>
-                        </ds:Row>
-                        <!-- omitted subjects -->
-                        <ds:Row>
-                            <ct:Id>i100</ct:Id><ct:Real>1</ct:Real><ct:Real>100</ct:Real>
-                        </ds:Row>
+                        <ds:Row><ct:String>1</ct:String><ct:String>AA</ct:String></ds:Row>
+                        <ds:Row><ct:String>2</ct:String><ct:String>C</ct:String></ds:Row>
+                        <ds:Row><ct:String>3</ct:String><ct:String>AA</ct:String></ds:Row>
+                        <ds:Row><ct:String>4</ct:String><ct:String>C</ct:String></ds:Row>
+                        <ds:Row><ct:String>5</ct:String><ct:String>AA</ct:String></ds:Row>
+                        <!-- subject omitted -->
+                        <ds:Row><ct:String>99</ct:String><ct:String>AA</ct:String></ds:Row>
+                        <ds:Row><ct:String>100</ct:String><ct:String>C</ct:String></ds:Row>
                     </ds:Table>
                 </ds:DataSet>
             </IndividualCovariates>
         </Covariates>
     </TrialDesign>
 \end{lstlisting}
-\xelem{ColumnMapping} elements are declared to provide the required information 
-how to connect the model and the covariates.
+\end{itemize}
 
-From the model definition we show here only the implementation of one
-probability, $P(\mbox{Sick} \rightarrow \mbox{Dead} | \; p_{SD} < 0.9)$, the remaining transition 
-probabilities are analog.
-\lstset{language=XML}
-\begin{lstlisting}
-        <!-- Healthy to Sick -->
-        <!-- pHS:= P(y=Dead|yp=Healthy & pHS<0.8 = 0.1* (1 + Male) +  0.01*Age -->
-        <ProbabilityAssignment>
-            <Probability symbId="pHS">
-                <CurrentState>
-                    <math:LogicBinop op="eq">
-                        <ct:SymbRef symbIdRef="y"/>
-                        <ct:SymbRef symbIdRef="Sick"/>
-                    </math:LogicBinop>
-                </CurrentState>
-                <PreviousState>
-                    <math:LogicBinop op="eq">
-                        <ct:SymbRef symbIdRef="yp"/>
-                        <ct:SymbRef symbIdRef="Healthy"/>
-                    </math:LogicBinop>
-                </PreviousState>
-                <Condition>
-                    <math:LogicBinop op="lt">
-                        <ct:SymbRef symbIdRef="pHS"/>
-                        <ct:Real>0.8</ct:Real>
-                    </math:LogicBinop>
-                </Condition>
-            </Probability>
-            <ct:Assign>
-                <math:Binop op="plus">
-                    <math:Binop op="times">
-                        <ct:Real>0.1</ct:Real>
-                        <math:Binop op="plus">
-                            <ct:Real>1</ct:Real>
-                            <ct:SymbRef symbIdRef="Male"/>
-                        </math:Binop>
-                    </math:Binop>
-                    <math:Binop op="times">
-                        <ct:Real>0.01</ct:Real>
-                        <ct:SymbRef symbIdRef="Age"/>
-                    </math:Binop>
-                </math:Binop>
-            </ct:Assign>
-        </ProbabilityAssignment>
-\end{lstlisting}
-Note, that the probability is assigned a symbol identifier \xatt{symbId="pHS"}
-which is then used to express the condition $p\_{SD}<0.9$
 
 \subsection*{Out of scope}
 Compared to the original description there are model elements which 
