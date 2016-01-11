@@ -84,8 +84,8 @@ unless used in a conditional statement, see section \ref{subset:rulesCS}.
 
 \subsection{New opportunities}
 \label{subsec:greco}
-The introduction of assignment statements opens few new opportunities 
-to encode models relevant for studying of drug-drug interaction models.
+The introduction of assignment statements opens new opportunities 
+to encode models relevant e.g. for studying of drug-drug interactions.
 While the majority of such models was implementable in previous versions,
 the so-called \emph{Greco-model}, \cite{Greco:1990qv}, \cite{kabera2010d},
 shown below is treatable in PharmML only thanks to this extension 
@@ -96,11 +96,11 @@ shown below is treatable in PharmML only thanks to this extension
 \end{align}
 This is a pharmacodynamic model for a combined effect, $E$, a function of two drug 
 doses, $d_1$ and $d_2$, which does not have a \emph{closed} form. In other words 
-the effect cannot be expressed directly in terms of $d_1$ and $d_2$, i.e. there is no
-such function with $E = f(d_1,d_2,\dots)$. The full PharmML code for this model
+the effect cannot be expressed directly in terms of $d_1$ and $d_2$ as a function 
+$E = f(d_1,d_2,\dots)$. The full PharmML code for this model
 is provided with this release in the example folder \emph{others}.
 
-It is also for another reason an interesting model. It is one which requires the 
+It is an interesting model for another reason as well. It is one which requires the 
 declaration of two independent variables, $d_1$ and $d_2$. Thus the limitation
 to only one \xelem{IndependentVariable} has been removed.
 
@@ -108,15 +108,15 @@ to only one \xelem{IndependentVariable} has been removed.
 \label{sec:conditionalStatements}
 
 Conditional assignments are new in this version and provide additional
-flexibility to the language. So far only piecewise statement were supported
+flexibility to the language. So far only piecewise statements were supported
 which have the drawback that only single variables are assigned per statement.
 
 Conditional assignments don't \marginpar{\HandCuffLeft} replace the existing 
 piecewise statements, they are an entirely independent structure. 
 
 \subsection{Tool coverage -- capabilities and restrictions}
-The extend to which various target tool cover conditional assignments differ
-which is an objective issue for the interoperability. Below we summarise
+The extend to which various target tools cover conditional assignments differs
+and posses a problem for the interoperability. Below we summarise
 the support and scope of these assignments in the major target tools. 
 
 \begin{itemize}
@@ -192,15 +192,16 @@ supports only a step function of the form
 where 'e' any expression
 \item
 Note however, that according to the winBUGS 
-translation team, in principle, thanks to the Pascal language interface, almost 
-virtually any nested conditional statement can be implemented in WinBUGS. 
+translation team, in principle, thanks to the Pascal language interface, 
+virtually any nested conditional statement can be implemented for the 
+execution in winBUGS. 
 %More precisely single assignments are allowed only, see rule 2 in section \ref{subset:rulesCS}. 
 \end{itemize}
 \item
-Common Converter, provided by Gareth Smith (Cyprotex) is able to handle 
+Common Converter, provided by Gareth Smith (Cyprotex), is able to handle 
 (nested) conditional statements. 
 \item
-\xatt{STAN}, \cite{stan-manual:2015b}, the potential future target tool for the DDmoRe
+\xatt{STAN}, \cite{stan-manual:2015b}, the potential future target tool for the DDMoRe
 interoperability platform offers unrestricted support for the conditional statements.
 \end{itemize}
 
@@ -219,8 +220,8 @@ The general form of the (nested) conditional statement looks as follows.
 	\EndIf
 \end{algorithmic}
 \bigskip
-The following definition of the conditional statement have been adapted from the 
-STAN specification, \cite{stan-manual:2015b}: \\
+The following definition of the conditional statement has been adapted from the 
+STAN specification v2.9.0, \cite{stan-manual:2015b}: \\
 There must be a single leading \xatt{if} clause, which may be followed by any number of
 \xatt{else if} clauses, all of which may be optionally followed by an \xatt{else} clause. Each
 condition must be a TRUE or FALSE value. Nested \xatt{if-then-else} as part of each 
@@ -261,7 +262,7 @@ Parameters or variables assigned within the conditional statement
 have to be referred to using the attribute \xatt{symbIdRef} (new in this version, not available 
 for parameters or variables so far). \\
 In the following example the attribute \xatt{symbId} is used for the 
-declaration of an population parameter
+declaration of a population parameter
 \lstset{language=XML}
 \begin{lstlisting}
             <!-- 1. DECLARE 'k' using symbId-->
@@ -367,8 +368,8 @@ to variable $RF$ (consider for example CLCR=3 and AGE=10).
  assignments or the assignments have to be identical if domains overlap. 
  For example for CLCR=3 and AGE=10 the assignment of RF depends on the sequence 
  of the first two conditions.
- Because any domain declaration is allowed in PharmML, no automatic validity 
- check is performed,  the declarations are ultimately the responsibility of the modeller.}
+ Because any domain declaration is allowed in PharmML and no automatic validity 
+ check is performed, such declarations are ultimately the responsibility of the modeller.}
  \label{fig:CLCR_AGE}
 \end{figure}
 
@@ -430,6 +431,7 @@ and then the conditional assignments can be specified
                     </math:Condition>
                     <ct:AssignStatement op="eq">
                     <!-- omitted assignments for ka and ALAG1 -->
+                    </ct:AssignStatement>
                 </math:ElseIf>
             </ConditionalStatement>
 \end{lstlisting}
@@ -450,15 +452,18 @@ shows parameter assignment conditional on a categorical covariate.
 Declare first the covariate, Sex
 \lstset{language=XML}
 \begin{lstlisting}
-        <CovariateModel blkId="cm1">
+        <CovariateModel blkId="cm1fdsfe">
             <Covariate symbId="Sex">
                 <Categorical>
                     <Category catId="1">
                         <ct:Name>Female</ct:Name>
                     </Category>
-                    <Category catId="0"/>
+                    <Category catId="0">
+                        <ct:Name>Male</ct:Name>
+                    </Category>
                 </Categorical>
             </Covariate>
+        </CovariateModel>
 \end{lstlisting}
 and condition on it the assignment of the individual parameter, V. Note that 
 parameter V needs to be declared first.
@@ -518,8 +523,8 @@ followed by the conditional assignments
             ...
         </ParameterModel>
 \end{lstlisting}
-Note the attribute \xatt{symbIdRef}, used to reference the individual parameters
-in each statement, which was not available for parameters or variables previously.
+Note that the attribute \xatt{symbIdRef}, used to reference the individual parameters
+in each statement, was not available for parameters or variables previously.
 
 %\subsubsection*{Example 4}
 %
@@ -945,9 +950,9 @@ require the specification of default, $mean\!=\!0$ and $stdev\!=\!1$, parameters
 
 \subsection{Example 3 -- TTE model}
 \label{subsec:TTEmodel}
-The probability functions turn out to be very useful also in encoding 
+The probability functions turn out to be very useful also in the encoding 
 of time-to-event data. While so far encoding of hazard or survival functions
-formulas was the only option to defined such models, they offer a quick 
+formulas was the only option to defined such models, the function elements offer a quick 
 and safe way to encode often complex function of interest as the following 
 example demonstrates for a Weibull model 
 \lstset{language=XML}
@@ -1112,7 +1117,7 @@ alternative \textbf{Option 1} version).
 </ParameterModel>
 
 <!-- PART 2 -->
-<TrialDesign xmlns="http://www.pharmml.org/pharmml/0.7/TrialDesign">    
+<TrialDesign xmlns="http://www.pharmml.org/pharmml/0.8/TrialDesign">    
     <ExternalDataSet oid="RdataSet">
         <ColumnMapping>
             <ds:ColumnRef columnIdRef="POP_K_sample"/>
@@ -1132,10 +1137,10 @@ alternative \textbf{Option 1} version).
 \end{lstlisting}
 \\
 \hline
-\caption{Two way to encode samples. 
+\caption{Two ways to encode samples. 
 \textbf{Option 1}: data stored together with parameter declaration in \xelem{ModelDefinition}.
 Two version are shown: (top) with full data/model mapping and dataset column 
-declaration, (bottom) short form when only one dataset is required - mapping and 
+declaration, (bottom) short form when only one dataset is required -- mapping and 
 column declaration are redundant. \textbf{Option 2}: data stored in the \xelem{TrialDesign} --
 mapping is mandatory even for single column.}
 \label{tab:twoOptionsForSamples}
@@ -1195,7 +1200,7 @@ mapping is mandatory even for single column.}
 
 Sometimes the \xatt{weight} parameter is not defined and the assumption 
 is that all values are equally probable with $p=1/n$ where
-$n$ equal the row numbers, see Table \ref{tab:randomSample_withoutWeight}.
+$n$ is equal the row number, see Table \ref{tab:randomSample_withoutWeight}.
 
 \begin{longtable}{c}
 \hline
@@ -1207,9 +1212,9 @@ POP\_V \\
 5.078318 \\ 
 ... \\
 \hline
-\caption{Test data set represented using equiprobable samples. Because no \xatt{weight} parameter
-is defined, the assumption is that all values are equally probable with $p=1/n$ where
-$n$ is equal the row numbers.}
+\caption{A dataset represented using equiprobable samples. Because no \xatt{weight} parameter
+is defined, the assumption is that all values are equiprobable with $p=1/n$ where
+$n$ is equal the row number.}
 \label{tab:randomSample_withoutWeight}
 \end{longtable}%
 
@@ -1291,7 +1296,7 @@ The mapping is self-explanatory. The samples can be encoded either inline, using
                         <ct:SymbRef symbIdRef="p"/>
                     </ct:Assign>
                 </po:Parameter>
-                <po:ColumnMapping xmlns="http://www.pharmml.org/pharmml/0.7/TrialDesign">
+                <po:ColumnMapping xmlns="http://www.pharmml.org/pharmml/0.8/TrialDesign">
                     <ds:ColumnRef columnIdRef="P"/>
                     <ct:SymbRef symbIdRef="p"/>
                 </po:ColumnMapping>
@@ -1321,15 +1326,16 @@ The mapping is self-explanatory. The samples can be encoded either inline, using
 
 \subsubsection*{Option 2}
 
-This is an example for model with two parameters $POP\_K$ and 
-$POP\_K$ drawn from the random sample with probability $p$, see 
-Table \ref{tab:randomSampleExternal},
+This is an example for a model with two parameters $POP\_K$ and 
+$POP\_K$ drawn from a random sample with probability $p$, see 
+Table \ref{tab:randomSampleExternal} and Figure \ref{fig:Mapping_withWeights} for a graphical 
+explanation,
 
 \begin{itemize}
 \item 
 \xatt{RandomSample} is used with 	
 \item 
-\xatt{weight} parameter \emph{p} declared as \xelem{PopulationParameter}
+\xatt{weight} parameter \emph{p} declared as \xelem{PopulationParameter} applies to each row.
 \end{itemize}
 
 \begin{longtable}{c c c c}
@@ -1393,7 +1399,7 @@ Then the dataset is defined in the \xelem{TrialDesign} as shown below
 with the proper column mapping. 
 \lstset{language=XML}
 \begin{lstlisting}
-    <TrialDesign>
+    <TrialDesign xmlns="http://www.pharmml.org/pharmml/0.8/TrialDesign">
         <ExternalDataSet oid="RdataSet">
             <ColumnMapping>
                 <ds:ColumnRef columnIdRef="bins_POP_K"/>
@@ -1494,7 +1500,7 @@ columns and model elements is performed using \xelem{ColumnMapping}
 \begin{lstlisting}
 <ExternalDataSet oid="RdataSet">
     <ColumnMapping>
-        <ColumnRef xmlns="http://www.pharmml.org/pharmml/0.7/Dataset" columnIdRef="bins_POP_K"/>
+        <ColumnRef xmlns="http://www.pharmml.org/pharmml/0.8/Dataset" columnIdRef="bins_POP_K"/>
         <ct:Assign>
             <ct:VectorSelector>
                 <ct:SymbRef symbIdRef="POP_K_V" blkIdRef="pm1"/>
@@ -1505,7 +1511,7 @@ columns and model elements is performed using \xelem{ColumnMapping}
         </ct:Assign>
     </ColumnMapping>
     <ColumnMapping>
-        <ColumnRef xmlns="http://www.pharmml.org/pharmml/0.7/Dataset" columnIdRef="bins_POP_V"/>
+        <ColumnRef xmlns="http://www.pharmml.org/pharmml/0.8/Dataset" columnIdRef="bins_POP_V"/>
         <ct:Assign>
             <ct:VectorSelector>
                 <ct:SymbRef symbIdRef="POP_K_V" blkIdRef="pm1"/>
@@ -1516,10 +1522,10 @@ columns and model elements is performed using \xelem{ColumnMapping}
         </ct:Assign>
     </ColumnMapping>
     <ColumnMapping>
-        <ColumnRef xmlns="http://www.pharmml.org/pharmml/0.7/Dataset" columnIdRef="p_POP_K_V"/>
+        <ColumnRef xmlns="http://www.pharmml.org/pharmml/0.8/Dataset" columnIdRef="p_POP_K_V"/>
         <ct:SymbRef symbIdRef="p_POP_K_V" blkIdRef="pm1"/>
     </ColumnMapping>
-    <DataSet xmlns="http://www.pharmml.org/pharmml/0.7/Dataset">
+    <DataSet xmlns="http://www.pharmml.org/pharmml/0.8/Dataset">
         <Definition>
             <Column columnId="bins_POP_K" valueType="real" columnNum="1"/>
             <Column columnId="bins_POP_V" valueType="real" columnNum="2"/>
@@ -1542,7 +1548,7 @@ $POP\_K\_V[2]$ works.
 \lstset{language=XML}
 \begin{lstlisting}
     <ColumnMapping>
-        <ColumnRef xmlns="http://www.pharmml.org/pharmml/0.7/Dataset" columnIdRef="bins_POP_V"/>
+        <ColumnRef xmlns="http://www.pharmml.org/pharmml/0.8/Dataset" columnIdRef="bins_POP_V"/>
         <ct:Assign>
             <ct:VectorSelector>
                 <ct:SymbRef symbIdRef="POP_K_V" blkIdRef="pm1"/>
@@ -1602,7 +1608,7 @@ identifies the parameter.
 \section{Random realisations}
 \label{sec:randRealisations}
 Another new feature in version 0.8 is the possibility to specify a single realisation from any
-univariate distribution and is based on analogue featured in UncertML, 
+univariate distribution and is based on analogue feature	 in UncertML, 
 \cite{uncertml3:2014}. The definition reads:
 \begin{description}
 \item[Realisation] is a single instance of a random variable and can be used 
@@ -1647,7 +1653,7 @@ assignment which is encoded in the element \xelem{Realisation}.
             </Covariate>
 \end{lstlisting}
 The remaining definition and assignment of a new covariate is conditional 
-on the sampled value \emph{z}
+on the sampled covariate value \emph{z}
 \lstset{language=MLX}
 \begin{lstlisting}
             <Covariate symbId="cz">
@@ -1683,9 +1689,9 @@ on the sampled value \emph{z}
 New element -- transition aka stochastic matrix -- has been introduced to simplify encoding of Markov models. 
 \subsection{Transition matrix}
 \label{sec:transitionMatrix}
-Stochastic (aka transition matrix) is a matrix used to describe the transitions in a Markov 
+Stochastic (aka transition) matrix is used to describe the transitions in a Markov 
 chain\footnote{\url{https://en.wikipedia.org/wiki/Stochastic_matrix}}. A stochastic matrix can be 
-characterised further by the optional attribute 
+characterised further by an optional attribute 
 \begin{itemize}
 \item
 Left stochastic (default), \xatt{type="leftStochastic"}, a real square matrix, with each row summing to 1.
@@ -1701,7 +1707,7 @@ matrix and the XML code shows how it is implemented
   \includegraphics[width=125mm]{pics/transitionMatrix.pdf}
  \caption{An example for a transition matrix for a Markov chain. 
  (Left) the state transition diagram with three possible 
- states cat1, cat2, and cat3. (Right) the \textbf{left} transition matrix.}
+ states cat1, cat2, and cat3. (Right) The left stochastic transition matrix.}
  \label{fig:transitionMatrix}
 \end{figure}
 \lstset{language=XML}
@@ -1752,7 +1758,7 @@ Conditional transition probabilities can be implemented pairwise, e.g.
 & \mbox{other probabilities omitted...} \nonumber
 \end{align}
 or with a conditional transition matrix using piecewise statements were required, 
-Figure \ref{fig:markovMatrixCond}. See also section \ref{sec:markovModels} for use examples.
+Figure \ref{fig:markovMatrixCond}. See also section \ref{sec:markovModels} for complete examples.
 
 
 %\subsection{Encoding Markov models -- question}
@@ -1810,9 +1816,8 @@ when more then one argument is required \xelem{Vector} with \xelem{VectorElement
 \end{itemize}
 
 \subsubsection*{Example}
-An example of the use of N-ary operators is shown below using the
-\xatt{max} operator applied to a vector of numbers
-and symbol references, e.g. Amax = max(1, a2, 3, a4, fifthElement, $\dots$).
+An example of the application of N-ary operators is shown below using the
+\xatt{max} operator acting on a vector of arguments, e.g. Amax = max(1, a2, 3, a4, fifthElement, $\dots$).
 \lstset{language=XML}
 \begin{lstlisting}
             <IndividualParameter symbId="Amax">
@@ -2225,14 +2230,13 @@ distribution defined in ProbOnto
                     </Distribution>
                 </Categorical>
             </Covariate>
-        </CovariateModel>
 \end{lstlisting}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The return of the basic parameter}
 \label{sec:simpleParameter}
-\marginpar{\textcolor{red}{FINISH \\FINISH \\FINISH}}
+%\marginpar{\textcolor{red}{FINISH \\FINISH \\FINISH}}
 \xelem{SimpleParameter} available from the very beginning until version 0.6,
 replaced in 0.7.3 version by the \xelem{PopulationParameter}, has been now
 restored under the name \xelem{Parameter}. It turned out that it is useful in 
