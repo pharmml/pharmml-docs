@@ -2230,51 +2230,58 @@ distribution defined in ProbOnto
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{The return of the simple parameter}
+\section{The return of the basic parameter}
 \label{sec:simpleParameter}
 \marginpar{\textcolor{red}{FINISH \\FINISH \\FINISH}}
 \xelem{SimpleParameter} available from the very beginning until version 0.6,
 replaced in 0.7.3 version by the \xelem{PopulationParameter}, has been now
-restored. It turned out that it is useful in QSP and SB modelling where distinction
-between individual or population parameters is not possible or required.
+restored under the name \xelem{Parameter}. It turned out that it is useful in 
+QSP and SB modelling where distinction between individual or population 
+parameters is not possible or required.
 
 Because version 0.7.3 was not in use so far neither in the IOG use case nor 
-tool converters, the restoration of the \xelem{SimpleParameter} shouldn't 
-cause any confusions. Below we provide a short overview of parameters in
-last three versions
+tool converters, the restoration of the simple \xelem{Parameter} shouldn't 
+cause any confusions apart from the required renaming. Below we provide a short overview 
+of parameters as used in last three major versions
 \begin{itemize}
 \item 
 version 0.6.1
 \begin{itemize}
 \item 
-\xelem{IndividualParameter}
+\xelem{SimpleParameter} -- assignment 
 \item 
-\xelem{SimpleParameter}
+\xelem{IndividualParameter}  -- assignment, structured models with linear and 
+nonlinear covariate models, fixed and random effects and variability level reference
 \end{itemize}
 \item 
 version 0.7.3
 \begin{itemize}
 \item 
-\xelem{IndividualParameter}
+\xelem{IndividualParameter} -- assignment, structured models with linear and 
+nonlinear covariate models, fixed and random effects; distribution model type
+and variability level reference
 \item 
-\xelem{PopulationParameter}
+\xelem{PopulationParameter} -- assignment or distribution model type and variability level reference
 \end{itemize}
 \item 
 version 0.8
 \begin{itemize}
 \item 
-\xelem{SimpleParameter}
+\xelem{Parameter} -- assignment 
 \item 
-\xelem{IndividualParameter}
+\xelem{IndividualParameter} -- assignment, structured models with linear and 
+nonlinear covariate models, fixed and random effects; distribution model type
+and variability level reference
 \item 
-\xelem{PopulationParameter}
+\xelem{PopulationParameter} -- assignment or distribution model type and variability level reference
 \end{itemize}
 \end{itemize}
-In the majority of cashes the \xelem{SimpleParameter} has been replaced 
-by \xelem{PopulationParameter} except models where \xelem{SimpleParameter}
-is better suited. See for application examples such as models on drug-drug 
-interaction, \emph{../others/GrecoTung\_drugDrugInteraction.xml},
-and a PBPK model, \emph{../others/BradshawPierce\_2007.xml}.
+In the majority of the use cases the \xelem{SimpleParameter} has 
+been replaced by the \xelem{PopulationParameter} except models where 
+\xelem{Parameter} is better suited. See for application examples such as 
+models on drug-drug interaction, \emph{../others/GrecoTung\_drugDrugInteraction.xml},
+and a PBPK model, \emph{../others/BradshawPierce\_2007.xml}. The last one 
+is an update of a v0.4 model converted by the Cyprotex Model Writer.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
