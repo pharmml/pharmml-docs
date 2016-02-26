@@ -1,0 +1,184 @@
+
+\chapter{Changes in 0.8.1}
+\label{ch:081changes}
+
+
+\section{Extensions in \xatt{columnType} }
+Changes were required because both of demands in PharmML and SO\footnote{The schema 
+of the Standard Output (SO) reuses certain PharmML constructs, such as data declaration 
+support but it is otherwise independent from PharmML, \cite{SO:2016b}.}.
+
+\begin{itemize}
+\item 
+new values of the \xatt{columnType} attribute value \emph{varLevel} and (only relevant for SO) \emph{variance}, \emph{stdev}, \emph{mode}, \emph{median	}
+\item
+using multiple values in combination e.g.
+\lstset{language=XML}
+\begin{lstlisting}
+		columnType="covariate varLevel"
+\end{lstlisting}
+\end{itemize}
+See next section for a proper application case.
+
+
+\section{Higher level of variability}
+
+\subsection{Implicit mapping}
+
+Unambiguous identification of covariates mapped to level of variability 
+
+Previously only \emph{occasion} value was available which limited the usefulness
+of \xatt{columnType} specification. In the case an occasion was supposed to 
+be used as covariate and additional variability level source only 
+
+Also identifying higher levels of variability wouldn't be possible directly 
+via \xatt{columnType} and only indirectly via \xelem{ColumnMapping}.
+
+These cases are illustrated with the following example
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ds:Definition>
+            <ds:Column columnId="ID" columnType="id" valueType="string" columnNum="1"/>
+            <ds:Column columnId="TIME" columnType="time" valueType="real" columnNum="2"/>
+            <ds:Column columnId="Y" columnType="dv" valueType="real" columnNum="3"/>
+            <ds:Column columnId="AMT" columnType="dose" valueType="real" columnNum="4"/>
+            <ds:Column columnId="OCC" columnType="covariate" valueType="int" columnNum="5"/>
+        </ds:Definition>
+\end{lstlisting}
+with double mapping of OCC
+\begin{itemize}
+\item 
+covariate mapping 
+\item 
+variability model mapping 
+\end{itemize}
+
+\lstset{language=XML}
+\begin{lstlisting}
+            <ColumnMapping>
+                <ds:ColumnRef columnIdRef="OCC"/>
+                <ct:SymbRef blkIdRef="cm1" symbIdRef="Occasion"/>
+                <ds:CategoryMapping>
+                    <ds:Map modelSymbol="occ1" dataSymbol="1"/>
+                    <ds:Map modelSymbol="occ2" dataSymbol="2"/>
+                </ds:CategoryMapping>
+            </ColumnMapping>
+            <ColumnMapping>
+                <ds:ColumnRef columnIdRef="OCC"/>
+                <ct:SymbRef blkIdRef="vm1" symbIdRef="iov1"/>
+            </ColumnMapping>
+\end{lstlisting}
+
+
+\subsection{Explicit mapping}
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ds:Definition>
+            <ds:Column columnId="ID" columnType="id" valueType="string" columnNum="1"/>
+            <ds:Column columnId="TIME" columnType="time" valueType="real" columnNum="2"/>
+            <ds:Column columnId="Y" columnType="dv" valueType="real" columnNum="3"/>
+            <ds:Column columnId="AMT" columnType="dose" valueType="real" columnNum="4"/>
+            <ds:Column columnId="OCC" columnType="covariate varLevel" valueType="int" columnNum="5"/>
+        </ds:Definition>
+\end{lstlisting}
+
+
+\section{Optimal design extensions}
+\label{sec:OEDextentions}
+
+Optimal design and related task has been extended with few missing components.
+
+\subsection{Parameter settings}
+\xelem{ParametersToEstimate} added to optional design task description -- an element
+featured in estimation task already. Its reuse here allows for specification of parameters
+initial values, lower/upper bound values assignment or indication about 
+parameters to be kept fixed.
+
+
+\subsection{Added stage definition}
+
+The following examples are borrowed from \cite{CommetsExamples2015}
+and visualises the option available for the \xelem{StageDefinition} element
+\begin{itemize}
+\item 
+single stage specification
+\lstset{language=MLX}
+\begin{lstlisting}
+        DS{name=t1, element=doseTime, range=[0,6], stage = 1 }
+\end{lstlisting}
+with PharmML implementation
+\lstset{language=XML}
+\begin{lstlisting}
+        <StageDefinition>
+            <math:LogicBinop op="eq">
+                <math:Stage/>
+                <ct:Real>1</ct:Real>
+            </math:LogicBinop>
+        </StageDefinition>
+\end{lstlisting}
+
+\item 
+set stage specification
+\lstset{language=MLX}
+\begin{lstlisting}
+        DS{name=t1, element=doseTime, range=[0,8], stage = {1,2} }
+\end{lstlisting}
+\lstset{language=XML}
+with PharmML implementation
+\begin{lstlisting}
+        <StageDefinition>
+            <math:LogicBinop op="eq">
+                <design:Stage/>
+                <ct:Vector>
+                    <ct:VectorElements>
+                        <ct:Real>1</ct:Real>
+                        <ct:Real>2</ct:Real>
+                        <ct:Real>3</ct:Real>
+                    </ct:VectorElements>
+                </ct:Vector>
+            </math:LogicBinop>
+        </StageDefinition>
+\end{lstlisting}
+
+\item 
+interval stage specification
+\lstset{language=MLX}
+\begin{lstlisting}
+        DS{name=t1, element=doseTime, range=[0,8], stage > 1 & stage < 4 }
+\end{lstlisting}
+\lstset{language=XML}
+with PharmML implementation
+\begin{lstlisting}
+        <StageDefinition>
+            <math:LogicBinop op="or">
+                <math:LogicBinop op="gt">
+                    <Stage/>
+                    <ct:Int>1</ct:Int>
+                </math:LogicBinop>
+                <math:LogicBinop op="lt">
+                    <Stage/>
+                    <ct:Int>4</ct:Int>
+                </math:LogicBinop>
+            </math:LogicBinop>
+        </StageDefinition>
+\end{lstlisting}
+\end{itemize}
+
+\section{Minor changes}
+
+\begin{itemize}
+\item 
+Adding software settings element \xelem{SoftwareSettings} to common task 
+types allowing for optional storage of software specific settings -- in agreement 
+with recent MDL task proposal.
+\item
+Type defining the FIM-atrix with attribute \xatt{type} being assigned values \{B, I, P\}, e.g.
+\lstset{language=XML}
+\begin{lstlisting}
+			<FIM type="P"/>
+\end{lstlisting}
+\end{itemize}
+
+
