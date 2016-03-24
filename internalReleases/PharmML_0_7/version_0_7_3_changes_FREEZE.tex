@@ -1,0 +1,207 @@
+\documentclass[a4paper,10pt]{report}
+
+\usepackage{tikz}
+\usetikzlibrary{shadows.blur}
+\usetikzlibrary{shapes.symbols}
+
+\usepackage{fancybox, graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xspace}
+\pagestyle{headings}
+%\usepackage[margin=1.2in]{geometry}
+\usepackage[left=2cm, right=2cm, top=2.5cm, bottom=2cm]{geometry}
+\usepackage{float}
+\restylefloat{table}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.58}
+\definecolor{attributeColor}{rgb}{0.96,0.517,0.29}
+\definecolor{darkgreen}{rgb}{0,.392,0}
+\definecolor{stringColor}{rgb}{0.6,0.2,0}
+\usepackage{array,multirow}
+\usepackage{longtable}
+\usepackage{cleveref}
+\usepackage{bbding}
+\crefname{section}{¤}{¤¤}
+\Crefname{section}{¤}{¤¤}
+\usepackage[utf8]{inputenc}
+\usepackage{tablefootnote}
+\usepackage{algorithmic}
+\usepackage[modulo, pagewise]{lineno}
+%\nolinenumbers
+\usepackage{makecell}
+\usepackage{multicol}
+\usepackage{url}
+\usepackage{verbatimbox}
+\usepackage{xcolor}
+\usepackage{cancel}
+
+\usepackage{caption} 
+\captionsetup[table]{skip=5pt}
+\captionsetup[longtable]{skip=5pt}
+\captionsetup[figure]{skip=1pt}
+
+\usepackage{titlesec}
+\titlespacing*{\subsection}{0pt}{1.5\baselineskip}{\baselineskip}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+ 
+\newcounter{example}[section]
+\newenvironment{example}[1][]{\refstepcounter{example}\par\medskip
+   \textbf{Example~\theexample. #1} \rmfamily}{\medskip}
+   
+\newcounter{note}[section]
+\newenvironment{note}[1][]{\refstepcounter{note}\par\medskip
+   \textbf{Note~\thenote. #1} \rmfamily}{\medskip}
+   
+\newcommand{\myStartLine}{\par
+  \kern8pt % space above the rules
+  \hrule height 0.5pt
+  \kern3pt % space below the rules
+}
+\newcommand{\myEndLine}{\par
+  \kern3pt % space above the rules
+  \hrule height 1.5pt
+  \kern12pt % space below the rules
+}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\lstdefinelanguage{XML}
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<![CDATA[}{]]>},
+  moredelim=[s][\bfseries\color{darkgreen}]{<!--}{-->},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{red},
+  keywordstyle=\color{attributeColor},
+  morekeywords={oid,columnId,columnIdRef,symbId,symbolType,op,columnNum,columnType,
+  valueType,inputTarget,blkId,blkIdRef,symbIdRef,xmlns,version,type,VariableMapping,
+  IndividualMapping,schemaLocation,xs,xsi,NONMEMdataSet,matrixType,opType,order,
+  math,ct,ds,mdef,mstep,mml,un,name,definition,writtenVersion,id,inputType,oidRef,catId,
+  length,default,vectorIndex,diagDefault,offDiagDefault,row,column,numbRows,numbCols,
+  dataSymbol,modelSymbol,ordered,compartmentNo,compNo,ordered,linkFunction,varId,
+  censoringType,dataSymbol,modelSymbol,MarkovOrder,deviationMatrixType,implementedBy,
+  argument,admNumber,transformId,transformIdRef,catIdRef,headerType,rowNumber,
+  toolName,dataCode,missingDataType,regressor,fixed,symbol,transform} % list your attributes here
+}
+
+\lstdefinelanguage{MLX} 
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={dads} % list your attributes here
+}
+
+\lstdefinelanguage{NM}
+{
+  basicstyle=\sffamily\small,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[is][\bfseries\color{red}]{[*}{*]},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={kjkj} % list your attributes here
+}
+
+\newcommand{\cellml}{CellML\xspace}
+\newcommand{\sbml}{SBML\xspace}
+\newcommand{\sedml}{SED-ML\xspace}
+\newcommand{\mathml}{MathML\xspace}
+\newcommand{\uncertml}{UncertML\xspace}
+\newcommand{\pml}{PharmML\xspace}
+\newcommand{\pharmml}{PharmML\xspace}
+\newcommand{\xelem}[1]{\texttt{<#1>}\index{XML Element!\texttt{<#1>}}}
+\newcommand{\xatt}[1]{\texttt{#1}\index{XML Attribute!\texttt{#1}}}
+
+\begin{document}
+
+%\input{title_NB.tex} 
+%\input{title_GNB.tex} 
+%\input{title_0_7_1.tex} 
+\input{title_0_7_3.tex} 
+
+\linenumbers
+\tableofcontents
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Overview}
+To avoid redundant and overlapping \marginpar{\HandCuffLeft} description this 
+document contains only the changes in 0.7.3 version. For the detailed report on changes  
+in PharmML 0.7--0.7.2 and ProbOnto 0.3, see the documents released with this version, 
+\cite{Swat:2015b} and \cite{ProbOnto:2015a}.
+
+\section*{Extensions/bug fixes in version 0.7.3}
+
+\captionsetup[longtable]{skip=1em}
+\LTcapwidth=\textwidth
+\begin{center}
+%\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{lll}
+\hline
+\hline
+\pml element 				&  version $\le$ 0.7.2 			& version 0.7.3 \\
+or modelling aspect 			& 							& \\
+\hline
+\hline
+Datasets, see section \ref{sec:ignore}& No support for ignoring records	& {\color{red} \scshape{new}} \xelem{IgnoreLine} \\[0.5ex]
+\hline
+Discrete data models,		& bug in PMF structure			& \xatt{linkFunction} renamed to the (optional) \\[-0.5ex]
+see section \ref{sec:link}		&							& \xatt{transform} attribute \\ 	
+\hline
+\caption{Overview of major differences between versions $\le$ 0.7.2 and 0.7.3.}
+\label{figTable:overviewTable4}
+\vspace{-2em}
+\end{longtable}
+\end{center}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/Changes073}
+
+
+
+
+%\bibliographystyle{abbrvnat}
+\bibliographystyle{myplainnat}
+\bibliography{pharmml-specification}
+\end{document}

@@ -35,7 +35,7 @@
 \nolinenumbers
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-\fancyhead[RO]{PharmML 0.8}
+\fancyhead[RO]{PharmML 0.8-0.8.1}
 \fancyhead[RE]{\itshape\nouppercase{\leftmark}}
 \usepackage{booktabs}
 \usepackage{fixltx2e}
@@ -126,7 +126,8 @@
   dataSymbol,modelSymbol,ordered,compartmentNo,compNo,ordered,linkFunction,varId,
   censoringType,dataSymbol,modelSymbol,MarkovOrder,deviationMatrixType,implementedBy,
   argument,admNumber,transformId,transformIdRef,catIdRef,headerType,rowNumber,
-  toolName,dataCode,missingDataType,regressor,fixed,transformation,transform,symbol} % list your attributes here
+  toolName,dataCode,missingDataType,regressor,fixed,transformation,transform,symbol,
+  referenceLevel,ref} % list your attributes here
 }
 
 \lstdefinelanguage{MLX} 
@@ -203,21 +204,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Overview}
 
-This document describes extensions and changes in \pml compared to version 0.7.3
-released in September 2015. The changes so far are visualised in Figure \ref{fig:history}.
+This document describes extensions and changes in \pml between versions 0.7.3 \& 0.8 
+and 0.8 \& 0.8.1. The evolution of \pml since the project start	 are visualised in Figure \ref{fig:history}.
 
 \begin{figure}[ht!]
 \centering
-  \includegraphics[width=160mm]{pics/Timeline08.pdf}
+  \includegraphics[width=160mm]{pics/Timeline-081.pdf}
  \caption{PharmML release history with major extensions shown of each version.}
  \label{fig:history}
 \end{figure}
 
-\section{Summary of changes/extensions}
-The following table summarises the major changes in version 0.8 described in detail 
-in following chapters. We have tried to be exhaustive, please let us know we missed 
-anything.
-
+\section{Summary of changes/extensions in 0.8}
+The following table summarises the major changes in version 0.8 compared to 0.7.3 
+described in detail in following chapters. 
+	
 \captionsetup[longtable]{skip=1em}
 \LTcapwidth=\textwidth
 \begin{center}
@@ -296,6 +296,53 @@ Section \ref{subsec:condIgnore}	& declaration only	&  \\
 \end{longtable}
 \end{center}
 
+\section{Summary of changes/extensions in 0.8.1}
+
+\setlength{\tabcolsep}{5pt}
+%\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{lll}
+\hline
+\hline
+\pml element 				&  version $\le$ 0.8 	& version 0.8.1 \\
+or modelling aspect 			& 					& \\
+\hline
+Setting and output files		& no support			& {\color{red} \scshape{new}} \xelem{SoftwareSettings} added \\	
+\ref{sec:filesSupport}		&					& {\color{red} \scshape{new}} \xelem{OutputFile} added \\
+\hline
+Dataset definition 				& missing or redundant  & \xatt{columnType} with new values \\
+section \ref{subsec:columnType}	& values				&  \emph{varLevel}, \emph{variance}, \emph{stdev}, \emph{mode}, \emph{median} {\color{red} \scshape{new}}  \\
+							&					& -- removed \emph{varParameter\_corr}, \emph{varParameter\_cov}, \\
+						&					& \emph{varParameter\_stdev}, \emph{varParameter\_var} \\
+						&					& -- multiple values allowed \\
+-- for use in SO only			& not supported 		& {\color{red} \scshape{new}} \xatt{level} attribute \\
+see \cite{SO:2016b}	&					& \\
+\hline
+Optimal Design 			& missing stage support	& {\color{red} \scshape{new}} \xelem{StageDefinition} element with  \\
+Section \ref{sec:OEDextentions} &					& \xelem{Stage} child element \\
+						& missing params to estimate 		& {\color{red} \scshape{new}} \xelem{ParametersToEstimate} \\
+						& support	in OD		& \\
+						& FIM type missing		& -- {\color{red} \scshape{new}} \xatt{type} with values \{B, I, P\} \\ 
+						&					& -- \xelem{Matrix} support removed \\
+\hline
+Variables					& attribute mandatory	& \xatt{symbolType} attribute is optional \\
+section \ref{sec:schemaChanges}	&					& \\
+\hline
+Integer declaration			& types used: \xatt{int}, \xatt{integer} or  & \xatt{int} only \\
+section \ref{sec:schemaChanges}	& \xatt{positiveInteger}	& \\
+\hline
+Piecewise declaration		& occurring in many namespaces & declared in \xatt{math} namespace 	only \\
+section \ref{sec:schemaChanges}	&					& \\
+\hline
+Conditional statements		& ODEs not supported	& ODEs allowed \\
+Section \ref{sec:ODEinCS}	& 					& \\
+\hline
+Functions					& not supported	& {\color{red} \scshape{new}} \xatt{gamma} \\
+Section \ref{sec:minors}		& 				& \\
+\hline
+\caption{Overview of major differences between versions 0.8.1 and 0.8}
+\label{figTable:overviewTable}
+\vspace{-2em}
+\end{longtable}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -303,6 +350,9 @@ Section \ref{subsec:condIgnore}	& declaration only	&  \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \input{input/newApplications08}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/mainChanges081}
 
 
 \appendix

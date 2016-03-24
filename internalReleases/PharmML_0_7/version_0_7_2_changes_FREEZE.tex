@@ -1,0 +1,542 @@
+\documentclass[a4paper,10pt]{report}
+
+\usepackage{tikz}
+\usetikzlibrary{shadows.blur}
+\usetikzlibrary{shapes.symbols}
+
+\usepackage{fancybox, graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xspace}
+\pagestyle{headings}
+%\usepackage[margin=1.2in]{geometry}
+\usepackage[left=2cm, right=2cm, top=2.5cm, bottom=2cm]{geometry}
+\usepackage{float}
+\restylefloat{table}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.58}
+\definecolor{attributeColor}{rgb}{0.96,0.517,0.29}
+\definecolor{darkgreen}{rgb}{0,.392,0}
+\definecolor{stringColor}{rgb}{0.6,0.2,0}
+\usepackage{array,multirow}
+\usepackage{longtable}
+\usepackage{cleveref}
+\usepackage{bbding}
+\crefname{section}{¤}{¤¤}
+\Crefname{section}{¤}{¤¤}
+\usepackage[utf8]{inputenc}
+\usepackage{tablefootnote}
+\usepackage{algorithmic}
+\usepackage[modulo, pagewise]{lineno}
+%\nolinenumbers
+\usepackage{makecell}
+\usepackage{multicol}
+\usepackage{url}
+\usepackage{verbatimbox}
+\usepackage{xcolor}
+\usepackage{cancel}
+
+\usepackage{caption} 
+\captionsetup[table]{skip=5pt}
+\captionsetup[longtable]{skip=5pt}
+\captionsetup[figure]{skip=1pt}
+
+\usepackage{titlesec}
+\titlespacing*{\subsection}{0pt}{1.5\baselineskip}{\baselineskip}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+ 
+\newcounter{example}[section]
+\newenvironment{example}[1][]{\refstepcounter{example}\par\medskip
+   \textbf{Example~\theexample. #1} \rmfamily}{\medskip}
+   
+\newcounter{note}[section]
+\newenvironment{note}[1][]{\refstepcounter{note}\par\medskip
+   \textbf{Note~\thenote. #1} \rmfamily}{\medskip}
+   
+\newcommand{\myStartLine}{\par
+  \kern8pt % space above the rules
+  \hrule height 0.5pt
+  \kern3pt % space below the rules
+}
+\newcommand{\myEndLine}{\par
+  \kern3pt % space above the rules
+  \hrule height 1.5pt
+  \kern12pt % space below the rules
+}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\lstdefinelanguage{XML}
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<![CDATA[}{]]>},
+  moredelim=[s][\bfseries\color{darkgreen}]{<!--}{-->},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{red},
+  keywordstyle=\color{attributeColor},
+  morekeywords={oid,columnId,columnIdRef,symbId,symbolType,op,columnNum,columnType,
+  valueType,inputTarget,blkId,blkIdRef,symbIdRef,xmlns,version,type,VariableMapping,
+  IndividualMapping,schemaLocation,xs,xsi,NONMEMdataSet,matrixType,opType,order,
+  math,ct,ds,mdef,mstep,mml,un,name,definition,writtenVersion,id,inputType,oidRef,catId,
+  length,default,vectorIndex,diagDefault,offDiagDefault,row,column,numbRows,numbCols,
+  dataSymbol,modelSymbol,ordered,compartmentNo,compNo,ordered,linkFunction,varId,
+  censoringType,dataSymbol,modelSymbol,MarkovOrder,deviationMatrixType,implementedBy,
+  argument,admNumber,transformId,transformIdRef,catIdRef,headerType,rowNumber,
+  toolName,dataCode,missingDataType,regressor,fixed} % list your attributes here
+}
+
+\lstdefinelanguage{MLX} 
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={dads} % list your attributes here
+}
+
+\lstdefinelanguage{NM}
+{
+  basicstyle=\sffamily\small,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[is][\bfseries\color{red}]{[*}{*]},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={kjkj} % list your attributes here
+}
+
+\newcommand{\cellml}{CellML\xspace}
+\newcommand{\sbml}{SBML\xspace}
+\newcommand{\sedml}{SED-ML\xspace}
+\newcommand{\mathml}{MathML\xspace}
+\newcommand{\uncertml}{UncertML\xspace}
+\newcommand{\pml}{PharmML\xspace}
+\newcommand{\pharmml}{PharmML\xspace}
+\newcommand{\xelem}[1]{\texttt{<#1>}\index{XML Element!\texttt{<#1>}}}
+\newcommand{\xatt}[1]{\texttt{#1}\index{XML Attribute!\texttt{#1}}}
+
+\begin{document}
+
+%\input{title_NB.tex} 
+%\input{title_GNB.tex} 
+%\input{title_0_7_1.tex} 
+\input{title_0_7_2.tex} 
+%\input{ProbOnto_title.tex} 
+
+\linenumbers
+\tableofcontents
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Overview}
+
+This document describes extensions and changes in \pml compared to version 0.6
+ released in January 2015.
+
+
+\section*{Major changes/extensions in version 0.7}
+The following table summarises the major changes described in detail in following chapters. 
+Please, note that this list is not exhaustive.
+
+\captionsetup[longtable]{skip=1em}
+\LTcapwidth=\textwidth
+\begin{center}
+%\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{lll}
+\hline
+\hline
+\pml element 				&  version $\le$ 0.6 				& version 0.7 \\
+or modelling aspect 			& 							& \\
+\hline
+\hline
+  \multicolumn{3}{c}{\textit{ProbOnto}}		\\
+\hline
+\hline
+Probability distributions -- 	& \uncertml used for encoding of 	& {\color{red} \scshape{new}} \xelem{Distribution} element with  \\
+annotation and encoding of 	& distributions but no support for  	& children \xelem{ProbOnto} and \xelem{UncertML} \\
+statistical models,			& annotations					& {\color{red} \scshape{new}} \emph{ProbOnto} - ontology and knowledge  \\
+chapter \ref{ch:ProbOnto}		&							& base of probability distribution 	\\
+						& 							& -- support for expressions as parameters \\
+						& 							& -- support for distribution functions \\
+						&							&  and quantities \\
+						&							& -- more then 50 discrete and continuous \\
+						&							& distributions and/or alternative  \\
+						&							& parameterisations \\
+\hline
+\hline
+  \multicolumn{3}{c}{\textit{Models}}		\\
+\hline
+\hline
+Covariates, parameters and 	& \emph{Distribution}-type not available					& {\color{red} \scshape{new}} \emph{Distribution}-type model\\
+observations model,   		&							& can be used with either \uncertml or \\
+chapter \ref{ch:Models}		&							& ProbOnto \\
+\hline
+Individual parameter model,	& 3 types supported: 			& 4 types supported  \\
+section \ref{sec:individualParameter}& -- \emph{Equation}-type		& -- {\color{red} \scshape{modified}} \emph{Structured}-type \\
+						& -- \emph{Gaussian} with linear	& \xelem{GaussianModel} renamed to   \\
+						& -- \emph{Gaussian} with nonlinear & \xelem{StructuredModel} with linear/nonlinear \\
+						& covariate model				& covariate model\\
+						&  							& -- \xelem{PopulationParameter} element \\
+						&							& renamed to \xelem{PopulationValue} \\
+						&							& -- \emph{Equation}-type (no changes) \\
+						&							& -- {\color{red} \scshape{new}} \emph{Distribution}-type model using  \\
+						&							& either UncertML or ProbOnto \\
+						&							& {\color{red} \scshape{new}} \xelem{RandomEffectMapping} \\
+						&							& to map variability levels in \emph{Distribution} \\
+						&							& -type models \\
+\hline
+Population parameter,		& \xelem{SimpleParameter} used	&{\color{red} \scshape{new}} \xelem{PopulationParameter} element \\	
+section \ref{sec:populationParameter}& with no distribution support		& replaces \xelem{SimpleParameter} element \\
+\hline
+Observation model			& Gaussian and \emph{Equation}-type	& {\color{red} \scshape{new}}  \emph{Distribution}-type \\
+section \ref{subsec:contModels} 	&						& \\
+\hline
+Covariate model,			& Transformation, interpolation  	& {\color{red} \scshape{new}} Support for conditional distributions \\
+section \ref{sec:condDistros}	& and distribution of covariates 	& wrt covariates or design elements  \\
+						& supported					& \\
+section \ref{sec:minorChanges}& not supported				& \xelem{CovariateModel} has an additional option \\
+						&							& for creating new covariates out of exiting  \\
+						&							& ones \\
+\hline
+Matrix/Vector operators,		& not supported basic types		& {\color{red} \scshape{new}} \xelem{MatrixUniOp} element with \\
+chapter \ref{ch:Bayesian}		&							& values \emph{inverse, trace and transpose} \\
+\hline
+Transformation element, 		& supported 					& new structure with attribute \xatt{type} \\
+section \ref{sec:individualParameter} and \ref{sec:BoxCoxTrafo}	&					& to be assigned values such as \emph{log}, \emph{logit} etc. \\
+						&							& {\color{red} \scshape{new}} \emph{BoxCox} \\
+\hline
+Count data models,			& 							& {\color{red} \scshape{new}} \xelem{NumberCounts} element for variable \emph{k} \\
+section \ref{sec:minorChanges} &							& \\
+\hline
+\hline
+  \multicolumn{3}{c}{\textit{BAYESIAN INFERENCE \& HIERARCHICAL MODELS}}  \\
+\hline
+\hline
+Population parameter, 		& not supported				& {\color{red} \scshape{new}} \xelem{PopulationParameter} with \\
+chapter \ref{ch:Bayesian}		& 							&  \emph{Distribution}-type or \emph{Equation}-type \\
+\hline
+\hline
+  \multicolumn{3}{c}{\textit{TRIAL DESIGN}}  \\
+\hline
+\hline
+Structure, chapter \ref{ch:Design}	& CDISC based			& redesigned based on WP3 design proposal \\
+						&							& -- all design elements are in \xelem{TrialDesign}  \\
+						&							& -- dataset reference \xelem{ExternalDataSet} \\
+						&							&  relocated to trial section \\
+\hline
+Lookup table 				& Available in \xelem{Administration}& Moved to \xelem{Observations} \\
+\hline
+Simulation Step			& reference to interventions 		&  \xelem{InterventionsReference} element {\color{red} \scshape{new}}\\
+						& not possible					& \\
+\hline
+\hline
+  \multicolumn{3}{c}{\textit{GENERAL}}  \\
+\hline
+\hline
+Interval, section \ref{subsec:interval} & not available				& {\color{red} \scshape{new}} \xelem{Interval} with left/right- \\
+						&							& endpoints of closed/open \xatt{type} attribute. \\
+						&							& \xatt{closed} is the default value. \\
+\hline
+Box-Cox transformation 		& not available					& \xelem{Transformation} with new value \\
+applied to observations		&							& \emph{BoxCox} for the \xatt{type} attribute and \\ 
+and parameters			&							& \xelem{Parameter} child element for \emph{lambda} \\
+ section \ref{sec:BoxCoxTrafo}	&							& parameter \\
+\hline
+Missing data, section \ref{sec:missingData}	& only \emph{NA} supported in inline & -- Inline datasets -- {\color{red} \scshape{new}} elements \\
+						& datasets					&  \xelem{NaN}, \xelem{minusInf}, \xelem{plusInf}, \xelem{ALQ}, \\
+						&							& \xelem{BLQ}\\
+						&							& -- External datasets -- {\color{red} \scshape{new}} elements \\
+						&							& \xelem{MissingData} with attributes \xatt{dataCode} \\
+						&							& and \xatt{missingDataType} with values: \\
+						&							& \{\emph{NA, NaN, plusInf, minusInf, BLQ, ALQ}\}\\
+\hline
+Dataset headers, 			& not supported       				& {\color{red} \scshape{new}} elements in dataset \\
+section \ref{sec:headers}		&							& -- \xelem{Definition}: \xelem{Header} with attributes \\
+						&							& \xatt{name}, \xatt{headerType}, \xatt{rowNumber} \\
+						&							& -- \xelem{Table}: \xelem{HeaderRow} with attribute \\
+						&							& \xatt{order} \\
+\hline
+Regressors, section \ref{sec:regressors}	& supported when using datasets  	& {\color{red} \scshape{new}} attribute \xatt{regressor} with values \\
+						& and lookup tables 				& \emph{yes/no} added to \xelem{Variable} element \\
+\hline
+SO column types,			& no SO specific types supported	& {\color{red} \scshape{new}} values for the \xatt{columnType} introduced: \\
+section \ref{sec:minorChanges} &							& \{\emph{indivParameter, popParameter, randEffect,} \\
+						&							& \emph{residual, strataVariable, statPrecision,}\\ 
+						&							& \emph{structParameter, varParameter}\} \\
+\hline
+\caption{Overview of major differences between versions 0.7 and 0.6.}
+\label{figTable:overviewTable}
+\vspace{-2em}
+\end{longtable}
+\end{center}
+
+\newpage
+\section*{Major changes/extensions in version 0.7.1}
+
+\captionsetup[longtable]{skip=1em}
+\LTcapwidth=\textwidth
+\begin{center}
+%\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{lll}
+\hline
+\hline
+\pml element 				&  version $\le$ 0.7 				& version 0.7.1 \\
+or modelling aspect 			& 							& \\
+\hline
+\hline
+  \multicolumn{3}{c}{\textit{GENERAL}}  \\
+\hline
+\hline
+ProbOnto support, 			& elements implemented as part  	& {\color{red} \scshape{new}} separate ProbOnto schema developed  \\
+chapter \ref{ch:071changes} 	& of PharmML schema			& -- allows flexible extending of the distribution  \\
+						&							& collection \\
+see appendix \ref{ch:probontoAppendix}	& $\sim$55 distribution available	& -- 64 distribution available \\
+\hline
+Mathematical expressions,	& \xelem{Equation} elements required &  \xelem{Equation} element removed  \\
+chapter \ref{ch:071changes}	&							& \\
+\hline
+Dataset mapping, see		& \xatt{columnType} attribute is  	& \xatt{columnType} attribute is optional \\
+chapter \ref{ch:071changes}	& mandatory					&\\
+\hline
+Defining sequences, see 		& two options supported 			& {\color{red} \scshape{new}} option Begin:StepNumber:End \\
+chapter \ref{ch:071changes}	& -- Begin:StepSize:End and 		& -- \xelem{Repetitions} renamed to \xelem{StepNumber} \\
+						& -- Begin:StepSize:StepNumber  	& \\
+\hline
+\caption{Overview of major differences between versions 0.7.1 and 0.7.}
+\label{figTable:overviewTable2}
+\vspace{-2em}
+\end{longtable}
+\end{center}
+
+\section*{Major changes/extensions in version 0.7.2}
+
+\captionsetup[longtable]{skip=1em}
+\LTcapwidth=\textwidth
+\begin{center}
+%\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{lll}
+\hline
+\hline
+\pml element 				&  version $\le$ 0.7.1 			& version 0.7.2 \\
+or modelling aspect 			& 							& \\
+\hline
+\hline
+Optimal design tasks, 		& Not supported				& {\color{red} \scshape{new}} Evaluation/optimisation tasks   \\
+section \ref{sec:newDesignTasks}	& 						& supported \\
+\hline
+ProbOnto -- general,		& 64 distributions/parameterisations & -- 71 distributions/parameterisations  \\
+section \ref{sec:POextentions} 	& No relationships or properties	& -- more then 30 relationships and   \\
+						& 		 					& -- 40 re-parameterisation formulas \\
+Count data models,			& 7 models covered				& Additional 5 models: new parameterisations \\
+section \ref{subsec:countModels}	&						& for generalised Poisson, negative binomial \\
+						&							& and {\color{red} \scshape{new}} Double Poisson \\
+\hline
+Vectors, section \ref{sec:otherChanges072} & mandatory elements & Can be empty assumed it is defined using \\
+						&							& attributes \xatt{default} and \xatt{length} \\
+\hline
+Matrix operators			& Available \xatt{inverse}, \xatt{trace}& {\color{red} \scshape{new}}  \xatt{determinant} added \\
+section \ref{sec:otherChanges072} &						& \\
+\hline
+Dataset's \xatt{columnType}	& Number of values allowed since 0.7 & {\color{red} \scshape{new}} \emph{varParameter\_var}, \emph{varParameter\_stdev},  \\
+section \ref{sec:otherChanges072}	& for SO 					& \emph{varParameter\_cov}, \emph{varParameter\_corr} \\
+						&							& to be used in SO tables\\
+\hline
+Dosing target type			& \xatt{inputTarget} mandatory 	& \xatt{inputTarget} attribute is optional \\
+specification				&							& \\
+\hline
+\caption{Overview of major differences between versions 0.7.1 and 0.7.2.}
+\label{figTable:overviewTable3}
+\vspace{-2em}
+\end{longtable}
+\end{center}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/ProbOntoChapter}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/mainChanges07}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/Changes071}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/Changes072}
+
+
+\appendix
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/ProbOnto}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/appendix_GNB}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/appendix_NB}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\input{input/DispersionModels}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\chapter{Application of selected distributions}
+%%\label{ch:distributions}
+%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\section{Lognormal Distribution}
+%%The lognormal distribution is applicable to random variables that are constrained by
+%%zero but have a few very large values. The resulting distribution is asymmetrical and
+%%positively skewed. Examples include the following:
+%%¥ The weight of adults
+%%¥ The concentration of minerals in deposits
+%%¥ Duration of time off due to sickness
+%%¥ Distribution of wealth
+%%¥ Machine down times
+%%
+%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%Bernoulli:\\
+%%Forbes at al.
+%%
+%%An example of a Bernoulli trial is the inspection of a random item from a production
+%%line with the possible result that the item could be acceptable or faulty
+%%
+%%Beta:\\
+%%Applications include modeling random variables that have a finite range, a to b. An
+%%example is the distribution of activity times in project networks. The beta distribution
+%%is frequently used as a prior distribution for binomial proportions in Bayesian analysis.
+%%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\section{Binomial Distribution}
+%%\url{http://wwwpub.utdallas.edu/~scniu/}
+%%\begin{itemize}
+%%\item 
+%%The number of heads/tails in a sequence of coin flips
+%%\item
+%%Vote counts for two different candidates in an election
+%%\item
+%%The number of male/female employees in a company
+%%\item
+%%The number of accounts that are in compliance or not
+%%in compliance with an accounting procedure
+%%\item
+%%The number of successful sales calls
+%%\item
+%%The number of defective products in a production run
+%%\item
+%%The number of days in a month your company's computer
+%%network experiences a problem
+%%\end{itemize}
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\section{Poisson Distribution}
+%%\url{http://wwwpub.utdallas.edu/~scniu/}
+%%\begin{itemize}
+%%\item
+%%The hourly number of customers arriving at a bank
+%%\item
+%%The daily number of accidents on a particular stretch
+%%of highway
+%%\item
+%%The hourly number of accesses to a particular web
+%%server
+%%\item
+%%The daily number of emergency calls in Dallas
+%%\item
+%%The number of typos in a book
+%%\item
+%%The monthly number of employees who had an absence
+%%in a large company
+%%\item
+%%Monthly demands for a particular product
+%%\end{itemize}
+%%\url{https://en.wikipedia.org/wiki/Poisson_distribution#History}
+%%\begin{itemize}
+%%\item
+%%number of soldiers killed accidentally by horse kicks
+%%\end{itemize}
+%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%\section{Generalized Poisson Distribution}
+%%%On the Generalized Poisson Distribution, Hans J. H. Tuenter
+%%%\url{http://arxiv.org/pdf/math/0606238.pdf/}
+%%Citation: "Applications of the GPD can be found in settings where one seeks to describe the
+%%distribution of an event that occurs rarely in a short period, but where we observe the
+%%frequency of its occurrence in longer periods of time. It extends the Poisson distribution by
+%%its ability to describe situations where the probability of occurrence of a single event does
+%%not remain constant (as in a Poisson process), but is affected by previous occurrences. The
+%%distribution has been found (Consul, 1989, pp. 117Ð129) to accurately describe phenomena
+%%as diverse as the observed number of industrial accidents and injuries, where a learning
+%%effect may be present, the spatial distribution of insects, where initial occupation of a spot
+%%by a member of the species has an influence on the attractiveness of the spot to other
+%%members of the species, and the number of units of different commodities purchased by
+%%consumers, where current sales have an impact on the level of subsequent sales through
+%%repeat purchases."
+
+%
+%\paragraph{Covariate model}
+%Covariate model is barely covered so far. See also \cite{Keizer:2011aa}. Missing are following features:\\
+%For categorical covariates:\\
+%-- categorical distribution of categorical covariates \\
+%---- estimating categorical distribution from external data file -- TEST \\
+%---- sampling from known categorical distribution -- TEST \\
+%---- clusters of categorical covariates \\
+%For continuous covariates:\\
+%-- power-normal distribution for continuous covariates \\
+%---- estimating parameters $\lambda$,$\mu$,$\sigma$ from external data file \\
+%---- sampling from known power-normal distribution \\
+%---- conditional distribution of continuous covariates - DONE \\
+%---- selecting criteria for continuous covariates \\
+%---- dependent distribution of continuous covariates \\
+%---- correlated continuous covariates \\
+%For both types: \\
+%-- selection/exclusion criteria missing \\
+
+
+\bibliographystyle{plain}
+\bibliography{pharmml-specification}
+\end{document}
+
