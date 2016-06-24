@@ -1,0 +1,1412 @@
+\documentclass[a4paper,10pt]{report}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xspace}
+\pagestyle{headings}
+%\usepackage[margin=1.2in]{geometry}
+\usepackage[total={6.5in,10in}, top=1.2in, left=.8in, includefoot]{geometry}
+\usepackage{float}
+\restylefloat{table}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.58}
+\definecolor{attributeColor}{rgb}{0.96,0.517,0.29}
+\definecolor{darkgreen}{rgb}{0,.392,0}
+\definecolor{stringColor}{rgb}{0.6,0.2,0}
+\usepackage{array,multirow}
+\usepackage{longtable}
+\usepackage{cleveref}
+\usepackage{bbding}
+\crefname{section}{¤}{¤¤}
+\Crefname{section}{¤}{¤¤}
+\usepackage[utf8]{inputenc}
+
+\newcommand{\myStartLine}{\par
+  \kern8pt % space above the rules
+  \hrule height 0.5pt
+  \kern3pt % space below the rules
+}
+\newcommand{\myEndLine}{\par
+  \kern3pt % space above the rules
+  \hrule height 1.5pt
+  \kern12pt % space below the rules
+}
+
+%\lstset{
+%  basicstyle=\ttfamily,
+%  columns=fullflexible,
+%  showstringspaces=false,
+%  commentstyle=\color{gray}\upshape
+%  numbers=left,
+%%  frame = single, 
+%%  stepnumber=5
+%}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\lstdefinelanguage{XML}
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<![CDATA[}{]]>},
+  moredelim=[s][\bfseries\color{darkgreen}]{<!--}{-->},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{red},
+  keywordstyle=\color{attributeColor},
+  morekeywords={oid,columnId,columnIdRef,symbId,symbolType,op,columnNum,columnType,
+  valueType,inputTarget,blkId,blkIdRef,symbIdRef,xmlns,version,type,VariableMapping,
+  IndividualMapping,schemaLocation,xs,xsi,NONMEMdataSet,matrixType,opType,order,
+  math,ct,ds,mdef,mstep,mml,un,name,definition,writtenVersion,id,inputType,oidRef,catId,
+  length,default,vectorIndex,diagDefault,offDiagDefault,row,column,numbRows,numbCols,
+  dataSymbol,modelSymbol,ordered,compartmentNo,compNo,ordered,linkFunction,varId,
+  censoringType,dataSymbol,modelSymbol,MarkovOrder,deviationMatrixType,implementedBy} % list your attributes here
+}
+
+\lstdefinelanguage{MLXTRANcode} 
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={dads} % list your attributes here
+}
+
+\lstdefinelanguage{NONMEMdataSet}
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={kjkj} % list your attributes here
+}
+
+
+\newcommand{\cellml}{CellML\xspace}
+\newcommand{\sbml}{SBML\xspace}
+\newcommand{\sedml}{SED-ML\xspace}
+\newcommand{\mathml}{MathML\xspace}
+\newcommand{\uncertml}{UncertML\xspace}
+\newcommand{\pml}{PharmML\xspace}
+\newcommand{\pharmml}{PharmML\xspace}
+\newcommand{\xelem}[1]{\texttt{<#1>}\index{XML Element!\texttt{<#1>}}}
+\newcommand{\xatt}[1]{\texttt{#1}\index{XML Attribute!\texttt{#1}}}
+
+\begin{document}
+
+\input{title_0_4.tex} 
+	
+%\maketitle
+
+\tableofcontents
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Overview}
+
+This document describes extensions and changes in \pml compared to the
+previously released version 0.3.1. It is not intended to serve as a proper specification. 
+The next public release, due in M42, will come with a fully updated specification document.
+The current document introduces the discrete data models, delay differential equations,
+extended vector and matrix support and a few new language elements and other corrections/changes.
+The appendix \ref{chapter:codeExamples} contains examples of implemented discrete 
+data models.
+
+\paragraph{Major extensions in version 0.4}
+The following tables summarise the changes described in detail in the following chapters.
+
+\begin{center}
+\begin{longtable}{lll}
+\hline
+\hline
+\pml element 			&  version $\le$ 0.3.1 			& version 0.4 \\
+or modelling aspect 		&							& \\
+\hline
+Discrete data models 	& \emph{not supported}			& \xelem{Discrete} with child elements such as {\color{red} \scshape{new}} \\
+(see \textsection\ref{chapter:DDmodels}) &				& -- \xelem{CountData} with \xelem{CountVariable}, \\
+					&							& \xelem{PreviousCountVariable}, \xelem{Dependance},\\
+					&							& \xelem{IntensityParameter}, etc.  \\
+					&							& and \xelem{PMF} with \xatt{linkFunction} attribute \\
+					&							& -- \xelem{CategoricalData} with child elements \\
+					&							& such as \xelem{ListOfCategories}, \xelem{CategoryVariable}, \\
+					&							& \xelem{InitialStateVariable} (plus few other \\
+					&							& variable elements), \xelem{ProbabilityAssignment} and \\
+					&							& its child elements: \xelem{Probability},  \xelem{CurrentState}, \\
+					&							& \xelem{PreviousState} and \xelem{Condition} \\
+					&							& -- \xelem{TimeToEventData} with child elements \\
+					&							& \xelem{EventVariable}, \xelem{HazardFunction}, \\
+					&							& \xelem{SurvivalFunction}, \xelem{Censoring} and \\
+					&							& \xelem{MaximumNumberEvents} \\
+\hline
+Delay differential equations & \emph{not supported}	& \xelem{Delay} and \xelem{History} {\color{red} \scshape{new}} \\
+(DDE) (see \textsection\ref{sec:DDEs})	& 					& with child elements \\ 
+					&							& -- \xelem{HistoryValue} and \\
+					&							& -- \xelem{HistoryTime}  \\ 
+\hline
+Extended vector definition & basic support 		 	& \xelem{Vector} with a number of child elements such as\\
+ (see \textsection\ref{subsec:vectorType})	&	& \xelem{VectorElements}, \xelem{VectorCell}, \\
+					& 							& \xelem{VectorSegment} and attributes \xatt{default}, \xatt{length}  \\ 
+\hline
+Extended matrix definition & basic support 		 	& \xelem{Matrix} with a number of child elements such as\\
+ (see \textsection\ref{subsec:matrixStructure})	& 	& \xelem{MatrixRow}, \xelem{MatrixCell}, \\
+					& 							& \xelem{MatrixBlock} and attributes \xatt{matrixType}, \\
+					&							& \xatt{diagDefault}, \xatt{offDiagDefault} and others  \\ 
+\hline
+\caption{Overview of major differences between versions 0.4 and 0.3.1}
+\label{figTable:overviewTable}
+\end{longtable}
+\end{center}
+
+
+\chapter{Discrete data models}
+\label{chapter:DDmodels}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Discrete data models}
+%\label{sec:DDmodels}
+%
+
+% INPUT
+\input{input/introduction_discreteModels}
+
+%\newpage
+% INPUT
+\input{input/minimalInformation_discreteModels}
+
+%\newpage
+% INPUT
+\input{input/pharmml_codeTemplates}
+
+%\newpage
+%% INPUT
+%\input{input/modelsOverview}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Other extensions and changes}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Delay differential equations}
+\label{sec:DDEs}
+
+The following new elements extend the current ODE structure:
+\begin{itemize}
+\item
+\xelem{Delay} element with two arguments
+\begin{itemize}
+\item
+$y$, a model variable
+\item
+$\tau$, discrete delay, can be a numerical value or a symbol
+\end{itemize}
+Then the typical delay expression such as $y(t-\tau)$ would be encoded as
+\lstset{language=XML}
+\begin{lstlisting}
+                    <ct:Delay>
+                        <ct:SymbRef symbIdRef="y"/>
+                        <ct:DelayVariable>
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="tau"/>
+                        </ct:DelayVariable>
+                    </ct:Delay>
+\end{lstlisting}
+with \xatt{tau} defined in the parameter model \emph{pm1}.
+\item
+\xelem{History} element where the past of a variable is defined for $t \le t_0$. 
+It comes with two child elements
+\begin{itemize}
+\item
+\xelem{HistoryValue} stands for past/historical value of a variable $y$, denoted by $y_0$.
+\item
+\xelem{HistoryTime} stands for the end time, $t_0$, of the history definition. 
+By default, history is defined for $t\le t_0$.
+\end{itemize}
+\end{itemize}
+
+\subsection{\pml code -- basic example}
+Based on example from \cite{MLXTRANforMonolix:2014}.
+
+\begin{align}
+& \frac{dA}{dt} = r - c \times A \times B - k \times A \nonumber \\
+& \frac{dB}{dt} = c \times A \times B - A(t-d) \nonumber 
+\end{align}
+with history $A_0 = r/k$ and $B_0 = 0$ for $t \le 5$.
+
+\lstset{language=XML}
+\begin{lstlisting}
+<StructuralModel blkId="sm1">
+    <ct:DerivativeVariable symbId="A">
+        <ct:Assign>
+            <math:Equation>
+                <math:Binop op="minus">
+                    <ct:SymbRef blkIdRef="pm1" symbIdRef="r"/>
+                    <math:Binop op="minus">
+                        <math:Binop op="times">
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="c"/>
+                            <math:Binop op="times">
+                                <ct:SymbRef symbIdRef="A"/>
+                                <ct:SymbRef symbIdRef="B"/>
+                            </math:Binop>
+                        </math:Binop>
+                        <math:Binop op="times">
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="k"/>
+                            <ct:SymbRef symbIdRef="A"/>
+                        </math:Binop>
+                    </math:Binop>
+                </math:Binop>
+            </math:Equation>
+        </ct:Assign>
+        <ct:IndependentVariable>
+            <ct:SymbRef symbIdRef="t"/>
+        </ct:IndependentVariable>
+        <ct:History>
+            <ct:HistoryValue>
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Binop op="divide">
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="r"/>
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="k"/>
+                        </math:Binop>
+                    </math:Equation>
+                </ct:Assign>
+            </ct:HistoryValue>
+            <ct:HistoryTime>
+                <ct:Assign>
+                    <ct:Real>5</ct:Real>
+                </ct:Assign>
+            </ct:HistoryTime>
+        </ct:History>
+    </ct:DerivativeVariable>
+    
+    <ct:DerivativeVariable symbId="B">
+        <ct:Assign>
+            <math:Equation>
+                <math:Binop op="minus">
+                    <math:Binop op="times">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="c"/>
+                        <math:Binop op="times">
+                            <ct:SymbRef symbIdRef="A"/>
+                            <ct:SymbRef symbIdRef="B"/>
+                        </math:Binop>
+                    </math:Binop>
+                    <ct:Delay>
+                        <ct:SymbRef symbIdRef="A"/>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="d"/>
+                    </ct:Delay>
+                </math:Binop>
+            </math:Equation>
+        </ct:Assign>
+        <ct:IndependentVariable>
+            <ct:SymbRef symbIdRef="t"/>
+        </ct:IndependentVariable>
+        <ct:History>
+            <ct:HistoryValue>
+                <ct:Assign>
+                    <ct:Real>0</ct:Real>
+                </ct:Assign>
+            </ct:HistoryValue>
+            <ct:HistoryTime>
+                <ct:Assign>
+                    <ct:Real>5</ct:Real>
+                </ct:Assign>
+            </ct:HistoryTime>
+        </ct:History>
+    </ct:DerivativeVariable>
+</StructuralModel>
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Vectors and Matrices -- reloaded}
+\label{sec:vectorsAndMatrices}
+ \pml has been equipped with vector support and version 0.3.1 introduced additionally 
+ the concept of a matrix for the purpose of encoding correlation/covariance matrices. 
+Unfortunately, both structures turned out to be insufficient. The vectors were not ready 
+to accept other than numerical entries and both vectors and matrices could not be
+indexed. Version 0.4 solves these issues. The schema for these two elements is based
+on two standards, one dealing with mathematical notation, MathML \cite{mathml3:2010}, 
+and another one with data mining models, PMML \cite{pmml:2014}, and comes with 
+a wide range of features enabling flexible handling of vectors and matrices via a 
+flexible indexing schema.
+
+\begin{figure}[htbp]
+\centering
+ \includegraphics[width=140mm]{pics/VectorMatrixOverview.pdf}
+\caption{Vector and matrix -- vocabulary and structure overview.}
+\label{fig:vectorMatrix}
+\end{figure}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Vector structure with examples}
+\label{subsec:vectorType}
+Vectors are defined to be column vectors. Row vectors can be created by taking
+the transpose (with the \emph{transpose} operation still to be defined) of a column vector. 
+
+\subsubsection{Populating vectors}
+\begin{itemize}
+\item
+Elements
+\begin{itemize}
+\item
+\xelem{VectorElements} is used to define all elements without indexing and takes any 
+combination of the following items
+\begin{itemize}
+\item
+\xelem{Scalar} and/or \xelem{SymbRef}
+\item
+\xelem{Sequence}
+\end{itemize}
+\item
+\xelem{VectorCell} is used to define one element of the vector by specifying its index
+\begin{itemize}
+\item
+\xelem{VectorIndex} and either
+\item
+\xelem{Scalar} or \xelem{SymbRef}
+\end{itemize}
+\item
+\xelem{VectorSegment} allows to encode consecutive elements defined by the 
+start/end indices by using 
+\begin{itemize}
+\item
+\xelem{StartIndex}
+\item
+\xelem{SegmentLength}
+\item
+\xelem{VectorElements}
+\end{itemize}
+\end{itemize}
+\item
+Attributes
+\begin{itemize}
+\item
+\xatt{default} stands for the value of not explicitly specified elements -- necessary when 
+sparse vectors are encoded using \xelem{VectorCell} or \xelem{VectorSegment}
+\item
+\xatt{length} of the vector -- required, see \xatt{default} comments above.
+\end{itemize}
+\end{itemize}
+Table \ref{tab:vectorsComparison} show two examples how you can encode vectors.
+
+\begin{table}[ht!]
+\setlength{\tabcolsep}{10pt}
+\begin{center}
+\begin{tabular}{ll}
+  \hline
+  \hline
+ \pml version $\le$ 0.3.1 &  \pml version 0.4 \\
+  \hline
+% \multicolumn{2}{c}{encoding [0,2,0,0,5,0,0,0,0,0]}  \\
+%  \hline
+  \lstset{language=XML}
+\begin{lstlisting}
+<ct:Vector>
+    <ct:Real>0</ct:Real>
+    <ct:Real>2</ct:Real>
+    <ct:Real>0</ct:Real>
+    <ct:Real>0</ct:Real>
+    <ct:SymbRef symbIdRef="fifthElement"/>
+    <ct:Real>0</ct:Real>
+    <ct:Real>0</ct:Real>
+    <ct:Real>0</ct:Real>
+    <ct:Real>0</ct:Real>
+    <ct:Real>0</ct:Real>
+</ct:Vector>
+\end{lstlisting}
+&
+\lstset{language=XML}
+\begin{lstlisting}
+<ct:Vector length="10">
+    <ct:VectorElements>
+        <ct:Real>0</ct:Real>
+        <ct:Real>2</ct:Real>
+        <ct:Real>0</ct:Real>
+        <ct:Real>0</ct:Real>
+        <ct:SymbRef symbIdRef="fifthElement"/>
+        <ct:Real>0</ct:Real>
+        <ct:Real>0</ct:Real>
+        <ct:Real>0</ct:Real>
+        <ct:Real>0</ct:Real>
+        <ct:Real>0</ct:Real>
+    </ct:VectorElements>
+</ct:Vector>
+\end{lstlisting}  
+\\
+& OR
+\\
+--
+&
+\lstset{language=XML}
+\begin{lstlisting}
+<ct:Vector default="0" length="10">
+    <ct:VectorCell>
+        <ct:VectorIndex>
+            <ct:Int>2</ct:Int>
+        </ct:VectorIndex>
+        <ct:Real>2</ct:Real>
+    </ct:VectorCell>
+    <ct:VectorCell>
+        <ct:VectorIndex>
+            <ct:Int>5</ct:Int>
+        </ct:VectorIndex>
+        <ct:SymbRef symbIdRef="fifthElement"/>
+    </ct:VectorCell>
+</ct:Vector>
+\end{lstlisting} 
+\\
+%\hline
+% \multicolumn{2}{c}{encoding [1,1,3,4,5,6,1,1,1,1]}  \\
+%\hline
+%-- & \lstset{language=XML}
+%\begin{lstlisting}
+%<ct:Vector default="1" length="10">
+%    <ct:VectorSegment>
+%        <ct:StartIndex>3</ct:StartIndex>
+%        <ct:EndIndex>6</ct:EndIndex>
+%    </ct:VectorSegment>
+%</ct:Vector>
+%\end{lstlisting} \\
+    \hline
+\end{tabular}
+\caption{Comparison of vector support in the current and previous version of PharmML. In the first case a 
+sparse vector [0,2,0,0,5,0,0,0,0,0] is encoded illustrating the new structure with 
+\xelem{VectorElements} and \xelem{VectorCell}.  
+%In the second case the vector 
+%[1,1,3,4,5,6,1,1,1,1] is encoded using the \xelem{VectorSegment} element. 
+In versions $\le$ 0.3.1 all vector elements had to be listed whereas the new version 
+offers a \xatt{default} attribute which can be used to avoid unwanted repetitions.}
+\label{tab:vectorsComparison}
+\end{center}
+\end{table}
+
+\subsubsection{Reading vectors}
+Once a vector is assigned, we need a mechanism for the readout of vector
+elements. This is done with the \xelem{VectorSelector} element. Additionally to the 
+vocabulary we used before, we have the \xelem{Head} and \xelem{Tail} methods, i.e.
+two ways to extract the first or last few elements which number can be specified
+explicitly. The following child elements allow flexible access to any vector element
+\begin{itemize}
+\item
+\xelem{SymbRef} identifies the vector of interest (mandatory)
+\item
+\xelem{Head} allows to select any number of elements starting with the first one
+\item
+\xelem{Tail} allows to select any number of elements counted from the last one
+\item
+\xelem{Cell} is used to pick one element
+\item
+\xelem{Segment} allows to select a segment of a vector
+\end{itemize}
+For example, we would like to perform the following assignment 
+\begin{align}
+& m = a + V2[5] \nonumber
+\end{align}
+i.e. to add parameter $a$ to the fifth element of vector $V2$. 
+The following code shows how this is done. 
+
+\lstset{language=XML}
+\begin{lstlisting}
+            <SimpleParameter symbId="m">
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Binop op="plus">
+                            <ct:SymbRef symbIdRef="a"/>
+                            <ct:VectorSelector>
+                                <ct:SymbRef symbIdRef="V2"/>
+                                <ct:Cell>
+                                    <ct:Int>5</ct:Int>
+                                </ct:Cell>
+                            </ct:VectorSelector>
+                        </math:Binop>
+                    </math:Equation>
+                </ct:Assign>
+            </SimpleParameter>
+\end{lstlisting}
+Now a more complex selection scenario using all available \xelem{VectorSelector} child 
+elements: \xelem{Head}, \xelem{Index}, \xelem{Segment} and \xelem{Tail}. In this case it is 
+assumed that vector V2 has 25 elements and we want to select only those specified by the
+following indexes $i=1:3,\;6:8,\;11,\;18:20,\;22,\;24:25.$
+\lstset{language=XML}
+\begin{lstlisting}
+            <SimpleParameter symbId="n">
+                <ct:Assign>
+                    <math:Equation>
+                        <ct:VectorSelector>
+                            <ct:SymbRef symbIdRef="V2"/>
+                            <ct:Head><ct:Int>3</ct:Int></ct:Head>
+                            <ct:Segment>
+                                <ct:StartIndex><ct:Int>6</ct:Int></ct:StartIndex>
+                                <ct:SegmentLength><ct:Int>3</ct:Int></ct:SegmentLength>
+                            </ct:Segment>
+                            <ct:Cell><ct:Int>11</ct:Int></ct:Cell>
+                            <ct:Segment>
+                                <ct:StartIndex><ct:Int>18</ct:Int></ct:StartIndex>
+                                <ct:SegmentLength><ct:Int>3</ct:Int></ct:SegmentLength>
+                            </ct:Segment>
+                            <ct:Cell><ct:Int>22</ct:Int></ct:Cell>
+                            <ct:Tail><ct:Int>2</ct:Int></ct:Tail>
+                        </ct:VectorSelector>
+                    </math:Equation>
+                </ct:Assign>
+            </SimpleParameter>
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Matrix structure with examples}
+\label{subsec:matrixStructure}
+Similarly to the vector structure there are a few alternative options to encode a matrix.
+Note, that for now matrices are allowed in the \xelem{Correlation} element only. Their use
+will be extended to handle covariance matrices of multivariate distributions and objects in the 
+Standardised Input/Output Model to be introduced in a future release.
+
+\subsubsection{Populating matrices}
+\begin{itemize}
+\item
+Elements
+\begin{itemize}
+\item
+\xelem{MatrixRow} is used to define the matrix row-by-row using
+\begin{itemize}
+\item
+\xelem{RowIndex} (optional) element followed by 
+\item
+\xelem{Scalar} and/or \xelem{SymbRef}
+\item
+\xelem{Sequence}
+\end{itemize}
+\item
+\xelem{MatrixCell} is useful for matrices with few non-zero elements
+\begin{itemize}
+\item
+mandatory elements \xelem{CellRow} and 
+\item
+\xelem{CellColumn} followed by
+\item
+\xelem{Scalar} or \xelem{SymbRef}
+\end{itemize}
+\item
+\xelem{MatrixBlock} is useful for matrices with non-zero blocks using
+\begin{itemize}
+\item
+\xelem{BlockStartRow} and \xelem{BlockStartColumn} followed by 
+a combination of 
+\item
+\xelem{BlockRow} and/or \xelem{BlockCell} elements
+\item
+and block attributes which are identical to those of the matrix (listed below) with 
+the exception of \xatt{matrixType}
+\end{itemize}
+\end{itemize}
+\item
+Attributes
+\begin{itemize}
+\item
+\xatt{matrixType} allows to simplify the matrix encoding with following possible values
+\begin{itemize}
+\item
+\xatt{Any} -- no requirements on the matrix.
+\item
+\xatt{Diagonal} -- only the diagonal values have to be specified, the rest is 
+by definition zero.
+\item
+\xatt{LowerTriangular}/\xatt{UpperTriangular} -- only diagonal and off-diagonal
+matrix elements below or above the diagonal are non-zero and have to be 
+specified, respectively.
+\item
+\xatt{Symmetric} -- due to symmetry only the off-diagonal matrix elements 
+below or above the diagonal have to be specified.
+\end{itemize}
+\item
+\xatt{numbCols, numbRows} matrix dimensions -- required for sparse matrices, see 
+default attributes comments below.
+\item
+\xatt{diagDefault} the default value on the diagonal -- required when 
+sparse matrices are encoded using \xelem{MatrixCell} or \xelem{MatrixBlock}
+\item
+\xatt{offDiagDefault}  the default off-diagonals value -- see comments above
+\item
+\xatt{symbId} -- (optional) identifier for the matrix.
+\end{itemize}
+
+
+\end{itemize}
+If \xelem{MatrixCell} is used the attributes \xatt{matrixType}, \xatt{diagDefault} and 
+\xatt{offDiagDefault} can or have to used, dependent on the matrix content. These two 
+options are demonstrated with the following matrix, $\Sigma$,
+\label{subsec:matrixType}
+\begin{align}
+\Sigma = 
+  \begin{bmatrix} 
+  1 & \Sigma_{12} & 0 & 0 \\
+  0 & 1 & \Sigma_{23} & 0 \\
+  \Sigma_{31} & 0 & 1 & 0 \\
+  0 & 0 & 0 & \Sigma_{44} \end{bmatrix} 
+\end{align}
+
+\subsubsection{Implementation of $\Sigma$ as full matrix}
+This is a straightforward implementation of every matrix element explicitly using
+the \xelem{MatrixRow} elements.  
+
+  \lstset{language=XML}
+\begin{lstlisting}
+                <!-- omitted <Correlation> tag -->
+                <ct:Assign>
+                    <ct:Matrix symbId="Sigma" matrixType="Any">
+                        <ct:MatrixRow>
+                            <ct:RowIndex><ct:Int>1</ct:Int></ct:RowIndex>
+                            <ct:Real>1</ct:Real>
+                            <ct:SymbRef symbIdRef="Sigma12"/>
+                            <ct:Real>0</ct:Real>
+                            <ct:Real>0</ct:Real>
+                        </ct:MatrixRow>
+                        <ct:MatrixRow>
+                            <ct:RowIndex><ct:Int>2</ct:Int></ct:RowIndex>
+                            <ct:Real>0</ct:Real>
+                            <ct:Real>1</ct:Real>
+                            <ct:SymbRef symbIdRef="Sigma23"/>
+                            <ct:Real>0</ct:Real>
+                        </ct:MatrixRow>
+                        <ct:MatrixRow>
+                            <ct:RowIndex><ct:Int>3</ct:Int></ct:RowIndex>
+                            <ct:SymbRef symbIdRef="Sigma31"/>
+                            <ct:Real>0</ct:Real>
+                            <ct:Real>1</ct:Real>
+                            <ct:Real>0</ct:Real>
+                        </ct:MatrixRow>
+                        <ct:MatrixRow>
+                            <ct:RowIndex><ct:Int>4</ct:Int></ct:RowIndex>
+                            <ct:Real>0</ct:Real>
+                            <ct:Real>0</ct:Real>
+                            <ct:Real>0</ct:Real>
+                            <ct:SymbRef symbIdRef="Sigma44"/>
+                        </ct:MatrixRow>
+                    </ct:Matrix>
+                </ct:Assign>
+\end{lstlisting}
+ 
+\subsubsection{Implementation of $\Sigma$ as sparse matrix}
+Here the $\Sigma$ matrix is implemented using \xelem{MatrixCell} elements.
+More specifically only four values have to be stored. The test is encoded using 
+\xatt{diagDefault} and \xatt{offDiagDefault} attributes.
+
+\lstset{language=XML}
+\begin{lstlisting}
+                <!-- omitted <Correlation> block -->
+                <ct:Assign>
+                    <ct:Matrix symbId="Sigma" matrixType="Any" diagDefault="1" offDiagDefault="0">
+                        <ct:MatrixCell>
+                            <ct:CellRow><ct:Int>1</ct:Int></ct:CellRow>
+                            <ct:CellColumn><ct:Int>2</ct:Int></ct:CellColumn>
+                            <ct:SymbRef symbIdRef="Sigma12"/>
+                        </ct:MatrixCell>
+                        <ct:MatrixCell>
+                            <ct:CellRow><ct:Int>2</ct:Int></ct:CellRow>
+                            <ct:CellColumn><ct:Int>3</ct:Int></ct:CellColumn>
+                            <ct:SymbRef symbIdRef="Sigma23"/>
+                        </ct:MatrixCell>
+                        <ct:MatrixCell>
+                            <ct:CellRow><ct:Int>3</ct:Int></ct:CellRow>
+                            <ct:CellColumn><ct:Int>1</ct:Int></ct:CellColumn>
+                            <ct:SymbRef symbIdRef="Sigma31"/>
+                        </ct:MatrixCell>
+                        <ct:MatrixCell>
+                            <ct:CellRow><ct:Int>4</ct:Int></ct:CellRow>
+                            <ct:CellColumn><ct:Int>4</ct:Int></ct:CellColumn>
+                            <ct:SymbRef symbIdRef="Sigma44"/>
+                        </ct:MatrixCell>
+                    </ct:Matrix>
+                </ct:Assign>
+\end{lstlisting}  
+Note the use of the attributes \xatt{diagDefault} and \xatt{offDiagDefault}
+set with either 1 or 0, respectively, which makes the matrix encoding 
+very efficient.
+
+\subsubsection{Example 2 -- \emph{face} matrix}
+Figure \ref{fig:faceMatrix} shows how a sparse matrix can be encoded in an
+efficient way using a combination of
+\begin{itemize}
+\item
+\xelem{MatrixBlock}
+\item
+\xelem{MatrixCell} and
+\item
+\xelem{MatrixRow}.
+\end{itemize}
+More specifically, the use of two 2x2-blocks, three cells and one matrix row 
+is sufficient to encode the hypothetical \emph{face} matrix because the rest 
+can be handled with attributes. Figure \ref{fig:faceMatrix} and the code
+next to it shows how the elements are defined. Attributes \xatt{diagDefault} 
+and \xatt{offDiagDefault} are both set to 1.
+Note that the \xelem{RowIndex} of the block's rows are specified relative to 
+the block start coordinates, \xelem{BlockStartRow} and \xelem{BlockStartColumn}.
+Consequently, the first block row consisting of two 'X' symbols has the index 1, 
+the second has the index 2. In contrast the last row is defined using \xelem{RowIndex} 
+relative to the main matrix. The attributes \xatt{numbRows} and \xatt{numbCols} 
+of the matrix are required due to its sparse nature.
+
+
+\begin{figure}
+\centering
+\begin{minipage}[c]{.48\textwidth}
+\centering
+ \includegraphics[width=75mm]{pics/faceMatrix.jpg}
+\caption{Matrix example consisting of two blocks, three cells and one row.
+They contain either numerical values or variables names. All other elements 
+are defined but the attributes \xatt{diagDefault} and \xatt{offDiagDefault}, 
+here both set to 1. \xelem{RowIndex} of the blocks are specified relative to 
+the block start coordinates while the indexes of the cells and full matrix rows 
+are absolute. The attributes \xatt{numbRows} and \xatt{numbCols} of the
+matrix are required due to its sparse nature.}
+\label{fig:faceMatrix}
+\end{minipage}
+\begin{minipage}[c]{.44\textwidth}
+\lstset{language=XML}
+\begin{lstlisting}
+<Correlation deviationMatrixType="CovMatrix">
+    <ct:VariabilityReference>
+        <ct:SymbRef symbIdRef="subject"/>
+    </ct:VariabilityReference>
+    <Matrix symbId="faceMatrix" matrixType="Any" 
+    	diagDefault="1" offDiagDefault="1">
+        <!-- Left eye block -->
+        <ct:MatrixBlock>
+            <ct:BlockStartRow>
+                <ct:Int>2</ct:Int>
+            </ct:BlockStartRow>
+            <ct:BlockStartColumn>
+                <ct:Int>2</ct:Int>
+            </ct:BlockStartColumn>
+            <ct:BlockRow>
+                <ct:RowIndex>
+                  <ct:Int>1</ct:Int>
+                </ct:RowIndex>
+                <ct:SymbRef symbIdRef="X"/>
+                <ct:SymbRef symbIdRef="X"/>
+            </ct:BlockRow>
+            <ct:BlockRow>
+                <ct:RowIndex>
+                   <ct:Int>2</ct:Int>
+                </ct:RowIndex>
+                <ct:SymbRef symbIdRef="X"/>
+                <ct:SymbRef symbIdRef="X"/>
+            </ct:BlockRow>
+        </ct:MatrixBlock>
+        <!-- Right eye block -->
+        <ct:MatrixBlock>
+            <ct:BlockStartRow>
+                <ct:Int>2</ct:Int>
+            </ct:BlockStartRow>
+            <ct:BlockStartColumn>
+                <ct:Int>7</ct:Int>
+            </ct:BlockStartColumn>
+            <!-- omitted - identical to left block -->
+        </ct:MatrixBlock>
+        <!-- Nose blocks -->
+        <ct:MatrixCell>
+            <ct:CellRow>
+                <ct:Int>5</ct:Int>
+            </ct:CellRow>
+            <ct:CellColumn>
+                <ct:Int>5</ct:Int>
+            </ct:CellColumn>
+            <ct:Real>0</ct:Real>
+        </ct:MatrixCell>
+        <!-- omitted middle cell -->
+        <ct:MatrixCell>
+            <ct:CellRow>
+                <ct:Int>7</ct:Int>
+            </ct:CellRow>
+            <ct:CellColumn>
+                <ct:Int>5</ct:Int>
+            </ct:CellColumn>
+            <ct:Real>0</ct:Real>
+        </ct:MatrixCell>
+        <!-- Mouth row -->
+        <ct:MatrixRow default="8">
+            <ct:RowIndex>
+           <ct:SymbRef symbIdRef="W"/>
+            </ct:RowIndex>
+        </ct:MatrixRow>
+    </Matrix>
+</Correlation>
+\end{lstlisting}
+\end{minipage}
+\end{figure}
+
+
+
+
+
+%\subsubsection{Example 3 -- Lower/upper triangular matrix}
+%...to be finished
+%
+
+\subsubsection{Example 3 -- Block-diagonal matrix}
+A typical matrix application example is the specification of the
+correlation matrix of the random effects, see a screenshot for the 
+Monolix GUI, Figure \ref{fig:corrMatrixMonolix}, \cite{MLXTRAN4.3.2Specification:2014}. 
+This is another example of a sparse matrix with the blocks as the only non-zero 
+elements of the matrix. Using attributes \xatt{diagDefault} and \xatt{offDiagDefault} 
+makes the encoding an easy task leaving only the blocks to be defined explicitly. 
+
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=90mm]{pics/corrMatrixMonolix}
+ \caption{Correlation matrix encoded using the Monolix GUI, \cite{MLXTRAN4.3.2Specification:2014}.}
+ \label{fig:corrMatrixMonolix}
+\end{figure}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<Correlation deviationMatrixType="CorrMatrix">
+    <ct:VariabilityReference>
+        <ct:SymbRef symbIdRef="subject"/>
+    </ct:VariabilityReference>
+    <Matrix symbId="Omega" matrixType="Any" diagDefault="1" offDiagDefault="0">
+        <!-- tlag, ka - block -->
+        <ct:MatrixBlock>
+            <ct:BlockStartRow><ct:Int>1</ct:Int></ct:BlockStartRow>
+            <ct:BlockStartColumn><ct:Int>1</ct:Int></ct:BlockStartColumn>
+            <ct:BlockRow>
+                <ct:RowIndex><ct:Int>1</ct:Int></ct:RowIndex>
+                <ct:Int>1</ct:Int><ct:Int>1</ct:Int>
+            </ct:BlockRow>
+            <ct:BlockRow>
+                <ct:RowIndex><ct:Int>2</ct:Int></ct:RowIndex>
+                <ct:Int>1</ct:Int><ct:Int>1</ct:Int>
+            </ct:BlockRow>
+        </ct:MatrixBlock>
+        <!-- V, CL - block -->
+        <ct:MatrixBlock>
+            <ct:BlockStartRow><ct:Int>3</ct:Int></ct:BlockStartRow>
+            <ct:BlockStartColumn><ct:Int>3</ct:Int></ct:BlockStartColumn>
+            <ct:BlockRow>
+                <ct:RowIndex><ct:Int>1</ct:Int></ct:RowIndex>
+                <ct:Int>1</ct:Int><ct:Int>1</ct:Int>
+            </ct:BlockRow>
+            <ct:BlockRow>
+                <ct:RowIndex><ct:Int>2</ct:Int></ct:RowIndex>
+                <ct:Int>1</ct:Int><ct:Int>1</ct:Int>
+            </ct:BlockRow>
+        </ct:MatrixBlock>
+        <!-- Imax, C50 - block -->
+        <ct:MatrixBlock>
+            <ct:BlockStartRow><ct:Int>5</ct:Int></ct:BlockStartRow>
+            <ct:BlockStartColumn><ct:Int>5</ct:Int></ct:BlockStartColumn>
+            <ct:BlockRow>
+                <ct:RowIndex><ct:Int>1</ct:Int></ct:RowIndex>
+                <ct:Int>1</ct:Int><ct:Int>1</ct:Int>
+            </ct:BlockRow>
+            <ct:BlockRow>
+                <ct:RowIndex><ct:Int>2</ct:Int></ct:RowIndex>
+                <ct:Int>1</ct:Int><ct:Int>1</ct:Int>
+            </ct:BlockRow>
+        </ct:MatrixBlock>
+        <!-- gammma, S0, kprog - block -->
+        <ct:MatrixBlock>
+            <ct:BlockStartRow><ct:Int>7</ct:Int></ct:BlockStartRow>
+            <ct:BlockStartColumn><ct:Int>7</ct:Int></ct:BlockStartColumn>
+            <ct:BlockRow>
+                <ct:RowIndex><ct:Int>1</ct:Int></ct:RowIndex>
+                <ct:Int>1</ct:Int><ct:Int>1</ct:Int><ct:Int>1</ct:Int>
+            </ct:BlockRow>
+            <ct:BlockRow>
+                <ct:RowIndex><ct:Int>2</ct:Int></ct:RowIndex>
+                <ct:Int>1</ct:Int><ct:Int>1</ct:Int><ct:Int>1</ct:Int>
+            </ct:BlockRow>
+            <ct:BlockRow>
+                <ct:RowIndex><ct:Int>3</ct:Int></ct:RowIndex>
+                <ct:Int>1</ct:Int><ct:Int>1</ct:Int><ct:Int>1</ct:Int>
+            </ct:BlockRow>
+        </ct:MatrixBlock>
+    </Matrix>
+</Correlation>
+\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Reading matrices and their subelements.}
+Following code shows few examples of how to access 
+\begin{itemize}
+\item
+single element
+\item
+single row or
+\item
+\{flag,ka\} block
+\end{itemize}
+from the $\Omega$ matrix defined in previous example, see Figure \ref{fig:corrMatrixMonolix}.
+
+\lstset{language=XML}
+\begin{lstlisting}
+            <!-- extract one element -->
+            <SimpleParameter symbId="rho_tlag_ka">
+                <ct:Assign>
+                    <math:Equation>
+                        <ct:MatrixSelector>
+                            <ct:SymbRef symbIdRef="Omega"/>
+                            <ct:Cell>
+                                <ct:RowIndex><ct:Int>1</ct:Int></ct:RowIndex>
+                                <ct:ColumnIndex><ct:Int>2</ct:Int></ct:ColumnIndex>
+                            </ct:Cell>
+                        </ct:MatrixSelector>
+                    </math:Equation>
+                </ct:Assign>
+            </SimpleParameter>
+            
+            <!-- extract 2nd row -->
+            <ct:Variable symbolType="real" symbId="SecondRow">
+                <ct:Assign>
+                    <math:Equation>
+                        <ct:MatrixSelector>
+                            <ct:SymbRef symbIdRef="Omega"/>
+                            <ct:Row>
+                                <ct:Int>2</ct:Int>
+                            </ct:Row>
+                        </ct:MatrixSelector>
+                    </math:Equation>
+                </ct:Assign>
+            </ct:Variable>
+            
+            <!-- extract {tlag,ka} block -->
+            <ct:Variable symbolType="real" symbId="Rho_tlag_ka">
+                <ct:Assign>
+                    <math:Equation>
+                        <ct:MatrixSelector>
+                            <ct:SymbRef symbIdRef="Omega"/>
+                            <ct:Block>
+                                <ct:BlockStartRow><ct:Int>1</ct:Int></ct:BlockStartRow>
+                                <ct:BlockStartColumn><ct:Int>1</ct:Int></ct:BlockStartColumn>
+                                <ct:RowsNumber><ct:Int>2</ct:Int></ct:RowsNumber>
+                                <ct:ColumnsNumber><ct:Int>2</ct:Int></ct:ColumnsNumber>
+                            </ct:Block>
+                        </ct:MatrixSelector>
+                    </math:Equation>
+                </ct:Assign>
+            </ct:Variable>
+\end{lstlisting}
+
+
+
+%\subsubsection{Sum in PD models}
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=50mm,angle=-90]{pics/PDWithSumModel.jpg}
+% \caption{}
+% \label{fig:myplot}
+%\end{figure}
+
+%\subsubsection{Sum in categorical data models}
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=60mm,angle=-90]{pics/CategoricalWithSumModel.jpg}
+% \caption{}
+% \label{fig:myplot}
+%\end{figure}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Other changes}
+\label{sec:otherChanges}
+\subsection{Sum and products using indexes}
+Sum and product symbols are frequently used in various model formulations, see for 
+example section \ref{subsec:categoricalData}. Both have avery similar structure and 
+consist of following elements
+\begin{itemize}
+\item
+\xelem{SymbRef} -- to define the variable for which the sum or product is defined. 
+\item
+\xelem{SumIndex} or \xelem{ProductIndex} -- (optional) identifies the index.
+\item
+\xelem{LowLimit} and \xelem{UpLimit} -- need to restrict the value of the index.
+\end{itemize}
+Table \ref{tab:sumAndProduct} contains two basic examples of the use of sum and
+product.
+
+\begin{table}[ht!]
+\setlength{\tabcolsep}{15pt}
+\begin{center}
+\begin{tabular}{ll}
+  \hline
+  \hline
+ Expression &  \pml version 0.4 implementation\\
+  \hline
+ \multicolumn{2}{c}{Product}  \\
+  \hline
+$W = \prod_{i=1}^{N} V_i $
+&
+\lstset{language=XML}
+\begin{lstlisting}
+            <SimpleParameter symbId="W">
+                <ct:Assign>
+                    <math:Equation>
+                        <ct:Product>
+                            <ct:SymbRef symbIdRef="V"/>
+                            <ct:ProductIndex>
+                                <ct:SymbRef symbIdRef="i"/>
+                            </ct:ProductIndex>
+                            <ct:LowLimit>
+                                <ct:Int>1</ct:Int>
+                            </ct:LowLimit>
+                            <ct:UpLimit>
+                                <ct:SymbRef symbIdRef="N"/>
+                            </ct:UpLimit>
+                        </ct:Product>
+                    </math:Equation>
+                </ct:Assign>
+            </SimpleParameter>
+\end{lstlisting}
+\\
+  \hline
+ \multicolumn{2}{c}{Sum}  \\
+  \hline
+$M = \sum_{i=1}^{N} V_i $
+&
+\lstset{language=XML}
+\begin{lstlisting}
+            <SimpleParameter symbId="M">
+                <ct:Assign>
+                    <math:Equation>
+                        <ct:Sum>
+                            <ct:SymbRef symbIdRef="V"/>
+                            <ct:SumIndex>
+                                <ct:SymbRef symbIdRef="i"/>
+                            </ct:SumIndex>
+                            <ct:LowLimit>
+                                <ct:Int>1</ct:Int>
+                            </ct:LowLimit>
+                            <ct:UpLimit>
+                                <ct:SymbRef symbIdRef="N"/>
+                            </ct:UpLimit>
+                        </ct:Sum>
+                    </math:Equation>
+                </ct:Assign>
+            </SimpleParameter>
+\end{lstlisting}
+\\
+    \hline
+\end{tabular}
+\caption{Implementation examples for sigma sum element, $\sum$, and product, $\prod$.}
+\label{tab:sumAndProduct}
+\end{center}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Correlation matrix update}
+\label{sec:correlationMatrix}
+Changes in the matrix were necessary to arrive at a consistent, generic matrix definition.
+Previous format and use was determined by the correlation/covariance structure 
+requirements only and was too limiting for general use. As explained in section 
+\ref{sec:vectorsAndMatrices}, \xatt{matrixType} has been renamed in \xatt{deviationMatrixType}
+and relocated to the \xelem{Correlation} element. The original \xatt{matrixType} 
+is now populated with the names of general matrix formats. The attribute 
+\xatt{deviationMatrixType} is optional and should only be used in connection with matrices.
+See Figure \ref{tab:newMatrixStructure} for a comparison of the current and previous deviance 
+matrix structure.
+
+\begin{table}[ht!]
+\setlength{\tabcolsep}{5pt}
+\begin{center}
+\begin{tabular}{ll}
+  \hline
+Definition in $\leq$ 0.3.1 version 	& Definition in 0.4 version  \\
+  \hline
+%			\multicolumn{2}{c}{Mapping in a \xelem{CategoricalData} model}  \\  [.5ex]
+  \hline
+\lstset{language=XML}
+\begin{lstlisting}
+<Correlation>
+    <ct:VariabilityReference>
+        <ct:SymbRef symbIdRef="iiv"/>
+    </ct:VariabilityReference>
+    <Matrix matrixType="CorrMatrix">
+        <ct:MatrixRow>
+            <ct:Real>1</ct:Real>
+            <ct:Real>2</ct:Real>
+        </ct:MatrixRow>
+        <ct:MatrixRow>
+            <ct:Real>3</ct:Real>
+            <ct:Real>4</ct:Real>
+        </ct:MatrixRow>
+    </Matrix>
+</Correlation>
+\end{lstlisting}
+&
+\lstset{language=XML}
+\begin{lstlisting}
+<Correlation deviationMatrixType="CorrMatrix">
+    <ct:VariabilityReference>
+        <ct:SymbRef symbIdRef="iiv"/>
+    </ct:VariabilityReference>
+    <Matrix matrixType="Any">
+        <ct:MatrixRow>
+            <ct:Real>1</ct:Real>
+            <ct:Real>2</ct:Real>
+        </ct:MatrixRow>
+        <ct:MatrixRow>
+            <ct:Real>3</ct:Real>
+            <ct:Real>4</ct:Real>
+        </ct:MatrixRow>
+    </Matrix>
+</Correlation>
+\end{lstlisting}
+\\
+    \hline
+\end{tabular}
+\caption{Changes in the matrix structure. The new attribute \xatt{deviationMatrixTyp} carries 
+now values which were stored by \xatt{matrixType} in previous version, i.e. \{\xatt{CorrMatrix}, 
+\xatt{CovMatrix}, \xatt{StDevCorrMatrix}, \xatt{Cholesky}\}. The attribute \xatt{matrixType} is 
+now having the general values characterising a matrix, such as: \{\xatt{Any}, \xatt{LowerTriangular}, 
+\xatt{UpperTriangular}, \xatt{Diagonal}, \xatt{Symmetric}\}.}
+\label{tab:newMatrixStructure}
+\end{center}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Categorical data/covariates mapping}
+\label{subsec:catDataCovariatesMapping}
+
+As indicated already in section \ref{sec:catDataMapping} the mapping of categories symbols 
+as stored in the data set and used in the model is now done in the \xelem{ModellingSteps} 
+part of PharmML. The \xelem{CategoryMapping} element is used with attributes
+\begin{itemize}
+\item
+\xatt{dataSymbol} -- the symbol as used the external dataset, e.g. 0/1 for 'SEX' covariates
+or \{1,2,3\} for categories of a categorical data model.
+\item
+\xatt{modelSymbol} -- the symbol as used the model, e.g. F/M for SEX covariates
+or \{cat1, cat2, cat3\} for categories of a categorical data model
+\end{itemize}
+see Table \ref{tab:categoryMapping} for examples.
+
+\begin{table}[ht!]
+\setlength{\tabcolsep}{1pt}
+\begin{center}
+\begin{tabular}{ll}
+  \hline
+Definition of categories  	& \xelem{CategoryMapping} in \xelem{ColumnMapping} \\
+  \hline
+\multicolumn{2}{c}{Mapping of discrete data categories \xelem{CategoricalData} model}  \\  [.5ex]
+  \hline
+\lstset{language=XML}
+\begin{lstlisting}
+<ObservationModel blkId="om1">
+    <CategoricalData ordered="yes">
+        <ListOfCategories> 
+            <Category symbId="cat1"/>
+            <Category symbId="cat2"/>
+            <Category symbId="cat3"/>
+        </ListOfCategories>
+        <!-- omitted the rest -->
+\end{lstlisting}
+&
+\lstset{language=XML}
+\begin{lstlisting}
+<ColumnMapping>
+    <ColumnRef columnIdRef="DV"/>
+    <ct:SymbRef blkIdRef="om1" symbIdRef="P_obs"/>
+    <CategoryMapping>
+        <Map dataSymbol="1" modelSymbol="cat1"/>
+        <Map dataSymbol="2" modelSymbol="cat2"/>
+        <Map dataSymbol="3" modelSymbol="cat3"/>
+    </CategoryMapping>
+</ColumnMapping>
+\end{lstlisting}
+\\
+    \hline
+			\multicolumn{2}{c}{Mapping of categories of discrete covariates in \xelem{CovariateModel}}  \\  [.5ex]
+  \hline
+\lstset{language=XML}
+\begin{lstlisting}
+<CovariateModel blkId="cm1">
+    <Covariate symbId="SEX">
+        <Categorical>
+          <Category catId="F">
+              <Probability>
+                  <ct:Real>.55</ct:Real>
+              </Probability>
+          </Category>                    
+          <Category catId="M">
+              <Probability>
+                  <ct:Real>.45</ct:Real>
+              </Probability>
+          </Category>
+        </Categorical>
+    </Covariate>
+</CovariateModel>
+\end{lstlisting}
+&
+\lstset{language=XML}
+\begin{lstlisting}
+<ColumnMapping>
+    <ColumnRef columnIdRef="COV"/>
+    <ct:SymbRef blkIdRef="cm1" symbIdRef="SEX"/>
+    <CategoryMapping>
+        <Map dataSymbol="1" modelSymbol="F"/>
+        <Map dataSymbol="0" modelSymbol="M"/>
+    </CategoryMapping>
+</ColumnMapping>
+\end{lstlisting}
+\\
+    \hline
+\end{tabular}
+\caption{Examples of category mapping for (top) discrete data categories in the categorical data model. 
+(Bottom) mapping of categories of discrete covariates in \xelem{CovariateModel}.}
+\label{tab:categoryMapping}
+\end{center}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsubsection{Mapping for categorical data}
+%\subsubsection{Mapping for categorical covariates}
+
+%\subsubsection{LhsTransformationType and LRhsTransformationType}
+%does it matter for the users?
+%- BothSideTransformation
+%for 
+%1. parameter model of type GaussianModel
+%2. observation error of type \xelem{Standard} -  GaussianObsError 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Logarithm notation -- unified}
+Previously, two symbols existed to express the natural logarithm, $\log$ and $\ln$. 
+To avoid confusions, the $ln$ symbol has been removed. The following logarithm related functions
+are now available
+\begin{itemize}
+\item
+$\log$ -- the natural logarithm
+\item
+$\log$2 - the base-2 (binary) logarithm 
+\item
+$\log$10 - the base-10 (decadic) logarithm
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Metadata \xatt{id}}
+... is now available for every element of the schema. This allows to annotate virtually any 
+element of a model.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{New attribute \xatt{implementedBy} in the root element}
+The new attribute \xatt{implementedBy} is helpful to keep track on the authorship of 
+a PharmML encoded file. 
+
+
+\lstset{language=XML}
+\begin{lstlisting}
+<PharmML xmlns="http://www.pharmml.org/2013/03/PharmML"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    ...
+    writtenVersion="0.4" implementedBy="JamesBond" id="i1">
+    
+    <ct:Name>Testing new attribute</ct:Name>
+    ...
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+
+\chapter{Code examples}
+\label{chapter:codeExamples}
+ 
+% INPUT
+\input{input/code_countData}
+
+\newpage
+% INPUT
+\input{input/code_categoricalData}
+
+\newpage
+% INPUT
+\input{input/code_timeToEventData}
+
+
+
+\bibliographystyle{plain}
+\bibliography{pharmml-specification}
+\end{document}
+
+
+
+
+
+
+%TEMPLATES 
+%% 1. Template for table with figures
+%\begin{figure}[htbp]
+%\centering
+%\begin{tabular}{cc}
+% \includegraphics[width=80mm]{pics/pic1} & 
+% \includegraphics[width=80mm]{pics/pic2} \\
+% \includegraphics[width=80mm]{pics/pic3} &
+% \includegraphics[width=80mm]{pics/pic4}
+%\end{tabular}
+%\caption{about the figure}
+%\label{figTable:labelText}
+%\end{figure}
+
+%\begin{table}[ht]
+%\begin{center}
+%\begin{tabular}{rrrrrrrrrrr}
+%  \hline
+% & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ 
+%  \hline
+%1 & 0.24 & -1.47 & -0.56 & 0.24 & 0.71 & 1.23 & 0.44 & 0.40 & 1.10 & 1.84 \\ 
+%   \hline
+%\end{tabular}
+%\end{center}
+%\end{table}
+ 
+
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=105mm]{}
+% \caption{}
+% \label{fig:myplot}
+%\end{figure}
+
+%PIECE-WISE
+%f(z) =     \left\{ \begin{array}{rcl}
+%         value1 & \mbox{for} & condition1 \\ 
+%         value1 & \mbox{for} & condition1
+%             \end{array}\right.

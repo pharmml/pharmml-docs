@@ -1,0 +1,3990 @@
+\documentclass[a4paper,10pt]{report}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xspace}
+\pagestyle{headings}
+\usepackage[total={6.5in,10in}, top=1.2in, left=.8in, includefoot]{geometry}
+\usepackage{float}
+\restylefloat{table}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.58}
+\definecolor{attributeColor}{rgb}{0.96,0.517,0.29}
+\definecolor{darkgreen}{rgb}{0,.392,0}
+\definecolor{stringColor}{rgb}{0.6,0.2,0}
+\usepackage{array,multirow}
+\usepackage{longtable}
+\LTcapwidth=\textwidth
+\usepackage{cleveref}
+\usepackage{bbding}
+\crefname{section}{¤}{¤¤}
+\Crefname{section}{¤}{¤¤}
+\usepackage[utf8]{inputenc}
+\usepackage{tablefootnote}
+\usepackage{algorithmic}
+\usepackage[modulo, pagewise]{lineno}
+\nolinenumbers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[RO]{PharmML 0.5}
+\fancyhead[RE]{\itshape\nouppercase{\leftmark}}
+%\fancyfoot[CE,CO]{\leftmark}
+%\fancyfoot[LE,RO]{\thepage}
+%\pagestyle{fancy}
+%\fancyhf{}
+\usepackage{array,arydshln}
+\usepackage{wrapfig}
+
+\setlength\dashlinedash{0.4pt}
+\setlength\dashlinegap{1pt}
+\setlength\arrayrulewidth{0.5pt}
+
+\newcommand{\myStartLine}{\par
+  \kern8pt % space above the rules
+  \hrule height 0.5pt
+  \kern3pt % space below the rules
+}
+\newcommand{\myEndLine}{\par
+  \kern3pt % space above the rules
+  \hrule height 1.5pt
+  \kern12pt % space below the rules
+}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+%  numbers=left,
+%  stepnumber=5
+}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\lstdefinelanguage{XML}
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[is][\bfseries\color{red}]{[*}{*]},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<![CDATA[}{]]>},
+  moredelim=[s][\bfseries\color{darkgreen}]{<!--}{-->},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{red},
+  keywordstyle=\color{attributeColor},
+  morekeywords={oid,columnId,columnIdRef,symbId,symbolType,op,columnNum,columnType,
+  valueType,inputTarget,blkId,blkIdRef,symbIdRef,xmlns,version,type,VariableMapping,
+  IndividualMapping,schemaLocation,xs,xsi,NONMEMdataSet,matrixType,opType,order,
+  math,ct,ds,mdef,mstep,mml,un,name,definition,writtenVersion,id,inputType,oidRef,catId,
+  length,default,vectorIndex,diagDefault,offDiagDefault,row,column,numbRows,numbCols,
+  dataSymbol,modelSymbol,ordered,compartmentNo,compNo,ordered,linkFunction,varId,
+  censoringType,dataSymbol,modelSymbol,MarkovOrder,deviationMatrixType,implementedBy,
+  argument,admNumber,transformId,transformIdRef,metadataFile} % list your attributes here
+}
+
+\lstdefinelanguage{MLXTRANcode} 
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={dads} % list your attributes here
+}
+
+\lstdefinelanguage{NONMEMdataSet}
+{
+  basicstyle=\sffamily\small,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[is][\bfseries\color{red}]{[*}{*]},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={kjkj} % list your attributes here
+}
+
+
+\lstdefinelanguage{Elements}
+{
+  basicstyle=\sffamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={kjkj} % list your attributes here
+}
+
+\newcommand{\cellml}{CellML\xspace}
+\newcommand{\sbml}{SBML\xspace}
+\newcommand{\sedml}{SED-ML\xspace}
+\newcommand{\mathml}{MathML\xspace}
+\newcommand{\uncertml}{UncertML\xspace}
+\newcommand{\pml}{PharmML\xspace}
+\newcommand{\pharmml}{PharmML\xspace}
+\newcommand{\xelem}[1]{\texttt{<#1>}\index{XML Element!\texttt{<#1>}}}
+\newcommand{\xatt}[1]{\texttt{#1}\index{XML Attribute!\texttt{#1}}}
+
+\begin{document}
+
+\input{title_0_5.tex} 
+
+\linenumbers
+\tableofcontents
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Overview}
+
+This document describes extensions and changes in \pml compared to the
+previously released version 0.4.1. It is not intended to serve as a proper specification. 
+The upcoming public release, will come with a fully updated specification document.
+The current document introduces the PK macros and few minor extensions.
+
+\section{Extensions in version 0.5}
+
+\begin{center}
+\begin{longtable}{lll}
+\hline
+\hline
+\pml element 			&  version $\le$ 0.4.1 			& version 0.5 \\
+or modelling aspect 		&							& \\
+\hline
+PK macros			& \emph{not supported}			& \xelem{PKmacros} element with child elements, such as \\
+(see \textsection\ref{chapter:PKmacros})	&				& \xelem{Compartment}, \xelem{Peripheral}, \dots, \xelem{Elimination} \\
+					&							& and their attributes {\color{red} \scshape{new}} \\
+\hline
+MONOLIX datasets		& \emph{not supported}			& \xelem{MONOLIXdataSet} and \xelem{MONOLIXdataSetReference} \\
+(see \textsection\ref{subsec:MLXdatasets})	&			& elements {\color{red} \scshape{new}} \\
+\hline
+Annotation reference  	& \emph{not supported}			& new \xatt{metadataFile} attribute in the \xelem{PharmML} \\
+(see \textsection\ref{subsec:metadataFile})	&			& root element {\color{red} \scshape{new}} \\
+\caption{Overview of major differences between versions $\leq$ 0.4.1 and 0.5}
+\label{figTable:overviewTable}
+\end{longtable}
+\end{center}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{PK Macros}
+\label{chapter:PKmacros}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+A long standing problem is how to define effectively PK models, without using ODEs, in a tool-independent 
+way. There are many tool-specific solutions, each of them using their own ways to define PK models. 
+After an thorough analysis of a number of available approaches, the MLXTRAN PK macro system has
+been selected as the one which should be supported by PharmML. It has the following features 
+\begin{itemize}
+\item
+Tool-independent, but easily translatable to tool-specific libraries
+\item
+User friendly and easy to learn for users new to the field
+\item
+Flexible and providing consistent specification of compartmental PK models
+\item
+More models can be specified without ODEs, compared to nmadvan/PREDPP
+\item
+No limitations will be imposed, compared to nmadvan/PREDPP:
+\begin{itemize}
+\item
+All PREDPP library models with underlying analytical solutions (ADVAN1-4, 11-12) can be specified. 
+Templates are provided for these to help NONMEM users, see Section \ref{subsec:PREDPPinMACROS}.
+\item
+The PREDPP library models applying matrix exponential-based solutions (ADVAN 5, 7) are already 
+being defined in a way very similar to the macro-based solution proposed.
+\item
+The PREDPP library models applying numerical ODE solution (ADVAN 6, 8-9, 10, 13) can still be 
+specified by using ODEs explicitly (or by using/mixing with macro-definitions).
+\end{itemize}
+\end{itemize}
+
+Adopting the PK macros should allow seamless translation of models between MDL and 
+PharmML and MLXTRAN. Therefore, in the PharmML implantation of the macros we tried 
+to stay as close as possible to the original MLXTRAN specification. We had to make sure 
+that the macros, their attributes and possible assignments are defined in a unambiguous 
+way. In the sections \ref{subsec:encodingRules} and \ref{subsec:fixedArguments} we 
+explain the rules to be followed in their implementation and the translation process to and 
+from PharmML.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{The macro idea}
+Figure \ref{fig:flowDiagram} visualises the principle of the PK macros solution and it's use. The module 
+within the inner MDL/PharmML box shows few example PK macros and their attributes using which a 
+PK model can be formulated. 
+\begin{figure}[htb!]
+\centering
+  \includegraphics[width=160mm]{pics/PKmacrosPrinciple}
+ \caption{A diagram explaining how the PK macro system can be used in practise. The inner 
+ MDL/PharmML box contains the information to be stored in PharmML, i.e. the macros and arguments 
+ from the PK model vocabulary. It can then be uniquely translated into a set of ODEs and for some 
+ models there exists an analytic solution. Models encoded using the controlled vocabulary can be 
+ mapped to tool specific implementations (dotted lines).}
+ \label{fig:flowDiagram}
+\end{figure}
+In this case four macros, with one or more arguments, are used to encode a basic \emph{oral 1-compartment 
+model with linear elimination} consisting of rolling items
+\begin{enumerate}
+\item
+depot compartment, with amount \emph{Ad},
+\item
+central compartment, with amount \emph{Ac} and volume \emph{V},
+\item
+oral administration, 1$^{st}$ order absorption, \emph{ka}, and 
+\item
+linear elimination, with constant rate \emph{k}.
+\end{enumerate}
+%For other examples see Tab.\ref{tab:MappingTable}. 
+This is the \emph{only} information needed to be encoded in PharmML for this particular PK model. It 
+corresponds to the following macro
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+		compartment(cmt=1,concentration=Cc,volume=V) 
+		oral(cmt=1, ka) 
+		elimination(cmt=1, k)
+\end{lstlisting}
+Any information about input, i.e. dosing times and amounts will be stored in the dataset 
+or explicitly within the \xelem{TrialDesign}.
+
+The key \marginpar{\HandCuffLeft} realisation is that every set of such macro statements, 
+if correctly defined, can be translated automatically into a unique set of ODE's and/or 
+algebraic equations, in this case:
+\begin{align}
+\frac{dAd}{dt} &= -ka \times Ad \nonumber \\
+\frac{dAc}{dt} &= ka \times Ad - k \times Ac  \nonumber \\
+C &= Ac/V \nonumber
+\end{align}
+
+Moreover, for some models such as the above one, there exists an analytic solution. This however cannot 
+be derived automatically for an arbitrary ODE system. It requires a powerful symbolic calculation 
+software or expert knowledge. Once the PK model macros and their attribute set have been defined, 
+a mapping to tool-specific libraries can be provided, see Fig.\ref{fig:flowDiagram}. 
+This again requires expert knowledge of each particular tool. 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{PK macros in PharmML}
+\label{subsec:PKmacros}
+
+
+%An essential aspect of the macros is their connectivity to the 
+%remaining model elements and the data. The necessary extensions in the current structure are
+%discussed, for the input in section \ref{subsec:LinkingMacrosDatasets} and for the output in 
+%section \ref{subsec:macroOutputLink}. 
+
+%{\color{red} \scshape{NEW}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Encoding rules}
+\label{subsec:encodingRules}
+To provide the full support for MLXTRAN PK macros, all macros and their (unordered) named 
+arguments have to be encodable, see Table \ref{tab:MLXPLORElibrary}. Every macro has its own 
+PharmML element, e.g. the basic \emph{concentration} macro with all its arguments, encoded as \xelem{Value} 
+elements, will be encoded within the \xelem{Concentration} element. The optional attribute \xatt{argument}
+is assigned a value corresponding to the argument of the macro. If no assignment is necessary a reference is defined.
+
+\subparagraph{The basic principle for the implementation and translation to and from PharmML} 
+Macros arguments are encoded as attributes of macro elements only if an assignment is required, 
+otherwise we just refer to them with the standard \xelem{SymbRef} element. 
+
+For example, the \emph{elimination} macro defining the linear elimination with rate constant \xatt{k}
+from the first compartment reads
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+		elimination(cmt=1, k)
+\end{lstlisting}
+and is encoded in PharmML as
+\lstset{language=XML}
+\begin{lstlisting}
+            <!-- omitted other model elements-->
+
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k"/>
+                    </Value>
+                </Elimination>
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+This code makes the above principle and these two implementation options clear. In the first case, 
+an assignment is necessary. The attribute \xatt{argument="cmt"} is used to specify the compartment argument 
+of the macro \xelem{Elimination} and in the next line the number '1' is assigned to it.
+
+In the second case, the elimination rate parameter \xatt{k} is simply referred to without an assignment. 
+The mandatory here \xatt{blkIdRef} attribute points to the parameter model, \xatt{pm1}, where \xatt{k} 
+is expected to be defined.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Fixed argument values and exceptions}
+\label{subsec:fixedArguments}
+All but one macro have a fixed set of arguments, e.g. the \xatt{compartment} can take only these predefined
+four arguments: \xatt{\{cmt, amount, volume, concentration\}}. The exception is the \xatt{peripheral} argument with three fixed
+arguments \xatt{\{amount, volume, concentration\}} and a variable one, \xatt{k\_ij or k\_i\_j}, where \xatt{i} and
+\xatt{j} stand for input and output compartment, respectively. These compartments numbers are set 
+according to the model configuration. 
+
+For example, in the case of models ADVAN11 or 12, see sections \ref{subsubsec:ADVAN11} and 
+\ref{subsubsec:ADVAN12} for complete description, we need to set the \xatt{kij} arguments names accordingly to the model
+specification, meaning that macro 
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+		peripheral(k12, k21, amount=Ap1)
+\end{lstlisting}
+will be implemented as shown in the following snippet
+\lstset{language=XML}
+\begin{lstlisting}
+                <Peripheral>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k12"/>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k21"/>
+                    </Value>
+                    <!-- omitted amount argument -->
+                </Peripheral>
+\end{lstlisting}
+
+If, on the other hand, the macro contains assignments, e.g.
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+                peripheral(k12=0.6, k21=0.8, amount=Ap)
+\end{lstlisting}
+the implementation will be as shown in the next snippet 
+\lstset{language=XML}
+\begin{lstlisting}
+                <Peripheral>
+                    <Value argument="k12">
+                        <ct:Real>0.6</ct:Real>
+                    </Value>
+                    <Value argument="k21">
+                        <ct:Real>0.8</ct:Real>
+                    </Value>
+                    <!-- omitted amount argument -->
+                </Peripheral>
+\end{lstlisting}
+Also the alternative notation, \xatt{k\_i\_j}, is possible, allowing \xatt{i} and \xatt{j} to take values between
+0 and 99. Compartmental models of this complexity are quite unlikely, but it is possible to connect e.g.
+the eighth and the fifteenth compartment as the following code shows
+\lstset{language=XML}
+\begin{lstlisting}
+                <Peripheral>
+                    <Value argument="k_08_15">
+                        <ct:Real>0.0815</ct:Real>
+                    </Value>
+                    <!-- omitted amount argument -->
+                </Peripheral>
+\end{lstlisting}
+
+
+%\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Macros and target tools}
+\label{subsec:LinkingMacrosDatasets}
+
+One of the main reason to introduce the system of macros is that they offer a flexible 
+and efficient way for encoding PK models. The proposed macros are fully compatible with 
+Monolix and its data format, see Appendix B in \cite{Monolix4.3.2UserGuide:2014}. 
+
+Of course, from the perspective of the interoperability platform \marginpar{\HandCuffLeft}
+it is crucial that the models stored in PharmML using macros can be unambiguously translated 
+to NONMEM and other target tools. Especially the compatibility with few predefined PREDPP 
+routines (i.e. ADVAN 1-4 and 10-12) is essential because of their popularity among the 
+NONMEM modellers community. 
+
+To understand the required translation rules, the knowledge of relevant NONMEM and 
+MONOLIX features and the dataset formats these target tools use is helpful. 
+For convenience, few most essential differences between these tools/formats from the 
+perspective of the macros and their usage are listed
+\begin{itemize}
+\item
+In PREDPP library (ADVAN 1-4, 10-12 routines) the \emph{DEPOT} compartment is 
+always considered as the $1^{st}$ compartment, the central compartment as $2^{nd}$ 
+and the peripheral compartments as $3^{rd}$, $4^{th}$ etc. 
+\item
+In contrast, MONOLIX doesn't assign a number to the \emph{DEPOT} 
+compartment at all and the numbering starts usually with the central compartment. 
+\item
+The CMT column, standard in NONMEM, is not used in Monolix. It uses an ADM column instead.
+\end{itemize}
+
+
+
+
+
+%To provide such flexibility we have to 
+%ensure that they can handle, for start, the three basic data formats 
+%\begin{itemize}
+%\item
+%NONMEM dataset, as described in \cite{NONMEM:2009} (with restrictions such as 
+%no support for PREDPP keywords and special encoding tricks)
+%\item
+%MONOLIX' version, a modified NONMEM dataset, see a detailed specification in \cite{Monolix4.3.2UserGuide:2014}.
+%\item
+%\xelem{TrialDesign} model provides the possibility to store data records in a tool-independent manner. 
+%\xelem{IndividualDosing} element is the place where relevant dosing data can be encoded inline
+%or be referred to from an external datafile. The actual mapping is defined within the \xelem{Activity}
+%tag.  
+%\end{itemize}
+%There are many incompatible differences between these dataset formats, \marginpar{\HandCuffLeft} 
+%here just a couple relevant points from the point of view of the PK macros
+
+
+%Due to the lack of an common data format and in order to make sure that the macros can work 
+%both with Monolix, NONMEM and \xelem{TrialDesing} coded datasets we needed a modification 
+%in the original MLXTRAN macros.
+%
+%\begin{figure}[ht!]
+%\centering
+% \includegraphics[width=0.6\textwidth]{pics/MacrosDatasets}
+%\caption{Macros are suppose to work with Monolix, NONMEM and \xelem{TrialDesing} coded 
+%datasets. }
+%\label{fig:MacrosDatasets}
+%\end{figure}
+
+%\subsubsection{Modifications}
+%Figure \ref{fig:ComplexModel3A} and Table \ref{tab:datasetComparison} will be used 
+%to illustrate the problem. Two administrations are defined, one oral, one intravenous.
+%While MONOLIX (left) doesn't assign a number to the depot compartment, 
+%NONMEM (right) does. The differences are inter-connected with the format of the dataset 
+%compatible with each model version. Monolix uses administration type number stored 
+%in the ADM column to identify the administration process. NONMEM requires a CMT 
+%column in the dataset to link a drug administration with its target. 
+%
+%To describe an oral administration in the original MONOLIX macro system two lines 
+%of code are required and is sufficient to inform the tool about the dosing process
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%		compartment(cmt=1, volume=V, concentration=Cc)
+%		oral(adm=1, cmt=1, ka)
+%\end{lstlisting}
+%
+%
+%However, to make the macro work with the NONMEM dataset, 
+%Figure \ref{tab:datasetComparison} (RIGHT), the following modifications (in red) 
+%are required
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%		compartment(cmt=1, volume=V, concentration=Cc)
+%		[*compartment(cmt=2, amount=Depot)*]
+%		oral(adm=1, [*fromCmt=2,*] cmt=1,k)
+%\end{lstlisting} 
+%A new \xatt{compartment} macro for the depot needs to be defined and to make 
+%the connection with the target compartment work a new attribute \xatt{fromCmt}
+%has to be introduced.
+
+\subsubsection{An illustrative example}
+Figure \ref{fig:ComplexModel_Rules} and datasets in Table \ref{tab:C3ModelData} 
+give us some clues about two alternative interpretations for a model with at 
+least one oral administration, dependent on the target tool. Note, that apart from 
+few predefined models, such as ADVAN1-4 and 10-12, one can assign an arbitrary 
+number to the  (first) depot compartment in the NONMEM dataset. This is exactly what 
+happens in this example. While in MONOLIX we would have only two compartments 
+with assigned number to them, all four compartments have numbers assigned in NONMEM,
+Figure \ref{fig:ComplexModel_Rules} (right). This mean that while translating a model 
+from PharmML a transformation of the associated dataset is required. 
+Note, the contrary to models corresponding to one of the ADVAN 1-4 and 10-12 routines, 
+the depot compartment can be assigned an arbitrary number in NONMEM.
+
+It is possible to translate a macro and dataset, utilising the ADM column to identify 
+administrations, used by Monolix into an PREDPP/ADVAN based NONMEM encoding 
+system with data set using the CMT column.
+
+
+\begin{figure}[h!]
+\centering
+ \includegraphics[width=140mm]{pics/ComplexModel_Rules}
+\caption{Two interpretations for a model with two oral administrations.
+While MONOLIX (left) doesn't assign a number to the depot compartments, NONMEM (right) does. 
+The translation of macro coded models to target tools requires in this case changes 
+in the dataset as well, see Table \ref{tab:C3ModelData}.}
+\label{fig:ComplexModel_Rules}
+\end{figure}
+
+
+
+\begin{table}[h!]
+\footnotesize
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{MONOLIX}} \\
+  \hline
+ID	& TIME  & AMT	 & \textbf{ADM}  &	Y \\
+  \hline
+1	& 6	    & 10	& \textbf{1}	 & . \\
+1	& 9	    & 20	& \textbf{2}	 & . \\
+1	& 18	    & 10	& \textbf{1}	 & . \\
+1	& 33	    & 20	& \textbf{2}	 & . \\
+...     &  ...     &  ...     &  ...  & ... \\
+1	& 0	    & .	& .	& 0 \\
+1	& 12	    & .	& .	& 1.18 \\
+...     &  ...     &  ...     & ...  & ...\\
+\end{tabular}
+}
+\hfill
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{NONMEM}} \\
+  \hline
+ID	& TIME  & AMT	 & \textbf{\textcolor{red}{CMT}} &	DV \\
+  \hline
+1	& 6	    & 10	& \textbf{\textcolor{red}{3}}	 & . \\
+1	& 9	    & 20	& \textbf{\textcolor{red}{4}}	 & . \\
+1	& 18	    & 10	& \textbf{\textcolor{red}{3}}	 & . \\
+1	& 33	    & 20	& \textbf{\textcolor{red}{4}}	 & . \\
+...     &  ...     &  ...     &  ...  & ... \\
+1	& 0	    & .	& 1	& 0 \\
+1	& 12	    & .	& 1	& 1.18 \\
+...     &  ...     &  ...     & ...  & ...\\
+\end{tabular}
+}
+\caption{MONOLIX and NONMEM datasets for the model above, Figure 
+\ref{fig:ComplexModel_Rules}. The translator has to make sure that the numbers 
+in the ADM column of the former are properly converted to the CMT column in the latter dataset.}
+\label{tab:C3ModelData}
+\end{table}
+
+
+\subsubsection{Basic translation rules}
+The following few basic translation rules should be treated merely as a guidance.
+Also, they are not covering the whole aspect of the model/data handling within the 
+interoperability platform but are limited to the models encoded with macros. 
+A more careful analysis is required to cover the structural model exchange between 
+the key target tools and associated datasets.
+
+The flow of the data within the framework \marginpar{\HandCuffLeft}  has been so far 
+successfully avoided/neglected and needs to return to the agenda again. 
+
+\subparagraph{Models corresponding to ADVAN 1-4 and 10-12}
+Fortunately, the translation of models encoded with macros and having their equivalents 
+in routines ADVAN1-4 and 10-12 in PREDPP and their datasets is straightforward. 
+Simply, one has to translate a corresponding macro into its equivalent ADVAN 
+routine and then to rename the ADM column in the MONOLIX data set into CMT, 
+see for more details and examples in Section \ref{subsec:PREDPPinMACROS}.
+
+\subparagraph{All other models}
+For every oral administration one new depot compartment needs tho be introduced
+and assigned a number. The Figure \ref{fig:ComplexModel_Rules} and datasets 
+in Table \ref{tab:C3ModelData} can again help to understand what is required. 
+
+In this example, \xatt{adm=1} and \xatt{adm=2} denote two oral administrations. 
+In the NONMEM system, Figure \ref{fig:ComplexModel_Rules} (right), '1' and '2' are  
+assigned to the central and peripheral compartment respectively, as in the MONOLIX, 
+so that the next free numbers, '3' and '4', will be assigned to the depot compartments. 
+
+Next, the NONMEM dataset needs to be produced based on the information stored 
+in the MONOLIX dataset in such a way that it will match the new compartment 
+numbering scheme with the CMT column replacing the ADM column. 
+
+The oral administration, \xatt{adm=1}, aims now at the compartment 3, so that '1' 
+in the ADM column will correspond to '3' in the CMT column. Similarly, \xatt{adm=2}, 
+aims now at the compartment 4, so that '2' in the ADM column will be translated to '4' 
+in the CMT column.
+
+As additional rules, applicable for all models, one should keep in mind that 
+(1) Y column in a MONOLIX dataset has to be renamed into DV of the NONMEM dataset 
+and (2) the TINF column has to be renamed into RATE 
+and its content recalculated accordingly. 
+
+%\subparagraph{Column names} TINF and Y columns in the original datasets have 
+%to be renamed to RATE and DV, respectively. 
+
+%\begin{figure}[h!]
+%\centering
+% \includegraphics[width=120mm]{pics/ComplexModel3}
+%\caption{Two model interpretations for a model with more then one administration 
+%from which at least one is of oral type, dependent on the target tool. 
+%While MONOLIX (left) doesn't assign a number to the depot compartment, 
+%NONMEM (right) does. The difference is inter-connected with the format of the 
+%dataset compatible with each model version, see Table \ref{tab:datasetComparison}.}
+%\label{fig:ComplexModel3A}
+%\end{figure}
+%
+%
+%\begin{table}[ht!]
+%\footnotesize
+%\parbox{.5\linewidth}{
+%\centering
+%\begin{tabular}{ccccc}
+%  \hline
+%     \multicolumn{5}{c}{\textbf{MONOLIX}} \\
+%  \hline
+%ID	& TIME  & AMT	 & \textbf{ADM} &	Y \\
+%  \hline
+%1	& 0	    & 2.24	& \textbf{2}	& . \\
+%1	& 1	    & .	& .		 	& 142 \\
+%1	& 2	    & .	& .	 		& 54.9 \\
+%1	& 3	    & .	& .			& 25.9 \\
+%1	& 4	    & .	& .			& 17.5 \\
+%1	& 6	    & 7	& \textbf{1}	& . \\
+%1	& 7	    & .	& .			& 192 \\
+%1	& 8	    & .	& .			& 141 \\
+%1	& 9	    & .	& .			& 189 \\
+%2	& 0	    & 2.73	& \textbf{2}	& . \\
+%2	& 1	    & . 	& .			& 176 \\
+%...     &  ...     &  ...     & ...  			& ...\\
+%\end{tabular}
+%}
+%\hfill
+%\parbox{.5\linewidth}{
+%\centering
+%\begin{tabular}{ccccc}
+%  \hline
+%   \multicolumn{5}{c}{\textbf{NONMEM}} \\
+%  \hline
+%ID	& TIME  & AMT	 & \textbf{\textcolor{red}{CMT}} &	Y \\
+%  \hline
+%1	& 0	    & 2.24	& \textbf{\textcolor{red}{1}}	& . \\
+%1	& 1	    & .	& .		 	& 142 \\
+%1	& 2	    & .	& .	 		& 54.9 \\
+%1	& 3	    & .	& .			& 25.9 \\
+%1	& 4	    & .	& .			& 17.5 \\
+%1	& 6	    & 7	& \textbf{\textcolor{red}{2}}	& . \\
+%1	& 7	    & .	& .			& 192 \\
+%1	& 8	    & .	& .			& 141 \\
+%1	& 9	    & .	& .			& 189 \\
+%2	& 0	    & 2.73	& \textbf{\textcolor{red}{1}}	& . \\
+%2	& 1	    & . 	& .	 		& 176 \\
+%...     &  ...     &  ...     & ...  			& ...\\
+%\end{tabular}
+%}
+%\caption{Comparison of NONMEM and MONOLIX datasets for the model shown 
+%in Figure \ref{fig:ComplexModel3A}. NONMEM requires additionally a CMT column in 
+%the dataset, whereas MONOLIX doesn't and uses instead administration type number
+%stored in the ADM column.}
+%\label{tab:datasetComparison}
+%\end{table}
+
+
+%\newpage
+\subsubsection{Datasets mapping}
+The elements defined in previous version 0.4.1, \cite{Swat:2014bb}, are reused here to encode the 
+mapping between macros and the MONOLIX dataset, i.e. the mapping between 
+\xatt{adm/type} attributes in the PK macros and the administration type as stored in the 
+ADM column,
+\begin{itemize}
+\item 
+\xelem{TargetMapping} element with the \xatt{blkIdRef} attribute, the latter one because 
+in PharmML multiple structural models are allowed, so we have to specify which model is 
+holding the target compartment definition
+\item
+\xelem{Map} element with
+\begin{itemize}
+\item 
+\xatt{dataSymbol} -- attribute denoting the target symbol as encoded in a dataset and
+\item 
+new attribute \xatt{admNumber} -- to identify the target symbol in the model.
+\end{itemize}
+\end{itemize}
+
+%\xatt{modelSymbol}/\xatt{cmtNumber}/
+
+The use of these new elements is explained in the Table \ref{tab:mappingNONMEMAndMacros}. 
+%(Left) the mapping if MONOLIX dataset is used, {right} for the NONMEM dat set.
+\begin{table}[ht!]
+\setlength{\tabcolsep}{5pt}
+\begin{center}
+\begin{tabular}{l}
+  \hline
+  \hline
+MONOLIX datasets mapping \\ %  	& NONMEM datasets mapping \\
+  \hline
+\lstset{language=XML}
+\begin{lstlisting}
+<NONMEMdataSet oid="MLXoid">
+    <!-- omitted details -->
+    
+    <ColumnMapping>
+        <ds:ColumnRef columnIdRef="ADM"/>
+        <ds:TargetMapping blkIdRef="sm3">
+            <ds:Map dataSymbol="1" admNumber="1"/>
+            <ds:Map dataSymbol="2" admNumber="2"/>
+            <ds:Map dataSymbol="3" admNumber="3"/>
+        </ds:TargetMapping>
+    </ColumnMapping>
+    
+    <!-- omitted Definition of dataset  
+    	columns such as ID,TIME,AMT,ADM  -->
+\end{lstlisting}
+%&
+%\lstset{language=XML}
+%\begin{lstlisting}
+%<NONMEMdataSet oid="NMoid">
+%    <!-- omitted details -->
+%    
+%    <ColumnMapping>
+%        <ds:ColumnRef columnIdRef="CMT"/>
+%        <ds:TargetMapping blkIdRef="sm3">
+%            <ds:Map dataSymbol="2" cmtNumber="2"/>
+%            <ds:Map dataSymbol="3" cmtNumber="3"/>
+%            <ds:Map dataSymbol="4" cmtNumber="4"/>
+%        </ds:TargetMapping>
+%    </ColumnMapping>
+%    
+%    <!-- omitted Definition of dataset  
+%    	columns such as ID,TIME,AMT,CMT  -->
+%\end{lstlisting}
+%\\
+%& OR \\
+%&
+%\lstset{language=XML}
+%\begin{lstlisting}
+%<NONMEMdataSet oid="NMoid">
+%    <!-- omitted details -->
+%    
+%    <ColumnMapping>
+%        <ds:ColumnRef columnIdRef="CMT"/>
+%        <ds:TargetMapping blkIdRef="sm3">
+%            <ds:Map dataSymbol="2" modelSymbol="Ac"/>
+%            <ds:Map dataSymbol="3" modelSymbol="Depot1"/>
+%            <ds:Map dataSymbol="4" modelSymbol="Depot2"/>
+%        </ds:TargetMapping>
+%    </ColumnMapping>
+%    
+%    <!-- omitted Definition of dataset  
+%    	columns such as ID,TIME,AMT,CMT  -->
+%\end{lstlisting}
+\\
+    \hline
+\end{tabular}
+\caption{Mappings of MONOLIX type datasets and PK macros. For now the 
+\xelem{NONMEMdataSet} element is used to encode MONOLIX dataset but this will be replaced
+by an element with a more suitable name.}
+\label{tab:mappingNONMEMAndMacros}
+\end{center}
+\end{table}
+
+
+
+%\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Linking macros and \xelem{TrialDesign}}
+\label{subsec:LinkingMacrosTrialDesign}
+\xelem{TrialDesign} model provides an alternative to store data records (observations, 
+dosing and covariates) in a tool-independent manner. The \xelem{IndividualDosing} 
+element is the place where relevant dosing data can be encoded inline or be referred 
+to from an external datafile. The actual mapping is defined within the \xelem{Activity} 
+tag.
+
+A minor extension in the \xelem{TrialDesign} is necessary to link the administrations coded
+in \xelem{Activity} elements  to the targets in the PK macros and identified using the 
+\xatt{adm} attribute, i.e.
+\begin{itemize}
+\item
+new value \textit{administrationType} is added to the \xatt{inputTarget} attribute.
+\end{itemize}
+Otherwise, elements defined in the last section will be reused. The Table 
+\ref{tab:mappingTrialDesignAndMacros} shows the implementations within the 
+\xelem{TrialDesign} element in cases when (left) a PK model is expressed using 
+algebraic equation with dose parameter, D, and (right) when using PK macros.
+\begin{table}[ht!]
+\setlength{\tabcolsep}{5pt}
+\begin{center}
+\begin{tabular}{ll}
+  \hline
+  \hline
+Using dose \xatt{parameter}, D, and algebraic & Using value \emph{administrationType} for \xatt{inputTarget}  \\
+equation for PK model, e.g. $C(t)=f(D,V,k,...)$ 	& and \xelem{TargetMapping}/\xelem{Map} elements   \\
+(available in PharmML since version 0.2.1)	& 	\\
+  \hline
+\lstset{language=XML}
+\begin{lstlisting}
+<Activity oid="actBolusD">
+    <Bolus>
+        <DoseAmount inputTarget="parameter">
+            <ct:SymbRef blkIdRef="sm3" symbIdRef="D"/>
+            <ct:Assign>
+                <ct:Real>10</ct:Real>
+            </ct:Assign>
+        </DoseAmount>
+        <DosingTimes>
+            <!-- e.g. 10 -->
+        </DosingTimes>
+    </Bolus>
+</Activity>
+\end{lstlisting}
+&
+\lstset{language=XML}
+\begin{lstlisting}
+<Activity oid="actBolusMacro">
+    <Bolus>
+        <DoseAmount inputTarget="admType">
+            <ds:TargetMapping blkIdRef="sm3">
+                <ds:Map admNumber="2"/>
+            </ds:TargetMapping>
+            <ct:Assign>
+                <ct:Real>10</ct:Real>
+            </ct:Assign>
+        </DoseAmount>
+        <!-- omitted DosingTimes -->
+    </Bolus>
+</Activity>
+\end{lstlisting}
+\\
+    \hline
+\end{tabular}
+\caption{Comparison of the link between administration definitions and structural model, 
+dependent on the formulation of the latter. (left) PK model expressed using algebraic equations
+ with dose parameter, $D$, and when using the PK macros (right).}
+\label{tab:mappingTrialDesignAndMacros}
+\end{center}
+\end{table}
+
+
+%{\color{red} \scshape{NEW}}
+%\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Connection between macros and the model}
+\label{subsec:macroOutputLink}
+The possible outputs of PK macros are amounts, e.g. $Ac$, and concentrations, e.g. $C$. 
+A PK model defined by a system of macros will often be connected to a subsequent PD 
+model, which expects the concentration, $C$, as one of the inputs. Another option is that the output
+of the PK macros will be mapped directly to the data in the \xelem{ObservationModel}. 
+
+For the \emph{compartment} macro in question, there are two possibilities, either
+\begin{itemize}
+\item
+the concentration is defined in the macro
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+		compartment(cmt=1,concentration=C, volume=V)
+\end{lstlisting}
+in which case no output has to be defined explicitly, or
+\item
+the alternative form of this macro is used
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+		compartment(cmt=1,amount=Ac, volume=V)
+\end{lstlisting}
+and because eventually the concentration is required, a subsequent assignment for $C$ must be provided in MLXTRAN
+in the \emph{EQUATION} block, i.e.
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+		C = Ac/V
+\end{lstlisting}
+\end{itemize}
+In PharmML, these two cases have to be treated accordingly. 
+\begin{itemize}
+\item
+In the first case only the concentration variable, $C$, needs to be defined
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="sm1">
+            <ct:Variable symbolType="real" symbId="C"/>
+            
+            <PKmacros>
+                    <!-- omitted details of the macro 
+                    compartment(cmt=1,concentration=C, volume=V) -->
+\end{lstlisting}
+\item
+otherwise the amount variable, $Ac$, and concentration variable, $C$, with the $C=Ac/V$ assignment 
+needs to be defined
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="sm1">
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            <ct:Variable symbolType="real" symbId="Cc">
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Binop op="divide">
+                            <ct:SymbRef symbIdRef="Ac"/>
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                        </math:Binop>
+                    </math:Equation>
+                </ct:Assign>
+            </ct:Variable>
+            
+            <PKmacros>
+                <Compartment>
+                    <!-- omitted details of the macro 
+                    compartment(cmt=1,amount=Ac, volume=V) -->
+\end{lstlisting}
+\end{itemize}
+If a model using the PK macros is defined properly, following the principles described above, 
+both options make sure that the connection to a subsequent model or the \xelem{ObservationModel} 
+will be established.
+
+
+\section{Examples}
+We start with the most popular PREDPP, ADVAN1-4 and 10-12, examples and go over later to 
+more complex administrations arrangements.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Predefined PREDPP models using PK macros and PharmML}
+\label{subsec:PREDPPinMACROS}
+
+This section describes PREDPP library models as encoded in routines ADVAN1-4 and 10-12 
+and their PK macros implementation. 
+
+
+As explained in Section \ref{subsec:LinkingMacrosDatasets} there are differences between 
+NONMEM and MONOLIX and their datasets one has to consider when dealing with PK macros.
+They manifest themself in that way how the transfer rate constants are numbered/named. 
+Models with more then two compartments and with 1st order input (using \emph{DEPOT} 
+compartment) will have different transfer rate symbols, e.g.:
+\begin{itemize}
+\item
+ADVAN 4
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{lcc}
+  \hline
+  \hline
+				 	& PREDPP routines 	& PK macros \\
+  \hline
+transfer rate constants 	& k23, k32 		& k12, k21  \\
+   \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\item
+ADVAN 12 
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{lcc}
+  \hline
+  \hline
+				 	& PREDPP routines 	& PK macros \\
+  \hline
+transfer rate constants 	& k23, k32 		& k12, k21  \\
+					& k24, k42 		& k13, k31  \\
+   \hline
+\end{tabular}
+\end{center}
+\end{table}
+\end{itemize}
+Models described in this section use the MLXTRAN numbering convention in order to comply
+with the PK macros notation.
+
+
+To allow for a lossless translation between PREDPP coded models and PK macros one needs
+to established well defined translation rules. To achieve this goal and provide help to other 
+translation/converter teams we need to analyse the predefined PREDPP routines ADVAN1-4 \& 10-12
+and more specifically to
+\begin{enumerate}
+\item
+agree and/or understand what they mean
+\item
+dissect the routines into elementary components and finally 
+\item
+find equivalent formulation for each such element in the PK macro speak.
+\end{enumerate}
+The above steps are illustrated in Table \ref{tab:ADVAN_translation} in an abbreviated form. 
+In columns \emph{Interpretation} and \emph{Elements} first two steps are implemented, 
+the third column provides the according PK macro formulation.
+
+\begin{center}
+\begin{longtable}{lll}
+  \hline
+  \hline
+ADVAN routine & Interpretation & MLXTRAN macro \\
+\& default TRANS1 &		& \\
+%ADVAN\_X & Interpretation & Elements & MLXTRAN macro \\
+%(w. TRANS1)		&			 &		    &	\\
+\hline
+\multicolumn{3}{c}{one compartment}  \\[.1ex]
+\hline
+%1-comp, IV input
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+ADVAN1
+compartment
+\end{lstlisting}
+&
+\lstset{language=Elements}
+\begin{lstlisting}
+- 1 compartment
+
+- iv bolus administration
+
+- linear elimination
+\end{lstlisting}
+& 
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+compartment(cmt=1, amount=Ac, volume=V)
+
+iv(adm=1, cmt=1)
+
+elimination(cmt=1, k)
+\end{lstlisting} 
+
+\\
+& 
+\\
+\hdashline
+
+
+%1-comp, 1st order input
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+ADVAN2
+\end{lstlisting}
+&
+\lstset{language=Elements}
+\begin{lstlisting}
+- 1 compartment
+
+- oral administration, 1st order absorption
+
+- linear elimination
+\end{lstlisting}
+%&
+%
+&
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+compartment(cmt=1, amount=Ac, volume=V)
+
+oral(adm=1, cmt=1, ka)
+
+elimination(cmt=1, k)
+\end{lstlisting}
+
+\\
+& 
+\\
+\hdashline
+
+%1-comp, IV input 
+%with saturable elimination
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+ADVAN10
+\end{lstlisting}
+&
+\lstset{language=Elements}
+\begin{lstlisting}
+- 1 compartment
+
+- iv bolus administration
+
+- saturable elimination
+\end{lstlisting}
+%&
+%
+&
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+compartment(cmt=1, amount=Ac, volume=V)
+
+iv(adm=1, cmt=1)
+
+elimination(cmt=1, Km, Vm)
+\end{lstlisting}
+
+\\
+\hline
+\multicolumn{3}{c}{two compartments}  \\[.1ex]
+
+  \hline
+
+%2-comp, IV input
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+ADVAN3 
+\end{lstlisting}
+&
+\lstset{language=Elements}
+\begin{lstlisting}
+- 2 compartments 
+one central (1) & one peripheral with
+linear transfer rates
+
+- iv bolus administration (into 1)
+
+- linear elimination (from 1)
+\end{lstlisting}
+%&
+%
+&
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+compartment(cmt=1, amount=Ac, volume=V)
+peripheral(k12, k21, amount=Ap)
+
+
+iv(adm=1, cmt=1)
+
+elimination(cmt=1, k)
+\end{lstlisting}
+
+\\
+& 
+\\
+\hdashline
+
+
+%2-comp, 1st order input 
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+ADVAN4 
+\end{lstlisting}
+&
+\lstset{language=Elements}
+\begin{lstlisting}
+- 2 compartments 
+one central (1) & one peripheral with
+linear transfer rates
+
+- oral administration, 1st order absorption 
+(into 1)
+
+- linear elimination (from 1)
+\end{lstlisting}
+%&
+%
+&
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+compartment(cmt=1, amount=Ac, volume=V)
+peripheral(k12, k21, amount=Ap)
+
+
+oral(adm=1, cmt=1, ka)
+
+elimination(cmt=1, k)
+\end{lstlisting}
+
+\\
+\hline
+\multicolumn{3}{c}{three compartments}  \\[.1ex]
+  \hline
+  
+%3-comp, IV input 
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+ADVAN11
+\end{lstlisting}
+&
+\lstset{language=Elements}
+\begin{lstlisting}
+- 3 compartments 
+one central (1) & two peripheral with
+linear transfer rates
+
+- iv bolus administration (into 1)
+
+- linear elimination (from 1)
+\end{lstlisting}
+%&
+%
+&
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+compartment(cmt=1, amount=Ac, volume=V)
+peripheral(k12, k21, amount=Ap1)
+peripheral(k13, k31, amount=Ap2)
+
+iv(adm=1, cmt=1)
+
+elimination(cmt=1, k)
+\end{lstlisting}
+
+\\
+& 
+\\
+\hdashline
+
+%3-comp, 1st order input 
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+ADVAN12
+\end{lstlisting}
+&
+\lstset{language=Elements}
+\begin{lstlisting}
+- 3 compartments 
+one central (1) & two peripheral with
+linear transfer rates
+
+- oral administration, 1st order absorption 
+(into 1)
+
+- linear elimination (from 1)
+\end{lstlisting}
+%&
+%
+&
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+compartment(cmt=1, amount=Ac, volume=V)
+peripheral(k12, k21, amount=Ap1)
+peripheral(k13, k31, amount=Ap2)
+
+oral(adm=1, cmt=1, ka)
+
+elimination(cmt=1, k)
+\end{lstlisting}
+    \\ [+1ex]
+      \hline
+      \\
+\caption{Interpretation and translation of PREDPP models using ADVAN1-4 \& 10-12 routines, 
+with default TRANS1 parameterization, into PK macros.}
+\label{tab:ADVAN_translation}
+\end{longtable}
+\end{center}
+
+\begin{figure}[htbp!]
+\centering
+ \includegraphics[width=170mm]{pics/AdvanMacrosMaster}
+\caption{The overview of the ADVAN models, with their default parameterization, 
+and their connection to PK macros based on the analysis in Table \ref{tab:ADVAN_translation}. 
+Each ADVAN model can be uniquely mapped to macros and their attributes. For more 
+details see Sections \ref{subsubsec:ADVAN1} to \ref{subsubsec:ADVAN12}.}
+\label{fig:Advan1}
+\end{figure}
+
+
+\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{ADVAN1, TRANS1 -- 1-comp IV input}
+\label{subsubsec:ADVAN1}
+ODE formulation:
+\begin{align}
+\frac{dAc}{dt} &= - k \times Ac  \nonumber
+\end{align}
+
+
+\begin{figure}[htbp!]
+\centering
+ \includegraphics[width=100mm]{pics/Advan1}
+\caption{ADVAN1 model, in this case compartment numbering is identical.}
+\label{fig:Advan1}
+\end{figure}
+
+\begin{table}[ht!]
+\footnotesize
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{MONOLIX}} \\
+  \hline
+ID & TIME & AMT & \textbf{ADM} & Y  \\
+  \hline
+1  & 0        & 10   & \textbf{1} & .       \\
+1  & 2        & .      & .   & 5      \\
+... &  ...      &  ...   &  ...   & ...  \\
+\end{tabular}
+}
+\hfill
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{NONMEM}} \\
+  \hline
+ID & TIME & AMT & \textbf{\textcolor{red}{CMT}} & DV \\
+  \hline
+1  & 0        & 10   & \textbf{\textcolor{red}{1}}   & .    \\
+1  & 2        & .      & 1    & 5   \\
+... &  ...      &  ...   &  ... & ...  \\
+\end{tabular}
+}
+\caption{MONOLIX and NONMEM datasets for the ADVAN1 model.}
+\end{table}
+
+
+\begin{table}[h!]
+\setlength{\tabcolsep}{15pt}
+\begin{center}
+\begin{tabular}{l}
+  \hline \hline
+PK macro \\[-.25ex]
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+input = {V, k}
+PK:
+compartment(cmt=1, amount=Ac, volume=V)
+iv(adm=1, cmt=1)
+elimination(cmt=1, k)
+\end{lstlisting}
+%&
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%input = {V, k}
+%PK:
+%compartment(cmt=1, amount=Ac, volume=V)
+%iv(adm=1, cmt=1)
+%elimination(cmt=1, k)
+%\end{lstlisting} 
+\\
+  \hline
+\end{tabular}
+\caption{PK macros  for the ADVAN1 model, as shown in Figure \ref{fig:ComplexModel1a} (left).}
+\label{tab:advan1Table}
+\end{center}
+\end{table}
+
+
+PharmML code\footnote{Only the ADVAN1 code example contains the parameter model, \xatt{pm1}, in which
+all model parameters has to be defined. It is omitted in the remaining cases for simplicity.}
+% The same holds for the \xelem{StructuralModel} tags}:
+\lstset{language=XML}
+\begin{lstlisting}
+        <ParameterModel blkId="pm1">
+            <!-- no IIV assumed for simplicity -->
+            <SimpleParameter symbId="k"/>
+            <SimpleParameter symbId="V"/>
+        </ParameterModel>
+
+        <StructuralModel blkId="sm1">
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            
+            <PKmacros>
+                <Compartment>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ac"/>
+                    </Value>
+                    <Value argument="volume">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                    </Value>
+                </Compartment>
+                
+                <IV>
+                    <Value argument="adm">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                </IV>
+                
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k"/>
+                    </Value>
+                </Elimination>
+            </PKmacros>
+        </StructuralModel>
+ \end{lstlisting}
+
+
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{ADVAN2, TRANS1 -- 1-comp 1st order input}
+\label{subsubsec:advan2}
+ODE formulation:
+\begin{align}
+\frac{dAd}{dt} &= -ka \times Ad \nonumber \\
+\frac{dAc}{dt} &= ka \times Ad - k \times Ac  \nonumber
+\end{align}
+
+
+\begin{figure}[htbp!]
+\centering
+ \includegraphics[width=100mm]{pics/Advan2}
+\caption{ADVAN2 model, with compartment numbering dependent on the target tool.}
+\label{fig:Advan2}
+\end{figure}
+
+
+\begin{table}[ht!]
+\footnotesize
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{MONOLIX}} \\
+  \hline
+ID & TIME & AMT & \textbf{ADM} & Y \\
+  \hline
+1  & 0        & 10   & \textbf{1} & .       \\
+1  & 2        & .      & .     & 5      \\
+... &  ...      &  ...   &  ...  & ...   \\
+\end{tabular}
+}
+\hfill
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{NONMEM}} \\
+  \hline
+ID & TIME & AMT & \textbf{\textcolor{red}{CMT}} & DV \\
+  \hline
+1  & 0        & 10   & \textbf{\textcolor{red}{1}}   & .    \\
+1  & 2        & .      & 2    & 5   \\
+... &  ...      &  ...   &  ... & ...  \\
+\end{tabular}
+}
+\caption{MONOLIX and NONMEM datasets for the ADVAN2 model.}
+\end{table}
+
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+\end{lstlisting}
+
+\begin{table}[h!]
+\setlength{\tabcolsep}{15pt}
+\begin{center}
+%\begin{tabular*}{.95\textwidth}{@{\extracolsep{\fill} } ll}
+\begin{tabular}{l}
+  \hline \hline
+PK macro  \\[-.25ex]
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+input = {ka, V, k}
+PK:
+compartment(cmt=1, amount=Ac, volume=V)
+oral(adm=1, cmt=1, ka)
+elimination(cmt=1, k)
+\end{lstlisting}
+%&
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%input = {ka, V, k}
+%PK:
+%compartment(cmt=1, amount=Ac, volume=V)
+%[*compartment(cmt=2, amount=Depot)*]
+%oral(adm=1, [*fromCmt=2,*] cmt=1, ka)
+%elimination(cmt=1, k)
+%\end{lstlisting} 
+\\
+  \hline
+\end{tabular}
+\caption{PK macros  for the ADVAN2 model, as shown in Figure \ref{fig:Advan2} (left).}
+\label{tab:advan2Table}
+\end{center}
+\end{table}
+
+PharmML code:
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="sm2">
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            
+            <PKmacros>
+                <Compartment>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ac"/>
+                    </Value>
+                    <Value argument="volume">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                    </Value>
+                </Compartment>
+                
+                <Oral>
+                    <Value argument="adm">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="ka"/>
+                    </Value>
+                </Oral>
+                
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k"/>
+                    </Value>
+                </Elimination>
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{ADVAN3, TRANS1 -- 2-comp IV input}
+ODE formulation:
+\begin{align}
+\frac{dAc}{dt} &= -k_{12}\times Ac + k_{21} \times Ap - k \times Ac  \nonumber \\
+\frac{dAp}{dt} &= k_{12}\times Ac - k_{21} \times Ap  \nonumber
+\end{align}
+
+\begin{figure}[htbp!]
+\centering
+ \includegraphics[width=110mm]{pics/Advan3}
+\caption{ADVAN3 model, in this case compartment numbering is identical.}
+\label{fig:Advan3}
+\end{figure}
+
+
+\begin{table}[ht!]
+\footnotesize
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{MONOLIX}} \\
+  \hline
+ID & TIME & AMT & \textbf{ADM} & Y \\
+  \hline
+1  & 0        & 10   & \textbf{1} & .       \\
+1  & 2        & .      & .    & 5    \\
+... &  ...      &  ...   &  ... & ...    \\
+\end{tabular}
+}
+\hfill
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{NONMEM}} \\
+  \hline
+ID & TIME & AMT & \textbf{CMT} & DV \\
+  \hline
+1  & 0        & 10   & \textbf{1}   & .    \\
+1  & 2        & .      & 2    & 5   \\
+... &  ...      &  ...   &  ... & ...  \\
+\end{tabular}
+}
+\caption{MONOLIX and NONMEM datasets for the ADVAN3 model.}
+\end{table}
+
+
+\begin{table}[h!]
+\setlength{\tabcolsep}{15pt}
+\begin{center}
+%\begin{tabular*}{.95\textwidth}{@{\extracolsep{\fill} } ll}
+\begin{tabular}{l}
+  \hline \hline
+PK macro \\[-.25ex]
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+input = {V, k, k12, k21}
+PK:
+compartment(cmt=1, amount=Ac, volume=V)
+peripheral(k12, k21, amount=Ap)
+iv(adm=1, cmt=1)
+elimination(cmt=1, k)
+\end{lstlisting}
+%&
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%input = {V, k, k12, k21}
+%PK:
+%compartment(cmt=1, amount=Ac, volume=V)
+%peripheral(k12, k21, amount=Ap)
+%iv(adm=1, cmt=1)
+%elimination(cmt=1, k)
+%\end{lstlisting} 
+\\
+  \hline
+\end{tabular}
+\caption{PK macros  for the ADVAN3 model, as shown in Figure \ref{fig:Advan3} (left).}
+\label{tab:advan3Table}
+\end{center}
+\end{table}
+
+
+PharmML code:
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="sm3">
+            
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            <ct:Variable symbolType="real" symbId="Ap"/>
+            
+            <PKmacros>
+                <Compartment>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ac"/>
+                    </Value>
+                    <Value argument="volume">
+                        <ct:SymbRef symbIdRef="V"/>
+                    </Value>
+                </Compartment>
+                
+                <Peripheral>
+                    <Value>
+                        <ct:SymbRef symbIdRef="k12"/>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef symbIdRef="k21"/>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ap"/>
+                    </Value>
+                </Peripheral>
+                
+                <IV>
+                    <Value argument="adm">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                </IV>
+                
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef symbIdRef="k"/>
+                    </Value>
+                </Elimination>
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{ADVAN4, TRANS1 -- 2-comp 1st order input}
+ODE formulation:
+\begin{align}
+\frac{dAd}{dt} &= -ka \times Ad \nonumber \\
+\frac{dAc}{dt} &= ka \times Ad - k_{12} \times Ac + k_{21} \times Ap - k \times Ac  \nonumber \\
+\frac{dAp}{dt} &= k_{12} \times Ac - k_{21} \times Ap  \nonumber
+\end{align}
+
+\begin{figure}[htbp!]
+\centering
+ \includegraphics[width=110mm]{pics/Advan4}
+\caption{ADVAN4 model, with compartment numbering dependent on the target tool. 
+Note, that not only the compartment numbers are different in NONMEM coded model, 
+the rate constants names are different as well.}
+\label{fig:Advan4}
+\end{figure}
+
+
+\begin{table}[ht!]
+\footnotesize
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{MONOLIX}} \\
+  \hline
+ID & TIME & AMT & \textbf{ADM} & Y \\
+  \hline
+1  & 0        & 10   & \textbf{1} & .       \\
+1  & 2        & .      & . & 5        \\
+... &  ...      &  ...   &  ...&  ...     \\
+\end{tabular}
+}
+\hfill
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{NONMEM}} \\
+  \hline
+ID & TIME & AMT & \textbf{\textcolor{red}{CMT}} & DV \\
+  \hline
+1  & 0        & 10   & \textbf{\textcolor{red}{1}}   & .    \\
+1  & 2        & .      & 2    & 5   \\
+... &  ...      &  ...   &  ... & ...  \\
+\end{tabular}
+}
+\caption{MONOLIX and NONMEM datasets for the ADVAN4 model.}
+\end{table}
+
+\begin{table}[h!]
+\setlength{\tabcolsep}{15pt}
+\begin{center}
+%\begin{tabular*}{.95\textwidth}{@{\extracolsep{\fill} } ll}
+\begin{tabular}{l}
+  \hline \hline
+PK macro  \\[-.25ex]
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+input = {ka, V, k, k12, k21}
+PK:
+compartment(cmt=1, amount=Ac, volume=V)
+peripheral(k12, k21, amount=Ap)
+oral(adm=1, cmt=1, ka)
+elimination(cmt=1, k)
+\end{lstlisting}
+%&
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%input = {ka, V, k, k12, k21}
+%PK:
+%compartment(cmt=1, amount=Ac, volume=V)
+%[*compartment(cmt=3, amount=Depot)*]
+%peripheral(k12, k21, amount=Ap)
+%oral(adm=1, [*fromCmt=3,*] cmt=1, ka)
+%elimination(cmt=1, k)
+%\end{lstlisting} 
+\\
+  \hline
+\end{tabular}
+\caption{PK macros  for the ADVAN4 model, as shown in Figure \ref{fig:Advan4} (left).}
+\label{tab:advan4Table}
+\end{center}
+\end{table}
+
+
+PharmML code:
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="sm4">
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            <ct:Variable symbolType="real" symbId="Ap"/>
+            <ct:Variable symbolType="real" symbId="Cc">
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Binop op="divide">
+                            <ct:SymbRef symbIdRef="Ac"/>
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                        </math:Binop>
+                    </math:Equation>
+                </ct:Assign>
+            </ct:Variable>
+            
+            <PKmacros>
+                <Compartment>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ac"/>
+                    </Value>
+                    <Value argument="volume">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                    </Value>
+                </Compartment>
+                
+                <Peripheral>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k12"/>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k21"/>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ap"/>
+                    </Value>
+                </Peripheral>
+                
+                <Oral>
+                    <Value argument="adm">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="ka"/>
+                    </Value>
+                </Oral>
+                
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k"/>
+                    </Value>
+                </Elimination>
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{ADVAN10, TRANS1 -- 1-comp IV input with saturable elimination}
+ODE formulation:
+\begin{align}
+\frac{dAc}{dt} &= - \frac{Vm \times Ac}{Km + Ac}  \nonumber
+\end{align}
+
+\begin{figure}[htbp!]
+\centering
+ \includegraphics[width=100mm]{pics/Advan10}
+\caption{ADVAN10 model, in this case compartment numbering is identical.}
+\label{fig:Advan10}
+\end{figure}
+
+
+\begin{table}[ht!]
+\footnotesize
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{MONOLIX}} \\
+  \hline
+ID & TIME & AMT & \textbf{ADM} & Y \\
+  \hline
+1  & 0        & 10   & \textbf{1} & .       \\
+1  & 2        & .      &	.	& 5        \\
+... &  ...      &  ...   &  ... &  ...     \\
+\end{tabular}
+}
+\hfill
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{NONMEM}} \\
+  \hline
+ID & TIME & AMT & \textbf{CMT} & DV \\
+  \hline
+1  & 0        & 10   & \textbf{1}   & .    \\
+1  & 2        & .      & 1    & 5   \\
+... &  ...      &  ...   &  ... & ...  \\
+\end{tabular}
+}
+\caption{MONOLIX and NONMEM datasets for the ADVAN10 model.}
+\end{table}
+
+
+\begin{table}[h!]
+\setlength{\tabcolsep}{15pt}
+\begin{center}
+%\begin{tabular*}{.95\textwidth}{@{\extracolsep{\fill} } ll}
+\begin{tabular}{l}
+  \hline \hline
+PK macro \\[-.25ex]
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+input = {V, Km, Vm}
+PK:
+compartment(cmt=1, amount=Ac, volume=V)
+iv(adm=1, cmt=1)
+elimination(cmt=1, Km, Vm)
+\end{lstlisting}
+%&
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%input = {V, Km, Vm}
+%PK:
+%compartment(cmt=1, amount=Ac, volume=V)
+%iv(adm=1, cmt=1)
+%elimination(cmt=1, Km, Vm)
+%\end{lstlisting} 
+\\
+  \hline
+\end{tabular}
+\caption{PK macros for the ADVAN10 model, as shown in Figure \ref{fig:Advan10} (left).}
+\label{tab:advan10Table}
+\end{center}
+\end{table}
+
+
+PharmML code:
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="sm10">
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            <ct:Variable symbolType="real" symbId="Cc">
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Binop op="divide">
+                            <ct:SymbRef symbIdRef="Ac"/>
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                        </math:Binop>
+                    </math:Equation>
+                </ct:Assign>
+            </ct:Variable>
+            
+            <PKmacros>
+                <Compartment>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ac"/>
+                    </Value>
+                    <Value argument="volume">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                    </Value>
+                </Compartment>
+                
+                <IV>
+                    <Value argument="adm">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                </IV>
+                
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="Km"/>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="Vm"/>
+                    </Value>
+                </Elimination>
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{ADVAN11, TRANS1 -- 3-comp IV input}
+\label{subsubsec:ADVAN11}
+ODE formulation:
+\begin{align} % placement: default is "center", options are "top" and "bottom"
+\frac{dAc}{dt} & =  - k_{12} \times Ac + k_{21} \times Ap1- k_{13} \times Ac \nonumber \\
+			& + k_{31} \times Ap2 - k \times Ac  \nonumber \\
+\frac{dAp1}{dt} & =  k_{12} \times Ac - k_{21} \times Ap1  \nonumber \\
+\frac{dAp2}{dt} & =  k_{13} \times Ac - k_{31} \times Ap2  \nonumber
+\end{align} 
+
+
+\begin{figure}[htbp!]
+\centering
+ \includegraphics[width=160mm]{pics/Advan11}
+\caption{ADVAN11 model, in this case compartment numbering is identical.}
+\label{fig:Advan11}
+\end{figure}
+
+
+\begin{table}[ht!]
+\footnotesize
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{MONOLIX}} \\
+  \hline
+ID & TIME & AMT & \textbf{ADM} & Y \\
+  \hline
+1  & 0        & 10   & \textbf{1} & .       \\
+1  & 2        & .      & . 	& 5        \\
+... &  ...      &  ...   &  ...   &  ...    \\
+\end{tabular}
+}
+\hfill
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{NONMEM}} \\
+  \hline
+ID & TIME & AMT & \textbf{CMT} & DV \\
+  \hline
+1  & 0        & 10   & \textbf{1}   & .    \\
+1  & 2        & .      & 1    & 5   \\
+... &  ...      &  ...   &  ... & ...  \\
+\end{tabular}
+}
+\caption{MONOLIX and NONMEM datasets for the ADVAN11 model.}
+\end{table}
+
+
+\begin{table}[h!]
+\setlength{\tabcolsep}{15pt}
+\begin{center}
+%\begin{tabular*}{.95\textwidth}{@{\extracolsep{\fill} } ll}
+\begin{tabular}{c}
+  \hline \hline
+PK macro \\[-.25ex]
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+input = {V, k, k12, k21, k13, k31}
+PK:
+compartment(cmt=1, amount=Ac, volume=V)
+peripheral(k12, k21, amount=Ap1)
+peripheral(k13, k31, amount=Ap2)
+iv(adm=1, cmt=1)
+elimination(cmt=1, k)
+\end{lstlisting}
+%&
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%input = {V, k, k12, k21, k13, k31}
+%PK:
+%compartment(cmt=1, amount=Ac, volume=V)
+%peripheral(k12, k21, amount=Ap1)
+%peripheral(k13, k31, amount=Ap2)
+%iv(adm=1, cmt=1)
+%elimination(cmt=1, k)
+%\end{lstlisting} 
+\\
+  \hline
+\end{tabular}
+\caption{PK macros  for the ADVAN11 model, as shown in Figure \ref{fig:Advan11} (left).}
+\label{tab:advan11Table}
+\end{center}
+\end{table}
+
+
+PharmML code:
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="sm11">
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            <ct:Variable symbolType="real" symbId="Ap1"/>
+            <ct:Variable symbolType="real" symbId="Ap2"/>
+            <ct:Variable symbolType="real" symbId="Cc">
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Binop op="divide">
+                            <ct:SymbRef symbIdRef="Ac"/>
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                        </math:Binop>
+                    </math:Equation>
+                </ct:Assign>
+            </ct:Variable>
+            
+            <PKmacros>
+                <Compartment>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ac"/>
+                    </Value>
+                    <Value argument="volume">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                    </Value>
+                </Compartment>
+                
+                <Peripheral>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k12"/>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k21"/>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ap1"/>
+                    </Value>
+                </Peripheral>
+                
+                <Peripheral>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k13"/>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k31"/>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ap2"/>
+                    </Value>
+                </Peripheral>
+                
+                <IV>
+                    <Value argument="adm">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                </IV>
+                
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k"/>
+                    </Value>
+                </Elimination>
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{ADVAN12, TRANS1 -- 3-comp 1st order input}
+\label{subsubsec:ADVAN12}
+ODE formulation:
+\begin{align}
+\frac{dAd}{dt} & =  -ka \times Ad \nonumber \\
+\frac{dAc}{dt} & = ka \times Ad - k_{12} \times Ac + k_{21} \times Ap1 - k_{13} \times Ac \nonumber \\
+			& + k_{31} \times Ap2 - k \times Ac  \nonumber \\
+\frac{dAp1}{dt} & =  k_{12} \times Ac - k_{21} \times Ap1  \nonumber \\
+\frac{dAp2}{dt} & =  k_{13} \times Ac - k_{31} \times Ap2  \nonumber
+\end{align}
+
+\begin{figure}[htbp!]
+\centering
+ \includegraphics[width=160mm]{pics/Advan12}
+\caption{ADVAN12 model, with compartment numbering dependent on the target tool. 
+Note, that not only the compartment numbers are different in NONMEM coded model, 
+the rate constants names are different as well.}
+\label{fig:Advan12}
+\end{figure}
+
+
+\begin{table}[ht!]
+\footnotesize
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{MONOLIX}} \\
+  \hline
+ID & TIME & AMT & \textbf{ADM} & Y \\
+  \hline
+1  & 0        & 10   & \textbf{1} & .       \\
+1  & 2        & .      & . 	& 5        \\
+... &  ...      &  ...   &  ...  &  ...     \\
+\end{tabular}
+}
+\hfill
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{NONMEM}} \\
+  \hline
+ID & TIME & AMT & \textbf{\textcolor{red}{CMT}} & DV \\
+  \hline
+1  & 0        & 10   & \textbf{\textcolor{red}{1}}   & .    \\
+1  & 2        & .      & 2    & 5   \\
+... &  ...      &  ...   &  ... & ...  \\
+\end{tabular}
+}
+\caption{MONOLIX and NONMEM datasets for the ADVAN12 model.}
+\end{table}
+
+
+\begin{table}[h!]
+\setlength{\tabcolsep}{15pt}
+\begin{center}
+%\begin{tabular*}{.95\textwidth}{@{\extracolsep{\fill} } ll}
+\begin{tabular}{l}
+  \hline \hline
+PK macro \\[-.25ex]
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+input = {ka, V, k, k12, k21, k13, k31}
+PK:
+compartment(cmt=1, amount=Ac, volume=V)
+peripheral(k12, k21, amount=Ap1)
+peripheral(k13, k31, amount=Ap2)
+oral(adm=1, cmt=1, ka)
+elimination(cmt=1, k)
+\end{lstlisting}
+\\
+  \hline
+\end{tabular}
+\caption{PK macros  for the ADVAN12 model, as shown in Figure \ref{fig:Advan12} (left).}
+\label{tab:advan12Table}
+\end{center}
+\end{table}
+
+
+PharmML code:
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="sm12">
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            <ct:Variable symbolType="real" symbId="Ap1"/>
+            <ct:Variable symbolType="real" symbId="Ap2"/>
+            <ct:Variable symbolType="real" symbId="Cc">
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Binop op="divide">
+                            <ct:SymbRef symbIdRef="Ac"/>
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                        </math:Binop>
+                    </math:Equation>
+                </ct:Assign>
+            </ct:Variable>
+            
+            <PKmacros>
+                <Compartment>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ac"/>
+                    </Value>
+                    <Value argument="volume">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                    </Value>
+                </Compartment>
+                
+                <Peripheral>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k12"/>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k21"/>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ap1"/>
+                    </Value>
+                </Peripheral>
+                
+                <Peripheral>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k13"/>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k31"/>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ap2"/>
+                    </Value>
+                </Peripheral>
+                
+                <Oral>
+                    <Value argument="adm">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="ka"/>
+                    </Value>
+                </Oral>
+                
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k"/>
+                    </Value>
+                </Elimination>
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+%
+%\begin{table}[ht!]
+%\setlength{\tabcolsep}{5pt}
+%\begin{center}
+%\begin{tabular}{ll}
+%  \hline
+%PK macro 	& PharmML  \\
+%  \hline
+%%			\multicolumn{2}{c}{Mapping in a \xelem{CategoricalData} model}  \\  [.5ex]
+%  \hline
+%\lstset{language=XML}
+%\begin{lstlisting}
+%
+%\end{lstlisting}
+%&
+%\lstset{language=XML}
+%\begin{lstlisting}
+%
+%\end{lstlisting}
+%\\
+%    \hline
+%\end{tabular}
+%\caption{Code...}
+%\label{tab:exampleXYZ}
+%\end{center}
+%\end{table}
+
+
+%%\cleardoublepage
+%\subsection{Pavia Whiteboard}
+%
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=130mm]{pics/Pavia1}
+% \caption{Blackboard with forcing function discussion.}
+% \label{Pavia1}
+%\end{figure}
+
+
+% {\color{red} \scshape{NEW}}
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Alternative model parameterizations}
+
+In case of routine others then the default TRANS1 the procedure is quite straightforward. 
+The reparametrization, called \emph{Reparameterization Lines} in the NONMEM manual
+\cite{NONMEM:2009}, can be defined in the \xelem{ParameterModel} leaving the PK macros in the 
+\xelem{StructuralModel} unchanged. This is presented using the basic ADVAN1 and more 
+complex ADVAN11 routines.
+
+\subsubsection{ADVAN1 with TRANS2}
+Following table shows the two allowed parameterizations for ADVAN1 and the according formula. 
+\begin{table}[ht]
+\begin{center}
+\begin{tabular*}{.8\textwidth}{@{\extracolsep{\fill} } lll}
+  \hline
+  \hline
+  TRANS1								& TRANS2						& Formula \\
+  \hline
+K Rate constant of elimination				& CL Clearance 					& K=CL/V \\
+									& V Volume of distribution				& \\
+\end{tabular*}
+\caption{ADVAN1 parameters with TRANS1 and TRANS2.}
+\end{center}
+\end{table}
+
+Table \ref{tab:ADVAN1TRANS1reparameterisation} shows the PK macros for the two options
+\begin{table}[ht]
+\begin{center}
+\begin{tabular*}{.8\textwidth}{@{\extracolsep{\fill} } ll}
+  \hline
+  \hline
+ADVAN1, TRANS1 & ADVAN1, TRANS4 \\
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+compartment(cmt=1, amount=Ac, volume=V)
+iv(cmt=1)
+elimination(cmt=1, k)
+\end{lstlisting}
+&
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+compartment(cmt=1, amount=Ac, volume=V)
+iv(cmt=1)
+elimination(cmt=1, k=CL/V)
+\end{lstlisting}
+
+\end{tabular*}
+\caption{PK macros for ADVAN1 using two different parameterizations.}
+\label{tab:ADVAN1TRANS1reparameterisation}
+\end{center}
+\end{table}
+
+\paragraph{Version 1}
+PharmML code -- modified from section \ref{subsubsec:ADVAN1}. The reparameterization is done in 
+the parameter model \xatt{pm1}:
+\lstset{language=XML}
+\begin{lstlisting}
+
+        <ParameterModel blkId="pm1">
+            
+            <!-- Reparameterization Lines for k, CL, V -->
+            <SimpleParameter symbId="k">
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Binop op="divide">
+                            <ct:SymbRef symbIdRef="CL"/>
+                            <ct:SymbRef symbIdRef="V"/>
+                        </math:Binop>
+                    </math:Equation>
+                </ct:Assign>
+            </SimpleParameter>
+            
+        </ParameterModel>
+
+        <StructuralModel blkId="sm1">
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            <PKmacros>
+                    <!-- omitted, identical to ADVAN1, TRANS1 -->
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+\paragraph{Version 2}
+PharmML code -- with reparameterization within macros:
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="sm1b">
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            <ct:Variable symbolType="real" symbId="Cc">
+                <!-- omitted details -->
+            </ct:Variable>
+            
+            <PKmacros>
+                <!-- omitted details -->
+                
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="k">
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="CL"/>
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </Value>
+                </Elimination>
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+
+\subsubsection{ADVAN11 with TRANS4}
+Following table shows the two allowed parameterizations for ADVAN11 and the according 
+re-parameterisation formulas. 
+\begin{table}[ht]
+\begin{center}
+\begin{tabular*}{.95\textwidth}{@{\extracolsep{\fill} } lll}
+  \hline
+  \hline
+  TRANS1								& TRANS4						& Formula \\
+  \hline
+K Rate constant of elimination				& CL Clearance 					& K=CL/V1 \\
+K12 Rate constant from central to periph. 1	& V1 Central volume  				& K12=Q2/V1 \\
+K21 Rate constant from periph. 1 to central	& Q2 Intercompartmental clearance 1  	& K21=Q2/V2 \\
+K13 Rate constant from central to periph. 2	& V2 Peripheral volume 1  			& K13=Q3/V1 \\
+K31 Rate constant from periph. 2 to central	& Q3 Intercompartmental clearance 2  	& K31=Q3/V3 \\
+									& V3 Peripheral volume 2  			& V3=V3 \\
+\end{tabular*}
+\caption{ADVAN11 parameters with TRANS1 and TRANS4.}
+\end{center}
+\end{table}
+and the following table shows the PK macros for the two routines
+
+\begin{table}[ht]
+\begin{center}
+\begin{tabular*}{.95\textwidth}{@{\extracolsep{\fill} } ll}
+  \hline
+  \hline
+ADVAN11, TRANS1 & ADVAN11, TRANS4 \\
+  \hline
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+compartment(cmt=1, amount=Ac, volume=V)
+peripheral(k12, k21, amount=Ap1)
+peripheral(k13, k31, amount=Ap2)
+iv(cmt=1)
+elimination(cmt=1, k)
+\end{lstlisting}
+&
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+compartment(cmt=1, amount=Ac, volume=V3)
+peripheral(k12 = Q2/V1, k21 = Q2/V2, amount=Ap1)
+peripheral(k13 = Q3/V1, k31 = Q3/V3, amount=Ap2)
+iv(cmt=1)
+elimination(cmt=1, k = CL/V1)
+\end{lstlisting}
+
+\end{tabular*}
+\caption{PK macros for ADVAN11 using two different parameterizations.}
+\end{center}
+\end{table}
+
+\paragraph{Version 1}
+PharmML code -- modified from section \ref{subsubsec:ADVAN11}. In this case the 
+reparameterization is done in the parameter model \xatt{pm1}, here example for one 
+parameter:
+\lstset{language=XML}
+\begin{lstlisting}
+        <ParameterModel blkId="pm1">
+            
+            <!-- Reparameterization Lines for k12, Q, V1 -->
+            <SimpleParameter symbId="k12">
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Binop op="divide">
+                            <ct:SymbRef symbIdRef="Q2"/>
+                            <ct:SymbRef symbIdRef="V1"/>
+                        </math:Binop>
+                    </math:Equation>
+                </ct:Assign>
+            </SimpleParameter>
+            <!-- omitted parameters k21, k13, k31 & V3 -->
+            
+        </ParameterModel>
+
+        <StructuralModel blkId="sm1">
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            <ct:Variable symbolType="real" symbId="Ap1"/>
+            <ct:Variable symbolType="real" symbId="Ap2"/>
+            <PKmacros>
+                    <!-- omitted, identical to ADVAN11, TRANS1 -->
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+\paragraph{Version 2}
+PharmML code -- with reparameterization within macros:
+\lstset{language=XML}
+\begin{lstlisting}
+        <ParameterModel blkId="pm1">
+            
+            <!-- Q2 -->
+            <IndividualParameter symbId="Q2">
+                <!-- omitted details -->
+            </IndividualParameter>
+            
+            <!-- V1 -->
+            <IndividualParameter symbId="V1">
+                <!-- omitted details -->
+            </IndividualParameter>
+            
+            <!-- V2 -->
+            <IndividualParameter symbId="V2">
+                <!-- omitted details -->
+            </IndividualParameter>
+            
+            <!-- omitted other parameters Q3, V3, CL -->
+            
+        </ParameterModel>
+
+        <StructuralModel blkId="sm1">
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            <ct:Variable symbolType="real" symbId="Ap1"/>
+            <ct:Variable symbolType="real" symbId="Ap2"/>
+            <PKmacros>
+            
+                <!-- omitted other macros -->
+
+                <Peripheral>
+                    <Value argument="k12">
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="Q2"/>
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="V1"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </Value>
+                    <Value argument="k21">
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="Q2"/>
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="V2"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ap1"/>
+                    </Value>
+                </Peripheral>
+
+                <!-- omitted other macros -->
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=140mm]{pics/Pavia2}
+% \caption{PK model macros discussion during the PharmML workshop in Pavia/Italy (November 2013).}
+% \label{Pavia2}
+%\end{figure}
+
+
+\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Complex PK macro examples}
+Additional examples have been encoded in PharmML in order to further validate the schema
+and to test the implementation of more complex PK macros.
+
+\textbf{Note} that the first two of the following models, C1 (versions C1a and C1b) and C2, 
+can be treated as equivalent to that discussed in Sections \ref{subsubsec:advan2}, 
+\ref{subsubsec:ADVAN12}, and modelled by the ADVAN2 ands ADVAN12 routines, 
+respectively, with an additional IV administration.
+
+Importantly, \marginpar{\HandCuffLeft} the according dataset transformation reduces 
+to the renaming of the ADM and CMT columns \textbf{but} only if the oral administration 
+is treated as the first one, i.e. with attribute \xatt{adm=1}. Otherwise a renumbering 
+is required as well. Examples C1a and C1b illustrate this.
+
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Example C1a}
+%The following example is from \cite{Monolix4.3Tutorial:2014}, page 70. Here the original description
+%(with referrences to the MONOLIX dataset format suing \xatt{adm} instead of \xatt{cmt}
+%column, see below):
+%"An additional column \xatt{adm} is used to specify the different types of administration.
+%Here, \xatt{adm=1} indicates an oral administration and \xatt{adm=2} an IV bolus administration.
+%The datafile only contains information about the administration, not about the absorption 
+%process which will be described in the model."
+The following example is from \cite{Monolix4.3Tutorial:2014}, pages 70-74. This model
+can be modelled by the ADVAN2 routine, with an additional IV administration. Because the 
+oral administration is labeled as the first one, attribute \xatt{adm=1}, no renumbering is required 
+when transforming the data and renaming the ADM to CMT column is sufficient to get the suitable 
+NONMEM data set.
+
+\begin{figure}[htbp!]
+\centering
+ \includegraphics[width=120mm]{pics/ComplexModel1}
+\caption{C1a model, with compartment numbering dependent on the target tool.}
+\label{fig:ComplexModel1a}
+\end{figure}
+
+\begin{table}[ht!]
+\footnotesize
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+     \multicolumn{5}{c}{\textbf{MONOLIX}} \\
+  \hline
+ID	& TIME  & AMT	 & \textbf{ADM} &	Y \\
+  \hline
+1	& 0	    & 2.24	& \textbf{2}	& . \\
+1	& 1	    & .	& .		 	& 142 \\
+1	& 2	    & .	& .	 		& 54.9 \\
+...     &  ...     &  ...     & ...  			& ...\\
+1	& 6	    & 7	& \textbf{1}	& . \\
+1	& 7	    & .	& .			& 192 \\
+1	& 8	    & .	& .			& 141 \\
+...     &  ...     &  ...     & ...  			& ...\\
+2	& 0	    & 2.73	& \textbf{2}	& . \\
+2	& 1	    & . 	& .			& 176 \\
+...     &  ...     &  ...     & ...  			& ...\\
+\end{tabular}
+}
+\hfill
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{NONMEM}} \\
+  \hline
+ID	& TIME  & AMT	 & \textbf{\textcolor{red}{CMT}} &	DV \\
+  \hline
+1	& 0	    & 2.24	& \textbf{\textcolor{red}{2}}	& . \\
+1	& 1	    & .	& 2		 	& 142 \\
+1	& 2	    & .	& 2	 		& 54.9 \\
+...     &  ...     &  ...     & ...  			& ...\\
+1	& 6	    & 7	& \textbf{\textcolor{red}{1}}	& . \\
+1	& 7	    & .	& 2			& 192 \\
+1	& 8	    & .	& 2			& 141 \\
+...     &  ...     &  ...     & ...  			& ...\\
+2	& 0	    & 2.73	& \textbf{\textcolor{red}{2}}	& . \\
+2	& 1	    & . 	& 2	 		& 176 \\
+...     &  ...     &  ...     & ...  			& ...\\
+\end{tabular}
+}
+\caption{NONMEM and MONOLIX datasets for the C1a model. Because of the equivalence to 
+ADVAN2 no renumbering is required when transforming the data and renaming the ADM 
+to CMT column.}
+\label{tab:C1aTable}
+\end{table}
+
+\begin{table}[h!]
+\setlength{\tabcolsep}{15pt}
+\begin{center}
+\begin{tabular}{c}
+%\begin{tabular*}{.95\textwidth}{@{\extracolsep{\fill} } ll}
+  \hline \hline
+PK macro  \\[-.25ex]
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+input = {F, ka, V, k}
+PK:
+compartment(cmt=1, amount=Ac)
+oral(adm=1, cmt=1, ka, p=F)
+iv(adm=2, cmt=1)
+elimination(cmt=1, k)
+Cc = Ac/V
+\end{lstlisting}
+%&
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%input = {F, ka, V, k}
+%PK:
+%compartment(cmt=1, amount=Ac)
+%[*compartment(cmt=2, amount=Depot)*]
+%oral(adm=1, [*fromCmt=2,*] cmt=1, ka, p=F)
+%iv(adm=2, cmt=1)
+%elimination(cmt=1, k)
+%Cc = Ac/V
+%\end{lstlisting} 
+\\
+  \hline
+\end{tabular}
+\caption{PK macros for the C1a model, as shown in Figure \ref{fig:ComplexModel1a} (left).}
+\label{tab:C1aMacrosTable}
+\end{center}
+\end{table}
+
+PharmML code:
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="smC1a">
+            <ct:Variable symbolType="real" symbId="Ap"/>
+            <ct:Variable symbolType="real" symbId="Cc">
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Binop op="divide">
+                            <ct:SymbRef symbIdRef="Ac"/>
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                        </math:Binop>
+                    </math:Equation>
+                </ct:Assign>
+            </ct:Variable>
+            
+            <PKmacros>
+                <!-- compartment(cmt=1, amount=Ac) -->
+                <Compartment>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ac"/>
+                    </Value>
+                </Compartment>
+                
+                <!-- oral(adm=1, cmt=1, ka, p=F) -->
+                <Oral>
+                    <Value argument="adm">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="ka"/>
+                    </Value>
+                    <Value argument="p">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="F"/>
+                    </Value>
+                </Oral>
+                
+                <!-- iv(adm=2, cmt=1) -->
+                <IV>
+                    <Value argument="adm">
+                        <ct:Int>2</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                </IV>
+                
+                <!-- elimination(cmt=1, k) -->
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k"/>
+                    </Value>
+                </Elimination>
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Example C1b}
+This example is very similar to the previous one with the difference in the administration order.
+IV is labeled as the first one, with attribute \xatt{adm=1}, the oral as the second, \xatt{adm=2}, 
+Figure \ref{fig:ComplexModel1b}. The model can still be modelled by the ADVAN2 routine, 
+with an additional IV administration, but the dataset \marginpar{\HandCuffLeft} translation 
+will not be limited to the renaming of column names only as in C1a case. Now the numbers in 
+columns ADM and CMT will not be identical, see Table \ref{tab:C1bTable}.
+
+\begin{figure}[htbp!] 
+\centering
+ \includegraphics[width=130mm]{pics/ComplexModel1b}
+\caption{C1b model, with compartment numbering dependent on the target tool.}
+\label{fig:ComplexModel1b}
+\end{figure}
+
+\begin{table}[ht!]
+\footnotesize
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+     \multicolumn{5}{c}{\textbf{MONOLIX}} \\
+  \hline
+ID	& TIME  & AMT	 & \textbf{ADM} &	Y \\
+  \hline
+1	& 0	    & 2.24	& \textbf{1}	& . \\
+1	& 1	    & .	& .		 	& 142 \\
+1	& 2	    & .	& .	 		& 54.9 \\
+...     &  ...     &  ...     & ...  			& ...\\
+1	& 6	    & 7	& \textbf{2}	& . \\
+1	& 7	    & .	& .			& 192 \\
+1	& 8	    & .	& .			& 141 \\
+...     &  ...     &  ...     & ...  			& ...\\
+2	& 0	    & 2.73	& \textbf{1}	& . \\
+2	& 1	    & . 	& .			& 176 \\
+...     &  ...     &  ...     & ...  			& ...\\
+\end{tabular}
+}
+\hfill
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{ccccc}
+  \hline
+   \multicolumn{5}{c}{\textbf{NONMEM}} \\
+  \hline
+ID	& TIME  & AMT	 & \textbf{\textcolor{red}{CMT}} &	DV \\
+  \hline
+1	& 0	    & 2.24	& \textbf{\textcolor{red}{2}}	& . \\
+1	& 1	    & .	& 2		 	& 142 \\
+1	& 2	    & .	& 2	 		& 54.9 \\
+...     &  ...     &  ...     & ...  			& ...\\
+1	& 6	    & 7	& \textbf{\textcolor{red}{1}}	& . \\
+1	& 7	    & .	& 2			& 192 \\
+1	& 8	    & .	& 2			& 141 \\
+...     &  ...     &  ...     & ...  			& ...\\
+2	& 0	    & 2.73	& \textbf{\textcolor{red}{2}}	& . \\
+2	& 1	    & . 	& 2	 		& 176 \\
+...     &  ...     &  ...     & ...  			& ...\\
+\end{tabular}
+}
+\caption{NONMEM and MONOLIX datasets for the C1b model. In contrast to the previous case, a 
+renumbering is required when transforming the data and renaming the ADM to CMT column.}
+\label{tab:C1bTable}
+\end{table}
+
+\begin{table}[h!]
+\setlength{\tabcolsep}{15pt}
+\begin{center}
+\begin{tabular}{c}
+%\begin{tabular*}{.95\textwidth}{@{\extracolsep{\fill} } ll}
+  \hline \hline
+PK macro  \\[-.25ex]
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+input = {F, ka, V, k}
+PK:
+compartment(cmt=1, amount=Ac)
+oral(adm=[*2*], cmt=1, ka, p=F)
+iv(adm=[*1*], cmt=1)
+elimination(cmt=1, k)
+Cc = Ac/V
+\end{lstlisting}
+%&
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%input = {F, ka, V, k}
+%PK:
+%compartment(cmt=1, amount=Ac)
+%[*compartment(cmt=2, amount=Depot)*]
+%oral(adm=1, [*fromCmt=2,*] cmt=1, ka, p=F)
+%iv(adm=2, cmt=1)
+%elimination(cmt=1, k)
+%Cc = Ac/V
+%\end{lstlisting} 
+\\
+  \hline
+\end{tabular}
+\caption{PK macros  for the C1b model, as shown in Figure \ref{fig:ComplexModel1b} (left).}
+\label{tab:C1bMacrosTable}
+\end{center}
+\end{table}
+
+
+PharmML code is identical to the previous example, and will not be shown, except the 
+amended \xatt{adm} attribute assignments, \xatt{adm=\textbf{\textcolor{red}{2}}} for oral 
+and \xatt{adm=\textbf{\textcolor{red}{1}}} for IV administration, see Table \ref{tab:C1bMacrosTable}.
+%\lstset{language=XML}
+%\begin{lstlisting}
+%                <Oral>
+%                    <Value argument="adm">
+%                        <ct:Int>2</ct:Int>
+%                    </Value>
+%                    <!-- omitted details -->
+%                </Oral>
+%                
+%                <IV>
+%                    <Value argument="adm">
+%                        <ct:Int>1</ct:Int>
+%                    </Value>
+%                    <!-- omitted details -->
+%                </IV>
+%\end{lstlisting}
+
+
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Example C2}
+Modified from \cite{MLXTRANforMonolix:2014}. This model can be modelled by the 
+ADVAN12 routine, with an additional IV administration.
+
+\begin{figure}[htbp]
+\centering
+ \includegraphics[width=160mm]{pics/ComplexModel2}
+\caption{C2 model, with compartment numbering dependent on the target tool.}
+\label{fig:ComplexModel2}
+\end{figure}
+
+
+\begin{table}[h!]
+\footnotesize
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{cccccc}
+  \hline
+   \multicolumn{6}{c}{\textbf{MONOLIX}} \\
+  \hline
+ID	& TIME  & AMT	 & \textbf{ADM} &  TINF &	Y \\
+  \hline
+1	& 6	    & 10	& \textbf{1}	 & 2	 & . \\
+1	& 9	    & 20	& \textbf{2}	 & .	 & . \\
+1	& 18	    & 10	& \textbf{1}	 & 2	 & . \\
+1	& 30	    & 10	& \textbf{1}	 & 2	 & . \\
+1	& 33	    & 20	& \textbf{2}	 & .	 & . \\
+...     &  ...     &  ...     &  ...  & ...  & ... \\
+1	& 0	    & .	& .	& .	& 0 \\
+1	& 6	    & .	& .	& .	& 0 \\
+1	& 12	    & .	& .	& .	& 1.18 \\
+...     &  ...     &  ...     & ...  & ...  & ...\\
+\end{tabular}
+}
+\hfill
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{cccccc}
+  \hline
+   \multicolumn{6}{c}{\textbf{NONMEM}} \\
+  \hline
+ID	& TIME  & AMT	 & \textbf{\textcolor{red}{CMT}} &  RATE &	DV \\
+  \hline
+1	& 6	    & 10	& \textbf{\textcolor{red}{1}}	 & 5	 & . \\
+1	& 9	    & 20	& \textbf{\textcolor{red}{2}}	 & .	 & . \\
+1	& 18	    & 10	& \textbf{\textcolor{red}{1}}	 & 5	 & . \\
+1	& 30	    & 10	& \textbf{\textcolor{red}{1}}	 & 5	 & . \\
+1	& 33	    & 20	& \textbf{\textcolor{red}{2}}	 & .	 & . \\
+...     &  ...     &  ...     &  ...  & ...  & ... \\
+1	& 0	    & .	& 1	& .	& 0 \\
+1	& 6	    & .	& 1	& .	& 0 \\
+1	& 12	    & .	& 1	& .	& 1.18 \\
+...     &  ...     &  ...     & ...  & ...  & ...\\
+\end{tabular}
+}
+\caption{NONMEM and MONOLIX datasets for the C2 model.}
+\end{table}
+
+
+\begin{table}[ht!]
+\setlength{\tabcolsep}{1pt}
+\begin{center}
+\begin{tabular}{c}
+%\begin{tabular*}{1.05\textwidth}{@{\extracolsep{\fill} } ll}
+  \hline \hline
+PK macro  \\[-.25ex]
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+input = {V, alpha, beta} 
+PK:
+compartment(cmt=1, volume=V, concentration=Cc)
+iv(adm=1, cmt=1, p=0.1, Tlag=t/(t + 10))
+oral(adm=2, cmt=1, Tk0=0.1)
+elimination(cmt=1, k=0.2)
+peripheral(k12=0.6, k21=0.8, amount=Ap2)
+peripheral(k13=0.6+alpha, k31=0.8+beta, amount=Ap3)
+\end{lstlisting}
+%&
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%compartment(cmt=1, volume=V, concentration=Cc)
+%[*compartment(cmt=4, amount=Depot1)*]
+%iv(adm=1, cmt=1, p=0.1, Tlag=t/(t + 10))
+%oral(adm=2, [*fromCmt=4,*] cmt=1, Tk0=0.1)
+%elimination(cmt=1, k=0.2)
+%peripheral(k12=0.6, k21=0.8, amount=Ap2)
+%peripheral(k13=0.6+alpha, k31=0.8+beta, amount=Ap3)
+%\end{lstlisting} 
+\\
+  \hline
+\end{tabular}
+\caption{PK macros  for the C2 model, as shown in Figure \ref{fig:ComplexModel2} (left).}
+\label{tab:C3Table}
+\end{center}
+\end{table}
+
+
+PharmML code:
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="smC2">
+            <ct:Variable symbolType="real" symbId="Ap2"/>
+            <ct:Variable symbolType="real" symbId="Ap3"/>
+            <ct:Variable symbolType="real" symbId="Cc"/>
+            
+            <PKmacros>
+                <Compartment>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="volume">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                    </Value>
+                    <Value argument="concentration">
+                        <ct:SymbRef symbIdRef="Cc"/>
+                    </Value>
+                </Compartment>
+                
+                <IV>
+                    <Value argument="adm">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="p">
+                        <ct:Real>0.1</ct:Real>
+                    </Value>
+                    <Value argument="Tlag">
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <ct:SymbRef symbIdRef="t"/>
+                                    <math:Binop op="plus">
+                                        <ct:SymbRef symbIdRef="t"/>
+                                        <ct:Real>10</ct:Real>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </Value>
+                </IV>
+                
+                <Oral>
+                    <Value argument="adm">
+                        <ct:Int>2</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="Tk0">
+                        <ct:Real>0.1</ct:Real>
+                    </Value>
+                </Oral>
+                
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="k">
+                        <ct:Real>0.2</ct:Real>
+                    </Value>
+                </Elimination>
+                
+                <Peripheral>
+                    <Value argument="k12">
+                        <ct:Real>0.6</ct:Real>
+                    </Value>
+                    <Value argument="k21">
+                        <ct:Real>0.8</ct:Real>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ap2"/>
+                    </Value>
+                </Peripheral>
+                
+                <Peripheral>
+                    <Value argument="k13">
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="plus">
+                                    <ct:Real>0.6</ct:Real>
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="alpha"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </Value>
+                    <Value argument="k31">
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="plus">
+                                    <ct:Real>0.8</ct:Real>
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="beta"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ap3"/>
+                    </Value>
+                </Peripheral>
+                
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+
+
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Example C3}
+From \cite{MLXTRANforMonolix:2014}. Figure \ref{fig:ComplexModel3} is illustrating this model in two versions. 
+
+\begin{figure}[htbp]
+\centering
+ \includegraphics[width=160mm]{pics/ComplexModel3}
+\caption{C3 model, with compartment numbering dependent on the target tool.}
+\label{fig:ComplexModel3}
+\end{figure}
+
+\begin{table}[h!]
+\footnotesize
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{cccccc}
+  \hline
+   \multicolumn{6}{c}{\textbf{MONOLIX}} \\
+  \hline
+ID	& TIME  & AMT	 & \textbf{ADM} &  TINF &	Y \\
+  \hline
+1	& 6	    & 10	& \textbf{1}	 & .	 & . \\
+1	& 9	    & 20	& \textbf{2}	 & .	 & . \\
+1	& 12	    & 30	& \textbf{3}	 & 2	 & . \\
+1	& 18	    & 10	& \textbf{1}	 & .	 & . \\
+1	& 30	    & 10	& \textbf{1}	 & .	 & . \\
+1	& 33	    & 20	& \textbf{2}	 & .	 & . \\
+1	& 36	    & 30	& \textbf{3}	 & 2	 & . \\
+...     &  ...     &  ...     &  ...  & ...  & ... \\
+1	& 0	    & .	& .	& .	& 0 \\
+1	& 6	    & .	& .	& .	& 0 \\
+1	& 12	    & .	& .	& .	& 1.18 \\
+...     &  ...     &  ...     & ...  & ...  & ...\\
+\end{tabular}
+}
+\hfill
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{cccccc}
+  \hline
+   \multicolumn{6}{c}{\textbf{NONMEM}} \\
+  \hline
+ID	& TIME  & AMT	 & \textbf{\textcolor{red}{CMT}} &  RATE &	DV \\
+  \hline
+1	& 6	    & 10	& \textbf{\textcolor{red}{3}}	 & .	 & . \\
+1	& 9	    & 20	& \textbf{\textcolor{red}{4}}	 & .	 & . \\
+1	& 12	    & 30	& \textbf{\textcolor{red}{2}}	 & \textbf{15}	 & . \\
+1	& 18	    & 10	& \textbf{\textcolor{red}{3}}	 & .	 & . \\
+1	& 30	    & 10	& \textbf{\textcolor{red}{3}}	 & .	 & . \\
+1	& 33	    & 20	& \textbf{\textcolor{red}{4}}	 & .	 & . \\
+1	& 36	    & 30	& \textbf{\textcolor{red}{2}}	 & \textbf{15}	 & . \\
+...     &  ...     &  ...     &  ...  & ...  & ... \\
+1	& 0	    & .	& 1	& .	& 0 \\
+1	& 6	    & .	& 1	& .	& 0 \\
+1	& 12	    & .	& 1	& .	& 1.18 \\
+...     &  ...     &  ...     & ...  & ...  & ...\\
+\end{tabular}
+}
+\caption{NONMEM and MONOLIX datasets for the C3 model.}
+\end{table}
+
+\begin{table}[ht!]
+\setlength{\tabcolsep}{15pt}
+\begin{center}
+\begin{tabular}{c}
+%\begin{tabular*}{.95\textwidth}{@{\extracolsep{\fill} } ll}
+  \hline \hline
+PK macro  \\[-.25ex]
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+input = {F1, F2, ka1, ka2, k1, k2, kl, V}
+PK:
+compartment(cmt=1, amount=Al)
+compartment(cmt=2, amount=Ac, volume=V)
+oral(adm=1, cmt=1, ka1, p=F1)
+oral(adm=2, cmt=2, ka2, p=F2)
+iv(adm=3, cmt=2)
+transfer(from=1, to=2, kt=kl)
+elimination(cmt=1, k1)
+elimination(cmt=2, k2)
+\end{lstlisting}
+%&
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%input = {F1, F2, ka1, ka2, k1, k2, kl, V}
+%PK:
+%compartment(cmt=1, amount=Al)                                                   
+%compartment(cmt=2, amount=Ac)
+%[*compartment(cmt=3, amount=Depot1)*]
+%[*compartment(cmt=4, amount=Depot2)*]
+%oral(adm=1, [*fromCmt=3,*] cmt=1, ka1, p=F1)
+%oral(adm=2, [*fromCmt=4,*] cmt=2, ka2, p=F2)
+%iv(adm=3, cmt=2)
+%transfer(from=1, to=2, kt=kl)
+%elimination(cmt=1, k1)
+%elimination(cmt=2, k2)
+%Cc = Ac/V
+%\end{lstlisting} 
+\\
+  \hline
+\end{tabular}
+\caption{PK macros  for the C3 model, as shown in Figure \ref{fig:ComplexModel3} (left).}
+\label{tab:C2Table}
+\end{center}
+\end{table}
+
+
+PharmML code:
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="smC3">
+            <ct:Variable symbolType="real" symbId="Al"/>
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            <ct:Variable symbolType="real" symbId="Cc"/>
+            
+            <PKmacros>
+                <Compartment>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Al"/>
+                    </Value>
+                </Compartment>
+                
+                <Compartment>
+                    <Value argument="cmt">
+                        <ct:Int>2</ct:Int>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ac"/>
+                    </Value>
+                    <Value argument="volume">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                    </Value>
+                </Compartment>
+                
+                <Oral>
+                    <Value argument="adm">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="ka1"/>
+                    </Value>
+                    <Value argument="p">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="F1"/>
+                    </Value>
+                </Oral>
+                
+                <Oral>
+                    <Value argument="adm">
+                        <ct:Int>2</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>2</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="ka2"/>
+                    </Value>
+                    <Value argument="p">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="F2"/>
+                    </Value>
+                </Oral>
+                
+                <IV>
+                    <Value argument="adm">
+                        <ct:Int>3</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>2</ct:Int>
+                    </Value>
+                </IV>
+                
+                <Transfer>
+                    <Value argument="from">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="to">
+                        <ct:Int>2</ct:Int>
+                    </Value>
+                    <Value argument="kt">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="kl"/>
+                    </Value>
+                </Transfer>
+                
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k1"/>
+                    </Value>
+                </Elimination>
+                
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k2"/>
+                    </Value>
+                </Elimination>
+                
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Example C4}
+The following example is from 'Four models' document \cite{LavielleFourModels:2014}.
+%Here the original description:
+%"In this example, one type of dose is administered orally (adm=1) and absorbed into a latent 
+%compartment following a first-order absorption process, a second type is administered o
+%rally (adm=2) and absorbed into the central compartment following a zero-order absorption process,
+%a third type is directly administered intravenously to the central compartment (adm=3).
+%The transfer from the latent to the central compartment is linear. A peripheral compartment
+%is linked to the central compartment. The drug is eliminated by a linear process from the
+%latent compartment and a nonlinear process from the central one. Here, Al and Ac are the
+%drug amounts in the latent and central compartments." 
+Figure \ref{fig:ComplexModel4} is illustrating this model in two versions. 
+
+\begin{figure}[htbp!]
+\centering
+ \includegraphics[width=160mm]{pics/ComplexModel4}
+\caption{C4 model, with compartment numbering dependent on the target tool.}
+\label{fig:ComplexModel4}
+\end{figure}
+
+\begin{table}[h!]
+\footnotesize
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{cccccc}
+  \hline
+   \multicolumn{6}{c}{\textbf{MONOLIX}} \\
+  \hline
+ID	& TIME  & AMT	 & \textbf{ADM} &  TINF &	Y \\
+  \hline
+1	& 6	    & 10	& \textbf{1}	 & .	 & . \\
+1	& 9	    & 20	& \textbf{2}	 & .	 & . \\
+1	& 12	    & 30	& \textbf{3}	 & 2	 & . \\
+1	& 18	    & 10	& \textbf{1}	 & .	 & . \\
+1	& 30	    & 10	& \textbf{1}	 & .	 & . \\
+1	& 33	    & 20	& \textbf{2}	 & .	 & . \\
+1	& 36	    & 30	& \textbf{3}	 & 2	 & . \\
+...     &  ...     &  ...     &  ...  & ...  & ... \\
+1	& 0	    & .	& .	& .	& 0 \\
+1	& 6	    & .	& .	& .	& 0 \\
+1	& 12	    & .	& .	& .	& 1.18 \\
+...     &  ...     &  ...     & ...  & ...  & ...\\
+\end{tabular}
+}
+\hfill
+\parbox{.5\linewidth}{
+\centering
+\begin{tabular}{cccccc}
+  \hline
+   \multicolumn{6}{c}{\textbf{NONMEM}} \\
+  \hline
+ID	& TIME  & AMT	 & \textbf{\textcolor{red}{CMT}} &  RATE &	DV \\
+  \hline
+1	& 6	    & 10	& \textbf{\textcolor{red}{4}}	 & .	 & . \\
+1	& 9	    & 20	& \textbf{\textcolor{red}{5}}	 & .	 & . \\
+1	& 12	    & 30	& \textbf{\textcolor{red}{2}}	 & \textbf{15}	 & . \\
+1	& 18	    & 10	& \textbf{\textcolor{red}{4}}	 & .	 & . \\
+1	& 30	    & 10	& \textbf{\textcolor{red}{4}}	 & .	 & . \\
+1	& 33	    & 20	& \textbf{\textcolor{red}{5}}	 & .	 & . \\
+1	& 36	    & 30	& \textbf{\textcolor{red}{2}}	 & \textbf{15}	 & . \\
+...     &  ...     &  ...     &  ...  & ...  & ... \\
+1	& 0	    & .	& 1	& .	& 0 \\
+1	& 6	    & .	& 1	& .	& 0 \\
+1	& 12	    & .	& 1	& .	& 1.18 \\
+...     &  ...     &  ...     & ...  & ...  & ...\\
+\end{tabular}
+}
+\caption{NONMEM and MONOLIX datasets for the C4 model.}
+\end{table}
+
+\begin{table}[ht!]
+\setlength{\tabcolsep}{15pt}
+\begin{center}
+\begin{tabular}{c}
+%\begin{tabular*}{.95\textwidth}{@{\extracolsep{\fill} } ll}
+  \hline \hline
+PK macro  \\[-.25ex]
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+input = {F1, F2, ka, Tk0, kl, V, k, Vm, Km}
+PK:
+compartment(cmt=1, amount=Al)
+compartment(cmt=2, amount=Ac)
+oral(adm=1, cmt=1, ka, p=F1)
+oral(adm=2, cmt=2, Tk0, p=F2)
+iv(adm=3, cmt=2)
+transfer(from=1, to=2, kt=kl)
+peripheral(k23, k32, amount=Ap)
+elimination(cmt=1, k)
+elimination(cmt=2, Km, Vm)
+\end{lstlisting}
+\\
+  \hline
+\end{tabular}
+\caption{PK macros  for the C4 model, as shown in Figure \ref{fig:ComplexModel4} (left).}
+\label{tab:C4Table}
+\end{center}
+\end{table}
+
+
+PharmML code:
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="smC4">
+            <ct:Variable symbolType="real" symbId="Al"/>
+            <ct:Variable symbolType="real" symbId="Ac"/>
+            <ct:Variable symbolType="real" symbId="Cc">
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Binop op="divide">
+                            <ct:SymbRef symbIdRef="Ac"/>
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="V"/>
+                        </math:Binop>
+                    </math:Equation>
+                </ct:Assign>
+            </ct:Variable>
+            
+            <PKmacros>
+                <Compartment>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Al"/>
+                    </Value>
+                </Compartment>
+                
+                <Compartment>
+                    <Value argument="cmt">
+                        <ct:Int>2</ct:Int>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ac"/>
+                    </Value>
+                </Compartment>
+                
+                <Oral>
+                    <Value argument="adm">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="ka"/>
+                    </Value>
+                    <Value argument="p">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="F1"/>
+                    </Value>
+                </Oral>
+                
+                <Oral>
+                    <Value argument="adm">
+                        <ct:Int>2</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>2</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="Tk0"/>
+                    </Value>
+                    <Value argument="p">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="F2"/>
+                    </Value>
+                </Oral>
+                
+                <IV>
+                    <Value argument="type">
+                        <ct:Int>3</ct:Int>
+                    </Value>
+                    <Value argument="cmt">
+                        <ct:Int>2</ct:Int>
+                    </Value>
+                </IV>
+                
+                <Transfer>
+                    <Value argument="from">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value argument="to">
+                        <ct:Int>2</ct:Int>
+                    </Value>
+                    <Value argument="kt">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="kl"/>
+                    </Value>
+                </Transfer>
+                
+                <Peripheral>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k23"/>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k32"/>
+                    </Value>
+                    <Value argument="amount">
+                        <ct:SymbRef symbIdRef="Ap"/>
+                    </Value>
+                </Peripheral>
+                
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>1</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="k"/>
+                    </Value>
+                </Elimination>
+                
+                <Elimination>
+                    <Value argument="cmt">
+                        <ct:Int>2</ct:Int>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="Vm"/>
+                    </Value>
+                    <Value>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="Km"/>
+                    </Value>
+                </Elimination>
+            </PKmacros>
+        </StructuralModel>
+\end{lstlisting}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Other extensions}
+\label{chapter:otherextensions}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Conditional column mapping}
+Sometimes column mapping is conditional on other columns. Such case was discussed previously
+when dealing with mapping of multiple dependent variables, see Section 3.1 in \pml version 0.3.1 
+changes document \cite{Swat:2014aa}. Their values where stored in one DV column, but the mapping to 
+their targets in the observation model was conditoinal on an additional column ORIG.
+
+A similar situation appears when mapping dosing parameters, D and tD, in algebraic 
+PK models such as
+\begin{align*}
+C_{SS}(t) &= \frac{D}{V}\frac{K_a}{K_a - k} \bigg(\frac{e^{-k (t-t_D)}}{1-e^{-k \tau}}-\frac{e^{-K_a (t-t_D)}}{1-e^{-K_a\tau}}\bigg) 
+\end{align*}
+and datasets. The dataset has structure shown in the Table \ref{tab:conditionalMapping}.
+\begin{table}[ht!]
+\small
+\begin{center}
+\begin{tabular}{cccc}
+  \hline
+  \hline
+ID	& TIME  & AMT	 &	DV \\
+  \hline
+1	& 0	    & 10	& . \\
+1	& 6	    & .	& 5 \\
+1	& 9	    & .	& 12 \\
+1	& 18	    & .	& 43 \\
+...	& ...      & ...	& ... \\
+2	& 0	    & 10	& . \\
+2	& 6	    & .	& 7 \\
+2	& 9	    & .	& 22 \\
+2	& 18	    & .	& 54 \\
+...	& ...      & ...	& ...
+\end{tabular}
+\caption{Example of a dataset when conditional mapping is applied.}
+\label{tab:conditionalMapping}
+\end{center}
+\end{table}
+
+Dose amount and time, D and tD, are going to be assigned values from columns AMT
+and TIME, respectively, but only when AMT $\neq$ 0. This was not possible so far and 
+this missing feature is supported by relaxing the \xelem{ColumnMapping} format by
+the addition of the \xelem{Piecewise} element. Few examples
+in the previous release, \emph{example2-4.xml}, suffered form this limitation which is now elevated.
+Using the \xelem{Piecewise} tag, as in \xelem{MultipleDVMapping}, the mapping can be
+encoded as the following code snippet shows
+ 
+\lstset{language=XML}
+\begin{lstlisting}
+            <!-- map 'amt' column and 'D' -->
+            <ColumnMapping>
+                <ds:ColumnRef columnIdRef="amt"/>
+                <ct:SymbRef blkIdRef="sm1" symbIdRef="D"/>
+            </ColumnMapping>
+            
+            <!-- map 'tD' and 'time' if 'amt' != 0 -->
+            <ColumnMapping>
+                <ds:ColumnRef columnIdRef="time"/>
+                <ds:Piecewise>
+                    <math:Piece>
+                        <ct:SymbRef blkIdRef="sm1" symbIdRef="tD"/>
+                        <math:Condition>
+                            <math:LogicBinop op="neq">
+                                <ds:ColumnRef columnIdRef="amt"/>
+                                <ct:Real>0</ct:Real>
+                            </math:LogicBinop>
+                        </math:Condition>
+                    </math:Piece>
+                </ds:Piecewise>
+            </ColumnMapping>
+\end{lstlisting}
+Similarly to this steady-state administration model the same solution can be applied for single dosing 
+models formulated algebraically, see \cite{Bertrand:2008} for examples of such models. 
+The target mapping for multiple doses models formulated algebraically available also in 
+\cite{Bertrand:2008} has not been tested so far.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Handling MONOLIX datasets}
+\label{subsec:MLXdatasets}
+The support for MONOLIX datasets is now required in connection with the PK macros, 
+so the new elements \xelem{MONOLIXdataSet} and \xelem{MONOLIXdataSetReference} have 
+been introduced which have the same location within the \xelem{ModellingSteps} and features 
+as NONMEM related elements. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{New attribute \xatt{metadataFile} in the root element}
+\label{subsec:metadataFile}
+The new attribute \xatt{metadataFile} has been provided in the root element \xelem{PharmML} 
+to allow for the link between the RDF annotation file and the according \pml model file. 
+The code snippet below shows how the annotation file, \xatt{myModel.rdf}, is referenced from the \pml model. 
+
+\lstset{language=XML}
+\begin{lstlisting}
+	<PharmML xmlns="http://www.pharmml.org/2013/03/PharmML"
+    		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    		...
+    		writtenVersion="0.5" metadataFile="example3_NONMEM.rdf" id="i1">
+    
+    		<ct:Name>Testing new attribute</ct:Name>
+    		...
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Appendix A}
+\label{sec:currentApproaches}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{MLXTRAN PK macros}
+
+PK macros offer an equation-free encoding solution for pharmacokinetic models. 
+The novel system allows to implement in MLXTRAN virtually any compartmental 
+model within well-defined constraints. See \cite{MLXTRANforMonolix:2014} for a detailed 
+description. Tab.\ref{tab:MLXPLORElibrary} lists the available PK macros with their arguments. 
+
+\begin{table}[ht!]
+\begin{center}
+\begin{tabular}{lll}
+  \hline
+  \hline
+Component & Macro & Arguments \\
+  \hline
+Compartment 			& \textit{compartment} 	& cmt, amount, volume, concentration \\
+Peripheral compartment	& \textit{peripheral}		& kij, k$\_$i$\_$j, amount, volume, concentration \\
+Effect compartment 		& \textit{effect} 			& cmt, ke0, concentration \\
+Absorption from a depot 	& \textit{depot} 			& type/adm, Tlag, p, target, Tk0, ka, Ktr/Mtt \\
+Absorption for IV dose 	& \textit{iv} 			& cmt, type/adm, Tlag, p \\
+0-order absorption 		& \textit{absorption}		& cmt, type/adm, Tlag, p, Tk0 \\[-.5ex]
+					& or \textit{oral}			& \\
+1st order absorption 	& \textit{absorption}		& cmt, type/adm, Tlag, p, ka, Ktr/Mtt \\[-.5ex]
+					& or \textit{oral}			& \\
+Linear elimination 		& \textit{elimination}		& cmt, volume, k, CL \\
+MM elimination 		& \textit{elimination}		& cmt, volume, Km, Vm \\
+Transfer 				& \textit{transfer}		& from, to, kt \\
+  \hline
+\end{tabular}
+\caption{PK macros and their arguments as used in MLXPLORE, based on \cite{MLXTRANforMonolix:2014}.
+Please, note that there are more component listed, 10, then macros, 8, which are actually defined in MLXTRAN
+system. The presumed redundant definitions are meant to support the user in the use of the macros
+by providing the relevant set of arguments for a given administration type.}
+\label{tab:MLXPLORElibrary}
+\end{center}
+\end{table}
+
+Consider, the following basic example in which three macros with their arguments correspond 
+uniquely to a well-defined system of 2 ODE's, one for the depot compartment, one for the central compartment, 
+respectively. 
+\paragraph{Example 1}
+1-comp, 1st order absorption, linear elimination
+%oral(cmt=1, Tk0, p=Fr0) 
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+	compartment(cmt=1,concentration=Cc,volume=V) 
+	oral(cmt=1, ka) 
+	elimination(cmt=1, k)
+\end{lstlisting}
+
+The advantages of this approach
+is a very intuitive and efficient way to encode a PK model which is less error prone than when 
+encoding the ODEs by hand. The system has been in use for several years now, since Monolix 
+version 3.2, which provides a very valuable proof of concept.
+
+
+\section{PREDPP library}
+The best known PK library in the field is the PREDPP library used in NONMEM \cite{PREDPP:2011}. 
+It contains  
+customised 1, 2 or 3 compartmental PK models, such as ADVAN1-4 and 10-12, and 
+general model routines, such as ADVAN 5-9 and 13, used to build PK models containing linear
+and non-linear components and being of arbitrary complexity. 
+Additionally available are so called translator routines, TRANS1-6, allowing for various 
+parameterisations. Additional features such as Sn, Fn, Rn, Dn etc. provide means to define 
+scaling, bioavailability, infusion rate and duration etc., respectively. Tab.\ref{tab:PREDPPlibrary} 
+lists available components of the PREDPP library. 
+
+%\subparagraph{Note}
+As \marginpar{\HandCuffLeft}  powerful as this system seems to be, even for a very simple 1-compartmental oral 
+model with saturable rather then linear elimination, the user must implement the ODE system 
+using ADVAN6 or similar. It is therefore a hybrid solution offering only a small
+number of ready-to-use models, and not a generic solution like the macro based systems.
+%to be discussed below. 
+%This limitations makes PREDPP unsuitable for a standard PK library, 
+%see discussion in Section \ref{subsec:PKmacros}.
+
+
+\begin{table}[ht!]
+\begin{center}
+\begin{tabular}{ll}
+  \hline
+  \hline
+  Component & Description \\
+  \hline
+  ADVAN 1 	& 1-comp IV input \\
+  ADVAN 2 	& 1-comp 1st order input \\
+  ADVAN 10 	& 1-comp IV input with saturable elimination \\
+  ADVAN 3 	& 2-comp IV input \\
+  ADVAN 4 	& 2-comp 1st order input \\
+  ADVAN 11 	& 3-comp IV input \\
+  ADVAN 12 	& 3-comp 1st order input \\
+  ADVAN 5 and 7 	& linear ODE models \\
+  ADVAN 6, 8, 9 and 13 	& general ODE models \\
+  TRANS1 		& ADVAN1: \{K\} \\[-.25ex]
+			& ADVAN2: \{K, KA\} \\[-.25ex]
+			& ADVAN3: \{K, K12, K21\} \\[-.25ex]
+			& ADVAN4: \{K, K23, K32, KA\} \\[-.25ex]
+			& ADVAN10: \{KM, VM\} \\[-.25ex]
+			& ADVAN11: \{K, K12, K21, K13, K31\} \\[-.25ex]
+			& ADVAN12: \{KA, K, K23, K32, K24, K42\} \\[-.25ex]
+  TRANS2 		& ADVAN1: \{CL, V\} \\[-.25ex]
+ 			& ADVAN2: \{CL, V, KA\} \\
+  TRANS3 		& ADVAN3: \{CL, V, Q, VSS\} \\[-.25ex]
+ 			& ADVAN4: \{CL, V, Q, VSS, KA\} \\
+  TRANS4 		& ADVAN3: \{CL, V1, Q, V2\} \\[-.25ex]
+ 			& ADVAN4: \{CL, V2, Q, V3, KA\} \\
+				& ADVAN6: \{ALPHA, BETA, K32, KA \} \\[-.25ex]
+			& ADVAN11: \{CL, V1, Q2, V2, Q3, V3\} \\[-.25ex]
+				& ADVAN12: \{CL, V2, Q3, V3, Q4, V4, KA \} \\[-.25ex]
+  TRANS5 	& ADVAN3: \{AOB, ALPHA, BETA\} \\[-.25ex]
+ 				& ADVAN4: \{AOB, ALPHA, BETA, KA\} \\
+  TRANS6		& ADVAN11: \{CL, V2, Q3, V3, Q4, V4, KA\} \\[-.25ex]
+				& ADVAN12: \{ALPHA, BETA, GAMMA, K32, K42, KA \} \\[-.25ex]
+  Sn			& Scale parameter for compartment 'n' \\
+  Fn			& Bioavailability for compartment 'n' \\
+  Rn			& Rate for compartment 'n' \\
+  Dn			& Duration for compartment 'n' \\
+  ALAGn		& Absorption lag for compartment 'n' \\
+  A\_0(n)		& Compartment initialization for compartment 'n' \\
+%  Xn			& X parameter for compartment 'n'\\
+  On 			& Output fraction for compartment 'n' \\
+  \hline
+\end{tabular}
+\caption{PREDPP library: Subroutines and parameters, based on \cite{Metrum:2012} and \cite{PREDPP:2011}.}
+\label{tab:PREDPPlibrary}
+\end{center}
+\end{table}
+
+
+%\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{PK macros}
+%PK macros are a new option extending the standard encoding ways for PK models. 
+%For example, a macro for a 1-comparmental IV model with linear elimination (corresponds to ADVAN1) reads
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%	compartment(cmt=1, amount=Ac, volume=V)
+%	iv(adm=1, cmt=1)
+%	elimination(cmt=1, k)
+%\end{lstlisting}
+%which encoded in the proposed PharmML reads
+%\lstset{language=XML}
+%\begin{lstlisting}
+%        <StructuralModel blkId="sm3">
+%            <ct:Variable symbolType="real" symbId="Ac"/>
+%            
+%            <PKmacros>
+%                <!-- omitted Compartment macro -->
+%                <IV>
+%                    <Value argument="adm">
+%                        <ct:Int>1</ct:Int>
+%                    </Value>
+%                    <Value argument="cmt">
+%                        <ct:Int>1</ct:Int>
+%                    </Value>
+%                </IV>
+%                <!-- omitted Elimination macro -->
+%            </PKmacros>
+%        </StructuralModel>
+%\end{lstlisting}
+%The following table shows how the mapping between the target, in this case the administration 
+%number identified with the attribute \xatt{adm} works for \xelem{TrailDesing} and MONOLIX dataset.
+%\begin{table}[h!]
+%\setlength{\tabcolsep}{1pt}
+%\begin{center}
+%\begin{tabular}{ll}
+%  \hline
+%\xelem{Activity}/\xelem{TrialDesign}  	& MONOLIX dataset \\
+%  \hline
+%\lstset{language=XML}
+%\begin{lstlisting}
+%<Activity oid="bolusIV">
+%    <Bolus>
+%        <DoseAmount inputTarget="admType"> 
+%            <TargetMapping blkIdRef="sm3">
+%                <ds:Map admNumber="1"/>
+%            </TargetMapping>
+%            <ct:Assign>
+%                <ct:Real>100</ct:Real>
+%            </ct:Assign>
+%        </DoseAmount>
+%        <!-- omitted details -->
+%    </Bolus>
+%</Activity>        
+%\end{lstlisting}
+%&
+%\lstset{language=XML}
+%\begin{lstlisting}
+%<MONOLIXdataSet oid="MLXoid">
+%    
+%    <ColumnMapping>
+%        <ds:ColumnRef columnIdRef="ADM"/>
+%        <ds:TargetMapping blkIdRef="sm1">
+%            <ds:Map dataSymbol="1" admNumber="1"/>
+%        </ds:TargetMapping>
+%    </ColumnMapping>             
+%    
+%    <DataSet>
+%    
+%    <!-- omitted details -->
+%\end{lstlisting}
+%\\
+%  \hline
+%  \end{tabular}
+%\vspace{-1.5em}
+%\caption{Mapping rules for macro encoded PK model for \xelem{TrialDesing} and a MONOLIX dataset.}
+%\label{tab:targetMapping3}
+%\end{center}
+%\end{table}
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{pharmml-specification}
+\end{document}
+
+
+
+
+
+%TEMPLATES 
+%% 1. Template for table with figures
+%\begin{figure}[htbp]
+%\centering
+%\begin{tabular}{cc}
+% \includegraphics[width=80mm]{pics/pic1} & 
+% \includegraphics[width=80mm]{pics/pic2} \\
+% \includegraphics[width=80mm]{pics/pic3} &
+% \includegraphics[width=80mm]{pics/pic4}
+%\end{tabular}
+%\caption{about the figure}
+%\label{figTable:labelText}
+%\end{figure}
+
+%\begin{table}[ht]
+%\begin{center}
+%\begin{tabular}{rrrrrrrrrrr}
+%  \hline
+% & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ 
+%  \hline
+%1 & 0.24 & -1.47 & -0.56 & 0.24 & 0.71 & 1.23 & 0.44 & 0.40 & 1.10 & 1.84 \\ 
+%   \hline
+%\end{tabular}
+%\end{center}
+%\end{table}
+ 
+
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=105mm]{}
+% \caption{}
+% \label{fig:myplot}
+%\end{figure}
+
+%PIECE-WISE
+%f(z) =     \left\{ \begin{array}{rcl}
+%         value1 & \mbox{for} & condition1 \\ 
+%         value1 & \mbox{for} & condition1
+%             \end{array}\right.
+
+
