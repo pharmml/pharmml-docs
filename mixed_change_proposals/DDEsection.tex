@@ -1,0 +1,314 @@
+\documentclass[a4paper,10pt]{report}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xspace}
+\pagestyle{headings}
+%\usepackage[margin=1.2in]{geometry}
+\usepackage[total={6in,9.5in}, top=1.5in, left=.8in, includefoot]{geometry}
+\usepackage{float}
+\restylefloat{table}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.58}
+\definecolor{attributeColor}{rgb}{0.96,0.517,0.29}
+\definecolor{darkgreen}{rgb}{0,.392,0}
+\definecolor{stringColor}{rgb}{0.6,0.2,0}
+\usepackage{array,multirow}
+\usepackage{longtable}
+\usepackage{cleveref}
+\crefname{section}{¤}{¤¤}
+\Crefname{section}{¤}{¤¤}
+\usepackage[utf8]{inputenc}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+  numbers=left
+%  stepnumber=5
+}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\lstdefinelanguage{XML}
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<![CDATA[}{]]>},
+  moredelim=[s][\bfseries\color{darkgreen}]{<!--}{-->},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{red},
+  keywordstyle=\color{attributeColor},
+  morekeywords={oid,columnId,columnIdRef,symbId,symbolType,op,columnNum,columnType,
+  valueType,inputTarget,blkId,blkIdRef,symbIdRef,xmlns,version,type,VariableMapping,
+  IndividualMapping,schemaLocation,xs,xsi,NONMEMdataSet,matrixType,opType,order,
+  math,ct,ds,mdef,mstep,mml,un,name,definition,writtenVersion,id,inputType,oidRef,catId,
+  length,default,vectorIndex,diagDefault,offDiagDefault,row,column} % list your attributes here
+}
+
+%\lstdefinelanguage{XML}
+%{
+%  morestring=[b]",
+%  morestring=[s]{>}{<},
+%  morecomment=[s]{<?}{?>},
+%  morecomment=[s]{<!--}{-->},
+%  moredelim=[s][\bfseries\color{darkgreen}]{<!--}{-->},
+%  moredelim=[s][\bfseries\color{stringColor}]{="}{"},
+%  stringstyle=\color{black},
+%  identifierstyle=\color{darkblue},
+%  keywordstyle=\color{attributeColor},
+%morekeywords={oid,columnId,columnIdRef,symbId,symbolType,op,columnNum,columnType,
+%  valueType,inputTarget,blkId,blkIdRef,symbIdRef,xmlns,version,type,VariableMapping,
+%  IndividualMapping,schemaLocation,xs,xsi,NONMEMdataSet,matrixType,opType,order,
+%  name,definition,writtenVersion,id,inputType,oidRef,catId} % list your attributes here
+%  }
+
+\lstdefinelanguage{NONMEMdataSet}
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={kjkj} % list your attributes here
+}
+
+%\author{Maciek J Swat\\ Sarala Wimalaratne\\ Niels Rode Kristensen}
+%\date{\today}
+%\title{Changes in \pml 0.3}
+%\title{NONMEM format dataset support for \pml 0.2.2}
+
+
+\newcommand{\cellml}{CellML\xspace}
+\newcommand{\sbml}{SBML\xspace}
+\newcommand{\sedml}{SED-ML\xspace}
+\newcommand{\mathml}{MathML\xspace}
+\newcommand{\uncertml}{UncertML\xspace}
+\newcommand{\pml}{PharmML\xspace}
+\newcommand{\xelem}[1]{\texttt{<#1>}\index{XML Element!\texttt{<#1>}}}
+\newcommand{\xatt}[1]{\texttt{#1}\index{XML Attribute!\texttt{#1}}}
+
+\begin{document}
+
+%%\input{title_0_4.tex} 
+	
+%\maketitle
+
+%\tableofcontents
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Delay differential equations}
+\label{sec:DDEs}
+
+Following new elements extend the current ODE structure
+\begin{itemize}
+\item
+\xelem{delay} element with two arguments
+\begin{itemize}
+\item
+$y$, variable described on the model
+\item
+$\tau$, discrete delay, can be a numerical value or a symbol
+\end{itemize}
+Then the typical delay expression such as $y(t-\tau)$ would be encoded as
+\lstset{language=XML}
+\begin{lstlisting}
+                    <ct:Delay>
+                        <ct:SymbRef symbIdRef="y"/>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="tau"/>
+                    </ct:Delay>
+\end{lstlisting}
+with \xatt{tau} defined in the parameter model \emph{pm1}.
+\item
+\xelem{History} element where the past of a variable is defined to time $t \le t_0$ and comes
+with two child elements
+\begin{itemize}
+\item
+\xelem{HistoryValue} stands for past/historical value of a variable $y$, denoted by $y_0$.
+\item
+\xelem{HistoryTime} stands for the end time, $t_0$, of the history definition. 
+By default, history is defined for $t\le t_0$.
+\end{itemize}
+\end{itemize}
+
+\subsection{Basic example}
+Based on example from \cite{MLXTRANforMonolix:2014}.
+
+\begin{align}
+& \frac{dA}{dt} = r - c \times A \times B - k \times A \nonumber \\
+& \frac{dB}{dt} = c \times A \times B - A(t-d) \nonumber 
+\end{align}
+with history $A_0 = r/k$ and $B_0 = 0$ for $t \le 5$.
+
+\lstset{language=XML}
+\begin{lstlisting}
+<StructuralModel blkId="sm1">
+    <ct:DerivativeVariable symbId="A">
+        <ct:Assign>
+            <math:Equation>
+                <math:Binop op="minus">
+                    <ct:SymbRef blkIdRef="pm1" symbIdRef="r"/>
+                    <math:Binop op="minus">
+                        <math:Binop op="times">
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="c"/>
+                            <math:Binop op="times">
+                                <ct:SymbRef symbIdRef="A"/>
+                                <ct:SymbRef symbIdRef="B"/>
+                            </math:Binop>
+                        </math:Binop>
+                        <math:Binop op="times">
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="k"/>
+                            <ct:SymbRef symbIdRef="A"/>
+                        </math:Binop>
+                    </math:Binop>
+                </math:Binop>
+            </math:Equation>
+        </ct:Assign>
+        <ct:IndependentVariable>
+            <ct:SymbRef symbIdRef="t"/>
+        </ct:IndependentVariable>
+        <ct:History>
+            <ct:HistoryValue>
+                <ct:Assign>
+                    <math:Equation>
+                        <math:Binop op="divide">
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="r"/>
+                            <ct:SymbRef blkIdRef="pm1" symbIdRef="k"/>
+                        </math:Binop>
+                    </math:Equation>
+                </ct:Assign>
+            </ct:HistoryValue>
+            <ct:HistoryTime>
+                <ct:Assign>
+                    <ct:Real>5</ct:Real>
+                </ct:Assign>
+            </ct:HistoryTime>
+        </ct:History>
+    </ct:DerivativeVariable>
+    
+    <ct:DerivativeVariable symbId="B">
+        <ct:Assign>
+            <math:Equation>
+                <math:Binop op="minus">
+                    <math:Binop op="times">
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="c"/>
+                        <math:Binop op="times">
+                            <ct:SymbRef symbIdRef="A"/>
+                            <ct:SymbRef symbIdRef="B"/>
+                        </math:Binop>
+                    </math:Binop>
+                    <ct:Delay>
+                        <ct:SymbRef symbIdRef="A"/>
+                        <ct:SymbRef blkIdRef="pm1" symbIdRef="d"/>
+                    </ct:Delay>
+                </math:Binop>
+            </math:Equation>
+        </ct:Assign>
+        <ct:IndependentVariable>
+            <ct:SymbRef symbIdRef="t"/>
+        </ct:IndependentVariable>
+        <ct:History>
+            <ct:HistoryValue>
+                <ct:Assign>
+                    <ct:Real>0</ct:Real>
+                </ct:Assign>
+            </ct:HistoryValue>
+            <ct:HistoryTime>
+                <ct:Assign>
+                    <ct:Real>5</ct:Real>
+                </ct:Assign>
+            </ct:HistoryTime>
+        </ct:History>
+    </ct:DerivativeVariable>
+</StructuralModel>
+\end{lstlisting}
+
+
+
+\subsection{Basic example}
+Based on example from \cite{MLXTRANforMonolix:2014}.
+
+\begin{align}
+& \frac{dA}{dt} = r - c \times A \times B - k \times A \nonumber \\
+& \frac{dB}{dt} = c \times A \times B - A(t-d) \nonumber 
+\end{align}
+with history $A_0 = r/k$ and $B_0 = 0$ for $t \le 5$.
+
+\lstset{language=XML}
+\begin{lstlisting}
+
+\end{lstlisting}
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{pharmml-specification}
+\end{document}
+
+
+
+
+
+
+%TEMPLATES 
+%% 1. Template for table with figures
+%\begin{figure}[htbp]
+%\centering
+%\begin{tabular}{cc}
+% \includegraphics[width=80mm]{pics/pic1} & 
+% \includegraphics[width=80mm]{pics/pic2} \\
+% \includegraphics[width=80mm]{pics/pic3} &
+% \includegraphics[width=80mm]{pics/pic4}
+%\end{tabular}
+%\caption{about the figure}
+%\label{figTable:labelText}
+%\end{figure}
+
+%\begin{table}[ht]
+%\begin{center}
+%\begin{tabular}{rrrrrrrrrrr}
+%  \hline
+% & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ 
+%  \hline
+%1 & 0.24 & -1.47 & -0.56 & 0.24 & 0.71 & 1.23 & 0.44 & 0.40 & 1.10 & 1.84 \\ 
+%   \hline
+%\end{tabular}
+%\end{center}
+%\end{table}
+ 
+
+%\begin{figure}[htb!]
+%\centering
+%  \includegraphics[width=105mm]{}
+% \caption{}
+% \label{fig:myplot}
+%\end{figure}
+
+%PIECE-WISE
+%f(z) =     \left\{ \begin{array}{rcl}
+%         value1 & \mbox{for} & condition1 \\ 
+%         value1 & \mbox{for} & condition1
+%             \end{array}\right.

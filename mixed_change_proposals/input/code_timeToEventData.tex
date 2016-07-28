@@ -1,0 +1,695 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Time-to-event data models}
+\label{subsec:timeToEventData}
+The discussion on how time-to-events data models are to be encoded in NM-TRAN
+did not reach consensus yet. Therefore, models encoded in this language comes in two alternative versions.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Constant hazard function}
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete/time-to-event
+\item
+Event variable: $y$
+\item
+Hazard function: $h(t; \psi_i) = 1/\lambda$
+\end{itemize}
+
+
+\subsubsection{NM-TRAN code provided by Elodie Plan:}
+The following code presents two suggested versions.
+
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+;;;;;;;;;;;;;; Elodie Plan's version;;;;;;;;;;;;;; 
+
+$SIZES NO=1002 LIM6=1002
+;Event 1 model, implementation 1
+$PROB TTE model with a right censoring time equal to 100
+$INPUT ID TIME DV CENS INTERVAL ; dataset goes until time 100
+$DATA tte_sim_data.csv IGNORE=@ 
+
+$SUB ADVAN6 TOL6
+$MODEL COMP=HAZ
+
+$PK
+LAMBDA=THETA(1)
+LAMB=1/LAMBDA
+BETA=THETA(2)
+
+$DES
+;Set up hazard
+IF (T.LE.0) THEN
+  DHAZ=0
+ELSE
+  DHAZ=LAMB*BETA*(LAMB*T)**(BETA-1)
+ENDIF
+  DADT(1)=DHAZ
+
+$ERROR
+;Set up hazard
+IF (TIME.LE.0) THEN
+  HAZ=0
+ELSE
+  HAZ=LAMB*BETA*(LAMB*TIME)**(BETA-1)
+ENDIF
+
+;;;;;;;;;;;;;; Survival Nick's way ;;;;;;;;;;;;;; 
+CUMHAZ=A(1)
+SUR=EXP(-CUMHAZ)
+
+;For estimation
+;IF(CENS.LT.1 Y=SUR*HAZ
+;IF(CENS.EQ.1) Y=SUR
+
+;Settings for simulation
+MAXEVT=1 
+
+;Simulation
+ IF(ICALL.EQ.4) THEN
+    IF(NEWIND.NE.2) NEVT=0 ;0 event per individual at start of each individual
+    DV=0 ; 0 event at observation by default
+    IF(NEVT.LT.MAXEVT.AND.INTERVAL.EQ.1)THEN ; apply simulation only if max event not reached
+      CALL RANDOM (2,R) 
+      IF(R.GT.SUR) THEN 
+         DV=1
+         NEVT=NEVT+1
+      ENDIF
+    ENDIF
+  ENDIF
+
+$THETA
+ (0,50)  ;LAMBDA
+ (0,2.5)  ;BETA
+ 
+ $OMEGA
+ 0 FIX
+
+;$ESTIM MAXEVAL=9999 METHOD=0 LIKE PRINT=1 
+$SIM (1234) (45678 UNI) ONLYSIM NOPRED NSUB=1
+
+$TABLE ID TIME CENS DV NEVT HAZ SUR CUMHAZ MAXEVT INTERVAL
+NOPRINT NOAPPEND ONEHEADER FILE=mytab19
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{MLXTRAN code from  MLXTRAN tutorial \cite{Monolix4.3Tutorial:2014}:}
+
+\myStartLine
+
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION:
+Time-to-event data model 
+Constant hazard function
+
+INPUT:
+parameter = lambda
+
+OBSERVATION:
+Y= { 
+    type = event 
+    hazard = 1/lambda 
+}
+
+OUTPUT:
+output = Y
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{PharmML code:}
+The parameters $lambda$ is assumed to be defined in the \xelem{ParameterModel} \emph{pm1}.
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <TimeToEventData>
+                    <EventVariable symbId="y"/>
+                    
+                    <!-- h(t) = 1/lambda -->
+                    <HazardFunction symbId="H">
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <ct:Real>1</ct:Real>
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </HazardFunction>
+                </TimeToEventData>
+            </Discrete>            
+        </ObservationModel>
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Weibull hazard function}
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete/time-to-event
+\item
+Event variable: $y$
+\item
+Hazard function: $h(t; \psi_i) = \frac{\beta}{\lambda}\frac{t}{\lambda}^{\beta-1}$
+\end{itemize}
+
+
+\subsubsection{NM-TRAN code:}
+
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+missing
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{MLXTRAN code from MLXTRAN tutorial \cite{Monolix4.3Tutorial:2014}:}
+
+\myStartLine
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION:
+Time-to-event data model 
+Weibull hazard function
+
+INPUT:
+parameter = {lambda, beta}
+
+OBSERVATION:
+Y= { type = event 
+    hazard = (beta/lambda)*(t/lambda)^(beta-1) 
+}
+
+OUTPUT:
+output = Y
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{PharmML code:}
+The parameters $beta$ and $lambda$ are assumed to be defined in the \xelem{ParameterModel} \emph{pm1}.
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <TimeToEventData>
+                    <EventVariable symbId="y"/>
+                    
+                    <!-- h(t) = beta/lambda * t^(beta-1)/lambda -->
+                    <HazardFunction symbId="h">
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="times">
+                                    <math:Binop op="divide">
+                                        <ct:SymbRef blkIdRef="pm1" symbIdRef="beta"/>
+                                        <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
+                                    </math:Binop>
+                                    <math:Binop op="divide">
+                                        <math:Binop op="power">
+                                            <ct:SymbRef symbIdRef="t"/>
+                                            <math:Binop op="minus">
+                                                <ct:SymbRef blkIdRef="pm1" symbIdRef="beta"/>
+                                                <ct:Real>1</ct:Real>
+                                            </math:Binop>
+                                        </math:Binop>
+                                        <ct:SymbRef blkIdRef="pm1" symbIdRef="lambda"/>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>   
+                    </HazardFunction>
+                </TimeToEventData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Concentration dependent hazard function}
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete/time-to-event
+\item
+Event variable: $y$
+\item
+Hazard function: $h(t; \psi_i) = \beta \times Cc$
+%\item
+%Maximum number of possible events = 1
+\end{itemize}
+
+
+\subsubsection{NM-TRAN code:}
+
+\myStartLine
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+missing
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{MLXTRAN code based on MLXTRAN tutorial \cite{Monolix4.3Tutorial:2014}:}
+
+\myStartLine
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION: 
+RTTE with concentration dependent hazard function
+
+INPUT:
+parameter = {ka, V, Cl, ke0}
+
+EQUATION:
+{Cc, Ce} = pkmodel(ka, V, Cl, ke0)
+
+OBSERVATION: 
+hemorrhaging = {
+    type=event, 
+    hazard=beta*Cc
+}
+
+OUTPUT: 
+output = hemorrhaging
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{PharmML code:}
+The parameter $beta$ is assumed to be defined in the \xelem{ParameterModel} \emph{pm1}.
+$Cc$ is assumed to be defined in the \xelem{StructuralModel} \emph{sm1}.
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <TimeToEventData>
+                    <EventVariable symbId="hemorrhaging"/>
+                    
+                    <!-- h(t) = beta*Cc -->
+                    <HazardFunction symbId="h">
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="times">
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="beta"/>
+                                    <ct:SymbRef blkIdRef="sm1" symbIdRef="Cc"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>   
+                    </HazardFunction>
+                </TimeToEventData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Constant hazard function with censoring}
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete/time-to-event
+\item
+Event variable: $y$
+\item
+Event type -- interval censored
+\begin{itemize}
+\item
+Interval length = 5
+\item
+Right censoring time = 200
+\end{itemize}
+\item
+Hazard function: $h(t; \psi_i) = 1/\lambda$
+\item
+Maximum number of possible events = 3
+\end{itemize}
+
+
+\subsubsection{NM-TRAN code provided by Elodie Plan:}
+The following code presents two suggested versions.
+
+\myStartLine
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+;;;;;;;;;;;;;; Elodie Plan's version;;;;;;;;;;;;;; 
+
+$SIZES NO=1002 LIM6=1002
+;Event 2 model, implementation 2
+$PROB RTTE model with a right censoring time equal to 100
+$INPUT ID TIME DV CENS INTERVAL ; dataset goes until time 100
+$DATA rtte_sim_data.csv IGNORE=@ 
+
+$SUB ADVAN6 TOL6
+$MODEL COMP=HAZ
+
+$PK
+LAMBDA=THETA(1)*EXP(ETA(1))
+LAMB=1/LAMBDA
+BETA=THETA(2)
+
+$DES
+;Set up hazard
+IF (T.LE.0) THEN
+  DHAZ=0
+ELSE
+  DHAZ=LAMB*BETA*(LAMB*T)**(BETA-1)
+ENDIF
+  DADT(1)=DHAZ
+
+$ERROR
+;Set up hazard
+IF (TIME.LE.0) THEN
+  HAZ=0
+ELSE
+  HAZ=LAMB*BETA*(LAMB*TIME)**(BETA-1)
+ENDIF
+
+;;;;;;;;;;;;;;;Survival Uppsala way;;;;;;;;;;;;;; 
+IF(NEWIND.NE.2)  OLDCHZ=0
+                 CHZ=A(1)-OLDCHZ
+IF(INTERVAL.EQ.1)OLDCHZ=A(1)            
+SUR=EXP(-CHZ)
+
+;For estimation
+;IF(CENS.LT.99) Y=SUR*HAZ
+;IF(CENS.EQ.99) Y=SUR
+
+;Settings for simulation
+MAXEVT=10000 ; MORE THAN MAX NUMBER OF SIMULATION STEPS 
+
+;Simulation
+ IF(ICALL.EQ.4) THEN
+    IF(NEWIND.NE.2) NEVT=0 ;0 event per individual at start of each individual
+    DV=0 ; 0 event at observation by default
+    IF(NEVT.LT.MAXEVT.AND.INTERVAL.EQ.1)THEN ; apply simulation only if max event not reached
+          CALL RANDOM (2,R) 
+      IF(R.GT.SUR) THEN 
+         DV=1
+         NEVT=NEVT+1
+      ENDIF
+    ENDIF
+  ENDIF
+
+$THETA
+ (0,50)  ;LAMBDA
+ (0,2.5)  ;BETA
+ 
+ $OMEGA
+ 0.8
+
+;$ESTIM MAXEVAL=9999 METHOD=COND LAPLACE LIKE PRINT=1 
+$SIM (1234) (45678 UNI) ONLYSIM NOPRED NSUB=1
+
+$TABLE ID TIME CENS DV NEVT HAZ SUR CHZ MAXEVT INTERVAL
+NOPRINT NOAPPEND ONEHEADER FILE=mytab29
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{MLXTRAN code from  MLXTRAN tutorial \cite{Monolix4.3Tutorial:2014}:}
+
+\myStartLine
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION:
+Time-to-event data model
+Constant hazard function with interval censoring 
+
+INPUT:
+parameter = lambda
+
+OBSERVATION:
+Y = { type = event
+    eventType=intervalCensored,
+    maxEventNumber=3,
+    intervalLength=5,
+    rightCensoringTime=200,
+    hazard = 1/lambda
+}
+
+OUTPUT:
+output = Y
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{PharmML code:}
+The parameter $lambda$ is assumed to be defined in the \xelem{ParameterModel} \emph{pm1}.
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <TimeToEventData>
+                    <EventVariable symbId="Y"/>
+                    
+                    <!-- h(t) = beta*Cc -->
+                    <HazardFunction symbId="h">
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="times">
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="beta"/>
+                                    <ct:SymbRef blkIdRef="sm1" symbIdRef="Cc"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>   
+                    </HazardFunction>
+                    
+                    <Censoring censoringType="intervalCensored">
+                        <IntervalLength>
+                            <ct:Assign>
+                                <ct:Real>5</ct:Real> 
+                            </ct:Assign>
+                        </IntervalLength>
+                        
+                        <RightCensoringTime>
+                            <ct:Assign>
+                                <ct:Real>200</ct:Real> 
+                            </ct:Assign>
+                        </RightCensoringTime>
+                    </Censoring>
+                    
+                    <MaximumNumberEvents>
+                        <ct:Assign>
+                            <ct:Real>3</ct:Real> 
+                        </ct:Assign>
+                    </MaximumNumberEvents>
+                </TimeToEventData>
+            </Discrete>
+        </ObservationModel>
+ \end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/example3_CTS2}
+
+
+%\subsubsection{Censored time to event data}
+%\paragraph{NM-TRAN code provided by Mats Karlsson}
+%\begin{lstlisting}
+%$PROBLEM Time to event data
+%
+%$INPUT ID TIME DV DOSE ICL IV IKA 
+%       TYPE SMAX SMXH THR CAV CAVH CON   
+%       CNT=DROP CNT2=DROP CNT3=DROP 
+%       HC=DROP HC2=DROP HC3=DROP FE EVID
+%       ;ETA1 ETA2 ETA3 ETA4 
+%
+%$DATA data.csv IGNORE=@  
+%;Sim_start : remove from simulation model   
+%ACCEPT=(FE.EQ.1) ACCEPT=(TYPE.EQ.1)
+%;Sim_end
+%
+%$SUBR ADVAN=6 TOL=6
+%$MODEL COMP=(HAZARD)
+%
+%$PK
+%  ;Sim_start : add for simulation
+%  ;RTTE=0
+%  ;Sim_end
+%
+%  CL  = ICL
+%  V   = IV
+%  KA  = IKA
+%
+%  BASE = THETA(1)*EXP(ETA(1)) ;the ETA is a placeholder here
+%
+%$DES
+%  CP  =DOSE*KA/V/(-KA+CL/V)*(EXP(-KA*T)-EXP(-CL/V*T))   
+%  DADT(1)=BASE    ;hazard   
+%
+%$ERROR
+%  CONC =DOSE*KA/V/(-KA+CL/V)*(EXP(-KA*TIME)-EXP(-CL/V*TIME)) 
+%;----------RTTE Model------------------------------
+%  IF(NEWIND.NE.2) OLDCHZ=0  ;reset the cumulative hazard
+%  CHZ = A(1)-OLDCHZ         ;cumulative hazard 
+%                            ;  from previous time point
+%                            ;  in data set
+%  OLDCHZ = A(1)             ;rename old cumulative hazard
+%  SUR = EXP(-CHZ)           ;survival probability
+%
+%  HAZNOW=BASE               ; rate of event
+%                            ;  each time pt
+%                            ;  NB: update with each new model
+%
+%
+%  IF(DV.EQ.0)   Y=SUR         ;censored event (prob of survival)
+%  IF(DV.NE.0)   Y=SUR*HAZNOW  ;prob density function of event
+%
+%  ;Sim_start : add for simulation model 
+%  ;IF(ICALL.EQ.4) THEN
+%  ;  CALL RANDOM (2,R)
+%  ;  DV=0
+%  ;  RTTE = 0
+%  ;  IF(TIME.EQ.480) RTTE = 1 ; for the censored observation at 480 min
+%  ;  IF(R.GT.SUR) THEN
+%  ;     DV=1
+%  ;     RTTE = 1
+%  ;  ENDIF
+%  ;ENDIF
+%  ;Sim_end
+%
+%$THETA (0,0.025)      ; BASE
+%$OMEGA 0 FIX
+%
+%;Sim_start : add for simulation
+%;$SIMULATION (5988566) (39978 UNIFORM) ONLYSIM NOPREDICTION SUB=100
+%;Sim_end
+%
+%$ESTIM MAXEVAL=9990 METHOD=0 LIKE PRINT=1 MSFO=msfb51
+%$COV PRINT=E
+%
+%$TABLE ID TIME SUR DOSE EVID NOPRINT ONEHEADER FILE=sdtab51
+%$TABLE ID ICL IV IKA NOPRINT ONEHEADER FILE=patab51
+%$TABLE ID CAV CAVH CON NOPRINT ONEHEADER FILE=cotab51
+%$TABLE ID TYPE SMAX SMXH THR FE NOPRINT ONEHEADER FILE=catab51
+%
+%;Sim_start : add for simulation
+%;$TABLE ID DV TIME RTTE      ; these are needed
+%;       DOSE                   ; optional covariates
+%;       NOPRINT NOAPPEND ONEHEADER FILE=fullsimtab51
+%;Sim_end
+%\end{lstlisting}
+%\paragraph{MLXTRAN code ...}
+%%\begin{lstlisting}
+%%\end{lstlisting}
+
+
+%\subsubsection{Warfarin Use Case -- warf$\_$p1$\_$simTRT$\_$drop$\_$estTRT$\_$bs.ctl}
+%\paragraph{NM-TRAN code provided by Nick Holford and Mike Smith}
+%\begin{lstlisting}
+%$PROB ESTIMATE TIME TO EVENT
+%$DATA ..\warf_sim_p1_drop_TRT.csv
+%$INPUT ID TIME TRT
+%AMT=DROP RATE=DROP ADDL=DROP II=DROP
+%WT DVID DV MDV CP PCA INR
+%$WARN NONE ; SUPPRESS WARNING FOR NON-ZERO DV RECORDS WITH MDV=1
+%$ESTIM MAX=9990 SIG=3 NOABORT ;PRINT=1
+%METHOD=CONDITIONAL LAPLACIAN LIKE
+%$COV
+% 
+%;EVENT HAZARD
+%$THETA
+%(0,0.1,) ; POP_HBASE 1/Y BASELINE HAZARD (MAJOR HAEMORRHAGE)
+%(0,0.4,) ; POP_BTATRT HAZARD RATIO INCREASE PER 1 MG/D WARFARIN
+% 
+%$OMEGA 0 FIX ; PPV_HBASE NEEDED TO KEEP NM-TRAN HAPPY
+% 
+%$SUBR ADVAN6 TOL=3
+%$MODEL
+%COMP=CUMHAZ
+%$PK
+%IF (NEWIND.LE.1) SRVZ=1 ; SURVIVOR FUNCTION AT TIME=0
+% 
+%HBASE=THETA(1)*EXP(ETA(1))/365 ; 1/Y -> 1/D
+%BTATRT=THETA(2)
+% 
+%HAZ=HBASE *(1+BTATRT*TRT)
+% 
+%$DES
+%DADT(1)=HAZ
+% 
+%$ERROR
+% 
+%CUMHAZ=A(1)
+% 
+%; PROB OF NOT HAVING DROPPED OUT UP TO THIS TIME
+%SRVT=EXP(-CUMHAZ) ; SURVIVOR FUNCTION (T)
+%IF (DVID.EQ.3.AND.DV.EQ.0) THEN ; CENSORED EVENT
+% 
+%      Y=SRVT ; SURVIVOR FUNCTION
+%ENDIF
+%IF (DVID.EQ.3.AND.DV.EQ.1) THEN
+% 
+%;      Y=SRVZ - SRVT ; LIKELIHOOD OF EVENT IN INTERVAL
+% 
+%      Y=SRVT*HAZ ; LIKELIHOOD AT EXACT EVENT TIME
+%ENDIF
+% 
+%IF (DVID.EQ.3) THEN ; START OF NEW EVENT INTERVAL
+% 
+%      SRVZ=SRVT ; SURVIVOR FUNCTION AT START OF NEW INTERVAL
+%ELSE ; SAVE RECURSIVE RANDOM VARIABLE (ONLY WORKS WITH NMVI)
+% 
+%      SRVZ=SRVZ ; SURVIVOR FUNCTION AT END OF PREVIOUS INTERVAL
+%ENDIF
+% \end{lstlisting}
+%\paragraph{MLXTRAN code ...}
+%\begin{lstlisting}
+%\end{lstlisting}
+
+
+
+
+%\subsubsection{}
+%\paragraph{NM-TRAN code ...}
+%\begin{lstlisting}
+%\end{lstlisting}
+%\paragraph{MLXTRAN code ...}
+%\begin{lstlisting}
+%\end{lstlisting}
+
+
+
+%\begin{sidewaystable}[h]
+%\caption{Performance After Post Filtering}  % title name of the table
+%\centering  % centering table
+%\begin{tabular}{l c c rrrrrrr}  % creating 10 columns
+%\hline\hline                       % inserting double-line
+% Audio &Audibility & Decision &\multicolumn{7}{c}{Sum of Extracted Bits} 
+%\\ [0.5ex]   
+%\hline              % inserts single-line
+%% Entering 1st row
+% & &soft &1 & $-1$ & 1 & 1 & $-1$ & $-1$ & 1  \\[-1ex]
+%\raisebox{1.5ex}{Police} & \raisebox{1.5ex}{5}&hard
+%&  2 & $-4$ & 4 & 4 & $-2$ & $-4$ & 4 \\[1ex]
+%% Entering 2nd row
+%& &soft & 1 & $-1$ & 1 & 1 & $-1$ & $-1$ & 1  \\[-1ex]
+%\raisebox{1.5ex}{Beethoven} & \raisebox{1.5ex}{5}& hard
+%&8 & $-8$ & 2 & 8 & $-8$ & $-8$ & 6 \\[1ex]
+%% Entering 3rd row
+%& &soft & 1 & $-1$ & 1 & 1 & $-1$ & $-1$ & 1  \\[-1ex]
+%\raisebox{1.5ex}{Metallica} & \raisebox{1.5ex}{5}& hard
+%&4 & $-8$ & 8 & 4 & $-8$ & $-8$ & 8  \\[1ex]
+%% [1ex] adds vertical space
+%\hline                          % inserts single-line
+%\end{tabular}
+%\label{tab:LPer}
+%\end{sidewaystable}
+%

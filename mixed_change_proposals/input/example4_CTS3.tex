@@ -1,0 +1,599 @@
+\subsection{PK with categorical effect 1 {\color{red} \scshape{*}}}
+\label{subsec:PKPDcategorical}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsubsection{Introduction}
+%\label{subsec:exp4_intro}
+%
+This example is based on the document \cite{Lavielle:2011}. The essential element of this 
+task is the probability distribution of categorical data Y, which can be defined as either 
+$P(Y=k)$ or $\log(P(Y=k))$ or $logit(P(Y=t))$. In this example, $k \in {1,2}$, i.e. the effect 
+outcome is either 1 or 2. The underlying PK model is 1-compartmental oral model. 
+The probability for outcome is '1' is given by the equation
+\begin{eqnarray}
+	P(Y=1) &=& \frac{1}{1+\exp(-\theta_1 - \theta_2 \log(Cc))} 
+\end{eqnarray}
+which is plotted in Figure \ref{fig:p1surface}. This probability is represented as a function 
+of $\theta_1$, $\theta_2$ and $log(Cc)$ which is visualised for three different values of $Cc = \{1,5,15\}$. 
+%To get a full picture of the $p1$ dynamics run the Matlab animation using the code provided in \ref{MATLAB_p1animation}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=.45\textwidth]{pics/CTS4_p1_threeSurfaces.png}
+\caption{p1-probability surface as function of $\theta_1$ and $\theta_2$ plotted for Cc = \{1,5,15\} ($1\equiv$ green, $5 \equiv$ red, $15 \equiv$ blue). }
+\label{fig:p1surface}
+\end{center}
+\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsubsection{Task description}
+%\label{subsec:exp4_TaskDescription}
+%
+%\paragraph{Trial execution model} %% Êdesign
+%-- There are 4 arms (study groups of patients) i.e. 
+%\begin{eqnarray}
+%&&SizeArm=\{20, 20, 40, 40\}  \nonumber
+%\end{eqnarray}
+%
+%-- Dosing depends on the arm. For example, in the first arm, dosing starts on $0h$ and repeats every $24 h$
+%\begin{eqnarray}
+%&&DoseTime=\{0:24:192, 0:48:192, 0:24:192, 0:48:192\}   \nonumber 
+%\end{eqnarray}
+%
+%-- Dosing depends on the arm too. It is adjusted to body weight, e.g. $1 mg$ per $1 kg$ of body weight
+%\begin{eqnarray}
+%&&DoseSize = \{0.25, 0.5, 0.5, 1\} \nonumber \\
+%&&DosePerKg = yes  \nonumber
+%\end{eqnarray}
+%
+%-- Time of measurement for PK and PD happens according to different schedules, here $ObservationTime\{1\}$ and $ObservationTime\{2\}$ correspond to PK and PD, accordingly
+%\begin{eqnarray}
+%&&ObservationTime\{1\}=[0.5, 4:4:48, 52:24:192,192:4:250]  \nonumber \\
+%&&ObservationTime\{2\}=0:24:288  \nonumber
+%\end{eqnarray}
+
+%\paragraph{Individual parameters model}
+%
+%Details omitted here...
+%\begin{eqnarray}
+%ka& \sim& \mbox{logNormal}(pop_{ka}, \omega_{ka});  \quad pop_{ka}=1,\quad \omega_{ka}=0.6 \nonumber \\
+%V& \sim& \mbox{logNormal}(pop_{V}, \omega_{V}); \quad pop_V=8,\quad \omega_V=0.2 \nonumber \\
+%CL& \sim&  \mbox{logNormal}(pop_{CL}, \omega_{CL}); \quad pop_{CL}=0.13,\quad \omega_{CL}=0.2 \nonumber \\
+%theta1& \sim&  \mbox{Normal}(pop_{theta1}, \omega_{theta1}); \quad pop_{theta1}=-1,\quad \omega_{theta1}=0.3 \nonumber \\
+%theta2& \sim&  \mbox{logNormal}(pop_{theta2}, \omega_{theta2}); \quad pop_{theta2}=1,\quad \omega_{theta2}=0.2 \nonumber 
+%\end{eqnarray}
+%\begin{eqnarray}
+%\log(V_i) &=& \log(V_{pop}) + \beta_{1,V}\log(W_i/70) + \eta_{V,i} \nonumber \\
+%\log(CL_i) &=& \log(CL_{pop}) + \beta_{1,CL}\log(W_i/70) + \eta_{CL,i} \nonumber \\
+%\beta_{1,V}&=&1 \nonumber \\
+%\beta_{1,CL}&=&0.75 \nonumber \\
+%\rho_{V,CL}&=&0.7 \mbox{  (the correlation coefficient between } \eta_{V,i} \mbox{ and } \eta_{CL,i}  \mbox{)} \nonumber
+%\end{eqnarray}
+%\paragraph{Variance-covariance matrix of the random effects}
+%\[
+% \Omega =
+% \begin{pmatrix}
+%  \omega_{ka}^2 	& \omega_{ka,V} 	& \omega_{ka,CL} 	& \omega_{ka,theta1} 	& \omega_{ka,theta2} \\
+%   			  	& \omega_{V}^2	& \omega_{V,CL}	& \omega_{V,theta1} 	& \omega_{V,theta2} \\
+%  				& 				& \omega_{CL}^2 	& \omega_{CL,theta1} 	& \omega_{CL,theta2} \\
+%  				& 				& 				& \omega_{theta1}^2 	& \omega_{theta1,theta2} \\
+%  				& 				& 				& 					& \omega_{theta2}^2
+% \end{pmatrix}
+%= 
+%\begin{pmatrix}
+%  \omega_{ka}^2 	& 0			 	& 0			 	& 0				 	& 0				 \\
+%   			  	& \omega_{V}^2	& \omega_{V,CL}	& 0				 	& 0				 \\
+%  				& 				& \omega_{CL}^2 	& 0				 	& 0				 \\
+%  				& 				& 				& \omega_{theta1}^2 	& 0				 \\
+%  				& 				& 				& 					& \omega_{theta2}^2
+% \end{pmatrix}
+%\]
+
+%\paragraph{Covariate model}
+%\begin{eqnarray}
+%Covariates: && \log(Weight/70)  \nonumber \\
+%CovariatesType: && Continuous \nonumber \\
+%CovariatesFile: && e.g. 'warfarindata.txt' \nonumber
+%\end{eqnarray}
+
+\paragraph{Structural model}
+Oral 1-compartmental model with 1$^{st}$ order absorption, $ka$, and linear elimination, $k=CL/V$, 
+which reads
+\begin{eqnarray}
+\frac{dAd}{dt} &=&-ka\times Ad \nonumber \\
+\frac{dAc}{dt}&=&ka\times Ad - k\times Ac \nonumber \\ 
+Cc &=& Ac/V \nonumber 
+\end{eqnarray}
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete/categorical
+\item
+Category variable: $Y$
+\item
+Set of categories: $\{0,1\}$
+\item
+Probability for the '1' category
+\begin{eqnarray}
+P(Y=1) &=& \frac{1}{1+\exp(-\theta1 - \theta2 \times \log(Cc))} \nonumber
+\end{eqnarray}
+\end{itemize}
+
+\subsubsection{NM-TRAN code based on an use case by Nick Holford and Mike Smith:}
+
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+$PROB BINARY OUTCOME
+$DATA binary.csv IGNORE #
+...
+
+$THETA 
+(********PK model parameters omitted********)
+(.01,.1,.99) ; BaseP
+(0,.5,10) ; Beta
+
+$OMEGA BLOCK(3) FIX
+(********PK model parameters omitted********)
+$OMEGA
+0.04 ; ppv_event
+
+(********PK model definition omitted********)
+
+$ERROR
+  IF (ICALL.EQ.4) CP=F
+
+  BASE=LOG(THETA(4)/(1-THETA(4))) ; transform to logit
+  LGST=BASE + THETA(5)*CP + ETA(4)
+  P1=1/(1+EXP(-LGST) ; untransform from logit
+
+(*********simulation code omitted*********)
+...
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{MLXTRAN code by MJS:}
+
+\myStartLine
+
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION: 
+Joint PK and categorical data model 
+
+INPUT: 
+parameter = {ka, V, Cl, theta1, theta2} 
+
+EQUATION: {Cc, Ce} = pkmodel(ka, V, Cl) 
+
+OBSERVATION: 
+Y = { 
+	type = categorical 
+	categories = {1, 2} 
+	P(Y=1) = 1 / (1 + exp(-theta1 - theta2*Ce))
+} 
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{PharmML code}
+In the following code only the observation model for the binary outcome variable $Y$ will be considered.
+All parameters are assumed to be defined in the \xelem{ParameterModel} \emph{pm1}.
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="no">
+                    <ListOfCategories> 
+                        <Category symbId="cat0"/>
+                        <Category symbId="cat1"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    
+                    <!-- P(y = 1) = 1 / (1 + exp(-theta1 - theta2*log(Cc))) -->
+                    <ProbabilityAssignment>
+                        <Probability>
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <ct:Real>1</ct:Real>
+                                    <math:Binop op="plus">
+                                        <ct:Real>1</ct:Real>
+                                        <math:Uniop op="exp">
+                                            <math:Binop op="minus">
+                                                <math:Uniop op="minus">
+                                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="theta1"/>
+                                                </math:Uniop>
+                                                <math:Binop op="times">
+                                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="theta2"/>
+                                                    <math:Uniop op="log">
+                                                        <ct:SymbRef blkIdRef="sm1" symbIdRef="Cc"/>
+                                                    </math:Uniop>
+                                                </math:Binop>
+                                            </math:Binop>
+                                        </math:Uniop>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+%\subsubsection{MATLAB code example}
+%See \ref{subsec:MATLAB_categorical} for an example and instructions how to run it in MATLAB.
+
+\subsection{PK with categorical effect 2 {\color{red} \scshape{new}}}
+\label{subsec:PKPDcategorical2}
+
+\paragraph{Structural model}
+Oral 1-compartmental model with 1$^{st}$ order absorption, $ka$, and linear elimination, $k=CL/V$. 
+%which reads
+%\begin{table}[h!]
+%\setlength{\tabcolsep}{15pt}
+%\begin{center}
+%\begin{tabular}{l}
+%  \hline \hline
+%PK macro  \\[-.25ex]
+%  \hline
+%\lstset{language=NONMEMdataSet}
+%\begin{lstlisting}
+%input = {ka, V, CL, V}
+%PK:
+%compartment(cmt=1, concentration=C, volume=V)
+%oral(adm=1, cmt=1, ka)
+%elimination(cmt=1, k=CL/V)
+%\end{lstlisting}
+%\\
+%  \hline
+%\end{tabular}
+%\caption{PK macros for the model (corresponding to the ADVAN2 TRANS2).}
+%\label{tab:advan2Table}
+%\end{center}
+%\end{table}
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete/categorical
+\item
+Category variable: $Y$
+\item
+Set of categories: $\{0,1,2,3\}$
+\item
+Probabilities 
+\begin{eqnarray}
+logit(P(Y<=0)) &=& EDRUG + B0 \nonumber \\
+logit(P(Y<=1)) &=& EDRUG + B0 + B1 \nonumber \\
+logit(P(Y<=2)) &=& EDRUG + B0 + B1 + B2 \nonumber
+\end{eqnarray}
+\end{itemize}
+
+\subsubsection{NM-TRAN code:}
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+# A0 ... A2 cumul. logits
+A0 = EDRUG + B0
+A1 = EDRUG + B0 + B1
+A2 = EDRUG + B0 + B1+ B2
+ 
+# CP0 ... CP2 cumul. prob.
+CP0 = 1/(1+exp(-A0))
+CP1 = 1/(1+exp(-A1))
+CP2 = 1/(1+exp(-A2))
+ 
+# P0 ... P3 exact probabs
+P0 = CP0
+P1 = CP1 - CP0
+P2 = CP2 - CP1
+P3 = 1 - CP2
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{MLXTRAN code by MJS:}
+
+\myStartLine
+
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION: 
+Joint PK and categorical data model 
+
+INPUT: 
+parameter = {POP_BETA, B0, B1, B2} 
+
+EQUATION: EDRUG = Cc * POP_BETA
+
+OBSERVATION: 
+y = {
+  type = categorical
+  categories = {0, 1, 2, 3}
+  logit(P(y<=0)) = EDRUG + B0
+  logit(P(y<=1)) = EDRUG + B0 + B1
+  logit(P(y<=2)) = EDRUG + B0 + B1+ B2}
+}
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{PharmML code -- with 2 alternative implementations of the \xelem{ObservationModel} -- declaration and assignment based}
+\lstset{language=XML}
+\begin{lstlisting}
+<PharmML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	...
+    xmlns:mml="http://www.pharmml.org/2013/03/PharmML"
+    implementedBy="MJS" writtenVersion="0.4" id="i1">
+
+    <IndependentVariable symbId="t"/>
+    
+    <ModelDefinition id="i3" xmlns="http://www.pharmml.org/2013/03/ModelDefinition">
+        
+        <ParameterModel blkId="pm1">
+            <SimpleParameter symbId="ka"/>
+            <SimpleParameter symbId="V"/>
+            <SimpleParameter symbId="CL"/>
+            
+            <SimpleParameter symbId="B0"/>
+            <SimpleParameter symbId="B1"/>
+            <SimpleParameter symbId="B2"/>
+            
+            <SimpleParameter symbId="POP_BETA"/>
+        </ParameterModel>
+        
+        <StructuralModel blkId="sm1">
+	   <!-- omitted details -->
+        </StructuralModel>
+        
+        <!-- DECLARATION/MLXTRAN style -->
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="yes">
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat0"/>
+                        <Category symbId="cat1"/>
+                        <Category symbId="cat2"/>
+                        <Category symbId="cat3"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    
+                    <!-- logit( P(y <= 0) ) = EDRUG + B0 --> 
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <math:LogicBinop op="leq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat0"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="plus">
+                                    <ct:SymbRef blkIdRef="sm1" symbIdRef="EDRUG"/>
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="B0"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- logit( P(y <= 1) ) = EDRUG + B0 + B1 --> 
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <math:LogicBinop op="leq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="plus">
+                                    <ct:SymbRef blkIdRef="sm1" symbIdRef="EDRUG"/>
+                                    <math:Binop op="plus">
+                                        <ct:SymbRef symbIdRef="B0"/>
+                                        <ct:SymbRef symbIdRef="B1"/>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- logit( P(y <= 2) ) = EDRUG + B0 + B1 + B2 --> 
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <math:LogicBinop op="leq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat2"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="plus">
+                                    <ct:SymbRef blkIdRef="sm1" symbIdRef="EDRUG"/>
+                                    <math:Binop op="plus">
+                                        <ct:SymbRef symbIdRef="B0"/>
+                                        <math:Binop op="plus">
+                                            <ct:SymbRef symbIdRef="B1"/>
+                                            <ct:SymbRef symbIdRef="B2"/>
+                                        </math:Binop>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+        
+        <!-- ASSIGNMENT/NONMEM style -->
+        <ObservationModel blkId="om2">
+            <Discrete>
+                <CategoricalData ordered="yes">
+                    
+                    <ct:Variable symbolType="real" symbId="A0">
+                        <!-- EDURG + B0 -->
+                    </ct:Variable>
+                    <ct:Variable symbolType="real" symbId="A1">
+                        <!-- EDURG + B0 + B1 -->
+                    </ct:Variable>
+                    <ct:Variable symbolType="real" symbId="A2">
+                        <!-- EDURG + B0 + B1 + B2 -->
+                    </ct:Variable>
+
+                    <ct:Variable symbolType="real" symbId="CP0">
+                        <!-- 1 / (1 + exp(-A0)) -->
+                    </ct:Variable>
+                    <ct:Variable symbolType="real" symbId="CP1">
+                        <!-- 1 / (1 + exp(-A1)) -->
+                    </ct:Variable>
+                    <ct:Variable symbolType="real" symbId="CP2">
+                        <!-- 1 / (1 + exp(-A2)) -->
+                    </ct:Variable>
+
+                    <ct:Variable symbolType="real" symbId="P0">
+                        <!-- CP0 -->
+                    </ct:Variable>
+                    <ct:Variable symbolType="real" symbId="P1">
+                        <!-- CP1 - CP0 -->
+                    </ct:Variable>
+                    <ct:Variable symbolType="real" symbId="P2">
+                        <!-- CP2 - CP1 -->
+                    </ct:Variable>
+                    <ct:Variable symbolType="real" symbId="P3">
+                        <!-- 1 - CP2 -->
+                    </ct:Variable>
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat0"/>
+                        <Category symbId="cat1"/>
+                        <Category symbId="cat2"/>
+                        <Category symbId="cat3"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    
+                    <PMF linkFunction="identity">
+                        <CategoricalDistribution xmlns="http://www.uncertml.org/3.0" 
+                            definition="http://www.uncertml.org/...">
+                            <categoryProb definition="http://www.uncertml.org/...">
+                                <name>Probability for cat0</name>
+                                <probability>
+                                    <var varId="P0"/>
+                                </probability>
+                            </categoryProb>
+                            <categoryProb definition="http://www.uncertml.org/...">
+                                <name>Probability for cat1</name>
+                                <probability>
+                                    <var varId="P1"/>
+                                </probability>
+                            </categoryProb>
+                            <categoryProb definition="http://www.uncertml.org/...">
+                                <name>Probability for cat2</name>
+                                <probability>
+                                    <var varId="P2"/>
+                                </probability>
+                            </categoryProb>
+                            <categoryProb definition="http://www.uncertml.org/...">
+                                <name>Probability for cat3</name>
+                                <probability>
+                                    <var varId="P3"/>
+                                </probability>
+                            </categoryProb>
+                        </CategoricalDistribution>
+                    </PMF>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+        
+    </ModelDefinition>
+    
+    <mstep:ModellingSteps>
+        
+        <mstep:NONMEMdataSet oid="NMoid">
+            
+            <mstep:ColumnMapping>
+                <ds:ColumnRef columnIdRef="TIME"/>
+                <ct:SymbRef symbIdRef="t"/>
+            </mstep:ColumnMapping>
+            
+            <mstep:ColumnMapping>
+                <ds:ColumnRef columnIdRef="DV"/>
+                <ct:SymbRef blkIdRef="om1" symbIdRef="y"/>
+                <ds:CategoryMapping>
+                    <ds:Map dataSymbol="0" modelSymbol="cat0"/>
+                    <ds:Map dataSymbol="1" modelSymbol="cat1"/>
+                    <ds:Map dataSymbol="2" modelSymbol="cat2"/>
+                    <ds:Map dataSymbol="3" modelSymbol="cat3"/>
+                </ds:CategoryMapping>
+            </mstep:ColumnMapping>
+            
+            <ds:DataSet>
+                <ds:Definition>
+                    <ds:Column columnId="ID" columnType="id" valueType="id" columnNum="1"/>
+                    <ds:Column columnId="TIME" columnType="time" valueType="real" columnNum="2"/>
+                    <ds:Column columnId="DV" columnType="dv" valueType="real" columnNum="3"/>
+                </ds:Definition>
+                <ds:ImportData oid="importData">
+                    <ds:path>myFile.csv</ds:path>
+                    <ds:format>CSV</ds:format>
+                    <ds:delimiter>COMMA</ds:delimiter>
+                </ds:ImportData>
+            </ds:DataSet>
+        </mstep:NONMEMdataSet>
+        
+        <mstep:EstimationStep oid="estStep1">
+            
+            <mstep:TargetToolReference>
+                <ct:OidRef oidRef="NMoid"/>
+            </mstep:TargetToolReference>
+            
+            <mstep:ParametersToEstimate>
+                <mstep:ParameterEstimation>
+                    <ct:SymbRef symbIdRef="B0"/>
+                    <mstep:InitialEstimate>
+                        <ct:Real>1</ct:Real>
+                    </mstep:InitialEstimate>
+                </mstep:ParameterEstimation>
+                
+                <mstep:ParameterEstimation>
+                    <ct:SymbRef symbIdRef="B1"/>
+                    <mstep:InitialEstimate>
+                        <ct:Real>0.6</ct:Real>
+                    </mstep:InitialEstimate>
+                </mstep:ParameterEstimation>
+                
+                <mstep:ParameterEstimation>
+                    <ct:SymbRef symbIdRef="B2"/>
+                    <mstep:InitialEstimate>
+                        <ct:Real>0.6</ct:Real>
+                    </mstep:InitialEstimate>
+                </mstep:ParameterEstimation>
+                
+            </mstep:ParametersToEstimate>
+            
+            <mstep:Operation order="1" opType="estPop"/>
+        </mstep:EstimationStep>
+    </mstep:ModellingSteps>
+</PharmML>
+
+\end{lstlisting}
+
+
+

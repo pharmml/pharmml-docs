@@ -1,0 +1,384 @@
+\documentclass[a4paper,10pt]{report}
+
+\usepackage{tikz}
+\usetikzlibrary{shadows.blur}
+\usetikzlibrary{shapes.symbols}
+
+\usepackage{fancybox, graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xspace}
+\pagestyle{headings}
+\usepackage[total={6.5in,10.0in}, top=1in, left=.8in, includefoot]{geometry}
+\usepackage{float}
+\restylefloat{table}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{red}{rgb}{1,0,0}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.58}
+\definecolor{attributeColor}{rgb}{0.96,0.517,0.29}
+\definecolor{darkgreen}{rgb}{0,.392,0}
+\definecolor{stringColor}{rgb}{0.6,0.2,0}
+\usepackage{array,multirow}
+\usepackage{longtable}
+\LTcapwidth=\textwidth
+\usepackage{cleveref}
+\usepackage{bbding}
+\crefname{section}{¤}{¤¤}
+\Crefname{section}{¤}{¤¤}
+\usepackage[utf8]{inputenc}
+\usepackage{tablefootnote}
+\usepackage{algorithmicx}
+\usepackage[modulo, pagewise]{lineno}
+\nolinenumbers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[RO]{PharmML 0.8-0.8.1}
+\fancyhead[RE]{\itshape\nouppercase{\leftmark}}
+\usepackage{booktabs}
+\usepackage{fixltx2e}
+\usepackage{array,arydshln}
+\usepackage{wrapfig}
+\usepackage{makeidx}
+\usepackage{varwidth}
+\usepackage{lipsum}
+\usepackage{blkarray}
+
+\usepackage{makecell}
+\usepackage{multicol}
+\usepackage{url}
+\usepackage{verbatimbox}
+\usepackage{xcolor}
+\usepackage{cancel}
+\usepackage{algpseudocode}
+
+\setlength{\tabcolsep}{5pt}
+
+\usepackage{caption} 
+\captionsetup[table]{skip=5pt}
+\captionsetup[longtable]{skip=5pt}
+\captionsetup[figure]{skip=1pt}
+
+\def\bmp{\begin{minipage}{0.48\linewidth}\small} 
+\def\emp{\end{minipage}\smallskip}
+
+\setlength\dashlinedash{0.4pt}
+\setlength\dashlinegap{1pt}
+\setlength\arrayrulewidth{0.5pt}
+
+\hypersetup{pageanchor=false}
+
+\newcommand{\myStartLine}{\par
+  \kern8pt % space above the rules
+  \hrule height 0.5pt
+  \kern3pt % space below the rules
+}
+\newcommand{\myEndLine}{\par
+  \kern3pt % space above the rules
+  \hrule height 1.5pt
+  \kern12pt % space below the rules
+}
+
+% Colours stolen from SBML pkg spec class
+\definecolor{lightblue}{rgb}{0.07, 0.50, 0.78}
+\definecolor{mediumgreen}{rgb}{0.1, 0.6, 0.3}
+
+\definecolor{hellgelb}{rgb}{1,1,0.9}
+\definecolor{colKeys}{rgb}{0,0,1}
+\definecolor{colIdentifier}{rgb}{0,0,0}
+\definecolor{colComments}{rgb}{1,0,0}
+\definecolor{colString}{rgb}{0,0.5,0}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+%  numbers=left,
+%  stepnumber=5
+}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\lstdefinelanguage{XML}
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<![CDATA[}{]]>},
+  moredelim=[s][\bfseries\color{darkgreen}]{<!--}{-->},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{red},
+  keywordstyle=\color{attributeColor},
+  morekeywords={oid,columnId,columnIdRef,symbId,symbolType,op,columnNum,columnType,
+  valueType,inputTarget,blkId,blkIdRef,symbIdRef,xmlns,version,type,VariableMapping,
+  IndividualMapping,schemaLocation,xs,xsi,NONMEMdataSet,matrixType,opType,order,
+  math,ct,ds,mdef,mstep,mml,un,name,definition,writtenVersion,id,inputType,oidRef,catId,
+  length,default,vectorIndex,diagDefault,offDiagDefault,row,column,numbRows,numbCols,
+  dataSymbol,modelSymbol,ordered,compartmentNo,compNo,ordered,linkFunction,varId,
+  censoringType,dataSymbol,modelSymbol,MarkovOrder,deviationMatrixType,implementedBy,
+  argument,admNumber,transformId,transformIdRef,catIdRef,headerType,rowNumber,
+  toolName,dataCode,missingDataType,regressor,fixed,transformation,transform,symbol,
+  referenceLevel,ref} % list your attributes here
+}
+
+\lstdefinelanguage{MLX} 
+{
+  basicstyle=\ttfamily\small,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={dads} % list your attributes here
+}
+
+\lstdefinelanguage{NM}
+{
+  basicstyle=\sffamily\small,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  moredelim=[is][\bfseries\color{red}]{[*}{*]},
+  moredelim=[s][\bfseries\color{darkblue}]{<}{\ },
+  moredelim=[s][\bfseries\color{darkblue}]{</}{>},
+  moredelim=[l][\bfseries\color{darkblue}]{/>},
+  moredelim=[l][\bfseries\color{darkblue}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<![CDATA[}{]]>},
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{stringColor},
+  identifierstyle=\color{black},
+  keywordstyle=\color{attributeColor},
+  morekeywords={kjkj} % list your attributes here
+}
+
+\newcommand{\cellml}{CellML\xspace}
+\newcommand{\sbml}{SBML\xspace}
+\newcommand{\sedml}{SED-ML\xspace}
+\newcommand{\mathml}{MathML\xspace}
+\newcommand{\uncertml}{UncertML\xspace}
+\newcommand{\pml}{PharmML\xspace}
+\newcommand{\pharmml}{PharmML\xspace}
+\newcommand{\xelem}[1]{\texttt{<#1>}\index{XML Element!\texttt{<#1>}}}
+\newcommand{\xatt}[1]{\texttt{#1}\index{XML Attribute!\texttt{#1}}}
+\newcommand{\var}[1]{\ensuremath{\mathit{#1}}\index{Symbol!\ensuremath{\mathit{#1}}}}
+\newcommand{\dscol}[1]{\texttt{#1}}
+\newcommand{\attval}[1]{``\texttt{#1}''}
+
+%Counter for examples chap
+\newcounter{examples}
+\newcommand{\eglabel}[1]{\refstepcounter{examples}\label{egsec:#1}}
+\newcommand{\egref}[1]{\ref{egsec:#1}}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\begin{document}
+
+\input{title_0_8.tex} 
+
+\linenumbers
+\tableofcontents
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Overview}
+
+This document describes extensions and changes in \pml between versions 0.7.3 \& 0.8 
+and 0.8 \& 0.8.1. The evolution of \pml since the project start	 are visualised in Figure \ref{fig:history}.
+
+\begin{figure}[ht!]
+\centering
+  \includegraphics[width=160mm]{pics/Timeline-081.pdf}
+ \caption{PharmML release history with major extensions shown of each version.}
+ \label{fig:history}
+\end{figure}
+
+\section{Summary of changes/extensions in 0.8}
+The following table summarises the major changes in version 0.8 compared to 0.7.3 
+described in detail in following chapters. 
+	
+\captionsetup[longtable]{skip=1em}
+\LTcapwidth=\textwidth
+\begin{center}
+%\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{lll}
+\hline
+\hline
+\pml element 				&  version $\le$ 0.7.3 	& version 0.8 \\
+or modelling aspect 			& 					& \\
+%\hline
+%\hline
+%  \multicolumn{3}{c}{\textit{Model Definition}}		\\
+%\hline
+\hline
+Assignment statements		& not supported		& {\color{red} \scshape{new}} \xelem{AssignStatement} element available \\
+Section \ref{sec:assignments}	& 					& in covariate, parameter, structural and \\
+						&					& observation models \\
+\hline
+Independent variable   		& only one allowed		& multiple \xelem{IndependentVariable} elements \\
+Section \ref{subsec:greco}	& 					& allowed \\
+\hline
+Conditional statements		& not supported		& {\color{red} \scshape{new}} \xelem{ConditionalStatement} element with \\
+Section \ref{sec:conditionalStatements} &				& child elements \xelem{If}, \xelem{ElseIf} and \xelem{Else} \\
+\hline
+Parameter, (random) variables	& \xatt{symbId} only 		& additionally also \xatt{symbIdRef} available when \\
+						&					& referencing required \\
+\hline
+Parameters, Section \ref{sec:simpleParameter} & \xelem{SimpleParameter} not & restored and available as \xelem{Parameter}\\
+						& available in v0.7-0.7.3	&  \\
+\hline
+Nested piecewise			& Simple piecewise 		& supported \\
+Section \ref{sec:nestedPiecewise}	&				& \\
+\hline
+Probability functions			& not supported		& {\color{red} \scshape{new}} \xelem{PDF}, \xelem{CDF}, \xelem{HF}, \xelem{SF} elements \\
+Section \ref{sec:probabFunctions}	&				& for every continuous distribution available in \\
+						&					& ProbOnto \\
+\hline
+Time-to-event data models	& explicit hazard/survival	& encodable using \xelem{HF}/\xelem{SF} (see above)\\
+Section \ref{subsec:TTEmodel} & fcts formulas required	& \\
+\hline
+Empirical distribution		& not supported		& {\color{red} \scshape{new}}  \xatt{RandomSample}, \xatt{SystematicSample} \\ 
+Section \ref{sec:nonParamDistribs}	& 				& \xatt{UnknownSample} and \xatt{weight} parameter accessible \\
+						&					&  via ProbOnto\\
+\hline
+Random realisations			& not supported		& {\color{red} \scshape{new}} \xelem{Realisation} for all distributions \\
+Section \ref{sec:randRealisations}	 &				& featured in ProbOnto  \\
+\hline
+Markov models				& only pair-wise transition	& {\color{red} \scshape{new}} \xelem{TransitionMatrix} element with  \\
+Section \ref{sec:MM}		& probabilities			& \xatt{type} attribute: \emph{leftStochastic}, \emph{rightStochastic} \\
+						&  					& and \emph{doublyStochastic} \\
+\hline
+N-ary operators			& not supported		& {\color{red} \scshape{new}} \xatt{plus}, \xatt{times}, \xatt{min}, \xatt{max}, \xatt{gcd}, \xatt{lcm}\\
+Section \ref{sec:NaryOps}	&					& \\
+\hline
+Statistical operators			& not supported		& {\color{red} \scshape{new}} \xatt{centredMoment}, \xatt{coefficientOfVariation},\\
+Section \ref{sec:statsOps}	&					& \xatt{correlation}, \xatt{decile}, \xatt{geometricMean}, \xatt{kurtosis}, \\
+						&					& \xatt{mean}, \xatt{median}, \xatt{mode}, \xatt{moment}, \xatt{percentile}, \\
+						&					& \xatt{quantile}, \xatt{quartile}, \xatt{range}, \xatt{skewness}, \\
+						&					& \xatt{standardDeviation}, \xatt{variance}\\
+\hline
+Covariate model			& covariate type not 		& {\color{red} \scshape{new}} attribute \xatt{type} with values \\	
+Section \ref{sec:covVsRegs}	& annotated			& \emph{occasionDependent}, \emph{timeDependent}, \\
+						&					& \emph{constant}\\
+Categorical covariate model	& defining distribution only & -- full distribution support via ProbOnto \\
+Section \ref{sec:catCovModel}	& with \xelem{Probability}	& \\
+						& element				& \\
+						& 				 	& -- covariates declaration/assignment \\
+						& 					& -- conditional distributions allowed \\
+\hline
+Dataset  					& single ignore character	& conditional ignoring statements \\
+Section \ref{subsec:condIgnore}	& declaration only	&  \\
+\hline
+\caption{Overview of major differences between versions 0.8 and 0.7.3}
+\label{figTable:overviewTable}
+\vspace{-2em}
+\end{longtable}
+\end{center}
+
+\section{Summary of changes/extensions in 0.8.1}
+
+\setlength{\tabcolsep}{5pt}
+%\renewcommand{\arraystretch}{1.1}%
+\begin{longtable}{lll}
+\hline
+\hline
+\pml element 				&  version $\le$ 0.8 	& version 0.8.1 \\
+or modelling aspect 			& 					& \\
+\hline
+Setting and output files		& no support			& {\color{red} \scshape{new}} \xelem{SoftwareSettings} added \\	
+\ref{sec:filesSupport}		&					& {\color{red} \scshape{new}} \xelem{OutputFile} added \\
+\hline
+Dataset definition 				& missing or redundant  & \xatt{columnType} with new values \\
+section \ref{subsec:columnType}	& values				&  \emph{varLevel}, \emph{variance}, \emph{stdev}, \emph{mode}, \emph{median} {\color{red} \scshape{new}}  \\
+							&					& -- removed \emph{varParameter\_corr}, \emph{varParameter\_cov}, \\
+						&					& \emph{varParameter\_stdev}, \emph{varParameter\_var} \\
+						&					& -- multiple values allowed \\
+-- for use in SO only			& not supported 		& {\color{red} \scshape{new}} \xatt{level} attribute \\
+see \cite{SO:2016b}	&					& \\
+\hline
+Optimal Design 			& missing stage support	& {\color{red} \scshape{new}} \xelem{StageDefinition} element with  \\
+Section \ref{sec:OEDextentions} &					& \xelem{Stage} child element \\
+						& missing params to estimate 		& {\color{red} \scshape{new}} \xelem{ParametersToEstimate} \\
+						& support	in OD		& \\
+						& FIM type missing		& -- {\color{red} \scshape{new}} \xatt{type} with values \{B, I, P\} \\ 
+						&					& -- \xelem{Matrix} support removed \\
+\hline
+Variables					& attribute mandatory	& \xatt{symbolType} attribute is optional \\
+section \ref{sec:schemaChanges}	&					& \\
+\hline
+Integer declaration			& types used: \xatt{int}, \xatt{integer} or  & \xatt{int} only \\
+section \ref{sec:schemaChanges}	& \xatt{positiveInteger}	& \\
+\hline
+Piecewise declaration		& occurring in many namespaces & declared in \xatt{math} namespace 	only \\
+section \ref{sec:schemaChanges}	&					& \\
+\hline
+Conditional statements		& ODEs not supported	& ODEs allowed \\
+Section \ref{sec:ODEinCS}	& 					& \\
+\hline
+Functions					& not supported	& {\color{red} \scshape{new}} \xatt{gamma} \\
+Section \ref{sec:minors}		& 				& \\
+\hline
+\caption{Overview of major differences between versions 0.8.1 and 0.8}
+\label{figTable:overviewTable}
+\vspace{-2em}
+\end{longtable}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/mainChanges08}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/newApplications08}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/mainChanges081}
+
+
+\appendix
+
+
+%\paragraph{Covariate model}
+%Covariate model is barely covered so far. See also \cite{Keizer:2011aa}. Missing are following features:\\
+%For categorical covariates:\\
+%-- categorical distribution of categorical covariates \\
+%---- estimating categorical distribution from external data file -- TEST \\
+%---- sampling from known categorical distribution -- TEST \\
+%---- clusters of categorical covariates \\
+%For continuous covariates:\\
+%-- power-normal distribution for continuous covariates \\
+%---- estimating parameters $\lambda$,$\mu$,$\sigma$ from external data file \\
+%---- sampling from known power-normal distribution \\
+%---- conditional distribution of continuous covariates - DONE \\
+%---- selecting criteria for continuous covariates \\
+%---- dependent distribution of continuous covariates \\
+%---- correlated continuous covariates \\
+%For both types: \\
+%-- selection/exclusion criteria missing \\
+
+
+%\bibliographystyle{plain}
+\bibliographystyle{apalike}
+\bibliography{pharmml-specification}
+\end{document}
+

@@ -1,0 +1,532 @@
+
+\section{The minimal information for discrete data models}
+\label{subsec:mi_discreteModels}
+
+The central piece of information to be provided when modeling discrete data is the distribution 
+of the data. While it is possible to encode in PharmML virtually any 
+probability mass or density function explicitly, in few cases we can use the UncertML 
+\cite{uncertml3:2014} and its extensive collection of distributions. 
+
+The following sections are about the minimal information necessary to be 
+implemented for most common types of discrete data models. It is important to note 
+that we tried to stay generic rather then to provide the support for 
+encoding of models in a particular tool. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Count data}
+\label{subsec:mmCountData}
+An example for count data is the number of events of certain types, such as seizures, heart attacks and 
+is typically modelled by the Poisson distribution. In the case of so called \textit{over-dispersed} 
+data, i.e. when the variability is greater then what one would expect based on typical data sample, 
+we have to resort to more complex models, such as negative binomial or zero-inflated Poisson model, 
+see \ref{subsubsec:alternatives}.
+Typically the minimal information to be provided consists of:
+\begin{itemize}
+\item
+Type of observed variable -- discrete/count
+\item
+Count variable, e.g. $y$
+\item
+Parameters (see also Table \ref{tab:countDataModels})
+\begin{itemize}
+\item
+Rate parameter $\lambda$, also called the Poisson 'intensity' $\lambda_{ij} = \lambda(t_{ij}, \psi_{ij})$, can be
+\begin{itemize} %\addtolength{\itemsep}{-.95\baselineskip} 
+\item
+constant (\emph{homogenous Poisson process})
+\begin{eqnarray}
+\lambda(t_{ij}, \psi_{i}) = \lambda_{i} \nonumber
+\end{eqnarray}
+\item
+a function of time (\emph{non-homogenous Poisson process})
+\begin{eqnarray}
+\lambda(t_{ij}, \psi_{i}) = \lambda_{0,i} + a_i t_{ij} \nonumber
+\end{eqnarray}
+\item
+a function of additional regression variables, e.g. drug concentration linked to $\lambda$ via an Imax-model
+\begin{eqnarray}
+\lambda(t_{ij}, \psi_{i}) = \lambda_{0,i} \Big(1 - Imax_i \frac{C_i(t_{ij})}{IC_{50,i} + C_i(t_{ij})} \Big) \nonumber
+\end{eqnarray}
+\end{itemize}
+\item
+Overdispersion parameter, $\tau$ (NB model, section \ref{subsec:NBmodel})
+\item
+Dispersion parameter, $\delta$ (GP model, section \ref{subsec:GPmodel})
+\item
+Mixture probability, $\pi$ (PMIX\_2 model, section \ref{subsec:PMIX2model})
+\item
+Zero probability, $p_0$ (ZIP model, section \ref{subsec:ZIPmodel})
+\end{itemize}
+\item
+Probability mass function (PMF) with a link function. 
+For example one can define 
+\begin{itemize}
+\item
+the untransformed PMF, e.g.
+\begin{eqnarray}
+&& P(y_{ij}=k; \lambda) = \frac{\lambda^k \exp(-\lambda))}{k!} \nonumber
+ \end{eqnarray}
+\item
+or log(Poisson-PMF) 
+\begin{eqnarray}
+&&	\log(P(y_{ij}=k;\lambda)) = -\lambda + k \log(\lambda) - \log(k!) \nonumber
+\end{eqnarray}
+%\item
+%or explicit PMF definition
+%\begin{itemize}
+%\item
+%PM -- Poisson -- parameter: $\lambda$
+%\item
+%ZIP -- Zero-inflated Poisson  -- parameters: $\lambda, p_0$
+%\item
+%GP -- Generalised Poisson -- parameters: $\lambda, \delta$
+%\item
+%PMIX -- Poisson with mixture distribution -- parameters: $\lambda_1,\lambda_2,\pi$
+%\item
+%NB -- Negative Binomial -- parameters: $\lambda, \tau$
+%\end{itemize}
+\end{itemize}
+\item
+Link function -- one from the list: $\{$\emph{identity}, \emph{log}, \emph{logit}, \emph{probit}$\}$. 
+\item
+Markovian dependence, see Sec.\ref{subsec:markovian}.
+\end{itemize}
+
+
+The following table gives an overview of common count data models encodable 
+in \pharmml.
+
+\begin{table}[htdp]
+\centering  % centering table
+\begin{tabular}{c c c c c c}  
+\hline\hline
+Short  & Full Model & Distribution 	& Dependance 		& Markov & Section \\ [-0.5ex]   
+name  & 		& parameters 	& 			 	& order 	\\ [0.5ex]   
+\hline
+\multicolumn{5}{c}{equi-dispersed data}  \\[.1ex]
+\hline
+PS  & Poisson & $\lambda$ & -- & -- & \textsection\ref{subsec:PMmodel} \\ [1ex]
+PMAK & Poisson with 	& $\lambda_i$ & Markov & any order & \textsection\ref{subsec:PMAKmodel} \\[-.5ex]
+	& Markov elements	&		&		& is supported \\[1ex]
+\hline
+\multicolumn{5}{c}{over-dispersed data}  \\[.1ex]
+\hline
+NB & Negative Binomial &  $\lambda, \tau$ & -- & -- & \textsection\ref{subsec:NBmodel}\\ [1ex]
+ZIP & Zero-Inflated Poisson & $\lambda, p_0$ & -- & -- & \textsection\ref{subsec:ZIPmodel} \\ [1ex]
+GP & Generalized Poisson & $\lambda, \delta$ & -- & -- & \textsection\ref{subsec:GPmodel} \\ [1ex]
+PMIX$_2$ & Poisson with & $\lambda_1, \lambda_2, \pi$ & -- & --  & \textsection\ref{subsec:PMIX2model} \\[-.5ex]
+  & Mixture Distribution &  &  &  \\[1ex]
+% [1ex] adds vertical space
+\hline                          % inserts single-line
+\end{tabular}
+\caption{Overview of count data models as used in pharmacometrics, based on \cite{Plan:2009fk}.
+All of them are encodable in PharmML, see section \ref{subsec:PMmodel}.}
+\label{tab:countDataModels}
+\end{table}%
+
+
+\subsubsection{Alternative models} 
+\label{subsubsec:alternatives}
+Poisson model listed above applies to equi-dispersed data only.
+There is a number of alternative models which can handle over-dispersed data. 
+Note, that the according PMF or log(PMF) has to be explicitly encoded in PharmML, see \cite{Plan:2009fk}:
+\begin{itemize}%\addtolength{\itemsep}{-.95\baselineskip} 
+\item
+Zero-inflated Poisson model, ZIP
+\begin{eqnarray}
+P(y_{ij} = k; \lambda, p_0) =  \left\{ \begin{array}{rcl} p_0 + (1-p_0) e^{-\lambda} & \mbox{if} & k = 0 \\ 
+(1-p_0)\frac{e^{-\lambda}\lambda^k}{k!} & \mbox{if} & k > 0 \end{array}\right. \nonumber
+\end{eqnarray}
+with $\lambda > 0$ and $p_0 \in [0,1]$
+\item
+Generalised Poisson model, GP
+\begin{eqnarray}
+P(y_{ij} = k; \lambda, \delta) &=& \frac{\lambda (\lambda + k \delta)^{k-1} e^{-\lambda - k\delta}}{k!} \nonumber
+\end{eqnarray}
+with $\lambda > 0$ and  $\delta \in [0,1]$
+\item
+Poisson model with mixture distribution, PMIX
+\begin{eqnarray}
+P(y_{ij} = k;\pi,\lambda_1,\lambda_2) &=& \pi \frac{e^{-\lambda_1} \lambda_1^k}{k!} + (1-\pi) \frac{e^{-\lambda_2} \lambda_2^k}{k!} \nonumber
+\end{eqnarray}
+with $\lambda_1, \lambda_2 > 0$ and $\pi \in [0,1]$
+\item
+Negative Binomial model, NB
+\begin{eqnarray}
+P(y_{ij} = k;\lambda,\tau) &=& \frac{\Gamma \big( k + \frac{1}{\tau} \big)}{k! \times \Gamma \big(\frac{1}{\tau} \big)} \times \Bigg( \frac{1}{1 + \tau \times \lambda} \Bigg)^{\frac{1}{\tau}} \times \Bigg(\frac{\lambda}{\frac{1}{\tau} + \lambda} \Bigg)^k \nonumber
+\end{eqnarray}
+with $\lambda, \tau > 0$.
+%\item
+%Poisson model with Markovian dependence, PMAK
+%\begin{align}
+% \lambda = \left\{ \begin{array}{rcl}
+%			\lambda_1 & \mbox{for} & yp = 0 \\
+%			\lambda_2 & \mbox{for} & yp \neq 0 \nonumber
+%\end{array}\right. 
+%\quad \text{and} \quad P(y=k; \lambda) = \frac{\lambda^k \exp(-\lambda)}{k!} \nonumber
+%\end{align}
+\end{itemize}
+
+\subparagraph{Note 1} PharmML 0.4 supports the mathematical functions \textit{gammaln} 
+-- logarithm of gamma function and \textit{factln} -- logarithm of the factorial.
+\subparagraph{Note 2} Currently only the Poisson distribution is supported by UncertML, 
+meaning that all other PMF's have to be implemented explicitly. The Negative Binomial distribution
+is featured in UncertML as well but is using a different parametrisation and therefore cannot be used 
+for our purposes.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Categorical data}
+\label{subsec:mmCategoricalData}
+The standard count data models, as presented in the previous section, are simpler to categorise 
+and implement then the categorical ones. This is because for the former the definition of a probability 
+mass function (PMF) and few parameters is sufficient. On the contrary the categorical models come 
+with a vast variety of probability expressions, such as basic nominal and ordered models but also 
+more complex once e.g. adjacent category models, continuation ratio 
+models, latent continuous variable model and others. \cite{Paule:2012fk} provides an excellent 
+overview of discrete models as used in pharmacodynamics.
+
+Categorical model type deals with data organised in nominal (e.g. presence/absence of an event) 
+or ordered (e.g. pain scale) categories. In the first case the probability for each category is defined. 
+For the second case the cumulative or tail probabilities have to be defined. Furthermore, there are cases
+when Markovian dependency and initial/conditional probabilities have to be considered.
+
+Typically the minimal information to be provided consists of:
+\begin{itemize}
+\item
+Nominal categorical data 
+\begin{itemize}
+\item
+Set of categories, e.g. $\{0,1\}$ or $\{1,2,3\}$
+\item
+Category variable: e.g. $Y$
+\item
+Probability for each category
+\begin{itemize}
+\item
+Binomial distribution, e.g. $P(Y=1) = p$ (for $Y \in \{0,1\}$) 
+\item
+Probabilities for the $k$ (or $k-1$) categories, here for $Y \in \{1,2,3\}$, 
+\begin{eqnarray}
+&&P(Y=1)=a1/(a1+a2+a3) \nonumber \\
+&&P(Y=2)=a2/(a1+a2+a3)  \nonumber \\
+&&P(Y=3)=1-P(Y=1)-P(Y=2) \nonumber
+\end{eqnarray}
+\end{itemize}
+\item
+or alternatively PMF using predefined distributions in UncertML -- available are following distributions: 
+bernoulli, binomial, categorical.
+\item
+Markovian dependence, see Sec.\ref{subsec:markovian}
+\item
+Link function from the list $\{$\emph{identity}, \emph{log}, \emph{logit}, \emph{probit}$\}$
+%\emph{loglog}, \emph{comloglog}--  {\color{red} \scshape{*}}last two link function have been introduced in the 0.4.1 version.\\
+%-- ADD definition  {\color{red} \scshape{*}}\\
+\end{itemize}
+\item
+Ordered categorical data
+\begin{itemize}
+\item
+Set of categories, e.g. $\{0,1\}$ or $\{1,2,3\}$
+\item
+Category variable: e.g. $Y$
+\item
+Link function -- one from the list: $\{$\emph{identity}, \emph{log}, \emph{logit}, \emph{probit}$\}$. 
+\item
+Probability for $k$ or $(k - 1)$ categories -- using one of the link functions. The possible options are 
+\begin{itemize}
+\item
+Exact Cumulative  probability -- P(Y $\leq$ i), log(P(Y $\leq$ i)), logit(P(Y $\leq$ i)), probit(P(Y $\leq$ i)) 
+\item
+Cumulative  probability -- P(Y $<$ i), log(P(Y $<$ i)), logit(P(Y $<$ i)), probit(P(Y $<$ i)) 
+\item
+Exact Tail probability  -- P(Y $\geq$ i), log(P(Y $\geq$ i)), logit(P(Y $\geq$ i)), probit(P(Y $\geq$ i)) 
+\item
+Tail probability -- P(Y $>$ i), log(P(Y $>$ i)), logit(P(Y $>$ i)), probit(P(Y $>$ i)) 
+\end{itemize}
+
+e.g. 
+\begin{itemize}
+\item
+Cumulative probabilities, e.g. 
+\begin{eqnarray}
+&&P(Y\leq1)=a1/(a1+a2+a3) \nonumber \\
+&&P(Y\leq2)=(a1+a2)/(a1+a2+a3) \nonumber \\
+&&P(Y\leq3)=1-P(Y<=2) \nonumber
+\end{eqnarray}
+\item
+Tail probabilities, e.g. 
+\begin{eqnarray}
+&& P(Y>1)=(a2+a3)/(a1+a2+a3) \nonumber \\
+&& P(Y>2)=a3/(a1+a2+a3)  \nonumber \\ 
+&& P(Y>3)=1-P(Y>2) \nonumber
+\end{eqnarray}
+\item
+Cumulative logit probabilities, e.g. 
+\begin{align}
+& \text{logit}(P(Y\leq1))= \theta_1  \nonumber \\
+& \text{logit}(P(Y\leq2))= \theta_1+\theta_2  \nonumber \\
+& \text{logit}(P(Y\leq3))=1  \nonumber
+\end{align}
+\end{itemize}
+\item
+Markovian dependence, see Sec.\ref{subsec:markovian} for definition and examples.
+\end{itemize}
+\end{itemize}
+
+\paragraph{Complex categorical data} The proposed PharmML structure allows to encode 
+other popular models useful in pharmacometrics \cite{Dobson:2002uq}, for example
+\begin{itemize}
+\item
+Complementary log-log models
+\begin{align}
+& \log\{-\log[P(y=j)]\} = \beta_0 + \beta_1 x \nonumber
+\end{align}
+\item
+Continuation ratio model
+\begin{align}
+& \text{logit}\Big[\frac{P(y=j) }{ \sum_{i =j+1}^{J} P(y=i) } \Big] = b + \sum_{j = 1}^{N} \beta_j x_j \nonumber
+\end{align}
+\item
+Adjacent category logit model
+\begin{align}
+& \log\Big[\frac{P(y=j) }{ P(y=j+1) } \Big] = \sum_{j = 1}^{N} \beta_j x_j \nonumber
+\end{align}
+\item
+Complex logit functions (based on \cite{Girard:1998fk})
+\begin{align}
+& \log \Big[\frac{P(n_j=r | n_{j-1}=q) }{ 1 - \sum_{j\in \{0,2\}} P(n_j=k | n_{j-1} = q)} \Big] = p_{rqkq} \nonumber
+\end{align}
+\end{itemize}
+
+
+%\paragraph{Build-in categorical models} Even though such complex models as shown above are implementable
+%explicitly in \pml 
+%\cite{Dobson:2002uq}, for example
+%\begin{itemize}
+%\item
+%
+%\item
+%
+%\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Time-to-event data}
+In this case the observation is time until an event occurs, which can be unique or repeated.
+The model is fully described by defining the the survival or hazard function. Following minimal information 
+needs to provided to ensure lossless encoding of this model type.
+\begin{itemize}
+\item
+Type of observed variable -- discrete/time-to-event
+\item
+One of the probability distribution defining functions
+\begin{itemize}
+\item
+Hazard function, $h(t; \psi_i)$ or
+\item
+Survival function $S(t;\psi_i)$
+\end{itemize}
+\item
+Type of censoring
+\begin{itemize}
+\item
+Right censoring
+\item
+Interval censoring
+\end{itemize}
+\item
+Interval length
+\item
+Right censoring time 
+\item
+Maximum number of possible events.
+%\item
+%Markovian dependence, see Sec.\ref{subsec:markovian}
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Markovian dependence {\color{red} \scshape{*}}}
+\label{subsec:markovian}
+
+To define Markovian dependence in any of those models above, one needs to specify:
+\begin{itemize}
+\item
+State variables as one of the following
+\begin{itemize}
+\item
+Initial state variable, $yinit$
+\item
+Current state variable, $y$
+\item
+Previous state variable, $yp$
+\end{itemize}
+\item
+Probability transitions or their alternative transformed forms for a discrete-time models Markov process, e.g.
+\begin{align}
+& \text{logit}(P(y<=1 | yp=1)) = a11 \nonumber \\
+& \text{logit}(P(y<=2 | yp=1)) = a11 + a12\nonumber
+\end{align}
+with $y$ -- current state, $yp$ -- previous state.
+\item
+Transition rates for a continuous-time Markov process, \cite{LavielleBook:2014}, e.g.
+\begin{align}
+& \rho_{1,2}(t) = \exp(a_i+b_i t)  \nonumber \\
+& \rho_{2,1}(t) = \exp(c_i+d_i t) \nonumber 
+\end{align}
+\item
+Probability distribution of the initial states, $yinit1, yinit2, ...$ -- 'distribution of first observations'
+% -- is equal to the row vector of the stochastic matrix.
+\item
+Markov order
+\end{itemize}
+
+%
+%\begin{figure}
+%\centering
+%\begin{tabular}{cc}
+%	\includegraphics[width=110mm]{pics/basicASWTdiagram}
+%\end{tabular}
+%\caption{Diagram visualising basic 3-states Markov model with cumulative probabilities of the type 
+%$p_{ij} = P(Y \leq i | Yp = j)$, for current state \emph{i} and previous state \emph{j}, and with the possible transitions.}
+%\end{figure}
+%
+
+
+%% OLD STUFF
+%\begin{itemize}
+%\item
+%Type of observed variable -- discrete/count
+%\item
+%Markovian dependence -- yes/no
+%\begin{itemize}
+%\item
+%Constant or variable order
+%\item
+%Order of Markovian 
+%\end{itemize}
+%\item
+%Probability
+%\begin{itemize}
+%\item
+%Log-probability, e.g. 
+%\begin{eqnarray}
+%&&	\log(P(Y=k)) = -\lambda + k \log(\lambda) - \log(k!) \nonumber
+%\end{eqnarray}
+%\item
+%Other forms?
+%\end{itemize}
+%\end{itemize}
+%With the Poisson model being the basic count data model, there exist several extensions of it. Some versions use conditional 'if-else' statements to define the logit-probability/likelihood function, e.g. for zero-inflated Poisson model (see full code example in \ref{subsec:ZIPsection})
+%\begin{eqnarray}
+%&\mbox{if}\; k > 0:& \log(P(Y=k)) = \log(1-p) - \lambda + k\log(\lambda) - \log(k!) \nonumber \\
+%&\mbox{if}\; k = 0:& \log(P(Y=0))  = \log(p + (1-p) \exp(-\lambda)) \nonumber
+%\end{eqnarray}
+%So far, we have collected following extensions of the Poisson model:
+%\begin{itemize}
+%\item
+%Poisson model -- P
+%\item
+%Poisson model with Markovian elements -- PMAK
+%\item
+%Poisson model with mixture distribution -- PMIX
+%\item
+%Negative Binomial model -- NB
+%\item
+%Zero inflated model -- ZIP
+%\item
+%Generalized Poisson model -- GP
+%\end{itemize}
+
+%\newpage
+%\subsection{Categorical data}
+%
+%\begin{itemize}
+%\item
+%Type of observed variable - discrete/categorical
+%Ordered - yes/no
+%%\item
+%%Markovian dependence - yes/no
+%%\begin{itemize}
+%%\item
+%%Constant or variable order
+%%\item
+%%Order of Markovian 
+%%\end{itemize}
+%\item
+%Set of $k$ values taken by the observed variable, e.g. $Y = \{0,1\}$ or $Y = \{1,2,3\}$ etc.
+%\item
+%Parameters to be estimated, e.g. \{a1, a2, a3\} or \{$\theta_1$, $\theta_2$\}
+%\item
+%Probability distributions for each observation
+%\begin{itemize}
+%\item
+%Categorical data models
+%\begin{itemize}
+%\item
+%Binomial distribution, e.g. P(Y=1) = p (for $Y \in \{0,1\}$) 
+%\item
+%Explicit probabilities for the k-1 categories (for $Y \in \{1,2,3\}$), 
+%\begin{eqnarray}
+%&&P(Y=1)=a1/(a1+a2+a3) \nonumber \\
+%&&P(Y=2)=a2/(a1+a2+a3)  \nonumber \\
+%&&P(Y=3)=1-P(Y=1)-P(Y=2) \nonumber
+%\end{eqnarray}
+%\end{itemize}
+%\item
+%Ordered categorical data models for e.g. $Y \in \{1,2,3\}$
+%\begin{itemize}
+%\item
+%Cumulative probabilities, e.g. specifying 
+%\begin{eqnarray}
+%&&P(Y\leq1)=a1/(a1+a2+a3) \nonumber \\
+%&&P(Y\leq2)=(a1+a2)/(a1+a2+a3) \nonumber \\
+%&&P(Y\leq3)=1-P(Y<=2) \nonumber
+%\end{eqnarray}
+%\item
+%Tail probabilities, e.g. specifying
+%\begin{eqnarray}
+%&& P(Y>1)=(a2+a3)/(a1+a2+a3) \nonumber \\
+%&& P(Y>2)=a3/(a1+a2+a3)  \nonumber \\ 
+%&& P(Y>3)=1-P(Y>2) \nonumber
+%\end{eqnarray}
+%\item
+%Logit probabilities, e.g. 
+%\begin{eqnarray}
+%&& \logit(P(Y\leq1))= \theta_1  \nonumber \\
+%&& \logit(P(Y\leq2))= \theta_1+\theta_2  \nonumber \\
+%&& \logit(P(Y\leq3))=1  \nonumber
+%\end{eqnarray}
+%\end{itemize}
+%\end{itemize}
+%\end{itemize}
+
+
+
+
+%\begin{sidewaystable}[h]
+%\caption{Performance After Post Filtering}  % title name of the table
+%\centering  % centering table
+%\begin{tabular}{l c c rrrrrrr}  % creating 10 columns
+%\hline\hline                       % inserting double-line
+% Audio &Audibility & Decision &\multicolumn{7}{c}{Sum of Extracted Bits} 
+%\\ [0.5ex]   
+%\hline              % inserts single-line
+%% Entering 1st row
+% & &soft &1 & $-1$ & 1 & 1 & $-1$ & $-1$ & 1  \\[-1ex]
+%\raisebox{1.5ex}{Police} & \raisebox{1.5ex}{5}&hard
+%&  2 & $-4$ & 4 & 4 & $-2$ & $-4$ & 4 \\[1ex]
+%% Entering 2nd row
+%& &soft & 1 & $-1$ & 1 & 1 & $-1$ & $-1$ & 1  \\[-1ex]
+%\raisebox{1.5ex}{Beethoven} & \raisebox{1.5ex}{5}& hard
+%&8 & $-8$ & 2 & 8 & $-8$ & $-8$ & 6 \\[1ex]
+%% Entering 3rd row
+%& &soft & 1 & $-1$ & 1 & 1 & $-1$ & $-1$ & 1  \\[-1ex]
+%\raisebox{1.5ex}{Metallica} & \raisebox{1.5ex}{5}& hard
+%&4 & $-8$ & 8 & 4 & $-8$ & $-8$ & 8  \\[1ex]
+%% [1ex] adds vertical space
+%\hline                          % inserts single-line
+%\end{tabular}
+%\label{tab:LPer}
+%\end{sidewaystable}
+%

@@ -1,0 +1,148 @@
+\subsection{PK with Time-to-event model}
+\label{subsec:PKPDTTE}
+Based on the CTS2 document \cite{Lavielle:2011}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Introduction}
+\label{subsec:exp3_intro}
+
+This particular case is about the so called 'Time-to-event' data models. The cumulative hazard, $Ch(t)$, eq.\eqref{eq:hazardODE1} depends on the time varying hazard function, which is the function of the concentration $Cc(t)$. It follows for the cumulative hazard function
+\begin{eqnarray}
+\frac{dCh}{dt} = hazard = \beta \times Cc(t) \quad \Longrightarrow \quad Ch(t) = \beta \int_0^{t} Cc(\tilde{t}) \;d\tilde{t} = \beta \times AUC(Cc(0,t))  \label{eq:hazardODE1}
+\end{eqnarray}
+The survival function reads, eq.\eqref{eq:survivalFct},
+\begin{eqnarray}
+S(t) = \exp(-Ch(t)) = \exp(- \beta \times AUC(Cc(0,t))) \label{eq:survivalFct}
+\end{eqnarray}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsubsection{Model description}
+%\label{subsec:exp3_TaskDescription}
+
+\paragraph{Individual parameters model}
+
+Details omitted here...
+
+\paragraph{Structural model}
+DESCRIPTION oral 1-cpt model ka k V CL and survival model with beta -- hazard parameter
+\begin{eqnarray}
+k &=& CL/V \nonumber \\
+\frac{dAd}{dt} &=&-ka \times Ad \nonumber \\
+\frac{dAc}{dt}&=&ka \times Ad - k \times Ac \nonumber \\ 
+\frac{dCh}{dt}&=& hazard \nonumber \\ 
+Cc &=& Ac/V \nonumber
+\end{eqnarray}
+
+
+%Implementation:
+%The whole time span $(0,220)$ can be divided into equidistant intervals and the function $S(t)$ will evaluated and compared with a uniform random number, $p$. If $S(t) < p$, then one event occurs, here a hemorrhaging. Because of \eqref{eq:MaxNumberEvent} only one event is taken into account, i.e. at this event we decrease $n$ by 1.
+
+\paragraph{Observation model}
+\begin{itemize}
+\item
+Type of observed variable -- discrete/time-to-event
+\item
+Event variable: $y$
+\item
+Event type -- right censored
+\begin{itemize}
+\item
+Right censoring time = 200
+\end{itemize}
+\item
+Hazard function: $h(t) = \beta \times Cc(t)$
+\item
+Survival function: $S(t) =exp(-Ch)$
+\item
+Maximum number of possible events = 1
+\end{itemize}
+
+\subsubsection{NM-TRAN code:}
+
+\myStartLine
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+missing
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{MLXTRAN code:}
+
+\myStartLine
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION:
+Joint PK and time to event data model
+
+INPUT:
+   parameter = {ka, V, Cl}
+
+EQUATION:
+   {Cc} = pkmodel(ka, V, Cl)
+   dCh_dt = hazard	
+
+OBSERVATION:
+   hemorrhaging = { type = event, hazard = beta*Cc, survival=exp(-Ch)}
+
+OUTPUT:
+   output = {Cc, hemorrhaging}
+
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{PharmML code:}
+The parameter $beta$ is assumed to be defined in the \xelem{ParameterModel} \emph{pm1}. 
+$Cc$ is assumed to be defined in the \xelem{StructuralModel} \emph{sm1}.
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <TimeToEventData>
+                    <EventVariable symbId="Hemorrhaging"/>
+                    
+                    <!-- h(t) = 1/lambda -->
+                    <HazardFunction symbId="h">
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="times">
+                                    <ct:SymbRef blkIdRef="pm1" symbIdRef="beta"/>
+                                    <ct:SymbRef blkIdRef="sm1" symbIdRef="Cc"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>   
+                    </HazardFunction>
+                    
+                    <!-- S = exp(-Ch) -->
+                    <SurvivalFunction symbId="S">
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Uniop op="exp">
+                                    <math:Uniop op="minus">
+                                        <ct:SymbRef blkIdRef="sm1" symbIdRef="Ch"/>
+                                    </math:Uniop>
+                                </math:Uniop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </SurvivalFunction>
+                    
+                    <Censoring censoringType="rightCensored">
+                        <RightCensoringTime>
+                            <ct:Assign>
+                                <ct:Real>220</ct:Real> 
+                            </ct:Assign>
+                        </RightCensoringTime>
+                    </Censoring>                    
+                    
+                    <MaximumNumberEvents>
+                        <ct:Assign>
+                            <ct:Real>1</ct:Real> 
+                        </ct:Assign>
+                    </MaximumNumberEvents>
+                </TimeToEventData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+

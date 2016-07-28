@@ -1,0 +1,2269 @@
+\section{Categorical data models}
+\label{subsec:categoricalDataModels}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Binomial distribution}
+
+\paragraph{Observation model}
+	
+\begin{itemize}
+\item
+Type of observed variable -- discrete/categorical
+\item
+Category variable: $y$
+\item
+Set of categories: $\{0,1\}$
+\item
+Probability for category '1'
+\begin{eqnarray}
+&& P(y=1) = p \nonumber
+\end{eqnarray}
+\end{itemize}
+
+
+\subsubsection{NM-TRAN code:}
+\myStartLine
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+$PROB Binary model
+
+$INPUT ID TIME DV
+
+$DATA data.csv IGNORE=@ 
+
+$PRED
+  TVBASE = THETA(1)                      ; TVBASE is a proportion
+  PHI    = LOG(TVBASE/(1-TVBASE)) + ETA(1)  
+  BASE   = EXP(PHI)/(1+EXP(PHI))   ; Logit transformation, 0<BASE<1
+
+  IF(DV.GT.1) THEN   ; A event for binary data
+    Y=BASE
+    RDV = 1     ; the "real" DV
+  ENDIF
+  IF(DV.LE.1) THEN   ; No event for binary data
+    Y=1-BASE
+    RDV = 0     ; the "real" DV
+  ENDIF
+
+$THETA (0,.8)    ; BASE
+$OMEGA 0.1       ; BSV BASE
+
+$ESTIM MAXEVAL=9999 METHOD=COND LAPLACE LIKE PRINT=1 MSFO=msfb
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{MLXTRAN code:}
+Code source: Lixoft MLXTRAN tutorial.
+
+\myStartLine
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION:
+Categorical data model - Binomial distribution
+
+INPUT:
+parameter = p
+
+OBSERVATION:
+y= { 
+	type = categorical 
+	categories = {0,1} 
+	P(y=1) = p 
+}
+
+OUTPUT:
+output = y
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{PharmML code:}
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="no">
+                    <SimpleParameter symbId="p"/>
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat0"/>
+                        <Category symbId="cat1"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    
+                    <!-- P(y = 1) = p -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="p"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+\subsubsection{PharmML code -- alternative using UncertML:}
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="no">
+                    <SimpleParameter symbId="p"/>
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat0"/>
+                        <Category symbId="cat1"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    
+                    <PMF linkFunction="identity">
+                        <BernoulliDistribution xmlns="http://www.uncertml.org/3.0" 
+                            definition="http://www.uncertml.org/3.0">
+                            <categoryProb definition="http://www.uncertml.org/3.0">
+                                <name>cat1</name>
+                                <probability>
+                                    <var varId="p"/>
+                                </probability>
+                            </categoryProb>
+                        </BernoulliDistribution>
+                    </PMF>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Binomial distribution with Markovian dependence}
+
+\paragraph{Observation model}
+
+% TEMPLATE for CATEGORICAL MODEL DESCRIPTION
+\begin{itemize}
+\item
+Type of observed variable -- discrete/categorical
+\item
+Category variable: $y$
+\item
+Previous state variable: $yp$
+\item
+Set of categories: $\{0,1\}$
+\item
+Probability for category '1'
+\begin{align}
+& P(y=1) = p \nonumber
+\end{align}
+\item
+Markov dependance with transition probabilities:
+\begin{itemize}
+\item
+$P(y=1 | yp=0) = p01$ and 
+\item
+$P(y=1 | yp=1) = p11$
+\end{itemize}
+\end{itemize}
+
+\begin{figure}[htbp!]
+\includegraphics[width=.75\textwidth]{pics/binomialMarkov} 
+\caption{Markov transition probabilities for two-states model.}
+\label{fig:binomialMarkov}
+\end{figure}
+
+
+\subsubsection{NM-TRAN code:}
+
+\myStartLine
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+$PROB Transition probabilities
+
+$INPUT ID TIME DV PDV ;PDV=value of preceding observation
+
+$DATA data.csv IGNORE=@ 
+
+$PRED
+
+  TVP10 = THETA(1)                    
+  PHI1    = LOG(TVP10/(1-TVP10)) + ETA(1)  
+  P10   = EXP(PHI1)/(1+EXP(PHI1))
+  
+  TVP01 = THETA(2)                    
+  PHI0    = LOG(TVP01/(1-TVP01)) + ETA(2)  
+  P01   = EXP(PHI0)/(1+EXP(PHI0))
+   
+   IF(PDV.EQ.0.AND.DV.EQ.1) Y=P10
+   IF(PDV.EQ.0.AND.DV.EQ.0) Y=1-P10 
+   IF(PDV.EQ.1.AND.DV.EQ.0) Y=P01 
+   IF(PDV.EQ.1.AND.DV.EQ.1) Y=1-P01 
+   
+$THETA  (0,.1,1)   
+$THETA  (0,.1,1)   
+$OMEGA 0.1 
+$OMEGA 0.1  
+
+$ESTIM MAXEVAL=9999 METHOD=COND LAPLACE LIKE PRINT=1 MSFO=msfb
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{MLXTRAN code:}
+Code provided by Marc Lavielle. 
+
+\myStartLine
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION:
+Categorical data model with Markovian dependence, Binomial distribution
+
+INPUT:
+parameter = {p01, p11}
+
+OBSERVATION:
+y = {
+      type = categorical
+      categories = {0,1}
+      dependence = Markov
+      P(y=1 | yp=0) = p01
+      P(y=1 | yp=1) = p11
+}
+
+OUTPUT:
+output = y
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{PharmML code:}
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="no">
+                    <SimpleParameter symbId="p01"/>
+                    <SimpleParameter symbId="p11"/>
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat0"/>
+                        <Category symbId="cat1"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    <PreviousStateVariable symbId="yp"/>
+                    
+                    <Dependance type="discreteMarkov"/>
+                    
+                    <!-- P(y=1|yp=0)=p01 -->
+                    <ProbabilityAssignment>
+                        <Probability>
+                            <CurrentState>
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="y"/>
+                                    <ct:SymbRef symbIdRef="cat1"/>
+                                </math:LogicBinop>
+                            </CurrentState>
+                            <PreviousState>
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="yp"/>
+                                    <ct:SymbRef symbIdRef="cat0"/>
+                                </math:LogicBinop>
+                            </PreviousState>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="p01"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- P(y=1|yp=1)=p11-->
+                    <ProbabilityAssignment>
+                        <Probability>
+                            <CurrentState>
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="y"/>
+                                    <ct:SymbRef symbIdRef="cat1"/>
+                                </math:LogicBinop>
+                            </CurrentState>
+                            <PreviousState>
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="yp"/>
+                                    <ct:SymbRef symbIdRef="cat1"/>
+                                </math:LogicBinop>
+                            </PreviousState>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="p11"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Explicit probabilities per category -- three categories}
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete/categorical
+\item
+Category variable: $y$
+\item
+Set of categories: $\{1,2,3\}$
+\item
+Probabilities for category '1' and '2'
+\begin{eqnarray}
+&& P(y=1) = a1/(a1+a2+a3)  \nonumber \\
+&& P(y=2) = a2/(a1+a2+a3)  \nonumber 
+\end{eqnarray}
+\end{itemize}
+
+
+\subsubsection{NM-TRAN code:}
+
+\myStartLine
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+	missing
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{MLXTRAN code:}
+Code source: Lixoft MLXTRAN tutorial.
+
+\myStartLine
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION:
+Categorical data model - 3 categories
+
+INPUT:
+parameter = {a1, a2, a3}
+
+OBSERVATION:
+y = {
+	type = categorical 
+	categories = {1, 2, 3} 
+	P(y=1) = a1/(a1+a2+a3) 
+	P(y=2) = a2/(a1+a2+a3) 
+}
+
+OUTPUT:
+output = y
+\end{lstlisting}
+\myEndLine
+
+\textit{ALTERNATIVELY} (for $P(y=1)$ and $P(y=3)$):
+
+\begin{lstlisting}
+OBSERVATION:
+y = { 
+	type = categorical 
+	categories = {1, 2, 3} 
+	P(y=1) = a1/(a1+a2+a3) 
+	P(y=3) = a3/(a1+a2+a3) 
+}
+\end{lstlisting}
+
+\subsubsection{PharmML code:}
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="no">
+                    <SimpleParameter symbId="a1"/>
+                    <!-- a1, a2 omitted -->
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat1"/>
+                        <Category symbId="cat2"/>
+                        <Category symbId="cat3"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    
+                    <!-- P(y = 1) = a1/(a1+a2+a3) -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <ct:SymbRef symbIdRef="a1"/>
+                                    <math:Binop op="plus">
+                                        <ct:SymbRef symbIdRef="a1"/>
+                                        <math:Binop op="plus">
+                                            <ct:SymbRef symbIdRef="a2"/>
+                                            <ct:SymbRef symbIdRef="a3"/>
+                                        </math:Binop>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- P(y = 2) = a2/(a1+a2+a3) -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity"> 
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat2"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <ct:SymbRef symbIdRef="a2"/>
+                                    <math:Binop op="plus">
+                                        <ct:SymbRef symbIdRef="a1"/>
+                                        <math:Binop op="plus">
+                                            <ct:SymbRef symbIdRef="a2"/>
+                                            <ct:SymbRef symbIdRef="a3"/>
+                                        </math:Binop>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Cumulative probabilities -- three categories}
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete/categorical
+\item
+Category variable: $y$
+\item
+Set of categories: $\{1,2,3\}$
+\item
+Cumulative probabilities
+\begin{eqnarray}
+&& P(y<=1) = a1/(a1+a2+a3) \nonumber \\
+&& P(y<=2) = (a1+a2)/(a1+a2a31)  \nonumber 
+\end{eqnarray}
+\end{itemize}
+
+
+\subsubsection{NM-TRAN code:}
+
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+	missing
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{MLXTRAN code:}
+Code source: Monolix 4.1 User Manual.
+
+\myStartLine
+
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION:
+Ordered categorical data model - 3 categories Cumulative probabilities
+
+INPUT:
+parameter = {a1, a2, a3}
+
+OBSERVATION:
+y = { 
+	type = categorical 
+	categories = {1, 2, 3} 
+	P(y<=1) = a1/(a1+a2+a3) 
+	P(y<=2) = (a1+a2)/(a1+a2a31) 
+}
+
+OUTPUT:
+output = y
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{PharmML code:}
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="yes">
+                    <SimpleParameter symbId="a1"/>
+                    <SimpleParameter symbId="a2"/>
+                    <SimpleParameter symbId="a3"/>
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat1"/>
+                        <Category symbId="cat2"/>
+                        <Category symbId="cat3"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    
+                    <!-- P(y <= 1) = a1/(a1+a2+a3) --> 
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <math:LogicBinop op="leq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <ct:SymbRef symbIdRef="a1"/>
+                                    <math:Binop op="plus">
+                                        <ct:SymbRef symbIdRef="a1"/>
+                                        <math:Binop op="plus">
+                                            <ct:SymbRef symbIdRef="a2"/>
+                                            <ct:SymbRef symbIdRef="a3"/>
+                                        </math:Binop>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- P(y <= 2) = a2/(a1+a2+a3) -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <math:LogicBinop op="leq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat2"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <ct:SymbRef symbIdRef="a2"/>
+                                    <math:Binop op="plus">
+                                        <ct:SymbRef symbIdRef="a1"/>
+                                        <math:Binop op="plus">
+                                            <ct:SymbRef symbIdRef="a2"/>
+                                            <ct:SymbRef symbIdRef="a3"/>
+                                        </math:Binop>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+%\subsubsection{Tail probabilities - three categories}
+%\paragraph{NM-TRAN code provided by ...}
+%%\begin{lstlisting}
+%%\end{lstlisting}
+%\paragraph{MLXTRAN code from Monolix 4.1 User Manual}
+%\begin{lstlisting}
+%DESCRIPTION:
+%Ordered categorical data model - 3 categories Tail probabilities
+%
+%INPUT:
+%parameter = {a1, a2, a3}
+%
+%OBSERVATION:
+%y= { type = categorical 
+%categories = {1, 2, 3} 
+%P(y>1) = (a2+a3)/(a1+a2+a3) 
+%P(y>2) = a3/(a1+a2+a3) }
+%
+%OUTPUT:
+%output = y
+%\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Cumulative logit probabilities -- three categories}
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete/categorical
+\item
+Category variable: $y$
+\item
+Set of categories: $\{1,2,3\}$
+\item
+Cumulative logits
+\begin{align}
+& \text{logit}(P(y<=1) )= \theta1  \nonumber \\
+& \text{logit}(P(y<=2) )= \theta1+ \theta2  \nonumber 
+\end{align}
+\end{itemize}
+
+
+\subsubsection{NM-TRAN code:}
+
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+	missing
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{MLXTRAN code:}
+Code source: Monolix 4.1 User Manual
+
+\myStartLine
+
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION:
+Ordered categorical data model - 3 categories Logit - probabilities
+
+INPUT:
+parameter = {theta1, theta2}
+
+OBSERVATION:
+y = {
+	type = categorical 
+	categories = {1, 2, 3} 
+	logit(P(y<=1))= theta1 
+	logit(P(y<=2))= theta1+theta2
+}
+OUTPUT:
+output = y
+
+
+ALTERNATIVELY with tails
+
+OBSERVATION:
+y = { 
+	type = categorical 
+	categories = {1, 2, 3} 
+	logit(P(t>1))= -theta1 
+	logit(P(t>2))= -theta1-theta2
+}
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{PharmML code:}
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="yes">
+                    <SimpleParameter symbId="theta1"/>
+                    <SimpleParameter symbId="theta2"/>
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat1"/>
+                        <Category symbId="cat2"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    
+                    <!-- logit(P(y <= 1)) = theta1 -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <math:LogicBinop op="leq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="theta1"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- logit(P(y <= 2)) = theta1 + theta2 -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <math:LogicBinop op="leq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat2"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="plus">
+                                    <ct:SymbRef symbIdRef="theta1"/>
+                                    <ct:SymbRef symbIdRef="theta2"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+ \end{lstlisting}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Tail logit probabilities}
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete / ordered categorical
+\item
+Category variable: $y$
+\item
+Set of categories: $\{0,1,2,3\}$
+\item
+Tail logits
+\begin{align}
+& \text{logit}(P(y \ge 0)) = B1 + \eta1 \nonumber \\
+& \text{logit}(P(y \ge 1)) = B1 + B2 + \eta1 \nonumber \\
+& \text{logit}(P(y \ge 2)) = B1 + B2 + B3 + \eta1 \nonumber 
+\end{align}
+with $\eta1 \sim N(0, \omega1)$.
+\end{itemize}
+
+
+\subsubsection{NM-TRAN code:}
+Code example provided by Mats Karlsson.
+
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+$PROB mixed-effect Ordered Categorical, baseline model
+$INPUT ID TIME ODV DOSE ICL IV IKA 
+       TYPE SMAX DV=SMXH THR CAV CAVH CON
+       ;CNT CNT2 CNT3 HC HC2 HC3 
+       ;ETA1 ETA2 ETA3 ETA4
+
+$DATA data.csv IGNORE=@ ACCEPT=(THR.GT.0)
+
+$PRED
+  ;Baseline values
+  B1 = THETA(1)
+  B2 = THETA(2)
+  B3 = THETA(3)
+
+  ;Logits for Y>=1, Y>=2, Y>=3
+  LGE1 = B1+ETA(1)
+  LGE2 = B1+B2+ETA(1)
+  LGE3 = B1+B2+B3+ETA(1)
+
+  ;Probabilities for Y>=2, Y>=3
+  PGE1 = EXP(LGE1)/(1+EXP(LGE1))
+  PGE2 = EXP(LGE2)/(1+EXP(LGE2))
+  PGE3 = EXP(LGE3)/(1+EXP(LGE3))
+
+  ;Probabilities for Y=0, Y=1, Y=2, Y=3
+  P0 = (1-PGE1) 
+  P1 = (PGE1-PGE2)
+  P2 = (PGE2-PGE3)
+  P3 = PGE3   
+ 
+  ;Select appropriate P(Y=m)
+  IF(DV.EQ.0) Y=P0
+  IF(DV.EQ.1) Y=P1
+  IF(DV.EQ.2) Y=P2
+  IF(DV.EQ.3) Y=P3
+
+$THETA (0.63)          ; B1
+$THETA (-INF,-.1,0)    ; B2
+$THETA (-INF,-.1,0)    ; B3
+$OMEGA .1
+
+
+$ESTIM MAXEVAL=9990 METHOD=COND LAPLACE LIKE PRINT=1 MSFO=msfb45
+$COV PRINT=E
+
+$TABLE ID TIME NOPRINT ONEHEADER FILE=sdtab45
+$TABLE ID CAV CAVH CON NOPRINT ONEHEADER FILE=cotab45
+$TABLE ID DOSE NOPRINT ONEHEADER FILE=catab45
+$TABLE ID ICL IV IKA NOPRINT ONEHEADER FILE=patab45
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{MLXTRAN code:}
+
+\myStartLine
+
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION: Ordered categorical model with tail probabilities
+
+[INDIVIDUAL]
+INPUT:
+parameter = {B1_POP ,B1_OMEGA}
+
+DEFINITION:
+B1 =  {distribution=logNormal, mean= B1_POP, sd=B1_OMEGA}
+
+
+[OBSERVATION]
+INPUT:
+parameter = {B1, B2, B3}
+
+DEFINITION:
+y = {
+	type = categorical
+	categories = {0, 1, 2, 3}
+	logit(P(y>=0)) = B1
+	logit(P(y>=1)) = B1 + B2
+	logit(P(y>=2)) = B1 + B2 + B3
+}
+
+OUTPUT:
+output = level
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{PharmML code:}
+The code handles only the encoding of probabilities. The parameters are
+defined in \xelem{ParameterModel} \emph{pm1}. $b1$ is assumed to be log-normally distributed with
+$\log(b1) = \log(b1_{\rm pop}) + \eta_{b1}$, $b2$ and $b3$ are fixed.
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="yes">           
+                    <!-- b1 -->
+                    <!-- omitted definition with IIV -->
+                    <!-- b2 -->
+                    <SimpleParameter symbId="b2"/>
+                    <!-- b3 -->
+                    <SimpleParameter symbId="b3"/>
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat1"/>
+                        <Category symbId="cat2"/>
+                        <Category symbId="cat3"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    
+                    <!-- logit(P(y >= 1)) = b1 -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <math:LogicBinop op="geq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="b1"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- logit(P(y >= 2)) = b1 + b2 --> 
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <math:LogicBinop op="geq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat2"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="plus">
+                                    <ct:SymbRef symbIdRef="b1"/>
+                                    <ct:SymbRef symbIdRef="b2"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- logit(P(y >= 3)) = b1 + b2 + b3 --> 
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <math:LogicBinop op="geq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat3"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="plus">
+                                    <math:Binop op="plus">
+                                        <ct:SymbRef symbIdRef="b1"/>
+                                        <ct:SymbRef symbIdRef="b2"/>
+                                    </math:Binop>
+                                    <ct:SymbRef symbIdRef="b3"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Cumulative logit probabilities with Markovian dependence}
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete / ordered categorical
+\item
+Category variable: $y$
+\item
+Previous state variable: $yp$
+\item
+Set of categories: $\{1,2,3\}$
+\item
+Markov dependance with transition probabilities:
+\begin{align}
+& \text{logit}(P(y<=1 | yp=1)) = a11 \nonumber \\
+& \text{logit}(P(y<=2 | yp=1)) = a11 + a12\nonumber \\
+& \text{logit}(P(y<=1 | yp=2)) = a21\nonumber \\
+& \text{logit}(P(y<=2 | yp=2)) = a21 + a22\nonumber \\
+& \text{logit}(P(y<=1 | yp=3)) = a31\nonumber \\
+& \text{logit}(P(y<=2 | yp=3)) = a31 + a32\nonumber 
+\end{align}
+\end{itemize}
+
+
+\begin{figure}[htbp!]
+\includegraphics[width=.75\textwidth]{pics/cumulLogitMarkov} 
+\caption{Markov transition probabilities for three-states model.}
+\label{fig:cumulLogitMarkov}
+\end{figure}
+
+\subsubsection{NM-TRAN code:}
+
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+	missing
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{MLXTRAN code from Monolix 4.1 User Manual:}
+
+\myStartLine
+
+\begin{lstlisting}
+DESCRIPTION:
+Categorical data model with Markovian dependence,
+3 categories - logit-probabilities
+
+INPUT:
+parameter = {a11, a12, a13, a21, a22, a23, a31, a32, a33}
+
+OBSERVATION:
+y = {
+      type = categorical
+      categories = {1,2,3}
+      dependence = Markov
+      logit(P(y<=1 | yp=1)) = a11
+      logit(P(y<=2 | yp=1)) = a11 + a12
+      logit(P(y<=1 | yp=2)) = a21
+      logit(P(y<=2 | yp=2)) = a21 + a22
+      logit(P(y<=1 | yp=3)) = a31
+      logit(P(y<=2 | yp=3)) = a31 + a32
+}
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{PharmML code:}
+All parameters are assumed to be defined in the \xelem{ParameterModel} \emph{pm1}.
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="yes">
+                    <SimpleParameter symbId="a11"/>
+                    <!-- omitted a12...a32 -->
+                    <SimpleParameter symbId="a33"/>
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat1"/>
+                        <Category symbId="cat2"/>
+                        <Category symbId="cat3"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    <PreviousStateVariable symbId="yp"/>
+                    
+                    <Dependance type="discreteMarkov"/>
+                    
+                    <!--   logit(P (y <= 1|yp = 1)) = a11 -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <CurrentState>
+                                <math:LogicBinop op="leq">
+                                    <ct:SymbRef symbIdRef="y"/>
+                                    <ct:SymbRef symbIdRef="cat1"/>
+                                </math:LogicBinop>
+                            </CurrentState>
+                            <PreviousState>
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="yp"/>
+                                    <ct:SymbRef symbIdRef="cat1"/>
+                                </math:LogicBinop>
+                            </PreviousState>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="a11"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!--  logit(P (y <= 2|yp = 1)) = a11 + a12 -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <CurrentState>
+                                <math:LogicBinop op="leq">
+                                    <ct:SymbRef symbIdRef="y"/>
+                                    <ct:SymbRef symbIdRef="cat2"/>
+                                </math:LogicBinop>
+                            </CurrentState>
+                            <PreviousState>
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="yp"/>
+                                    <ct:SymbRef symbIdRef="cat1"/>
+                                </math:LogicBinop>
+                            </PreviousState>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="plus">
+                                    <ct:SymbRef symbIdRef="a11"/>
+                                    <ct:SymbRef symbIdRef="a12"/>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    <!--  logit(P (y <= 1|yp = 2)) = a21 -->
+                    <!-- omitted here -->
+                    <!--  logit(P (y <= 2|yp = 2)) = a21 + a22 -->
+                    <!-- omitted here -->
+                    <!--  logit(P (y <= 1|yp = 3)) = a31 -->
+                    <!-- omitted here -->
+                    <!--  logit(P (y <= 2|yp = 3)) = a31 + a32 -->
+                    <!-- omitted here -->
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Cumulative logit probabilities with Markovian and initial probabilities}
+Based on an example described in \cite{MLXTRANforMonolix:2014}. 
+This model extends the previous by adding the initial probabilities for a given category.
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete / ordered categorical
+\item
+Category variable: $y$
+\item
+Initial state variable: $yinit$
+\item
+Previous state variable: $yp$
+\item
+Set of categories: $\{1,2,3\}$
+\item
+Initial probabilities
+\begin{align}
+& P(y=1) = a1 \nonumber \\
+& P(y=2) = a2  \nonumber
+\end{align}
+\item
+Markov dependance with transition probabilities (with $y$ -- current state, $yp$ -- previous state):
+\begin{align}
+& \text{logit}(P(y<=1 | yp=1)) = a11 \nonumber \\
+& \text{logit}(P(y<=2 | yp=1)) = a11 + a12\nonumber \\
+& \text{logit}(P(y<=1 | yp=2)) = a21\nonumber \\
+& \text{logit}(P(y<=2 | yp=2)) = a21 + a22\nonumber \\
+& \text{logit}(P(y<=1 | yp=3)) = a31\nonumber \\
+& \text{logit}(P(y<=2 | yp=3)) = a31 + a32\nonumber 
+\end{align}
+\end{itemize}
+
+\subsubsection{NM-TRAN code:}
+
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+	missing
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{MLXTRAN code:}
+
+\myStartLine
+
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION:
+Cumulative ordered with Markov and initial probabilities
+
+OBSERVATION:
+State = {
+	type = categorical
+	categories = {1,2,3}
+	dependence = Markov
+	P(yinit=1) = a1
+	P(yinit=2) = a2
+	logit(P(y<=1|yp=1)) = a11
+	logit(P(y<=2|yp=1)) = a11+a12
+	logit(P(y<=1|yp=2)) = a21
+	logit(P(y<=2|yp=2)) = a21+a22
+	logit(P(y<=1|yp=3)) = a31
+	logit(P(y<=2|yp=3)) = a31+a32
+}
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{PharmML code:}
+All parameters are assumed to be defined in the \xelem{ParameterModel} \emph{pm1}.
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="yes">
+                    <SimpleParameter symbId="a11"/>
+                    <!-- omitted a12...a32 -->
+                    <SimpleParameter symbId="a33"/>
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat1"/>
+                        <Category symbId="cat2"/>
+                        <Category symbId="cat3"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    <InitialStateVariable symbId="yinit"/>
+                    <PreviousStateVariable symbId="yp"/>
+                    
+                    <Dependance type="discreteMarkov"/>
+                    
+                    <!-- P(y = 1) = a1 -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="yinit"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="a1"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- P(y = 2) = a2 -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="yinit"/>
+                                <ct:SymbRef symbIdRef="cat2"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="a2"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!--   logit(P(y <= 1|yp = 1)) = a11 -->
+                    <ProbabilityAssignment>
+                        <!-- omitted here, identical as in previous example -->
+                    </ProbabilityAssignment>
+                    
+                    <!--  logit(P(y <= 2|yp = 1)) = a11 + a12 -->
+                    <ProbabilityAssignment>
+                        <!-- omitted here, identical as in previous example -->
+                    </ProbabilityAssignment>
+                    <!--  logit(P(y <= 1|yp = 2)) = a21 -->
+                    <!-- omitted here -->
+                    <!--  logit(P(y <= 2|yp = 2)) = a21 + a22 -->
+                    <!-- omitted here -->
+                    <!--  logit(P(y <= 1|yp = 3)) = a31 -->
+                    <!-- omitted here -->
+                    <!--  logit(P(y <= 2|yp = 3)) = a31 + a32 -->
+                    <!-- omitted here -->
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Categorical with 2nd order Markovian dependence}
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete / ordered categorical
+\item
+Category variable: $y$
+\item
+Initial state variable: $yinit$
+\item
+Previous state variable: $yp$
+\item
+Set of categories: $\{1,2,3\}$
+\item
+Markov dependance with transition probabilities (with $y$ -- current state, $yp1$ -- 1st order state, $yp2$ -- 2nd order state):
+\begin{align}
+& logit(P(y<=1 | yp1=1, yp2=2)) = a112 \nonumber \\
+& logit(P(y<=2 | yp1=1, yp2=3)) = a213 \nonumber \\
+& logit(P(y<=1 | yp1=2, yp2=1)) = a121 \nonumber \\
+& logit(P(y<=2 | yp1=2, yp2=3)) = a223 \nonumber \\
+& logit(P(y<=1 | yp1=3, yp2=1)) = a131 \nonumber \\
+& logit(P(y<=2 | yp1=3, yp2=2)) = a232 \nonumber 
+\end{align}
+\end{itemize}
+
+\subsubsection{NM-TRAN code:}
+
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+missing
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{MLXTRAN code:}
+
+\myStartLine
+
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+missing
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{PharmML code -- Version 1:}
+
+\lstset{language=XML}
+\begin{lstlisting}
+                <CategoricalData ordered="yes">
+                    <SimpleParameter symbId="a112"/>
+                    <!-- omitted here a213...a131 -->
+                    <SimpleParameter symbId="a232"/>
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat1"/>
+                        <Category symbId="cat2"/>
+                        <Category symbId="cat3"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    <PreviousStateVariable symbId="yp1"/>
+                    <PreviousStateVariable symbId="yp2"/>
+                    
+                    <Dependance type="discreteMarkov"/>
+                    
+                    <!--   logit(P(y <= 1 | yp1 = 1, yp2 = 2)) = a112 -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <CurrentState>
+                                <math:LogicBinop op="leq">
+                                    <ct:SymbRef symbIdRef="y"/>
+                                    <ct:SymbRef symbIdRef="cat1"/>
+                                </math:LogicBinop>
+                            </CurrentState>
+                            <PreviousState MarkovOrder="1">
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="yp1"/>
+                                    <ct:SymbRef symbIdRef="cat1"/>
+                                </math:LogicBinop>
+                            </PreviousState>
+                            <PreviousState MarkovOrder="2">
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="yp2"/>
+                                    <ct:SymbRef symbIdRef="cat2"/>
+                                </math:LogicBinop>
+                            </PreviousState>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="a112"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!--   logit(P(y<=2 | yp1=1, yp2=3)) = a213 -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <CurrentState>
+                                <math:LogicBinop op="leq">
+                                    <ct:SymbRef symbIdRef="y"/>
+                                    <ct:SymbRef symbIdRef="cat2"/>
+                                </math:LogicBinop>
+                            </CurrentState>
+                            <PreviousState MarkovOrder="1">
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="yp1"/>
+                                    <ct:SymbRef symbIdRef="cat1"/>
+                                </math:LogicBinop>
+                            </PreviousState>
+                            <PreviousState MarkovOrder="2">
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="yp2"/>
+                                    <ct:SymbRef symbIdRef="cat3"/>
+                                </math:LogicBinop>
+                            </PreviousState>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="a213"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    <!-- omitted here -->
+                    <!-- logit(P (y <= 1|yp1 = 2, yp2 = 1)) = a121 
+                         logit(P (y <= 2|yp1 = 2, yp2 = 3)) = a223 
+                         logit(P (y <= 1|yp1 = 3, yp2 = 1)) = a131 
+                         logit(P (y <= 2|yp1 = 3, yp2 = 2)) = a232 -->
+                </CategoricalData>            
+ \end{lstlisting}
+
+
+\subsubsection{PharmML code -- Version 2:}
+This version was proposed by Roberto Bizzotto. 
+The \xelem{Condition} tag is used to define the Markovian dependences
+instead of using \xelem{PreviousState} elements.
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om2">
+            <Discrete>
+                <CategoricalData ordered="yes">
+                    <SimpleParameter symbId="a112"/>
+                    <!-- omitted here a213...a131 -->
+                    <SimpleParameter symbId="a232"/>
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat1"/>
+                        <Category symbId="cat2"/>
+                        <Category symbId="cat3"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    <InitialStateVariable symbId ="yinit" />
+                    <PreviousStateVariable symbId="yp1"/>
+                    <PreviousStateVariable symbId="yp2"/>
+                    
+                    <Dependance type="discreteMarkov"/>
+
+                    <!-- logit (P(y <= 1 | yp1 = 1, yp2 = 2)) = a112 -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <CurrentState>
+                                <math:LogicBinop op="leq">
+                                    <ct:SymbRef symbIdRef ="y" />
+                                    <ct:SymbRef symbIdRef ="cat1" />
+                                </math:LogicBinop >
+                            </CurrentState>
+                            <!-- Condition tag is used to define the Markovian dependences -->
+                            <Condition>
+                                <math:LogicBinop op="and">
+                                    <math:LogicBinop op="eq">
+                                        <ct:SymbRef symbIdRef ="yp1" />
+                                        <ct:SymbRef symbIdRef ="cat1" />
+                                    </math:LogicBinop >
+                                    <math:LogicBinop op="eq">
+                                        <ct:SymbRef symbIdRef ="yp2" />
+                                        <ct:SymbRef symbIdRef ="cat2" />
+                                    </math:LogicBinop >
+                                </math:LogicBinop >
+                            </Condition>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef ="a112" />
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- omitted here all other equations, as above-->
+                    
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>     
+\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Categorical with continues Markovian dependence}
+Based on an example described in \cite{MLXTRANforMonolix:2014}. 
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete / ordered categorical
+\item
+Category variable: $y$
+\item
+Initial state variable: $yinit$
+\item
+Previous state variable: $yp$
+\item
+Set of categories: $\{1,2\}$
+\item
+Initial probabilities
+\begin{align}
+& P(y=1) = p1 \nonumber
+\end{align}
+\item
+Markov dependance with transition probabilities:
+\begin{align}
+& transitionRate(1,2) = q12  \nonumber \\
+& transitionRate(2,1) = q21 \nonumber 
+\end{align}
+\end{itemize}
+
+\subsubsection{NM-TRAN code:}
+
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+	missing
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{MLXTRAN code:}
+
+\myStartLine
+
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+OBSERVATION:
+State = {
+	type = categorical
+	categories = {1,2}
+	dependence = Markov
+	P(State_1=1) = p1
+	transitionRate(1,2) = q12
+	transitionRate(2,1) = q21
+}
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{PharmML code:}
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="no">
+                    <SimpleParameter symbId="p1"/>
+                    <SimpleParameter symbId="q12"/>
+                    <SimpleParameter symbId="q21"/>
+                    
+                    <ListOfCategories>
+                        <Category symbId="cat1"/>
+                        <Category symbId="cat2"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    <InitialStateVariable symbId="yinit"/>
+                    
+                    <Dependance type="continuousMarkov"/>
+                    
+                    <!-- P(y = 1) = p1 -->
+                    <ProbabilityAssignment>
+                        <Probability>
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="yinit"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="p1"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- transitionRate(1, 2) = q12 -->
+                    <ProbabilityAssignment>
+                        <TransitionRate>
+                            <CurrentState> 
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="y"/>
+                                    <ct:SymbRef symbIdRef="cat1"/>
+                                </math:LogicBinop>
+                            </CurrentState>
+                            <PreviousState>
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="yp"/>
+                                    <ct:SymbRef symbIdRef="cat2"/>
+                                </math:LogicBinop>
+                            </PreviousState>
+                        </TransitionRate>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="q12"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!--   transitionRate(2, 1) = q21 -->
+                    <ProbabilityAssignment>
+                        <TransitionRate>
+                            <CurrentState> 
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="y"/>
+                                    <ct:SymbRef symbIdRef="cat2"/>
+                                </math:LogicBinop>
+                            </CurrentState>
+                            <PreviousState>
+                                <math:LogicBinop op="eq">
+                                    <ct:SymbRef symbIdRef="yp"/>
+                                    <ct:SymbRef symbIdRef="cat1"/>
+                                </math:LogicBinop>
+                            </PreviousState>
+                        </TransitionRate>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="q21"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Reference category logit model -- sleep model}
+The model names is after \cite{Agresti:2002fk}.
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete / ordered categorical
+\item
+Category variable: $y$
+\item
+Set of categories: $\{0,1,2,3,4,5\}$
+\item
+Probabilities
+\begin{align}
+& P(Y=1) = \exp(G1)/(1+\exp(G1)+\exp(G2)+\exp(G3)) \nonumber \\
+& P(Y=2) = \exp(G2)/(1+\exp(G1)+\exp(G2)+\exp(G3)) \nonumber \\
+& P(Y=3) = 0 \nonumber \\
+& P(Y=4) = 0 \nonumber \\
+& P(Y=5) = \exp(G3)/(1+\exp(G1)+\exp(G2)+\exp(G3)) \nonumber
+\end{align}
+\end{itemize}
+
+%Y = {
+%	type = categorical
+%	categories = {0, 1, 2, 3, 4, 5}
+%	;P(Y=0) = 1/(1+exp(G1)+exp(G2)+exp(G3))
+%	P(Y=1) = exp(G1)/(1+exp(G1)+exp(G2)+exp(G3))
+%	P(Y=2) = exp(G2)/(1+exp(G1)+exp(G2)+exp(G3))
+%	P(Y=3) = 0
+%	P(Y=4) = 0
+%	P(Y=5) = exp(G3)/(1+exp(G1)+exp(G2)+exp(G3))
+%}
+
+
+
+\subsubsection{NM-TRAN code provided by Roberto Bizzotto, \cite{Bizzotto:2011fk}:}
+
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+; Sleep model with multinomial logistic functions
+; Transitions from awake state
+; Categorical data model - 4 categories
+
+
+removed multiple assignments and definitions
+
+  PAW=1/(1+EXP(G1)+EXP(G2)+EXP(G3))
+  P1=EXP(G1)/(1+EXP(G1)+EXP(G2)+EXP(G3))
+  P2=EXP(G2)/(1+EXP(G1)+EXP(G2)+EXP(G3))
+  P3=0
+  PR=EXP(G3)/(1+EXP(G1)+EXP(G2)+EXP(G3))
+
+
+  Y=0
+  IF (STAG.EQ.0) Y=PAW
+  IF (STAG.EQ.1) Y=P1
+  IF (STAG.EQ.2) Y=P2
+  IF (STAG.EQ.5) Y=PR
+
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{MLXTRAN translation by Roberto Bizzotto and Marc Lavielle:}
+part 1 - 'project001.mlxtran'  -- omitted \\
+part 2 - 'trAW004'
+
+\myStartLine
+
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+DESCRIPTION:
+Sleep model with multinomial logistic functions
+Transitions from awake state
+Categorical data model - 4 categories
+
+if (t>=BPA&&t=<BPB&&SL==1)
+	G1=G1A*(BPB-t)/(BPB-BPA)+G1B*(t-BPA)/(BPB-BPA)
+elseif (t>BPB&&t=<BPC&&SL==1)
+	...
+end
+
+
+OBSERVATION:
+Y = {
+	type = categorical
+	categories = {0, 1, 2, 3, 4, 5}
+	;P(Y=0) = 1/(1+exp(G1)+exp(G2)+exp(G3))
+	P(Y=1) = exp(G1)/(1+exp(G1)+exp(G2)+exp(G3))
+	P(Y=2) = exp(G2)/(1+exp(G1)+exp(G2)+exp(G3))
+	P(Y=3) = 0
+	P(Y=4) = 0
+	P(Y=5) = exp(G3)/(1+exp(G1)+exp(G2)+exp(G3))
+}
+
+OUTPUT:
+output = Y
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{PharmML code:}
+All parameters are assumed to be defined in the \xelem{ParameterModel} \emph{pm1}.
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="no">
+
+                    <ListOfCategories> 
+                        <Category symbId="cat0"/>
+                        <!-- omitted cat1...cat4 -->
+                        <Category symbId="cat5"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="Y"/>
+                    
+                    <!-- P(Y = 1) = exp(G1)/(1+exp(G1)+exp(G2)+exp(G3)) --> 
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="Y"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <math:Uniop op="exp">
+                                        <ct:SymbRef symbIdRef="G1"/>
+                                    </math:Uniop>
+                                    <math:Binop op="plus">
+                                        <math:Binop op="plus">
+                                            <math:Binop op="plus">
+                                                <ct:Real>1</ct:Real>
+                                                <math:Uniop op="exp">
+                                                    <ct:SymbRef symbIdRef="G1"/>
+                                                </math:Uniop>
+                                            </math:Binop>
+                                            <math:Uniop op="exp">
+                                                <ct:SymbRef symbIdRef="G2"/>
+                                            </math:Uniop>
+                                        </math:Binop>
+                                        <math:Uniop op="exp">
+                                            <ct:SymbRef symbIdRef="G3"/>
+                                        </math:Uniop>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- P(Y = 2) = exp(G2)/(1+exp(G1)+exp(G2)+exp(G3)) --> 
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="Y"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <math:Uniop op="exp">
+                                        <ct:SymbRef symbIdRef="G2"/>
+                                    </math:Uniop>
+                                    <math:Binop op="plus">
+                                        <math:Binop op="plus">
+                                            <math:Binop op="plus">
+                                                <ct:Real>1</ct:Real>
+                                                <math:Uniop op="exp">
+                                                    <ct:SymbRef symbIdRef="G1"/>
+                                                </math:Uniop>
+                                            </math:Binop>
+                                            <math:Uniop op="exp">
+                                                <ct:SymbRef symbIdRef="G2"/>
+                                            </math:Uniop>
+                                        </math:Binop>
+                                        <math:Uniop op="exp">
+                                            <ct:SymbRef symbIdRef="G3"/>
+                                        </math:Uniop>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- P(Y = 3) = 0 -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="Y"/>
+                                <ct:SymbRef symbIdRef="cat3"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:Real>0</ct:Real>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- P(Y = 4) = 0 --> 
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="Y"/>
+                                <ct:SymbRef symbIdRef="cat4"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:Real>0</ct:Real>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- P(Y = 5) = exp(G5)/(1+exp(G1)+exp(G2)+exp(G3)) --> 
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="Y"/>
+                                <ct:SymbRef symbIdRef="cat5"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <math:Uniop op="exp">
+                                        <ct:SymbRef symbIdRef="G5"/>
+                                    </math:Uniop>
+                                    <math:Binop op="plus">
+                                        <math:Binop op="plus">
+                                            <math:Binop op="plus">
+                                                <ct:Real>1</ct:Real>
+                                                <math:Uniop op="exp">
+                                                    <ct:SymbRef symbIdRef="G1"/>
+                                                </math:Uniop>
+                                            </math:Binop>
+                                            <math:Uniop op="exp">
+                                                <ct:SymbRef symbIdRef="G2"/>
+                                            </math:Uniop>
+                                        </math:Binop>
+                                        <math:Uniop op="exp">
+                                            <ct:SymbRef symbIdRef="G3"/>
+                                        </math:Uniop>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{input/example4_CTS3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{PK with continuous and categorical effect}
+\label{subsec:PKPDcategorical2}
+This model was suggested by Marc Lavielle in the \emph{Four models} document and combines 
+both continuous and discrete observation models.
+
+
+\paragraph{Model description -- PK}
+
+\begin{itemize}
+\item
+Type of observed variable -- continuous
+\item
+Continuous variables: $Cc$ and $E$
+\item
+PK equations
+\begin{align}
+& \frac{dAd}{dt} = -ka \times Ad  \nonumber \\
+& \frac{dAc}{dt} = ka \times Ad - k \times Ac  \nonumber \\
+& Cc = \frac{Ac}{V}  \nonumber \\
+& E = \frac{Emax \times Cc}{EC50 + Cc}  \nonumber
+\end{align}
+\end{itemize}
+
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete/categorical
+\item
+Category variable: $y$
+\item
+Set of categories: $\{1,2,3\}$
+\item
+Cumulative logits
+\begin{align}
+& logit(P(y<=1) )= lp1 = th1 + th2 \times Cc  \nonumber \\
+& logit(P(y<=2) )= lp2 = th1 + th2 \times Cc + th3 \nonumber 
+\end{align}
+\end{itemize}
+
+\subsubsection{NM-TRAN code:}
+
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+	missing
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{MLXTRAN code by Marc Lavielle:}
+
+\myStartLine
+
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+[LONGITUDINAL]
+input = {ka, V, k, a1, a2, Emax, EC50, th1, th2, th3}
+PK:
+depot(target=Ad)
+EQUATION:
+ddt_Ad = -ka*Ad
+ddt_Ac = ka*Ad - k*Ac
+Cc = Ac/V
+E = Emax*Cc/(EC50 + Cc)
+lp1 = th1 + th2*Cc
+lp2 = th1 + th2*Cc + th3
+DEFINITION:
+Concentration = {distribution=lognormal, prediction=Cc, sd=a1}
+Effect = {distribution=normal, prediction=E, sd=a2}
+Level = {
+	type=categorical, categories={1,2,3},
+	logit(P(Level<=1)) = lp1
+	logit(P(Level<=2)) = lp2
+}
+\end{lstlisting}
+
+\myEndLine
+
+\subsubsection{PharmML code:}
+All parameters are assumed to be defined in the \xelem{ParameterModel} \xatt{pm1}.
+Furthermore, it is assumed that the probabilities $lp1$ and $lp2$ are defined
+in the structural model \xatt{sm1}.
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <ContinuousData>
+                <RandomVariable symbId="eta_Cc">
+                    <ct:VariabilityReference>
+                        <ct:SymbRef symbIdRef="residual"/>
+                    </ct:VariabilityReference>
+                    <NormalDistribution xmlns="http://www.uncertml.org/3.0" 
+                    definition="http://www.uncertml.org/3.0">
+                        <mean>
+                            <rVal>0</rVal>
+                        </mean>
+                        <stddev>
+                            <prVal>1</prVal>
+                        </stddev>
+                    </NormalDistribution>
+                </RandomVariable>
+                <Standard symbId="C">
+                    <Output>
+                        <ct:SymbRef symbIdRef="C"/>
+                    </Output>
+                    <ErrorModel>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="a1"/>
+                        </ct:Assign>
+                    </ErrorModel>
+                    <ResidualError>
+                        <ct:SymbRef symbIdRef="epsilon_C"/>
+                    </ResidualError>
+                </Standard>
+            </ContinuousData>
+        </ObservationModel>
+        
+        <!-- Continuous model for E -->
+        <ObservationModel blkId="om2">
+            <ContinuousData>
+                <RandomVariable symbId="eta_E">
+                    <ct:VariabilityReference>
+                        <ct:SymbRef symbIdRef="residual"/>
+                    </ct:VariabilityReference>
+                    <NormalDistribution xmlns="http://www.uncertml.org/3.0" 
+                    definition="http://www.uncertml.org/3.0">
+                        <mean>
+                            <rVal>0</rVal>
+                        </mean>
+                        <stddev>
+                            <var varId="a2"/>
+                        </stddev>
+                    </NormalDistribution>
+                </RandomVariable>
+                <General symbId="Effect">
+                    <ct:Assign>
+                        <math:Equation>
+                            <math:Binop op="plus">
+                                <ct:SymbRef symbIdRef="E"/>
+                                <ct:SymbRef symbIdRef="eta_E"/>
+                            </math:Binop>
+                        </math:Equation>
+                    </ct:Assign>
+                </General>
+            </ContinuousData>
+        </ObservationModel>
+        
+        <!-- Discrete model for Level -->
+        <ObservationModel blkId="om3">
+            <Discrete>
+                <CategoricalData ordered="no">
+                    <ListOfCategories>
+                        <Category symbId="cat1"/>
+                        <Category symbId="cat2"/>
+                        <Category symbId="cat3"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="Level"/>
+                    
+                    <!-- logit(P(Level<=1)) = lp1-->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <math:LogicBinop op="leq">
+                                <ct:SymbRef symbIdRef="Level"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef blkIdRef="sm1" symbIdRef="lp1"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- logit(P(Level<=2)) = lp2-->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <math:LogicBinop op="leq">
+                                <ct:SymbRef symbIdRef="Level"/>
+                                <ct:SymbRef symbIdRef="cat2"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef blkIdRef="sm1" symbIdRef="lp2"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Latent variable model}
+\label{subsec:latentVariableModel}
+
+\paragraph{Model description}
+
+\begin{itemize}
+\item
+Type of observed variable -- continuous
+\item
+Continuous variables: $ACRL$
+\item
+Structural model
+\begin{align}
+& \frac{d ACRL}{dt} = k_{in} \times IH - k_{out} \times ACRL(t) \nonumber \\
+& IH = 1 - plb - drug \nonumber \\
+& plb = plb_{max} (1 - \exp(-k_{plb} \times t)) \nonumber \\
+& drug = \frac{Emax \times Cp}{EC50 + Cp} \nonumber 
+\end{align}
+\end{itemize}
+
+\paragraph{Observation model}
+
+\begin{itemize}
+\item
+Type of observed variable -- discrete/categorical
+\item
+Category variable: $r$
+\item
+Set of categories: $\{ACR20,ACR50,ACR70\}$
+\item
+Exact logits
+\begin{align}
+& \text{logit}(P(r = ACRr)) = \text{logit}(1-r/100) + \text{logit}(1-ACRL) + \eta \nonumber \\
+& \text{with} \quad \text{logit}(1 - ACRL) \quad  \text{as the} \; \textbf{latent} \; \text{variable} \nonumber 
+\end{align}
+\end{itemize}
+
+
+\subsubsection{MLXTRAN code:}
+\myStartLine
+
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+...
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{NMTRAN code:}
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+...
+\end{lstlisting}
+\myEndLine
+
+\subsubsection{PharmML code:}
+The structural model is shown for clarity.
+
+\lstset{language=XML}
+\begin{lstlisting}
+        <StructuralModel blkId="sm1">
+            <!-- follwing equations skipped here        
+                dACRL/dt =  kin*IH-kout*ACRL(t)
+                IH = 1-plb-drug;
+                plb = plb_{max}*(1-exp(-k_{plb}*t))
+                drug = (Emax*Cp)/(EC50+Cp)-->
+        </StructuralModel>
+        
+        <!-- NOMINAL -->
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="yes">
+                    <RandomVariable symbId="eta">
+                        <ct:VariabilityReference>
+                            <ct:SymbRef symbIdRef="subject"/>
+                        </ct:VariabilityReference>
+                        <un:NormalDistribution definition="http://www.uncertml.org/3.0">
+                            <un:mean><un:rVal>0</un:rVal></un:mean>
+                            <un:stddev><un:var varId="omega"/></un:stddev>
+                        </un:NormalDistribution>
+                    </RandomVariable>
+                    <ListOfCategories> 
+                        <Category symbId="cat1"/>        <!-- ACR20 -->
+                        <Category symbId="cat2"/>        <!-- ACR50 -->
+                        <Category symbId="cat3"/>        <!-- ACR70 -->
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="r"/>
+                    
+                    <!-- logit(P(r=cat1)) = logit(1-r/100) + logit(1-ACRL) + eta -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="r"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="plus">
+                                    <math:Uniop op="logit">
+                                        <math:Binop op="minus">
+                                            <ct:Real>1</ct:Real>
+                                            <math:Binop op="divide">
+                                                <ct:SymbRef symbIdRef="r"/>
+                                                <ct:Real>100</ct:Real>
+                                            </math:Binop>
+                                        </math:Binop>
+                                    </math:Uniop>
+                                    <math:Binop op="plus">
+                                        <math:Uniop op="logit">
+                                            <math:Binop op="minus">
+                                                <ct:Real>1</ct:Real>
+                                                <ct:SymbRef symbIdRef="ACRL"/>
+                                            </math:Binop>
+                                        </math:Uniop>
+                                        <ct:SymbRef symbIdRef="eta"/>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- assignments for two other categories skipped -->
+                    <!-- logit(P(y=cat2)) = logit(1-r/100) + logit(1-ACRL) + eta -->
+                    <!-- logit(P(y=cat3)) = logit(1-r/100) + logit(1-ACRL) + eta -->
+                    
+                </CategoricalData>
+            </Discrete>
+\end{lstlisting}
+            
+            
+
+%% TEMPLATE for CATEGORICAL MODEL DESCRIPTION
+%\begin{itemize}
+%\item
+%Type of observed variable -- discrete/categorical
+%\item
+%Set of categories, e.g. $Y = \{0,1\}$ or $Y = \{1,2,3\}$
+%\item
+%Dependence, i.e. Markovian
+%%\item
+%%Markovian dependence - yes/no
+%%\begin{itemize}
+%%\item
+%%Constant or variable order
+%%\item
+%%Order of Markovian 
+%%\end{itemize}
+%%\item
+%%Set of $k$ values taken by the observed variable, e.g. $Y = \{0,1\}$ or $Y = \{1,2,3\}$ etc.
+%%\item
+%%Parameters to be estimated, e.g. \{a1, a2, a3\} or \{$\theta_1$, $\theta_2$\}
+%\item
+%Probability distributions for each observation
+%\begin{itemize}
+%\item
+%Categorical data models
+%\begin{itemize}
+%\item
+%Binomial distribution, e.g. P(Y=1) = p (for $y \in \{0,1\}$) 
+%\item
+%Explicit probabilities for the k-1 categories, here for $y \in \{1,2,3\}$, 
+%\begin{eqnarray}
+%&&P(y=1)=a1/(a1+a2+a3) \nonumber \\
+%&&P(y=2)=a2/(a1+a2+a3)  \nonumber \\
+%&&P(y=3)=1-P(y=1)-P(y=2) \nonumber
+%\end{eqnarray}
+%\end{itemize}
+%\item
+%Ordered categorical data models for e.g. $y \in \{1,2,3\}$
+%\begin{itemize}
+%\item
+%Cumulative probabilities, e.g. 
+%\begin{eqnarray}
+%&&P(y\leq1)=a1/(a1+a2+a3) \nonumber \\
+%&&P(y\leq2)=(a1+a2)/(a1+a2+a3) \nonumber \\
+%&&P(y\leq3)=1-P(y<=2) \nonumber
+%\end{eqnarray}
+%%\item
+%%Tail probabilities, e.g. specifying
+%%\begin{eqnarray}
+%%&& P(y>1)=(a2+a3)/(a1+a2+a3) \nonumber \\
+%%&& P(y>2)=a3/(a1+a2+a3)  \nonumber \\ 
+%%&& P(y>3)=1-P(y>2) \nonumber
+%%\end{eqnarray}
+%\item
+%Logit probabilities, e.g. 
+%\begin{eqnarray}
+%&& \logit(P(y\leq1))= \theta_1  \nonumber \\
+%&& \logit(P(y\leq2))= \theta_1+\theta_2  \nonumber \\
+%&& \logit(P(y\leq3))=1  \nonumber
+%\end{eqnarray}
+%\end{itemize}
+%\end{itemize}
+%\end{itemize}
+
+%%% TEMPLATE for CATEGORICAL MODEL DESCRIPTION
+%\begin{itemize}
+%\item
+%Type of observed variable -- discrete/categorical
+%\item
+%Set of categories, e.g. $y = \{0,1\}$ or $y = \{1,2,3\}$
+%\item
+%Dependence, i.e. Markovian
+%\item
+%Set of $k$ values taken by the observed variable, e.g. $y = \{0,1\}$ or $y = \{1,2,3\}$ etc.
+%\item
+%Probability distributions for each observation
+%\begin{itemize}
+%\item
+%Categorical data models
+%\begin{itemize}
+%\item
+%Binomial distribution, e.g. P(y=1) = p (for $y \in \{0,1\}$) 
+%\item
+%Explicit probabilities for the k-1 categories, here for $y \in \{1,2,3\}$, 
+%\begin{eqnarray}
+%&&P(y=1)=a1/(a1+a2+a3) \nonumber \\
+%&&P(y=2)=a2/(a1+a2+a3)  \nonumber \\
+%&&P(y=3)=1-P(y=1)-P(y=2) \nonumber
+%\end{eqnarray}
+%\end{itemize}
+%\item
+%Ordered categorical data models for e.g. $y \in \{1,2,3\}$
+%\begin{itemize}
+%\item
+%Cumulative probabilities, e.g. 
+%\begin{eqnarray}
+%&&P(y\leq1)=a1/(a1+a2+a3) \nonumber \\
+%&&P(y\leq2)=(a1+a2)/(a1+a2+a3) \nonumber \\
+%&&P(y\leq3)=1-P(y<=2) \nonumber
+%\end{eqnarray}
+%\item
+%Logit probabilities, e.g. 
+%\begin{eqnarray}
+%&& \logit(P(y\leq1))= \theta_1  \nonumber \\
+%&& \logit(P(y\leq2))= \theta_1+\theta_2  \nonumber \\
+%&& \logit(P(y\leq3))=1  \nonumber
+%\end{eqnarray}
+%\end{itemize}
+%\end{itemize}
+%\end{itemize}
+
+

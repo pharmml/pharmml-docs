@@ -1,0 +1,187 @@
+\section{Introduction}
+\label{sec:intro_discreteModels}
+
+%Before we decided to postpone the support for discrete models we had a structure in place to accommodate few different discrete model types. The information needed to support, see \ref{subsec:mi_discreteModels}, consists of couple extension to what we had already. Formulating discrete data models as GLM or GLMM is not mandatory anymore. This means that one doesn't need to define the \textit{link} function or to restrict the predictor to linear models which simplifies our task on PharmML side.
+
+The aim of this chapter is to collect, to classify and to propose the schema for 
+implementation of discrete data models in PharmML as used in pharmacometrics.
+
+It contains the mathematical description of discrete data models, mainly based 
+on \cite{LavielleBook:2014} along with so called \emph{minimal information} -- a set of model elements to be 
+stored to allow lossless encoding of models in PharmML and any target tool. 
+Moreover, either MLXTRAN or NMTRAN implementation, or both, are provided. 
+
+The proposed PharmML schema has been validated using available use cases. 
+More then 25 various models have been successfully implemented so far. Nevertheless,
+more testing is required before the official release (M42).
+
+\subsection{\xelem{ObservationModel} extensions}
+The following Figure \ref{fig:observationModel} shows the classification of continuous and discrete 
+data models as used in this document and the proposed \pml structure. 
+\begin{itemize}
+\item
+Continuous data
+\begin{itemize}
+\item
+usually described by the normal distribution.
+\end{itemize}
+\item
+Discrete data
+\begin{itemize}
+\item
+Count data -- non-negative integers -- described by the Poisson or a related distribution.
+\item
+Categorical data -- finite set of integer values, nominal or ordered -- described by the Bernoulli
+or the categorical distribution. 
+\item
+Time-to-event data -- time until an event occurs, can be unique or repeated -- described by 
+survival or hazard function.
+\end{itemize}
+\end{itemize}
+\begin{figure}[htb!]
+\centering
+ \includegraphics[width=140mm]{pics/observationModelExtended}
+\caption{Observation model for continuous and discrete data. The residual error model of continuous 
+data is described by a continuous distribution (e.g. normal distribution), while the error distribution of 
+discrete data is described by a discrete distribution (e.g. binomial for binary data).}
+\label{fig:observationModel}
+\end{figure}
+The proposed structure of the discrete data models 
+in PharmML is outlined in Section \ref{subsec:mi_discreteModels}.
+
+
+\subsection{Model unrelated features}
+By "model unrelated features" we mean element of models which are provided
+to assist a particular tool in their interpretation and execution. It was argued on multiple 
+occasions that PharmML should be tool-independent. The analysis of NM-TRAN codes 
+for few typical discrete data models resulted in the observation that especially these 
+models contain a number of features, which are strictly speaking not part of the 
+mathematical formulation of the models. This is related e.g. to the lack of certain built-in 
+function or other algorithms specific to discrete data handling in NONMEM. The next few paragraphs 
+deal with NONMEM specific approximations, coding tricks and simulation methods as applied 
+in the case of discrete data models.  
+
+\paragraph{Approximations}
+Compared to MLXTRAN which has many built-in function, NM-TRAN users have to 
+resort to approximations for functions such as $\log(k!)$ or $\log(\Gamma)$ used in 
+count data models. For example, the $\log(k!)$ is approximated by\\
+
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+LFAC = DV*LOG(DV)-DV + LOG(DV*(1+4*DV*(1+2*DV)))/6 +LOG(3.1415)/2
+or
+LDVFAC=(DV+.5)*LOG(DV)-DV+.5*LOG(6.283185)
+\end{lstlisting}
+
+\myEndLine
+
+as you can find in \cite{Plan:2009fk} or \cite{Ette:2007uq}, p.741, accordingly. In MLXTRAN 
+the modeller can use the build-in function $factln(k)$. See e.g. the Negative Binomial model 
+for an example in section \ref{subsec:NBmodel}. 
+
+\paragraph{Simulation of the Poisson process}
+NM-TRAN coded count data models contain the Poisson process simulation routine
+
+
+\myStartLine
+
+  \lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+; Simulation code 
+ IF (ICALL.EQ.4) THEN
+     LAMB=THETA(1)*EXP(ETA(1)) 	
+     T=0 
+     N=0 
+     DO WHILE (T.LT.1)
+          CALL RANDOM (2,R) 
+          T=T-LOG(1-R)/LAMB 
+          IF (T.LT.1) N=N+1
+     END DO
+     DV=N 
+ENDIF
+\end{lstlisting}
+
+\myEndLine
+
+which again strictly speaking is not a part of model description but has to be provided because 
+NONMEM lacks an according build-in algorithm and/or the ability to encode the information about the 
+Poisson process in a concise, simple and easy understandable way. 
+
+\paragraph{Encoding of time-to-event data models}
+The most striking example is certainly the writing of time to event models where one has 
+to write code like this:
+ 
+\myStartLine
+
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+CP=A(1)/V 
+CUMHAZ=A(2) ; cumulative hazard 
+IF (DV.EQ.0) THEN ; right censored 
+    Y=EXP(-CUMHAZ) 
+    CHLAST=CUMHAZ ; start of interval 
+ELSE 
+    CHLAST=CHLAST ; 
+ENDIF   
+\end{lstlisting}
+
+\myEndLine
+
+to keep NM-TRAN happy. \\
+See: \url{http://www.page-meeting.org/pdf_assets/2573-time-to-event-tutorial.pdf}  for more details.
+%(see http://www.page-meeting.org/pdf_assets/2573-time-to-event-tutorial.pdf)
+
+%
+%\paragraph{Notation of probabilities}
+%NMTRAN is unable to handle proper mathematical notation, such as $P(Y\leq 1)$ and has
+%to define variable instead. This reduces the readability of the code, see section \ref{sec:twoModes}.
+%
+%
+\paragraph{Conclusions}
+We are following the strategy that such tricks, \marginpar{\HandCuffLeft} approximations and specific 
+simulation algorithms should not be encoded in PharmML but rather be handled by the convertor 
+toolboxes. This way we keep the standard free from tool-specific inclusions which results in a clear and 
+concise formulation of such models.
+
+
+
+%\subsection{PharmML support for discrete data models}
+%PharmML, from version 0.3, supports function (unary operators) useful for this type of models 
+%such as: 
+%\begin{itemize}
+%\item
+%factln $\equiv$ $\ln(n!)$
+%\item
+%gammaln $\equiv$ $\ln(\Gamma)$
+%\end{itemize}
+
+
+
+%\begin{sidewaystable}[h]
+%\caption{Performance After Post Filtering}  % title name of the table
+%\centering  % centering table
+%\begin{tabular}{l c c rrrrrrr}  % creating 10 columns
+%\hline\hline                       % inserting double-line
+% Audio &Audibility & Decision &\multicolumn{7}{c}{Sum of Extracted Bits} 
+%\\ [0.5ex]   
+%\hline              % inserts single-line
+%% Entering 1st row
+% & &soft &1 & $-1$ & 1 & 1 & $-1$ & $-1$ & 1  \\[-1ex]
+%\raisebox{1.5ex}{Police} & \raisebox{1.5ex}{5}&hard
+%&  2 & $-4$ & 4 & 4 & $-2$ & $-4$ & 4 \\[1ex]
+%% Entering 2nd row
+%& &soft & 1 & $-1$ & 1 & 1 & $-1$ & $-1$ & 1  \\[-1ex]
+%\raisebox{1.5ex}{Beethoven} & \raisebox{1.5ex}{5}& hard
+%&8 & $-8$ & 2 & 8 & $-8$ & $-8$ & 6 \\[1ex]
+%% Entering 3rd row
+%& &soft & 1 & $-1$ & 1 & 1 & $-1$ & $-1$ & 1  \\[-1ex]
+%\raisebox{1.5ex}{Metallica} & \raisebox{1.5ex}{5}& hard
+%&4 & $-8$ & 8 & 4 & $-8$ & $-8$ & 8  \\[1ex]
+%% [1ex] adds vertical space
+%\hline                          % inserts single-line
+%\end{tabular}
+%\label{tab:LPer}
+%\end{sidewaystable}
+%

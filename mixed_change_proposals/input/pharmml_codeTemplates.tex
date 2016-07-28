@@ -1,0 +1,541 @@
+\section{PharmML templates}
+\label{sec:codeTemplates}
+
+Model templates are intended to provide a quick overview of the model types covered by this 
+\pharmml version. They are simpler to read then the full examples in next sections because
+here only essential elements of the structure are shown without the often lengthily 
+mathematical formulas. These templates can be used as initial help for model encoding
+or just to understand the overall structure.
+
+\subsection{Count data -- basic example}
+Simplified PharmML code for a basic Poisson count data models
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CountData>
+                    <CountVariable symbId="Y"/>
+
+                    <IntensityParameter symbId="Lambda">
+                        <!-- e.g. assignment for Lambda -->
+                    </IntensityParameter>
+                    
+                    <!-- Using UncertML -->
+                    <PMF linkFunction="log">
+                        <math:LogicBinop op="eq">
+                            <ct:SymbRef symbIdRef="Y"/>
+                            <ct:SymbRef symbIdRef="k"/>
+                        </math:LogicBinop>
+                        <PoissonDistribution xmlns="http://www.uncertml.org/3.0">
+                            <rate>
+                                <var varId="Lambda"/>
+                            </rate>
+                        </PoissonDistribution>
+                    </PMF>
+                    
+                    <!-- ALTERNATIVELY explicit implementation -->
+                    <!-- log(P(Y=k)) = -Lambda+k*log(Lambda)-log(k!)-->
+                    <PMF linkFunction="log">
+                        <math:LogicBinop op="eq">
+                            <ct:SymbRef symbIdRef="Y"/>
+                            <ct:SymbRef symbIdRef="k"/>
+                        </math:LogicBinop>
+                        <ct:Assign>
+                            <!-- -Lambda+k*log(Lambda)-log(k!) -->
+                        </ct:Assign>
+                    </PMF>
+                </CountData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+\subsection{Count data -- over-dispersed data models}
+Simplified PharmML code for count data models with over-dispersed data
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om2">
+            <Discrete>
+                <CountData>
+                    <CountVariable symbId="Y"/>
+                    <PreviousCountVariable symbId="Yp"/>
+
+                    <Dependance type="continuousMarkov">
+                        <!-- ... or discreteMarkov -->
+                    </Dependance>
+                    
+                    <IntensityParameter symbId="Lambda">
+                        <!-- e.g. assignment for Lambda -->
+                    </IntensityParameter>
+                    
+                    <DispersionParameter symbId="Delta">
+                        <!-- e.g. assignment for Delta -->
+                    </DispersionParameter>
+
+                    <OverDispersionParameter symbId="Tau">
+                        <!-- e.g. assignment for Tau -->
+                    </OverDispersionParameter>
+                    
+                    <ZeroProbabilityParameter symbId="P0">
+                        <!-- e.g. assignment for  -->
+                    </ZeroProbabilityParameter>
+                    
+                    <MixtureProbabilityParameter symbId="Pi">
+                        <!-- e.g. assignment for Pi -->
+                    </MixtureProbabilityParameter>
+                    
+                    <!-- Using UncertML -->
+                    <!-- log(P(Y=k)) = -Lambda+k*log(Lambda)-log(k!) -->
+                    <PMF linkFunction="log">
+                        <math:LogicBinop op="eq">
+                            <ct:SymbRef symbIdRef="Y"/>
+                            <ct:SymbRef symbIdRef="k"/>
+                        </math:LogicBinop>
+                        <PoissonDistribution xmlns="http://www.uncertml.org/3.0">
+                            <rate>
+                                <var varId="Lambda"/>
+                            </rate>
+                        </PoissonDistribution>
+                    </PMF>
+                    
+                    <!-- ALTERNATIVELY explicit implementation -->
+                    <!-- log(P(Y=k)) = -Lambda+k*log(Lambda)-log(k!) -->
+                    <PMF linkFunction="log">
+                        <math:LogicBinop op="eq">
+                            <ct:SymbRef symbIdRef="Y"/>
+                            <ct:SymbRef symbIdRef="k"/>
+                        </math:LogicBinop>
+                        <ct:Assign>
+                            <!-- -Lambda+k*log(Lambda)-log(k!) -->
+                        </ct:Assign>
+                    </PMF>
+                </CountData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+Note, \marginpar{\HandCuffLeft} that the use of named distribution parameters elements as in the template, 
+such as \xelem{IntensityParameter}, \xelem{DispersionParameter} and others, listed in section 
+\ref{subsec:mmCountData}, is optional. 
+They provide the advantage that the translation engine to any other target tool will immediately 
+recognise their role in the model which enhances its translation and the handling of the models in the 
+target tool.
+
+\subsection{Nominal categorical data}
+Simplified PharmML code for nominal categorical models
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <CategoricalData ordered="yes">
+                    <SimpleParameter symbId="p"/>
+                    
+                    <ListOfCategories> 
+                        <Category symbId="cat0"/>
+                        ...
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    
+                    <!-- P(y = 1) = p -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="identity">
+                            <math:LogicBinop op="eq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="p"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- ALTERNATIVE -->
+                    <!-- Using UncertML -->
+                    <PMF linkFunction="identity">
+                        <un:BernoulliDistribution definition="http://www.uncertml.org/3.0">
+                            <un:categoryProb definition="http://www.uncertml.org/3.0">
+                                <un:name>cat0</un:name>
+                                <un:probability>
+                                    <un:var varId="p"/>
+                                </un:probability>
+                            </un:categoryProb>
+                        </un:BernoulliDistribution>
+                    </PMF>  
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+As before, the alternative way \marginpar{\HandCuffLeft} to encode categorical models is to use 
+the assignment based notation, as common 
+in NONMEM. The user can simply define standard PharmML elements, such as \xelem{SimpleParameter} or 
+\xelem{Variable} instead. The disadvantage is the lower information content of such code and its limited
+usability in other tools, see detailed discussion in Section \ref{sec:twoModes}.
+
+\subsection{Ordered categorical data}
+Simplified PharmML code for ordered categorical models with cumulative probabilities
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om2">
+            <Discrete>
+                <CategoricalData ordered="yes">
+                    <ListOfCategories> 
+                        <Category symbId="cat1"/>
+                        <!-- omitted other assignments -->
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    
+                    <!-- P(y <= 1) = a1/(a1+a2+a3) --> 
+                    <ProbabilityAssignment>
+                        <Probability>
+                            <math:LogicBinop op="leq">
+                                <ct:SymbRef symbIdRef="y"/>
+                                <ct:SymbRef symbIdRef="cat1"/>
+                            </math:LogicBinop>
+                        </Probability>
+                        <ct:Assign>
+                            <math:Equation>
+                                <math:Binop op="divide">
+                                    <ct:SymbRef symbIdRef="a1"/>
+                                    <math:Binop op="plus">
+                                        <ct:SymbRef symbIdRef="a1"/>
+                                        <math:Binop op="plus">
+                                            <ct:SymbRef symbIdRef="a2"/>
+                                            <ct:SymbRef symbIdRef="a3"/>
+                                        </math:Binop>
+                                    </math:Binop>
+                                </math:Binop>
+                            </math:Equation>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+\subsection{Ordered categorical data with Markov dependency ($1^{st}$ and $2^{nd}$ order)}
+Simplified PharmML code for ordered categorical model with cumulative probabilities 
+and discrete time Markov dependency for 1st and 2nd order Markov models.
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om3">
+            <Discrete>
+                <CategoricalData ordered="yes">
+                    <SimpleParameter symbId="p01"/>
+                    <SimpleParameter symbId="a112"/>
+                        <!-- omitted parameters -->
+                    
+                    <ListOfCategories>
+                        <Category symbId="cat1"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    <InitialStateVariable symbId="yinit"/>
+                    <PreviousStateVariable symbId="yp1"/>
+                    <PreviousStateVariable symbId="yp2"/>
+                    
+                    <Dependance type="discreteMarkov"/>
+                    
+                    <!-- Initial state probability (optional) -->
+                    <!-- P(y = 1) = a1 -->
+                    <ProbabilityAssignment>
+                        <Probability>
+                            <!-- yinit = 1 -->
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="a1"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- 1st order -->
+                    <!-- P(y<=1|yp1=0)=p01 -->
+                    <ProbabilityAssignment>
+                        <Probability>
+                            <CurrentState>
+                                <!-- y<=1 -->
+                            </CurrentState>
+                            <PreviousState>
+                                <!-- yp1=0 -->
+                            </PreviousState>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="p01"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                    
+                    <!-- 2nd order -->
+                    <!-- logit(P(y <= 1 | yp1 = 1, yp2 = 2)) = a112 -->
+                    <ProbabilityAssignment>
+                        <Probability linkFunction="logit">
+                            <CurrentState>
+                                <!-- y<=1 -->
+                            </CurrentState>
+                            <PreviousState MarkovOrder="1">
+                                <!-- yp1=1 -->
+                            </PreviousState>
+                            <PreviousState MarkovOrder="2">
+                                <!-- yp2=2 -->
+                            </PreviousState>
+                            <Condition>
+                                <!-- other condition -->
+                            </Condition>
+                        </Probability>
+                        <ct:Assign>
+                            <ct:SymbRef symbIdRef="a112"/>
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+\subsection{Ordered categorical data with continuous time Markov dependency}
+Simplified PharmML code for ordered categorical model with cumulative probabilities 
+and continuous Markov dependency.
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om4">
+            <Discrete>
+                <CategoricalData ordered="yes">
+                    <SimpleParameter symbId="p01"/>
+                    
+                    <ListOfCategories>
+                        <Category symbId="cat0"/>
+                    </ListOfCategories>
+                    
+                    <CategoryVariable symbId="y"/>
+                    <PreviousStateVariable symbId="yp1"/>
+                    
+                    <Dependance type="continuousMarkov"/>
+                    
+                    <!-- rho(y2,y1) = exp(a+b*t) -->
+                    <ProbabilityAssignment>
+                        <TransitionRate>
+                            <CurrentState>
+                                <!-- y=1 -->
+                            </CurrentState>
+                            <PreviousState>
+                                <!-- yp1=1 -->
+                            </PreviousState>
+                        </TransitionRate>
+                        <ct:Assign>
+                            <!-- exp(a+b*t) -->
+                        </ct:Assign>
+                    </ProbabilityAssignment>
+                </CategoricalData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+\subsection{Time-to-event data}
+Simplified PharmML code template for TTE data models
+\lstset{language=XML}
+\begin{lstlisting}
+        <ObservationModel blkId="om1">
+            <Discrete>
+                <TimeToEventData>
+                    <EventVariable symbId="y"/>
+                    
+                    <HazardFunction symbId="H">
+                        <!-- h0*exp(-beta*C) -->
+                    </HazardFunction>
+                    
+                    <SurvivalFunction symbId="S">
+                        <!-- exp(-lambda*t) -->
+                    </SurvivalFunction>
+                    
+                    <Censoring censoringType="intervalCensored">    
+                        <IntervalLength>
+                            <!-- e.g. <ct:Real>10</ct:Real> -->
+                        </IntervalLength>
+                        
+                        <RightCensoringTime>
+                            <!-- e.g. <ct:Real>200</ct:Real> -->
+                        </RightCensoringTime>
+                    </Censoring>
+                    
+                    <MaximumNumberEvents>
+                        <!-- e.g. <ct:Real>5</ct:Real> -->
+                    </MaximumNumberEvents>
+                </TimeToEventData>
+            </Discrete>
+        </ObservationModel>
+\end{lstlisting}
+
+
+\section{Two modes of operation {\color{red} \scshape{*}}}
+\label{sec:twoModes}
+As indicated before, there are many ways to implement discrete data models. We would like to 
+highlight certain issues related to this fact when dealing with the categorical data models. More precisely, 
+two types of encoding of the left-hand side expressions with transformations such as log or logits, 
+probabilities and other terms are of special interest for us because they are used by the main target 
+tools, NONMEM and Monolix. The former one uses notation based on defining variables expressing 
+certain probabilities or transformed entities, while the latter is closer to the mathematical notation 
+as used in math/stat textbooks. 
+
+More specifically, NONMEM is not able to handle explicit transformation-based expressions 
+so they have to be first recalculated as, in this case, cumulative probabilities and subsequently 
+exact probabilities. At each step they have to be assigned to according variables. 
+Table \ref{tab:twoModes} shows the code for a cumulative logit probabilities 
+model as implemented in NMTRAN and MLXTRAN, illustrating these two modes.
+
+\begin{table}[ht!]
+\setlength{\tabcolsep}{15pt}
+\begin{center}
+\begin{tabular}{ll}
+  \hline \hline
+NMTRAN -- encoding of categorical models  	& MLXTRAN -- encoding of categorical models \\[-.25ex]
+is based on subsequent assignments   		& is based on standard mathematical notation \\[-.25ex]
+									& (alternatively, the assignment based option \\[-.25ex]
+									&  is also available in Monolix) \\
+  \hline
+\lstset{language=NONMEMdataSet}
+\begin{lstlisting}
+# A0 ... A2 cumul. logits
+A0 = EDRUG + B0
+A1 = EDRUG + B0 + B1
+A2 = EDRUG + B0 + B1+ B2
+ 
+# CP0 ... CP2 cumul. prob.
+CP0 = 1/(1+exp(-A0))
+CP1 = 1/(1+exp(-A1))
+CP2 = 1/(1+exp(-A2))
+ 
+# P0 ... P3 exact probabs
+P0 = CP0
+P1 = CP1 - CP0
+P2 = CP2 - CP1
+P3 = 1 - CP2
+\end{lstlisting}
+&
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+y = {
+  type = categorical
+  categories = {0, 1, 2, 3}
+  logit(P(y<=0)) = EDRUG + B0
+  logit(P(y<=1)) = EDRUG + B0 + B1
+  logit(P(y<=2)) = EDRUG + B0 + B1+ B2}
+}
+\end{lstlisting} 
+
+\\
+\hline
+\lstset{language=MLXTRANcode}
+\begin{lstlisting}
+Common for both, NMTRAN and MLXTRAN models
+# PK input
+     EDRUG=POP_BETA*CP
+
+# Parameters
+    B0 with IIV
+    B1 - fixed
+    B2 - fixed
+\end{lstlisting}
+\\
+  \hline
+\end{tabular}
+\caption[Comparison of differences in encoding of discrete data models.]{%
+      Comparison of differences in encoding of discrete data models\tablefootnote{The examples have 
+      been slightly modified compared to the previous version, without changing the conclusions resulting 
+      from their analysis as described in this section.}\label{tab:}.}
+\label{tab:twoModes}
+\end{center}
+\end{table}
+
+%ADD FIGURE HERE
+%\begin{figure}[htbp]
+%\centering
+%\caption{Translation of these two representations.}
+%\label{fig:translatingRepresentations}
+%\end{figure}
+
+While both notations result in mathematically correct formulation of a model, there are clear 
+advantages for the users and tools of the concise MLXTRAN-like syntax
+\begin{itemize}
+\item
+The declarative format based code is easier to parse and translate to target tools because 
+of its very explicit structure and doesn't require annotation in contrast to the alternative option.
+\item
+It is easier to understand for everyone familiar with the underlying mathematics and newcomers 
+to the field of pharmacometrics not aware with the NMTRAN language.
+\item
+While the translation from the right-hand side to the left-hand side (Table \ref{tab:twoModes})
+is straightforward, the revers direction is virtually impossible to be performed automatically.
+\end{itemize}
+Nevertheless, the proposed PharmML structure supports both encoding styles.  \marginpar{\HandCuffLeft} 
+This means more complex structure but at the same time it makes sure that these both options 
+are applicable. 
+
+\section{Categorical data mapping}
+\label{sec:catDataMapping}
+Categorical models define categories using user-defined names, such as \xatt{cat1}, \xatt{cat2} 
+etc., without any mapping to the dataset, in the \xelem{ObservationModel}. This allows to decouple 
+the model definition from the the external dataset and increase its usability.
+\lstset{language=XML}
+\begin{lstlisting}
+        <CategoricalData ordered="yes">
+            <ListOfCategories> 
+                <Category symbId="cat1"/>
+                ...
+            </ListOfCategories>
+\end{lstlisting}
+The actual mapping to the dataset is done in the \xelem{ModellinSteps} section as the the following
+code snippet shows
+\lstset{language=XML}
+\begin{lstlisting}
+            <mstep:ColumnMapping>
+                <ds:ColumnRef columnIdRef="DV"/>
+                <ct:SymbRef blkIdRef="om1" symbIdRef="y"/>
+                <ds:CategoryMapping>
+                    <ds:Map dataSymbol="0" modelSymbol="cat1"/>
+                    <ds:Map dataSymbol="1" modelSymbol="cat2"/>
+                    <!-- omitted other categories -->
+                </ds:CategoryMapping>
+            </mstep:ColumnMapping>
+\end{lstlisting}
+This allows keeping one model description with the possibility to use datasets
+with different categories names. See also section \ref{subsec:catDataCovariatesMapping}
+for more detailed description. Note, the this concept applies equally to the mapping of categorical 
+covariates.
+
+%ADD FUGURE HERE???
+%\begin{figure}[htbp]
+%\centering
+%\caption{Mapping of categorical data.}
+%\label{fig:mappingCategoricalData}
+%\end{figure}
+
+
+%REFERENCES:
+%- publications
+%e.g. \cite{Plan:2009fk}
+
+
+
+%\begin{sidewaystable}[h]
+%\caption{Performance After Post Filtering}  % title name of the table
+%\centering  % centering table
+%\begin{tabular}{l c c rrrrrrr}  % creating 10 columns
+%\hline\hline                       % inserting double-line
+% Audio &Audibility & Decision &\multicolumn{7}{c}{Sum of Extracted Bits} 
+%\\ [0.5ex]   
+%\hline              % inserts single-line
+%% Entering 1st row
+% & &soft &1 & $-1$ & 1 & 1 & $-1$ & $-1$ & 1  \\[-1ex]
+%\raisebox{1.5ex}{Police} & \raisebox{1.5ex}{5}&hard
+%&  2 & $-4$ & 4 & 4 & $-2$ & $-4$ & 4 \\[1ex]
+%% Entering 2nd row
+%& &soft & 1 & $-1$ & 1 & 1 & $-1$ & $-1$ & 1  \\[-1ex]
+%\raisebox{1.5ex}{Beethoven} & \raisebox{1.5ex}{5}& hard
+%&8 & $-8$ & 2 & 8 & $-8$ & $-8$ & 6 \\[1ex]
+%% Entering 3rd row
+%& &soft & 1 & $-1$ & 1 & 1 & $-1$ & $-1$ & 1  \\[-1ex]
+%\raisebox{1.5ex}{Metallica} & \raisebox{1.5ex}{5}& hard
+%&4 & $-8$ & 8 & 4 & $-8$ & $-8$ & 8  \\[1ex]
+%% [1ex] adds vertical space
+%\hline                          % inserts single-line
+%\end{tabular}
+%\label{tab:LPer}
+%\end{sidewaystable}
+%
